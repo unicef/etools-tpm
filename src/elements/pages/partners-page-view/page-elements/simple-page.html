@@ -1,0 +1,30 @@
+<!--import [polymer, iron-flex-layout, etools-content-panel]-->
+
+<dom-module id="simple-page">
+  <template>
+    <style include="page-layout-styles">
+      :host {
+        @apply(--layout-horizontal);
+        width: 100%;
+      }
+    </style>
+
+    <div id="pageContent">
+      <etools-content-panel title="Some data">
+        <p>Tab 2 page data section...</p>
+      </etools-content-panel>
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'simple-page'
+      });
+
+    })();
+  </script>
+</dom-module>

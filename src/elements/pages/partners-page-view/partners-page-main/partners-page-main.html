@@ -1,0 +1,67 @@
+<!--import [polymer, paper-tabs]-->
+
+<!--import [page-header, page-with-sidebar, simple-page, page-layout-styles, shared-styles]-->
+
+<dom-module id="partners-page-main">
+    <template>
+        <!-- inject styles './partners-page-main.scss'-->
+        <style include="page-layout-styles shared-styles"></style>
+        <app-route
+                route="{{route}}"
+                pattern="/:tab"
+                data="{{routeData}}"
+                active="{{tabsActive}}"></app-route>
+
+        <app-route
+                route="{{route}}"
+                pattern="/list"
+                active="{{tab1Active}}"></app-route>
+
+        <app-route
+                route="{{route}}"
+                pattern="/tab2"
+                active="{{tab2Active}}"></app-route>
+
+        <app-header-layout>
+
+            <app-header id="header" fixed shadow>
+
+                <page-header title$="Page section 1 - [[routeData.tab]]"></page-header>
+
+                <div id="tabsWrapper" hidden$="{{!tabsActive}}">
+                    <app-toolbar id="tabs">
+
+                        <paper-tabs selected="[[routeData.tab]]" attr-for-selected="name" fallback-selection="tab1" noink bottom-item>
+                            <paper-tab name="list" link>
+                                <a href="/partners/list" class="tab-link" tabindex="-1">tab 1</a>
+                            </paper-tab>
+
+                            <paper-tab name="tab2" link>
+                                <a href="/partners/tab2" class="tab-link" tabindex="-1">tab 2</a>
+                            </paper-tab>
+                        </paper-tabs>
+
+                    </app-toolbar>
+                </div>
+
+            </app-header>
+
+            <iron-pages id="categoryPages"
+                        selected="{{routeData.tab}}"
+                        attr-for-selected="name"
+                        fallback-selection="list"
+                        role="main">
+
+                <div class="page" name="list">
+                    <page-with-sidebar></page-with-sidebar>
+                </div>
+                <div class="page" name="tab2">
+                    <simple-page></simple-page>
+                </div>
+            </iron-pages>
+
+        </app-header-layout>
+    </template>
+
+    <!-- inject scripts './partners-page-main.js'-->
+</dom-module>
