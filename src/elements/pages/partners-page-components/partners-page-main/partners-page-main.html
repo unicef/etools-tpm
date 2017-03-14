@@ -1,0 +1,37 @@
+<!--import [polymer, paper-tabs, paper-input]-->
+
+<!--import [page-layout-styles,
+            shared-styles, pages-header-element, module-styles, partners-list-view, partner-info-view-main]-->
+
+<dom-module id="partners-page-main">
+    <template>
+        <style include="page-layout-styles shared-styles module-styles">
+            :host {
+                position: relative;
+                display: block;
+            }
+        </style>
+        <app-route
+                route="{{route}}"
+                pattern="/:view"
+                data="{{routeData}}"
+                active="{{tabsActive}}"></app-route>
+
+
+
+        <iron-pages id="categoryPages"
+                    selected="{{routeData.view}}"
+                    attr-for-selected="name"
+                    fallback-selection="list"
+                    role="main">
+
+                <partners-list-view name="list"></partners-list-view>
+
+                <partners-info-view name="info"></partners-info-view>
+
+        </iron-pages>
+
+    </template>
+
+    <!-- inject scripts './partners-page-main.js'-->
+</dom-module>

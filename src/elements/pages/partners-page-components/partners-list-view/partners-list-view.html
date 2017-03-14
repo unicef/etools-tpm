@@ -1,0 +1,47 @@
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, dialog-element, app-main-header]-->
+
+<dom-module id="partners-list-view">
+    <template>
+        <style include="page-layout-styles shared-styles module-styles"></style>
+        <!-- inject styles './partners-list-view.scss'-->
+
+        <dialog-element title="Add Vendor" confirm-btn-text="sync from vision" opened>
+            <paper-input class="vendor-number-input" label="Vendor Number"></paper-input>
+        </dialog-element>
+
+
+        <app-header-layout>
+
+            <app-header id="header" fixed shadow>
+
+                <app-main-header></app-main-header>
+
+                <pages-header-element show-export-button
+                                      show-new-travel-button
+                                      title="Third Party Monitors"></pages-header-element>
+
+                <!--<div id="tabsWrapper" hidden$="{{!tabsActive}}">-->
+                <!--<app-toolbar id="tabs">-->
+
+                <!--<paper-tabs selected="[[routeData.tab]]" attr-for-selected="name" fallback-selection="tab1" noink bottom-item>-->
+                <!--<paper-tab name="list" link>-->
+                <!--<a href="/partners/list" class="tab-link" tabindex="-1">tab 1</a>-->
+                <!--</paper-tab>-->
+
+                <!--<paper-tab name="tab2" link>-->
+                <!--<a href="/partners/tab2" class="tab-link" tabindex="-1">tab 2</a>-->
+                <!--</paper-tab>-->
+                <!--</paper-tabs>-->
+
+                <!--</app-toolbar>-->
+                <!--</div>-->
+
+            </app-header>
+
+
+
+        </app-header-layout>
+    </template>
+
+    <!-- inject scripts './partners-list-view.js'-->
+</dom-module>
