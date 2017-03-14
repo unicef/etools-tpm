@@ -1,10 +1,10 @@
 <!--import [polymer, iron-collapse, iron-icon]-->
+<!--import [module-styles]-->
 
 <dom-module id="side-bar-item">
 
   <template>
-
-    <style>
+    <style include="module-styles">
 
       :host {
         display: block;
@@ -50,7 +50,7 @@
       }
 
       :host(.iron-selected:not([nested-nav])) #main > * {
-        color: var(--primary-background-color);
+        color: var(--module-primary);
       }
 
       #main:active {

@@ -11,7 +11,6 @@ Polymer({
 
     _tabChanged: function(tab) {
         var tabs = ['list', 'tab2'];
-        console.log(tab)
         if (tabs.indexOf(tab) === -1) {
             this.fire('404');
         }

@@ -1,48 +1,47 @@
-<!--import [polymer, paper-tabs]-->
+<!--import [polymer, paper-tabs, paper-input]-->
 
-<!--import [page-header, page-with-sidebar, simple-page, page-layout-styles, shared-styles]-->
+<!--import [app-main-header, page-with-sidebar, simple-page, page-layout-styles,
+            shared-styles, pages-header-element, module-styles, dialog-element]-->
 
 <dom-module id="partners-page-main">
     <template>
         <!-- inject styles './partners-page-main.scss'-->
-        <style include="page-layout-styles shared-styles"></style>
+        <style include="page-layout-styles shared-styles module-styles"></style>
         <app-route
                 route="{{route}}"
                 pattern="/:tab"
                 data="{{routeData}}"
                 active="{{tabsActive}}"></app-route>
 
-        <app-route
-                route="{{route}}"
-                pattern="/list"
-                active="{{tab1Active}}"></app-route>
-
-        <app-route
-                route="{{route}}"
-                pattern="/tab2"
-                active="{{tab2Active}}"></app-route>
+        <dialog-element title="Add Vendor" confirm-btn-text="sync from vision" opened>
+            <paper-input class="vendor-number-input" label="Vendor Number"></paper-input>
+        </dialog-element>
 
         <app-header-layout>
 
             <app-header id="header" fixed shadow>
 
-                <page-header title$="Page section 1 - [[routeData.tab]]"></page-header>
+                <app-main-header></app-main-header>
 
-                <div id="tabsWrapper" hidden$="{{!tabsActive}}">
-                    <app-toolbar id="tabs">
+                <pages-header-element show-export-button
+                                      show-new-travel-button
+                                      title="Third Party Monitors"></pages-header-element>
 
-                        <paper-tabs selected="[[routeData.tab]]" attr-for-selected="name" fallback-selection="tab1" noink bottom-item>
-                            <paper-tab name="list" link>
-                                <a href="/partners/list" class="tab-link" tabindex="-1">tab 1</a>
-                            </paper-tab>
+                <!--<div id="tabsWrapper" hidden$="{{!tabsActive}}">-->
+                    <!--<app-toolbar id="tabs">-->
 
-                            <paper-tab name="tab2" link>
-                                <a href="/partners/tab2" class="tab-link" tabindex="-1">tab 2</a>
-                            </paper-tab>
-                        </paper-tabs>
+                        <!--<paper-tabs selected="[[routeData.tab]]" attr-for-selected="name" fallback-selection="tab1" noink bottom-item>-->
+                            <!--<paper-tab name="list" link>-->
+                                <!--<a href="/partners/list" class="tab-link" tabindex="-1">tab 1</a>-->
+                            <!--</paper-tab>-->
 
-                    </app-toolbar>
-                </div>
+                            <!--<paper-tab name="tab2" link>-->
+                                <!--<a href="/partners/tab2" class="tab-link" tabindex="-1">tab 2</a>-->
+                            <!--</paper-tab>-->
+                        <!--</paper-tabs>-->
+
+                    <!--</app-toolbar>-->
+                <!--</div>-->
 
             </app-header>
 
@@ -52,12 +51,12 @@
                         fallback-selection="list"
                         role="main">
 
-                <div class="page" name="list">
-                    <page-with-sidebar></page-with-sidebar>
-                </div>
-                <div class="page" name="tab2">
-                    <simple-page></simple-page>
-                </div>
+                <!--<div class="page" name="list">-->
+                    <!--<page-with-sidebar></page-with-sidebar>-->
+                <!--</div>-->
+                <!--<div class="page" name="tab2">-->
+                    <!--<simple-page></simple-page>-->
+                <!--</div>-->
             </iron-pages>
 
         </app-header-layout>
