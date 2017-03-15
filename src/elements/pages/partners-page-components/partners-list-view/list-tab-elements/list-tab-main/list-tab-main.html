@@ -1,0 +1,45 @@
+<!--import [polymer, paper-card, shared-styles, module-styles, iron-flex-layout,list-header,list-element, list-pagination]-->
+
+<dom-module id="list-tab-main">
+    <template>
+        <style include="shared-styles module-styles iron-flex"></style>
+        <!-- inject styles './list-tab-main.scss'-->
+
+
+        <paper-card class="data-table">
+
+            <span class="textprim data-card-heading">{{showingResults}} trips</span>
+
+            <list-header
+                    id="list-header"
+                    data="[[headings]]"
+                    order-obj="{{orderObj}}"
+                    first-left-margin-class="w60"
+                    route="{{route}}"
+                    label-lib="[[labelLib]]">
+            </list-header>
+
+            <template is="dom-repeat" items="[[data]]">
+                <list-element
+                        data="[[item]]"
+                        route="{{route}}"
+                        drivers="[[structure.drivers]]"
+                        users="[[structure.users]]"
+                        offices="[[structure.offices]]"
+                        sections="[[structure.sections]]">
+                </list-element>
+            </template>
+
+            <list-pagination
+                    id="list-pagination"
+                    maxnr="{{datalength}}"
+                    pages="{{pages}}"
+                    route="{{route}}"
+                    showing-results="{{showingResults}}">
+            </list-pagination>
+        </paper-card>
+
+    </template>
+
+    <!-- inject scripts './list-tab-main.js'-->
+</dom-module>

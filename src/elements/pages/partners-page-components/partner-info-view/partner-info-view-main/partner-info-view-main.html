@@ -1,9 +1,43 @@
-<!--import [polymer]-->
+<!--import [polymer, etools-content-panel, module-styles, page-layout-styles, shared-styles, app-main-header, search-and-filter]-->
+
 
 <dom-module id="partner-info-view-main">
     <template>
         <!-- inject styles './partner-info-view-main.scss'-->
-        partners-list-view
+        <style include="page-layout-styles  shared-styles module-styles">
+            .view-container {
+                display: flex;
+                padding: 15px;
+            }
+        </style>
+
+
+        <app-header-layout>
+
+
+            <app-header id="header" fixed shadow>
+                <app-main-header></app-main-header>
+                <pages-header-element show-export-button
+                                      title="XYZ Organization"></pages-header-element>
+            </app-header>
+
+
+            <div class="view-container">
+                <div id="pageContent">
+                    <etools-content-panel title="Some data">
+                        <p>Tab 1 page data section...</p>
+                    </etools-content-panel>
+                </div>
+
+                <div id="sidebar">
+                    <etools-content-panel title="Some sidebar content">
+                        <p>Synced from VISION</p>
+                    </etools-content-panel>
+                </div>
+            </div>
+
+        </app-header-layout>
+
 
     </template>
 
