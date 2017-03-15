@@ -38,7 +38,10 @@
     "etools-dialog": "^1.0.0",
     "etools-loading": "^1.0.3",
     "etools-page-refresh": "^1.0.0",
-    "etools-content-panel": "^1.0.1"
+    "etools-content-panel": "^1.0.1",
+    "paper-toggle-button": "^1.3.0",
+    "etools-searchable-multiselection-menu": "^1.0.33",
+    "paper-card": "PolymerElements/paper-card#^1.1.4"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

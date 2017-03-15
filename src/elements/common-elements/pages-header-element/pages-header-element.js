@@ -57,5 +57,8 @@ Polymer({
         a.click();
         window.URL.revokeObjectURL(a.href);
         this.set('csvEndpoint', undefined);
+    },
+    addNewVendor: function() {
+        this.fire('addNewVendor')
     }
 });

@@ -1,0 +1,29 @@
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, dialog-element, app-main-header, search-and-filter]-->
+
+<dom-module id="partners-list-view-main">
+    <template>
+        <style include="page-layout-styles shared-styles module-styles"></style>
+        <!-- inject styles './partners-list-view-main.scss'-->
+
+        <app-header-layout>
+
+
+            <app-header id="header" fixed shadow>
+                <app-main-header></app-main-header>
+                <pages-header-element show-export-button
+                                      show-new-travel-button
+                                      title="Third Party Monitors"></pages-header-element>
+            </app-header>
+
+
+            <search-and-filter></search-and-filter>
+
+        </app-header-layout>
+
+        <dialog-element title="Add Vendor" confirm-btn-text="sync from vision" opened="{{newVendorOpened}}">
+            <paper-input class="vendor-number-input" label="Vendor Number"></paper-input>
+        </dialog-element>
+    </template>
+
+    <!-- inject scripts './partners-list-view-main.js'-->
+</dom-module>
