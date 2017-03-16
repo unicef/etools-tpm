@@ -15,6 +15,7 @@
                 route="{{route}}"
                 pattern="/:view"
                 data="{{routeData}}"
+                query-params="{{queryParams}}"
                 active="{{tabsActive}}"></app-route>
 
 
@@ -25,7 +26,7 @@
                     fallback-selection="list"
                     role="main">
 
-                <partners-list-view-main name="list"></partners-list-view-main>
+                <partners-list-view-main name="list" query-params="{{queryParams}}"></partners-list-view-main>
 
                 <partner-info-view-main name="info"></partner-info-view-main>
 

@@ -1,4 +1,49 @@
+*[hidden] {
+    display: none !important;
+}
+
 :host {
-    position: relative;
     display: block;
+    border-bottom: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
+}
+
+:host(:hover) paper-material {
+    background-color: #EEEEEE;
+    /* TODO: replace with app-theme var */
+    @apply (--hover-setting);
+}
+
+paper-material {
+    @apply (--layout-horizontal);
+    @apply (--layout-center);
+    height: 48px;
+    padding-right: 24px;
+    font-size: 13px;
+    color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
+    background-color: var(--primary-background-color, #FFFFFF);
+    padding: 0;
+}
+
+paper-material ::slotted(*) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#iconWrapper {
+    height: 48px;
+    line-height: 48px;
+    padding: 0 24px;
+    cursor: pointer;
+}
+
+iron-icon {
+    color: var(--dark-icon-color, rgba(0, 0, 0, 0.54));
+}
+
+#collapse-wrapper {
+    padding: 15px 24px 15px 72px;
+    background-color: #EEEEEE;
+    /* TODO: replace with app-theme var */
+    border-top: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
 }

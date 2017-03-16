@@ -3,7 +3,11 @@
 Polymer({
     is: 'partners-list-view-main',
     properties: {
-        newVendorOpened: Boolean
+        newVendorOpened: Boolean,
+        queryParams: {
+            type: Object,
+            notify: true
+        }
     },
     listeners: {
         'addNewVendor': 'openNewVendorDialog'
