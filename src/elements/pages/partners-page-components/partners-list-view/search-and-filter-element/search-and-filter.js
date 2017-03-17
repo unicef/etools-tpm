@@ -55,6 +55,10 @@
             availableFilters: {
                 type: Array,
                 value: filters
+            },
+            queryParams: {
+                type: Object,
+                notify: true
             }
         },
         searchKeyDown: function(e) {
@@ -83,6 +87,17 @@
             var indexToRemove = this.usedFilters.indexOf(e.model.item);
 
             this.splice('usedFilters', indexToRemove, 1);
+        },
+        _changeShowHidden: function() {
+            if (this.showHidden) this.set('queryParams.show_hidden', 'true');
+            else {
+                let params = window.location.search.split('&'),
+                    index = params.indexOf('show_hidden=true');
+
+                params.splice(index, 1);
+                window.history.replaceState('/list', null, params.join('&'));
+                window.dispatchEvent(new CustomEvent('location-changed'));
+            }
         }
     });
 })();
