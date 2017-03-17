@@ -109,6 +109,7 @@ Polymer({
             this.currentPage = page;
         }
         if (+this.datalength <= this.queryParams.size) this.pageMarker = 'single';
+        if (!this.pageMarker && this.pageMarker !== '') this.pageMarker = 'first';
 
         if (!this.lastParams) {
             this.lastParams = _.clone(newParams);
