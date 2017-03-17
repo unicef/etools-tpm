@@ -7,17 +7,17 @@ Polymer({
             type: Array,
             value: function () {
                 return [{
-                    'size': 2,
+                    'size': 25,
                     'label': 'Vendor #',
-                    'name': 'vendor',
+                    'name': 'vendor_number',
                     'ordered': false
                 }, {
-                    'size': 3,
+                    'size': 50,
                     'label': 'Vendor Name',
                     'name': 'name',
                     'ordered': false
                 }, {
-                    'size': 2,
+                    'size': 25,
                     'label': 'Status',
                     'name': 'status',
                     'ordered': false
@@ -42,20 +42,25 @@ Polymer({
         data: {
             type: Array,
             value: [{
-                vendor_number: '1231231',
-                name: 'Nfsdfsdf swkjnwe werkj',
-                short_name: '1mm',
-                status: 'Sync from vision'
+                "id": 193,
+                "vendor_number": "2300015180",
+                "deleted_flag": false,
+                "blocked": false,
+                "name": "MINISTRY OF SOCIAL WELFARE & CULTURE - EL FASHERNORTH DARFUR",
+                "short_name": "",
+                "partner_type": "",
+                "cso_type": null,
+                "rating": null,
+                "shared_partner": "No",
+                "shared_with": null,
+                "email": 'CCCWESTPOKOT@GMAIL.COM',
+                "phone_number": '254-722-617-626',
+                "total_ct_cp": null,
+                "total_ct_cy": null,
+                "hidden": true,
+                "vision_synced": true
             }, {
-                vendor_number: '1231231',
-                name: 'Nfsdfsdf swkjnwe werkj',
-                short_name: '1mm',
-                status: 'Sync from vision'
-            }, {
-                vendor_number: '1231231',
-                name: 'Nfsdfsdf swkjnwe werkj',
-                short_name: '1mm',
-                status: 'Sync from vision'
+                "vision_synced": true,"id":60,"vendor_number":"1900705039","deleted_flag":true,"blocked":false,"name":"ACTION AGAINST HUNGER","short_name":"","partner_type":"Civil Society Organization","cso_type":"International NGO","rating":"Low","shared_partner":"No","shared_with":null,"email":null,"phone_number":"020 4348581","total_ct_cp":"0.00","total_ct_cy":"0.00","hidden":true
             }]
         }
 
@@ -76,11 +81,33 @@ Polymer({
         if (this.queryParams.ordered_by !== this.orderBy) this.set('queryParams.ordered_by', this.orderBy);
     },
     _paramsChanged: function (newParams) {
-        if (!newParams.ordered_by) {
-            this.set('queryParams.ordered_by', 'vendor.asc');
-            return;
+        // console.log(newParams)
+
+        if (!newParams.size && !newParams.ordered_by) {
+            // window.history.replaceState('/list', null, '?kokk=awdnjk');
+            // console.log('test')
+            // this.queryParams = {}
+            // this.set('queryParams', {size: '10', ordered_by: 'vendor_number.asc'});
+            // this.set('queryParams.size', '10');
+            // this.set('queryParams.ordered_by', 'vendor_number.asc');
+
         }
 
+        if (!newParams.size) {
+            this.set('queryParams.size', '10');
+        }
+
+        if (!newParams.ordered_by) {
+            this.set('queryParams.ordered_by', 'vendor_number.asc');
+            this.notifyPath('queryParams.ordered_by');
+        }
+        console.log(this.queryParams)
         if (this.orderBy !== newParams.ordered_by) this.orderBy = newParams.ordered_by;
+    },
+    _getPartnerStatus: function(synced) {
+        if (synced) return 'Synced from VISION';
+    },
+    _getDisplayValue: function(value) {
+        return value || '-'
     }
 });

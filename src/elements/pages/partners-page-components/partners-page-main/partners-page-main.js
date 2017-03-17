@@ -2,7 +2,12 @@
 
 Polymer({
     is: 'partners-page-main',
-
+    properties: {
+        queryParams: {
+            type: Object,
+            notify: true
+        }
+    },
     observers: [
         '_tabChanged(routeData.view)'
     ],

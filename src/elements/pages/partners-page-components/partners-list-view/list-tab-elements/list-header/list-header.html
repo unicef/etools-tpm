@@ -2,13 +2,12 @@
 
 <dom-module id="list-header">
     <template>
-        <style include="iron-flex shared-styles module-styles"></style>
+        <style include="shared-styles module-styles"></style>
         <!-- inject styles './list-header.scss'-->
 
-        <div class="heading-row-header clearfix layout horizontal">
-            <div class="empty-icon-wrapper"></div>
+        <div class="heading-row-header clearfix">
             <template is="dom-repeat" items="[[data]]">
-                <div  class$="local-headings f[[item.size]]" ordered$="{{item.ordered}}" on-tap="_changeOrder">
+                <div  class$="local-headings w[[item.size]]" ordered$="{{item.ordered}}" on-tap="_changeOrder">
                     <span class="textsec heading">[[item.label]]</span>
 
                     <iron-icon class="down-icon"

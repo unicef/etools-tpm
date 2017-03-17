@@ -14,19 +14,7 @@
                            on-tap="_toggleRowDetails"></iron-icon>
             </div>
 
-            <a class="col-data flex truncate"
-               href="partners/[[partner.id]]/details"
-               title="[[partner.vendor_number]]">
-                [[partner.vendor_number]]
-            </a>
-
-            <span class="col-data flex-3">
-                <!--<span class="truncate">[[_computeName(partner.name, partner.short_name)]]</span>-->
-            </span>
-
-            <span class="col-data flex-2">
-                [[partner.status]]
-              </span>
+           <slot name="row-data"></slot>
         </paper-material>
 
         <iron-collapse id="details" opened="{{detailsOpened}}">
