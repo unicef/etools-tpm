@@ -11,14 +11,13 @@
 
 .chevron-container {
     width: 200px;
-    margin: 0 10px; }
+    margin: 0 0 0 30px; }
 
-iron-icon {
-    width: 24px;
-    height: 24px;
+paper-icon-button {
+    color: var(--gray-mid);
     cursor: pointer; }
 
-iron-icon.textsec {
+paper-icon-button.textsec {
     cursor: default; }
 
 .rightfloat {

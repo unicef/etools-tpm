@@ -31,13 +31,16 @@ Polymer({
         },
         showingResults: {
             type: String,
-            value: '1 - 2 of 2'
-            // computed: '_computeResultsToShow(pages, datalength, pages.page)'
+            computed: '_computeResultsToShow(datalength, queryParams.size)'
         },
         orderBy: {
             type: String,
             value: '',
             observer: '_orderChanged'
+        },
+        datalength: {
+            type: Number,
+            value: 121
         },
         data: {
             type: Array,
@@ -81,33 +84,46 @@ Polymer({
         if (this.queryParams.ordered_by !== this.orderBy) this.set('queryParams.ordered_by', this.orderBy);
     },
     _paramsChanged: function (newParams) {
-        // console.log(newParams)
+        if (!newParams.size)  this.set('queryParams.size', '10');
+        if (!newParams.ordered_by) this.set('queryParams.ordered_by', 'vendor_number.asc');
 
-        if (!newParams.size && !newParams.ordered_by) {
-            // window.history.replaceState('/list', null, '?kokk=awdnjk');
-            // console.log('test')
-            // this.queryParams = {}
-            // this.set('queryParams', {size: '10', ordered_by: 'vendor_number.asc'});
-            // this.set('queryParams.size', '10');
-            // this.set('queryParams.ordered_by', 'vendor_number.asc');
-
-        }
-
-        if (!newParams.size) {
-            this.set('queryParams.size', '10');
-        }
-
-        if (!newParams.ordered_by) {
-            this.set('queryParams.ordered_by', 'vendor_number.asc');
-            this.notifyPath('queryParams.ordered_by');
-        }
-        console.log(this.queryParams)
         if (this.orderBy !== newParams.ordered_by) this.orderBy = newParams.ordered_by;
+
+        if (newParams.page) {
+            let page = + newParams.page;
+            if (page < 2 || isNaN(page) || (!!this.lastParams && newParams.size !== this.lastParams.size)) {
+                this.set('queryParams.page', '1');
+            } else {
+                let lastPage = this.datalength % this.queryParams.size ?
+                    Math.floor(this.datalength / this.queryParams.size + 1) :
+                    this.datalength / this.queryParams.size;
+
+                if (page > lastPage) page = lastPage;
+                this.set('queryParams.page', `${page}`);
+            }
+        }
+
+        if (!this.lastParams) {
+            this.lastParams = _.clone(newParams);
+            console.log(newParams);
+        } else if (!_.isEqual(this.lastParams, newParams)) {
+            console.log(newParams);
+            this.lastParams = _.clone(newParams);
+        }
+
     },
     _getPartnerStatus: function(synced) {
         if (synced) return 'Synced from VISION';
     },
     _getDisplayValue: function(value) {
         return value || '-'
+    },
+    _computeResultsToShow: function(lengthAmount, size) {
+        let page = (this.queryParams.page || 1) - 1;
+        size = +(size || 10);
+        let last = size*page+size;
+        if (last > lengthAmount) last = lengthAmount;
+
+        return `${size*page+1} - ${last} of ${lengthAmount}`
     }
 });
