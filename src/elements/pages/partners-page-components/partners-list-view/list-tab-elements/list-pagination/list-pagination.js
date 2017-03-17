@@ -21,7 +21,10 @@ Polymer({
         if (this.sizesAllowed.indexOf(newSize) < 0) this.set('pageSize', '10');
     },
     goToFirst: function() { this.set('pageNumber', '1'); },
-    goToLeft: function() { this.set('pageNumber', `${(+this.pageNumber || 1) - 1}`); },
-    goToRight: function() { this.set('pageNumber', `${(+this.pageNumber || 1) + 1}`); },
-    goToLast: function() { this.set('pageNumber', '999999'); }
+    goToLeft: function() { this.set('pageNumber', `${+this.currentPage - 1}`); },
+    goToRight: function() { this.set('pageNumber', `${+this.currentPage + 1}`); },
+    goToLast: function() { this.set('pageNumber', '999999'); },
+    _disableButton: function(marker, label) {
+        if ( (marker === 'last' && label) || (marker === 'first' && !label) || marker === 'single') return true;
+    }
 });

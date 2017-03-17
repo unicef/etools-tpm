@@ -32,27 +32,31 @@
             <div class="chevron-container layout around-justified horizontal">
 
                 <paper-icon-button
+                        disabled$="{{_disableButton(pageMarker)}}"
                         icon="pagination:first-page"
                         on-click="goToFirst"
-                        class="chev">
+                        class$="chev back-arr [[pageMarker]]">
                 </paper-icon-button>
 
                 <paper-icon-button
+                        disabled$="{{_disableButton(pageMarker)}}"
                         icon="icons:chevron-left"
-                        class="chev"
+                        class$="chev back-arr [[pageMarker]]"
                         on-click="goToLeft">
                 </paper-icon-button>
 
                 <paper-icon-button
+                        disabled$="{{_disableButton(pageMarker, showingResults)}}"
                         icon="icons:chevron-right"
-                        class="chev"
+                        class$="chev next-arr [[pageMarker]]"
                         on-click="goToRight">
                 </paper-icon-button>
 
                 <paper-icon-button
+                        disabled$="{{_disableButton(pageMarker, showingResults)}}"
                         icon="pagination:last-page"
                         on-click="goToLast"
-                        class$="chev">
+                        class$="chev next-arr [[pageMarker]]">
                 </paper-icon-button>
             </div>
 

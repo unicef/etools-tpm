@@ -14,8 +14,17 @@
     margin: 0 0 0 30px; }
 
 paper-icon-button {
-    color: var(--gray-mid);
-    cursor: pointer; }
+    color: var(--gray-dark);
+    cursor: pointer;
+
+    &.single,
+    &.back-arr.first,
+    &.next-arr.last {
+        color: var(--gray-light);
+        cursor: default;
+        --paper-icon-button-ink-color: rgba(0, 0, 0, 0);
+    }
+}
 
 paper-icon-button.textsec {
     cursor: default; }

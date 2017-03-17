@@ -90,18 +90,25 @@ Polymer({
         if (this.orderBy !== newParams.ordered_by) this.orderBy = newParams.ordered_by;
 
         if (newParams.page) {
-            let page = + newParams.page;
+            let page = +newParams.page;
             if (page < 2 || isNaN(page) || (!!this.lastParams && newParams.size !== this.lastParams.size)) {
                 this.set('queryParams.page', '1');
+                this.pageMarker = 'first';
             } else {
                 let lastPage = this.datalength % this.queryParams.size ?
                     Math.floor(this.datalength / this.queryParams.size + 1) :
                     this.datalength / this.queryParams.size;
+                this.pageMarker = '';
 
-                if (page > lastPage) page = lastPage;
+                if (page >= lastPage) {
+                    page = lastPage;
+                    this.pageMarker = 'last';
+                }
                 this.set('queryParams.page', `${page}`);
             }
+            this.currentPage = page;
         }
+        if (+this.datalength <= this.queryParams.size) this.pageMarker = 'single';
 
         if (!this.lastParams) {
             this.lastParams = _.clone(newParams);

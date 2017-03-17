@@ -94,9 +94,11 @@
                 let params = window.location.search.split('&'),
                     index = params.indexOf('show_hidden=true');
 
-                params.splice(index, 1);
-                window.history.replaceState('/list', null, params.join('&'));
-                window.dispatchEvent(new CustomEvent('location-changed'));
+                if (index) {
+                    params.splice(index, 1);
+                    window.history.replaceState('/list', null, params.join('&'));
+                    window.dispatchEvent(new CustomEvent('location-changed'));
+                }
             }
         }
     });
