@@ -1,16 +1,19 @@
-<!--import [polymer, etools-content-panel, module-styles, page-layout-styles, shared-styles, app-main-header, search-and-filter]-->
-
+<!--import [polymer, etools-content-panel, app-route, paper-tabs]-->
+<!--import [module-styles, shared-styles, partner-status, app-main-header, search-and-filter]-->
 
 <dom-module id="partner-info-view-main">
     <template>
         <!-- inject styles './partner-info-view-main.scss'-->
-        <style include="page-layout-styles shared-styles module-styles">
+        <style include="shared-styles module-styles">
             .view-container {
                 display: flex;
                 padding: 15px;
             }
         </style>
-
+        <app-route
+                route="{{route}}"
+                pattern="/:tab"
+                data="{{routeData}}"></app-route>
 
         <app-header-layout>
 
@@ -19,6 +22,12 @@
                 <app-main-header></app-main-header>
                 <pages-header-element show-export-button
                                       title="XYZ Organization"></pages-header-element>
+                <div class="tab-selector">
+                    <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
+                        <paper-tab name="details"><span class="tab-content">Partner details</span></paper-tab>
+                        <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
+                    </paper-tabs>
+                </div>
             </app-header>
 
 
@@ -30,9 +39,7 @@
                 </div>
 
                 <div id="sidebar">
-                    <etools-content-panel title="Some sidebar content">
-                        <p>Synced from VISION</p>
-                    </etools-content-panel>
+                    <partner-status></partner-status>
                 </div>
             </div>
 

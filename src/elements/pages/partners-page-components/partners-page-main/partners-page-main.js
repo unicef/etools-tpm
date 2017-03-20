@@ -6,8 +6,7 @@ Polymer({
     properties: {
         queryParams: {
             type: Object,
-            notify: true
-            ,
+            notify: true,
             observer: '_queryParamsChanged'
         }
     },
@@ -19,9 +18,10 @@ Polymer({
         if (this.base !== 'partners') return;
         if (view === 'list') {
             let queries = this._configListParams();
-            this._loadPartnersListData(queries)
+            this._loadPartnersListData(queries);
+            this.view = 'list'
         } else if (!isNaN(+view)) {
-
+            this.view = 'info';
         } else {
             this.fire('404');
         }

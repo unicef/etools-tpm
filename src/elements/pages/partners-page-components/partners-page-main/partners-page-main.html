@@ -20,13 +20,13 @@ partners-list-view-main, partner-info-view-main, query-params-controller]-->
 
 
         <iron-pages id="categoryPages"
-                    selected="{{routeData.view}}"
+                    selected="{{view}}"
                     attr-for-selected="name"
                     role="main">
 
                 <partners-list-view-main name="list" query-params="{{queryParams}}" data="{{listData}}"></partners-list-view-main>
 
-                <partner-info-view-main name="info" tab="{{subroute}}"></partner-info-view-main>
+                <partner-info-view-main name="info" route="{{subroute}}"></partner-info-view-main>
 
         </iron-pages>
 
