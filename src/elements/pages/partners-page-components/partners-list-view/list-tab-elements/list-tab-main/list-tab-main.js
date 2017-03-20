@@ -113,9 +113,9 @@ Polymer({
 
         if (!this.lastParams) {
             this.lastParams = _.clone(newParams);
-            console.log(newParams);
+            // console.log(newParams);
         } else if (!_.isEqual(this.lastParams, newParams)) {
-            console.log(newParams);
+            // console.log(newParams);
             this.lastParams = _.clone(newParams);
         }
 

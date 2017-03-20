@@ -1,7 +1,7 @@
 <!--import [polymer, paper-tabs, paper-input]-->
 
-<!--import [page-layout-styles,
-            shared-styles, pages-header-element, module-styles, partners-list-view-main, partner-info-view-main]-->
+<!--import [page-layout-styles, shared-styles, pages-header-element, module-styles,
+            partners-list-view-main, partner-info-view-main, query-params-controller]-->
 
 <dom-module id="partners-page-main">
     <template>
@@ -22,7 +22,6 @@
         <iron-pages id="categoryPages"
                     selected="{{routeData.view}}"
                     attr-for-selected="name"
-                    fallback-selection="list"
                     role="main">
 
                 <partners-list-view-main name="list" query-params="{{queryParams}}"></partners-list-view-main>

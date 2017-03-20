@@ -15,7 +15,9 @@ module.exports = function () {
             return data.pipe(sass())
         }))
         .pipe(compileHtmlTags('script', function (tag, data) {
-            return data.pipe(babel());
+            return data.pipe(babel({
+                presets: ['es2015']
+            }));
         }))
         .pipe(gulp.dest('./build/elements'))
 };

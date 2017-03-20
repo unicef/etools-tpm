@@ -1,0 +1,38 @@
+<script>
+    'use strict';
+    window.MyBehaviors = window.MyBehaviors || {};
+    MyBehaviors.QueryParamsController = {
+        parseQueries: function() {
+            let queriesOvj = {},
+                queries = window.location.search
+                    .slice(1)
+                    .split('&');
+
+            if (queries[0] === '') return {};
+            queries.forEach((query) => {
+                let [key, value] = query.split('=');
+                queriesOvj[key] = value || true;
+            });
+
+            return queriesOvj;
+        },
+        updateQuery: function (key, value) {
+            let queries = this.parseQueries();
+            if (value === undefined || value === false) delete queries[key];
+            else queries[key] = value;
+
+            queries = Object.keys(queries).map((key) => {
+                let value = typeof queries[key] ===  'boolean' ? '' : `=${queries[key]}`;
+                return `${key}${value}`;
+            });
+
+            window.history.replaceState({}, '', `?${queries.join('&')}`);
+            window.dispatchEvent(new CustomEvent('location-changed'));
+        },
+        clearQueries: function() {
+            window.history.replaceState({}, '', window.location.pathname);
+            window.dispatchEvent(new CustomEvent('location-changed'));
+        }
+
+    };
+</script>
