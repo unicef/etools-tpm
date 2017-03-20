@@ -1,4 +1,4 @@
-<!--import [polymer, paper-card, shared-styles, module-styles, iron-flex-layout,list-header,list-element, list-pagination]-->
+<!--import [polymer, paper-card, shared-styles, module-styles, iron-flex-layout,list-header,list-element, list-pagination, query-params-controller]-->
 
 <dom-module id="list-tab-main">
     <template>
@@ -51,7 +51,7 @@
                     id="list-pagination"
                     page-size="{{queryParams.size}}"
                     page-number="{{queryParams.page}}"
-                    current-page="[[currentPage]]"
+                    datalength="[[datalength]]"
                     page-marker="[[pageMarker]]"
                     showing-results="{{showingResults}}">
             </list-pagination>

@@ -1,5 +1,5 @@
 <!--import [polymer, iron-flex-layout/iron-flex-layout-classes, iron-icons, paper-dropdown-menu,
-            paper-listbox, paper-item, pagination-icons, module-styles, shared-styles, paper-icon-button]-->
+            paper-listbox, paper-item, pagination-icons, module-styles, shared-styles, paper-icon-button, query-params-controller]-->
 
 <dom-module id="list-pagination">
     <template>
@@ -32,28 +32,28 @@
             <div class="chevron-container layout around-justified horizontal">
 
                 <paper-icon-button
-                        disabled$="{{_disableButton(pageMarker)}}"
+                        disabled$="{{_disableButton(currentPage, datalength)}}"
                         icon="pagination:first-page"
                         on-click="goToFirst"
                         class$="chev back-arr [[pageMarker]]">
                 </paper-icon-button>
 
                 <paper-icon-button
-                        disabled$="{{_disableButton(pageMarker)}}"
+                        disabled$="{{_disableButton(currentPage, datalength)}}"
                         icon="icons:chevron-left"
                         class$="chev back-arr [[pageMarker]]"
                         on-click="goToLeft">
                 </paper-icon-button>
 
                 <paper-icon-button
-                        disabled$="{{_disableButton(pageMarker, showingResults)}}"
+                        disabled$="{{_disableButton(currentPage, datalength, showingResults)}}"
                         icon="icons:chevron-right"
                         class$="chev next-arr [[pageMarker]]"
                         on-click="goToRight">
                 </paper-icon-button>
 
                 <paper-icon-button
-                        disabled$="{{_disableButton(pageMarker, showingResults)}}"
+                        disabled$="{{_disableButton(currentPage, datalength, showingResults)}}"
                         icon="pagination:last-page"
                         on-click="goToLast"
                         class$="chev next-arr [[pageMarker]]">

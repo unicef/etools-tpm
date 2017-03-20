@@ -47,6 +47,7 @@
 
     Polymer({
         is: 'search-and-filter',
+        behaviors: [MyBehaviors.QueryParamsController],
         properties: {
             usedFilters: {
                 type: Array,
@@ -61,6 +62,7 @@
                 notify: true
             }
         },
+        observers: ['hiddenOn(queryParams.show_hidden)'],
         searchKeyDown: function(e) {
             //    search logic
         },
@@ -89,17 +91,12 @@
             this.splice('usedFilters', indexToRemove, 1);
         },
         _changeShowHidden: function() {
-            if (this.showHidden) this.set('queryParams.show_hidden', 'true');
-            else {
-                let params = window.location.search.split('&'),
-                    index = params.indexOf('show_hidden=true');
-
-                if (index) {
-                    params.splice(index, 1);
-                    window.history.replaceState('/list', null, params.join('&'));
-                    window.dispatchEvent(new CustomEvent('location-changed'));
-                }
-            }
+            if (this.showHidden) this.updateQueries({show_hidden: 'true'})
+            else this.updateQueries({show_hidden: false})
+        },
+        hiddenOn: function(on) {
+            if (on && !this.showHidden) this.showHidden = true;
+            else if (!on && this.showHidden) this.showHidden = false;
         }
     });
 })();

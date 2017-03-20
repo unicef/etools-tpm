@@ -1,5 +1,6 @@
 <script>
     'use strict';
+
     window.MyBehaviors = window.MyBehaviors || {};
     MyBehaviors.QueryParamsController = {
         parseQueries: function() {
@@ -16,10 +17,16 @@
 
             return queriesOvj;
         },
-        updateQuery: function (key, value) {
+        updateQueries: function (newQueries) {
+            let keys = Object.keys(newQueries);
+            if (!keys.length) return;
+
             let queries = this.parseQueries();
-            if (value === undefined || value === false) delete queries[key];
-            else queries[key] = value;
+
+            keys.forEach((key) => {
+                if (newQueries[key] === undefined || newQueries[key] === false) delete queries[key];
+                else queries[key] = newQueries[key];
+            });
 
             queries = Object.keys(queries).map((key) => {
                 let value = typeof queries[key] ===  'boolean' ? '' : `=${queries[key]}`;

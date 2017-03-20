@@ -1,7 +1,7 @@
 <!--import [polymer, paper-tabs, paper-input]-->
 
 <!--import [page-layout-styles, shared-styles, pages-header-element, module-styles,
-            partners-list-view-main, partner-info-view-main, query-params-controller]-->
+partners-list-view-main, partner-info-view-main, query-params-controller]-->
 
 <dom-module id="partners-page-main">
     <template>
@@ -15,7 +15,7 @@
                 route="{{route}}"
                 pattern="/:view"
                 data="{{routeData}}"
-                active="{{tabsActive}}"></app-route>
+                tail="{{subroute}}"></app-route>
 
 
 
@@ -24,9 +24,9 @@
                     attr-for-selected="name"
                     role="main">
 
-                <partners-list-view-main name="list" query-params="{{queryParams}}"></partners-list-view-main>
+                <partners-list-view-main name="list" query-params="{{queryParams}}" data="{{listData}}"></partners-list-view-main>
 
-                <partner-info-view-main name="info"></partner-info-view-main>
+                <partner-info-view-main name="info" tab="{{subroute}}"></partner-info-view-main>
 
         </iron-pages>
 
