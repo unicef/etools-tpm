@@ -2,7 +2,7 @@
 
 Polymer({
     is: 'partners-page-main',
-    behaviors: [MyBehaviors.QueryParamsController],
+    behaviors: [TPMBehaviors.QueryParamsController],
     properties: {
         queryParams: {
             type: Object,

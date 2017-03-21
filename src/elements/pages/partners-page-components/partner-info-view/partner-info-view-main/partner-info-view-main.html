@@ -1,5 +1,6 @@
 <!--import [polymer, etools-content-panel, app-route, paper-tabs]-->
-<!--import [module-styles, shared-styles, partner-status, app-main-header, search-and-filter, partner-details-tab]-->
+<!--import [module-styles, shared-styles, partner-status, app-main-header, search-and-filter,
+            partner-details-tab, partner-staff-members-tab]-->
 
 <dom-module id="partner-info-view-main">
     <template>
@@ -21,7 +22,7 @@
             <app-header id="header" fixed shadow>
                 <app-main-header></app-main-header>
                 <pages-header-element show-export-button
-                                      title="XYZ Organization"></pages-header-element>
+                                      title="ACTION AGAINST HUNGER"></pages-header-element>
                 <div class="tab-selector">
                     <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                         <paper-tab name="details"><span class="tab-content">Partner details</span></paper-tab>
@@ -34,6 +35,11 @@
             <div class="view-container">
                 <div id="pageContent">
                     <partner-details-tab partner="[[partner]]"></partner-details-tab>
+
+                    <etools-content-panel title$="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
+                        <partner-staff-members-tab  data-items="{{partner.staff_members}}" edit-mode="[[editMode]]"></partner-staff-members-tab>
+                    </etools-content-panel>
+
                 </div>
 
                 <div id="sidebar">

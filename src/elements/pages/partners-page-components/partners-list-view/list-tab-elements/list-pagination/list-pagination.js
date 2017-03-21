@@ -2,7 +2,7 @@
 
 Polymer({
     is: 'list-pagination',
-    behaviors: [MyBehaviors.QueryParamsController],
+    behaviors: [TPMBehaviors.QueryParamsController],
     properties: {
         sizesAllowed: {
             type: Array,

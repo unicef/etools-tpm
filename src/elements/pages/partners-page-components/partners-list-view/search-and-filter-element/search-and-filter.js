@@ -47,7 +47,7 @@
 
     Polymer({
         is: 'search-and-filter',
-        behaviors: [MyBehaviors.QueryParamsController],
+        behaviors: [TPMBehaviors.QueryParamsController],
         properties: {
             usedFilters: {
                 type: Array,
