@@ -1,5 +1,5 @@
 <!--import [polymer, etools-content-panel, app-route, paper-tabs]-->
-<!--import [module-styles, shared-styles, partner-status, app-main-header, search-and-filter]-->
+<!--import [module-styles, shared-styles, partner-status, app-main-header, search-and-filter, partner-details-tab]-->
 
 <dom-module id="partner-info-view-main">
     <template>
@@ -33,13 +33,11 @@
 
             <div class="view-container">
                 <div id="pageContent">
-                    <etools-content-panel title="Some data">
-                        <p>Tab 1 page data section...</p>
-                    </etools-content-panel>
+                    <partner-details-tab partner="[[partner]]"></partner-details-tab>
                 </div>
 
                 <div id="sidebar">
-                    <partner-status></partner-status>
+                    <partner-status partner="[[partner]]"></partner-status>
                 </div>
             </div>
 

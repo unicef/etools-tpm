@@ -1,0 +1,71 @@
+<!--import [polymer, etools-content-panel, paper-input, iron-icons/communication-icons]-->
+<!--import [tab-inputs-styles, module-styles]-->
+
+<dom-module id="partner-details-tab">
+    <template>
+        <style include="tab-inputs-styles module-styles">
+            :host {
+                position: relative;
+                display: block;
+            }
+        </style>
+
+        <etools-content-panel class="content-section clearfix" title="Partner Details">
+            <div class="row-h group">
+                <div class="input-container">
+                    <!-- Organization name -->
+                    <paper-input label="Full Name"
+                                 value="[[partner.name]]"
+                                 placeholder="&#8212;"
+                                 readonly></paper-input>
+                </div>
+                <div class="input-container">
+                    <!-- Short name -->
+                    <paper-input label="Vendor Number"
+                                 value="[[partner.vendor_number]]"
+                                 placeholder="&#8212;"
+                                 readonly></paper-input>
+                </div>
+
+            </div>
+
+            <div class="row-h group">
+                <div class="input-container">
+                    <!-- Address -->
+                    <paper-input label="Address"
+                                 value="{{partner.address}}"
+                                 placeholder="&#8212;"
+                                 readonly>
+                        <iron-icon prefix icon="communication:location-on"></iron-icon>
+                    </paper-input>
+                </div>
+            </div>
+
+
+            <div class="row-h group">
+                <div class="input-container">
+                    <!-- Telephone number -->
+                    <paper-input label="Phone Number"
+                                 value="{{partner.phone_number}}"
+                                 placeholder="&#8212;"
+                                 >
+                        <iron-icon prefix icon="communication:phone"></iron-icon>
+                    </paper-input>
+                </div>
+
+                <div class="input-container">
+                    <!-- Email address -->
+                    <paper-input label="E-mail address"
+                                 value="{{partner.email}}"
+                                 placeholder="&#8212;"
+                                 >
+                        <iron-icon prefix icon="communication:email"></iron-icon>
+                    </paper-input>
+                </div>
+            </div>
+
+        </etools-content-panel>
+    </template>
+
+    <!-- inject scripts './partner-details-tab.js'-->
+</dom-module>
