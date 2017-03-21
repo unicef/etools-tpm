@@ -6,16 +6,16 @@ Polymer({
         fileTypes: {
             type: Array,
             value: [
-                {id: 'tr_materials', name: 'Training materials'},
-                {id: 'tors', name: 'ToRs'},
-                {id: 'other', name: 'Other'}
+                {id: '1', name: 'Training materials'},
+                {id: '2', name: 'ToRs'},
+                {id: '3', name: 'Other'}
             ]
         },
         files: {
             type: Array,
             value: [
-                {file_name: 'Filename_document.doc', type: 'tr_materials'},
-                {file_name: 'Filename_document.doc', type: 'other'}
+                {file_name: 'Filename_document.doc', type: '1'},
+                {file_name: 'Filename_document.doc', type: '3'}
             ]
         },
         readonly: {

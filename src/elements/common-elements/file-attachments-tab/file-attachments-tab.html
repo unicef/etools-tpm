@@ -1,4 +1,4 @@
-<!--import [polymer, etools-file, etools-content-panel]-->
+<!--import [polymer, etools-file-element, etools-content-panel]-->
 
 <dom-module id="file-attachments-tab">
     <template>
@@ -7,14 +7,12 @@
         <etools-content-panel title="Attachments">
             <div class="no-attachments" hidden$="{{_hideEmptyState(files.length)}}">There are no attachments added.</div>
 
-            <etools-file activate-file-types
+            <etools-file-element activate-file-types
                          multiple
                          readonly="[[readonly]]"
-                         label="Hello"
+                         label=""
                          files="{{files}}"
-                         file-types="[[fileTypes]]"></etools-file>
-
-            <div class="line-hide"></div>
+                         file-types="[[fileTypes]]"></etools-file-element>
         </etools-content-panel>
     </template>
 

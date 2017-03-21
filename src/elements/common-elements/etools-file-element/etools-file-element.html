@@ -1,0 +1,128 @@
+<!--import [polymer, iron-flex-layout, paper-toast, paper-input, paper-input/paper-input-container,
+            paper-input/paper-input-error, paper-dropdown-menu, paper-menu, paper-item, etools-file-styles]-->
+
+<dom-module id="etools-file-element">
+    <template>
+        <style include="etools-file-styles">
+            :host {
+                position: relative;
+                display: block;
+
+                --paper-input-container-underline: #{'{
+                    top: -1px;
+                    right: 0;
+                    height: 2px;
+                    bottom: 0;
+                    left: 0;
+                    background-color: #ffffff;
+                    border-bottom: 1px solid #ffffff;
+                } '};
+            }
+        </style>
+        <paper-input-container always-float-label disabled$="[[disabled]]" invalid$="[[invalid]]">
+
+            <label id="element-label" hidden$="[[!_showLabel(label)]]" aria-hidden="true">[[label]]</label>
+
+            <div class$="files-container [[_getMultipleClass(multiple)]]">
+                <div class="files-wrapper" hidden$="[[!showFilesContainer]]">
+                    <template is="dom-repeat" items="[[files]]" as="file">
+
+                        <div class="file-area">
+
+                            <div class$="selected-file-container [[_getFileSelectedClass(file)]]">
+                                <iron-icon class="file-icon" icon="attachment"></iron-icon>
+                                <div class="file-name-wrapper">
+                                    <span class="file-name" title="[[file.file_name]]">[[file.file_name]]</span>
+                                </div>
+
+                                <template is="dom-if" if="[[_showReadonlyType(file.type, readonly)]]">
+                                    <div class="file-type-input-wrapper">
+                                        <paper-input class="file-type-input" label="[[fileTypesLabel]]"
+                                                     value$="[[_getFileTypeStr(file.type)]]"
+                                                     placeholder="&#8212;" readonly></paper-input>
+                                    </div>
+                                </template>
+                                <template is="dom-if" if="[[_showFileType(fileTypes.length, readonly)]]">
+                                    <!-- types dropdown -->
+                                    <paper-dropdown-menu class="type-dropdown" label="[[fileTypesLabel]]" placeholder="&#8212;" noink>
+                                        <paper-menu id$="typeDropdown_[[index]]" class="dropdown-content"
+                                                    attr-for-selected="name"
+                                                    on-iron-select="_typeChanged"
+                                                    on-iron-deselect="_typeChanged"
+                                                    selected={{file.type}}>
+                                            <template is="dom-repeat" items="[[fileTypes]]" as="fileType">
+                                                <paper-item name="[[fileType.id]]">[[fileType.name]]</paper-item>
+                                            </template>
+                                        </paper-menu>
+                                    </paper-dropdown-menu>
+                                </template>
+
+                            </div>
+                            <div class$="file-actions [[_getFileSelectedClass(file)]]">
+                                <!-- download btn if file was uploaded -->
+                                <paper-button class="download-button"
+                                              disabled$="[[!_showDownloadBtn(file)]]"
+                                              hidden$="[[!_showDownloadBtn(file)]]"
+                                              on-tap="_downloadFile"
+                                              title="Download">
+                                    <iron-icon icon="cloud-download"></iron-icon>
+                                    Download
+                                </paper-button>
+
+                                <paper-button class="change-button"
+                                              on-tap="_changeFile"
+                                              disabled$="[[readonly]]"
+                                              hidden$="[[readonly]]">
+                                    Change
+                                </paper-button>
+
+                                <paper-button class="delete-button"
+                                              on-tap="_deleteFile"
+                                              disabled$="[[readonly]]"
+                                              hidden$="[[readonly]]">
+                                    Delete
+                                </paper-button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="upload-button-wrapper" hidden$="[[!_showUploadBtn(files.length, readonly)]]">
+          <span>
+            <paper-button class="upload-button"
+                          on-tap="_openFileChooser"
+                          title="[[uploadLabel]]"
+                          disabled$="[[readonly]]">
+            <iron-icon icon="file-upload"></iron-icon>
+            [[uploadLabel]]
+            </paper-button>
+          </span>
+                </div>
+                <div class="no-file-and-readonly" hidden$="[[!_showNoFileAttachedMsg(files.length, readonly)]]">
+                    [[noFileAttachedMsg]]
+                </div>
+            </div>
+
+            <template is="dom-if" if="[[invalid]]">
+                <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
+            </template>
+
+            <input
+                    hidden
+                    class="paper-input-input"
+                    type="file"
+                    id="fileInput"
+                    on-change="_fileSelected"
+                    multiple="[[multiple]]"
+                    accept="{{accept}}">
+
+            <a id="downloader" hidden></a>
+
+        </paper-input-container>
+
+        <paper-toast id="fileAlreadySelectedToast" always-on-top></paper-toast>
+
+    </template>
+
+    <!-- inject scripts './etools-file-element.js'-->
+</dom-module>
