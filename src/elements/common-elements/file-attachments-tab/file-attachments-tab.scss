@@ -1,0 +1,48 @@
+:host {
+    position: relative;
+    display: block;
+
+
+    --ecp-content: #{'{
+        padding:  0
+    }'};
+
+    .no-attachments { padding: 16px 20px; }
+    .line-hide {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        background-color: #ffffff;
+        height: 12px;
+    }
+}
+etools-file {
+    margin-top: -21px;
+    --etools-file-main-btn-color: #ffffff;
+    --etools-file-upload-button-paper-btn: #{'{
+        margin-left: 20px;
+        margin-bottom: 9px;
+        padding: 0 19px 0 12px;
+        height: 36px;
+        color: #ffffff;
+        background-color: var(--module-primary)
+    }'};
+
+    --etools-file-filename-container: #{'{
+        width: 75% !important;
+        border-bottom: none !important;
+    }'};
+
+    --etools-file-actions-multiple: #{'{
+            justify-content: flex-start;
+    }'};
+
+    --layout-center-justified: #{'{
+        color: var(--module-primary) !important;
+        width: 100% !important;
+    }'};
+    --etools-file-secondary-text-color: var(--gray-mid) !important;
+    --etools-file-delete-btn-color: var(--module-error) !important;
+    --etools-file-label: #{'{ display: none; }'};
+    --layout-vertical: #{'{ display: block; }'};
+ }

@@ -42,7 +42,8 @@
     "paper-toggle-button": "^1.3.0",
     "etools-searchable-multiselection-menu": "^1.0.33",
     "paper-card": "PolymerElements/paper-card#^1.1.4",
-    "etools-checkable-input": "^1.0.3"
+    "etools-checkable-input": "^1.0.3",
+    "etools-file": "^1.0.7"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
