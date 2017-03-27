@@ -15,6 +15,9 @@
             line-height: 48px;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding-right: 25px;
+            box-sizing: border-box;
+            .truncate { white-space: nowrap; }
         }
         a.col-data { color: #40c4ff; }
     }

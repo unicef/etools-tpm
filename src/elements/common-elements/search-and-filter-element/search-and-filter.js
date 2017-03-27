@@ -1,62 +1,18 @@
 'use strict';
 
 (function() {
-    let filters = [
-        {
-            name: 'Status',
-            filterName: 'f_status',
-            selection: [
-                {
-                    label: 'Planned',
-                    value: 0,
-                    apiValue: 'planned'
-                },
-                {
-                    label: 'Submitted',
-                    value: 1,
-                    apiValue: 'submitted'
-                },
-                {
-                    label: 'Rejected',
-                    value: 2,
-                    apiValue: 'rejected'
-                },
-                {
-                    label: 'Approved',
-                    value: 3,
-                    apiValue: 'approved'
-                }
-                ]
-        },
-        {
-            name: 'Implementing Partner',
-            filterName: 'f_impl_partner',
-            selection: []
-        },
-        {
-            name: 'Location',
-            filterName: 'f_location',
-            selection: []
-        },
-        {
-            name: 'UNICEF Focal Point',
-            filterName: 'f_focal_point',
-            selection: []
-        }
-    ];
+
 
     Polymer({
         is: 'search-and-filter',
         behaviors: [TPMBehaviors.QueryParamsController],
         properties: {
+            filters: Array,
             usedFilters: {
                 type: Array,
                 value: [],
             },
-            availableFilters: {
-                type: Array,
-                value: filters
-            },
+            availableFilters: Array,
             queryParams: {
                 type: Object,
                 notify: true
@@ -67,7 +23,7 @@
             //    search logic
         },
         addFilter: function(e) {
-            var newFilter = filters.filter(function(filter) {
+            var newFilter = this.filters.filter(function(filter) {
                 return filter.name === e.model.item.name;
             })[0];
 
@@ -80,7 +36,7 @@
         removeFilter: function(e) {
 
             var filterName = e.model.item.name;
-            var pristineFilter = filters.filter(function(filter) {
+            var pristineFilter = this.filters.filter(function(filter) {
                 return filter.name === filterName;
             })[0];
 
@@ -97,6 +53,9 @@
         hiddenOn: function(on) {
             if (on && !this.showHidden) this.showHidden = true;
             else if (!on && this.showHidden) this.showHidden = false;
+        },
+        ready: function() {
+            this.availableFilters = this.filters;
         }
     });
 })();

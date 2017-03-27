@@ -10,11 +10,11 @@
             <app-header id="header" fixed shadow>
                 <app-main-header></app-main-header>
                 <pages-header-element show-export-button
-                                      title="Third Party Monitors"></pages-header-element>
+                                      title="List of Trips"></pages-header-element>
             </app-header>
 
 
-            <search-and-filter query-params="{{queryParams}}"></search-and-filter>
+            <search-and-filter query-params="{{queryParams}}" filters="[[filters]]"></search-and-filter>
 
             <list-tab-main header-title="results to show"
                            data="[[data]]"
