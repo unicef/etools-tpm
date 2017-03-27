@@ -33,8 +33,28 @@ Polymer({
         if (!queries.size)  queriesUpdates.size = '10';
         if (!queries.ordered_by) queriesUpdates.ordered_by = 'vendor_number.asc';
 
+        if (queries.page) {
+            let page = +queries.page;
+            if (page < 2 || isNaN(page) || (!!this.lastParams && queries.size !== this.lastParams.size)) {
+                queriesUpdates.page = false;
+            } else {
+                let lastPage = this.datalength % this.queryParams.size ?
+                    Math.floor(this.datalength / this.queryParams.size + 1) :
+                this.datalength / this.queryParams.size;
+
+                if (page >= lastPage) {
+                    page = lastPage;
+                }
+                queriesUpdates.page = `${page}`;
+            }
+        }
+
+        if (!this.lastParams) { this.lastParams = _.clone(queries); }
+        else if (!_.isEqual(this.lastParams, queries)) { this.lastParams = _.clone(queries); }
+
+
         this.updateQueries(queriesUpdates);
-        return queries;
+        return this.parseQueries();
     },
     _queryParamsChanged: function() {
         if (this.base !== 'partners' || !this.routeData) return;

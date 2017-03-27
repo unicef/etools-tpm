@@ -61,26 +61,6 @@ Polymer({
     },
     _paramsChanged: function (newParams) {
         if (this.orderBy !== newParams.ordered_by) this.orderBy = newParams.ordered_by;
-
-        if (newParams.page) {
-            let page = +newParams.page;
-            if (page < 2 || isNaN(page) || (!!this.lastParams && newParams.size !== this.lastParams.size)) {
-                this.updateQueries({page: false});
-            } else {
-                let lastPage = this.datalength % this.queryParams.size ?
-                    Math.floor(this.datalength / this.queryParams.size + 1) :
-                this.datalength / this.queryParams.size;
-
-                if (page >= lastPage) {
-                    page = lastPage;
-                }
-                this.set('queryParams.page', `${page}`);
-            }
-        }
-
-        if (!this.lastParams) { this.lastParams = _.clone(newParams); }
-        else if (!_.isEqual(this.lastParams, newParams)) { this.lastParams = _.clone(newParams); }
-
     },
     _getPartnerStatus: function(synced) {
         if (synced) return 'Synced from VISION';
