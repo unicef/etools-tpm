@@ -1,11 +1,10 @@
 <!--import [polymer, iron-pages, app-route]-->
 
 <!--import [page-layout-styles, shared-styles,  module-styles,
-            trips-list-view-main, partner-info-view-main, query-params-controller]-->
+            trips-list-view-main, trips-info-view-main, query-params-controller]-->
 
 <dom-module id="trips-page-main">
     <template>
-        <!-- inject styles './trips-page-main.scss'-->
         <style include="page-layout-styles shared-styles module-styles"></style>
 
         <app-route
@@ -20,6 +19,8 @@
                     role="main">
 
             <trips-list-view-main name="list" query-params="{{queryParams}}" data="{{listData}}"></trips-list-view-main>
+
+            <trips-info-view-main name="visit" route="{{subroute}}"></trips-info-view-main>
 
         </iron-pages>
     </template>

@@ -2,8 +2,17 @@
 
 <dom-module id="partners-list-view-main">
     <template>
-        <style include="page-layout-styles shared-styles module-styles"></style>
-        <!-- inject styles './partners-list-view-main.scss'-->
+        <style include="page-layout-styles shared-styles module-styles">
+            :host {
+                position: relative;
+                display: block;
+
+            paper-input.vendor-number-input {
+                max-width: 45%;
+                margin-top: 6px !important;
+            }
+            }
+        </style>
 
         <app-header-layout>
 

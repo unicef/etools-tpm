@@ -21,6 +21,10 @@ Polymer({
         readonly: {
             type: Boolean,
             value: false
+        },
+        title: {
+            type: String,
+            value: 'Attachments'
         }
     },
     _hideEmptyState: function(length) { return length > 0;}
