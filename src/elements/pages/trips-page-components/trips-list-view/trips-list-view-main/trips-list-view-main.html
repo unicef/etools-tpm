@@ -1,0 +1,33 @@
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, app-main-header, pages-header-element, search-and-filter, list-tab-main]-->
+
+<dom-module id="trips-list-view-main">
+    <template>
+        <style include="page-layout-styles shared-styles module-styles"></style>
+        <!-- inject styles './trips-list-view-main.scss'-->
+        <app-header-layout>
+
+
+            <app-header id="header" fixed shadow>
+                <app-main-header></app-main-header>
+                <pages-header-element show-export-button
+                                      title="Third Party Monitors"></pages-header-element>
+            </app-header>
+
+
+            <search-and-filter query-params="{{queryParams}}"></search-and-filter>
+
+            <list-tab-main header-title="results to show"
+                           data="[[data]]"
+                           headings="[[listHeadings]]"
+                           query-params="{{queryParams}}"></list-tab-main>
+
+        </app-header-layout>
+
+        <!--<dialog-element title="Add Vendor" confirm-btn-text="sync from vision" opened="{{newVendorOpened}}">-->
+            <!--<paper-input class="vendor-number-input" label="Vendor Number"></paper-input>-->
+        <!--</dialog-element>-->
+
+    </template>
+
+    <!-- inject scripts './trips-list-view-main.js'-->
+</dom-module>

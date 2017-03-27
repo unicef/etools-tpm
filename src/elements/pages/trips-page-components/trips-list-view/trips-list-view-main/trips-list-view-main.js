@@ -1,9 +1,8 @@
 'use strict';
 
 Polymer({
-    is: 'partners-list-view-main',
+    is: 'trips-list-view-main',
     properties: {
-        newVendorOpened: Boolean,
         queryParams: {
             type: Object,
             notify: true
@@ -12,29 +11,32 @@ Polymer({
             type: Array,
             value: function () {
                 return [{
-                    'size': 25,
+                    'size': 20,
                     'label': 'Vendor #',
                     'name': 'vendor_number',
-                    'link': true,
                     'ordered': false
                 }, {
-                    'size': 50,
-                    'label': 'Vendor Name',
+                    'size': 20,
+                    'label': 'Implementing Partner',
                     'name': 'name',
                     'ordered': false
                 }, {
-                    'size': 25,
+                    'size': 20,
+                    'label': 'Location',
+                    'name': 'location',
+                    'ordered': false
+                }, {
+                    'size': 20,
+                    'label': 'UNICEF Focal Point',
+                    'name': 'focal_point',
+                    'ordered': false
+                }, {
+                    'size': 20,
                     'label': 'Status',
                     'name': 'status',
                     'ordered': false
                 }];
             }
         }
-    },
-    listeners: {
-        'addNewVendor': 'openNewVendorDialog'
-    },
-    openNewVendorDialog: function() {
-        this.newVendorOpened = true;
     }
 });

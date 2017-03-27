@@ -4,27 +4,6 @@ Polymer({
     is: 'list-tab-main',
     behaviors: [TPMBehaviors.QueryParamsController],
     properties: {
-        headings: {
-            type: Array,
-            value: function () {
-                return [{
-                    'size': 25,
-                    'label': 'Vendor #',
-                    'name': 'vendor_number',
-                    'ordered': false
-                }, {
-                    'size': 50,
-                    'label': 'Vendor Name',
-                    'name': 'name',
-                    'ordered': false
-                }, {
-                    'size': 25,
-                    'label': 'Status',
-                    'name': 'status',
-                    'ordered': false
-                }];
-            }
-        },
         queryParams: {
             type: Object,
             notify: true,
@@ -61,12 +40,6 @@ Polymer({
     },
     _paramsChanged: function (newParams) {
         if (this.orderBy !== newParams.ordered_by) this.orderBy = newParams.ordered_by;
-    },
-    _getPartnerStatus: function(synced) {
-        if (synced) return 'Synced from VISION';
-    },
-    _getDisplayValue: function(value) {
-        return value || '-'
     },
     _computeResultsToShow: function(lengthAmount, size) {
         let page = (this.queryParams.page || 1) - 1;
