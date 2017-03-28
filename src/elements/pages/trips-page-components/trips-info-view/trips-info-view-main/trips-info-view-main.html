@@ -21,17 +21,17 @@
 
             <app-header id="header" fixed shadow>
                 <app-main-header></app-main-header>
-                <pages-header-element show-export-button
-                                      title="Assign TPM visit"></pages-header-element>
-                <div class="tab-selector">
-                    <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
-                        <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
-                        <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
-                        <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
-                    </paper-tabs>
-                </div>
             </app-header>
 
+            <pages-header-element show-export-button
+                                  title="Assign TPM visit"></pages-header-element>
+            <div class="tab-selector">
+                <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
+                    <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
+                    <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
+                    <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
+                </paper-tabs>
+            </div>
 
             <div class="view-container">
                 <div id="pageContent">

@@ -48,7 +48,6 @@
 
 :host(:hover) paper-material {
     background-color: #EEEEEE;
-    /* TODO: replace with app-theme var */
     @apply (--hover-setting);
 }
 

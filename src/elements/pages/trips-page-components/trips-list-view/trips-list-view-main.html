@@ -2,17 +2,23 @@
 
 <dom-module id="trips-list-view-main">
     <template>
-        <style include="page-layout-styles shared-styles module-styles"></style>
-        <!-- inject styles './trips-list-view-main.scss'-->
+        <style include="page-layout-styles shared-styles module-styles">
+            :host {
+                position: relative;
+                display: block;
+            }
+
+            pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
+        </style>
         <app-header-layout>
 
 
             <app-header id="header" fixed shadow>
                 <app-main-header></app-main-header>
-                <pages-header-element show-export-button
-                                      title="List of Trips"></pages-header-element>
             </app-header>
 
+            <pages-header-element show-export-button
+                                  title="List of Trips"></pages-header-element>
 
             <search-and-filter query-params="{{queryParams}}" filters="[[filters]]"></search-and-filter>
 

@@ -6,12 +6,14 @@
             :host {
                 position: relative;
                 display: block;
+            }
 
             paper-input.vendor-number-input {
                 max-width: 45%;
                 margin-top: 6px !important;
             }
-            }
+
+            pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
         </style>
 
         <app-header-layout>
@@ -19,11 +21,12 @@
 
             <app-header id="header" fixed shadow>
                 <app-main-header></app-main-header>
-                <pages-header-element show-export-button
-                                      show-new-travel-button
-                                      title="Third Party Monitors"></pages-header-element>
+
             </app-header>
 
+            <pages-header-element show-export-button
+                                  show-new-travel-button
+                                  title="Third Party Monitors"></pages-header-element>
 
             <search-and-filter query-params="{{queryParams}}" filters="[[filters]]"></search-and-filter>
 
