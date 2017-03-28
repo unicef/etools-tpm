@@ -43,7 +43,9 @@
     "etools-searchable-multiselection-menu": "^1.0.33",
     "paper-card": "PolymerElements/paper-card#^1.1.4",
     "etools-checkable-input": "^1.0.3",
-    "etools-file": "^1.0.7"
+    "etools-file": "^1.0.7",
+    "etools-datepicker": "^1.0.10",
+    "moment": "^2.18.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
