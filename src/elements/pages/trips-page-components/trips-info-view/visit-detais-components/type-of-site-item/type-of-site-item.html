@@ -1,0 +1,53 @@
+<!--import [polymer, paper-fab, paper-icon-button, paper-input, etools-searchable-multiselection-menu]-->
+<!--import [tab-inputs-styles, repeatable-data-sets-behavior]-->
+
+<dom-module id="type-of-site-item">
+    <template>
+        <!-- inject styles './type-of-site-item.scss'-->
+        <style include="tab-inputs-styles"></style>
+
+        <template is="dom-repeat" items="{{dataItems}}" as="site">
+
+            <div class="row-h repeatable-item-container type-of-site-container">
+                <div class="repeatable-item-actions">
+                    <div class="row-v actions">
+                        <paper-icon-button class="action delete"
+                                           on-tap="_openDeleteConfirmation"
+                                           data-args$="[[index]]"
+                                           disabled="[[!_canBeRemoved(index)]]"
+                                           hidden$="[[!editMode]]"
+                                           icon="cancel"></paper-icon-button>
+                    </div>
+                </div>
+
+                <div class="repeatable-item-content">
+                    <div class="row-h group">
+                        <div class="input-container input-container-ms">
+                            <!-- Type of Site -->
+                            <etools-searchable-multiselection-menu
+                                    readonly="[[!editMode]]"
+                                    label="Type of Site"
+                                    placeholder="&#8212;"></etools-searchable-multiselection-menu>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
+                            <!-- Types of Visit -->
+                            <etools-searchable-multiselection-menu
+                                    readonly="[[!editMode]]"
+                                    label="Types of Visit"
+                                    placeholder="&#8212;"></etools-searchable-multiselection-menu>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </template>
+
+        <paper-button class="add-type-of-site" on-tap="_addTypeOfSite" location-index$="{{index}}">Add Type of Site</paper-button>
+    </template>
+
+    <!-- inject scripts './type-of-site-item.js'-->
+</dom-module>
