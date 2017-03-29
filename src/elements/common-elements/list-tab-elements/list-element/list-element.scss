@@ -28,6 +28,8 @@
             flex: 0 0 16.66666667%;
             max-width: 16%;
             vertical-align: top;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             .rdc-title {
                 display: inline-block;
