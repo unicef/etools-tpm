@@ -22,6 +22,7 @@ Polymer({
             this.view = 'list'
         } else if (!isNaN(+view)) {
             this.view = 'visit';
+            this.clearQueries();
         } else {
             this.fire('404');
         }
