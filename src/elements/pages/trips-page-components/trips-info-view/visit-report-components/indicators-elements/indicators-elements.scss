@@ -1,0 +1,50 @@
+:host {
+    position: relative;
+    display: block;
+
+    .row-h.group.with-reported-prefix {
+        position: relative;
+        padding-left: 120px;
+        box-sizing: border-box;
+
+        .input-container-prefix {
+            width: 120px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            padding: 10px 0;
+            box-sizing: border-box;
+
+            .reported-label {
+                font-size: 12px;
+                line-height: 18px;
+                color: rgba(0, 0, 0, 0.38);
+            }
+
+            .reported-value {
+                width: 100px;
+                text-align: center;
+                background-color: #f5ef76;
+                height: 27px;
+                line-height: 27px;
+            }
+        }
+    }
+
+    .row-h.indicator-row {
+        margin-bottom: 0;
+    }
+
+
+}
+paper-input.indicator-location {
+    --paper-input-container-input: #{'{
+                    line-height: 28px;
+                }'};
+
+    --paper-input-container-underline: #{'{
+                    display: block;
+                    border-bottom: 1px dashed rgba(0, 0, 0, 0.38);
+                }'};
+}

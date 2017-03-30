@@ -7,6 +7,16 @@ Polymer({
         TPMBehaviors.RepeatableDataSetsBehavior
     ],
     properties: {
+        dataItems: {
+            type: Array,
+            value: [{
+                id: null,
+                location: null,
+                sectors: null,
+                type_of_sites: [{}]
+            }],
+            notify: true
+        }
     },
 
     ready: function() {
@@ -14,7 +24,7 @@ Polymer({
             id: null,
             location: null,
             sectors: null,
-            type_of_sites: [],
+            type_of_sites: []
         };
     },
 

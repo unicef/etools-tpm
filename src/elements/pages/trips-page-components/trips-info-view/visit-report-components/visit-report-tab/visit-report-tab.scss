@@ -1,0 +1,12 @@
+:host {
+    position: relative;
+    display: block;
+
+    --ecp-content: #{'{
+            padding: 35px;
+        }'};
+
+    .row-h.group.supplies-checkbox {
+        margin: 15px 0;
+    }
+}

@@ -1,0 +1,30 @@
+<!--import [polymer, etools-content-panel, paper-input, etools-searchable-multiselection-menu]-->
+<!--import [tab-inputs-styles, module-styles, indicators-elements]-->
+
+<dom-module id="visit-report-indicators-tab">
+    <template>
+        <!-- inject styles './visit-report-indicators-tab.scss'-->
+        <style include="tab-inputs-styles module-styles"></style>
+
+        <etools-content-panel title="Indicators" show-expand-btn>
+
+            <template is="dom-repeat" items="{{results}}">
+                <div class="row-h group">
+                    <div class="input-container input-container-l">
+                        <!-- Results to Be Monitored -->
+                        <paper-input
+                                readonly
+                                value="[[item.result]]"
+                                label="Results to Be Monitored"
+                                placeholder="&#8212;"></paper-input>
+                    </div>
+                </div>
+
+                <indicators-elements data-items="{{item.indicators}}"></indicators-elements>
+            </template>
+
+        </etools-content-panel>
+    </template>
+
+    <!-- inject scripts './visit-report-indicators-tab.js'-->
+</dom-module>

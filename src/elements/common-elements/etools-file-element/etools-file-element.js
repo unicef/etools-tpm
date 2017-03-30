@@ -228,12 +228,13 @@
 
         _displayAlreadySelectedWarning: function(filesAlreadySelected) {
             // show a warning with the already selected files
-            var toastWarningMessage = '<p><strong>The following file are already selected:</strong><p>';
-            filesAlreadySelected.forEach(function(alreadySelectedFile) {
-                toastWarningMessage += '<p>' + alreadySelectedFile.file_name + '</p>';
-            });
-            Polymer.dom(this.$.fileAlreadySelectedToast).innerHTML = toastWarningMessage;
-            this.$.fileAlreadySelectedToast.open();
+            // var toastWarningMessage = '<p><strong>The following file are already selected:</strong><p>';
+            // filesAlreadySelected.forEach(function(alreadySelectedFile) {
+            //     toastWarningMessage += '<p>' + alreadySelectedFile.file_name + '</p>';
+            // });
+            // Polymer.dom(this.$.fileAlreadySelectedToast).innerHTML = toastWarningMessage;
+            // this.$.fileAlreadySelectedToast.open();
+            this.fire('toast', {text: 'The following file are already selected'})
         },
 
         _getFileModel: function() {
