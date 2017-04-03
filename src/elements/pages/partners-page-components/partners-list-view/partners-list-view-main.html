@@ -1,4 +1,4 @@
-<!--import [polymer, module-styles, page-layout-styles, shared-styles, dialog-element, app-main-header, search-and-filter, list-tab-main]-->
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, dialog-element, app-main-header, search-and-filter, list-tab-main, partners-list-data]-->
 
 <dom-module id="partners-list-view-main">
     <template>
@@ -16,6 +16,10 @@
             pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
         </style>
 
+        <partners-list-data
+                partners-list="{{partnersList}}"
+                request-queries="[[requestQueries]]"></partners-list-data>
+
         <app-header-layout>
 
 
@@ -31,7 +35,7 @@
             <search-and-filter query-params="{{queryParams}}" filters="[[filters]]"></search-and-filter>
 
             <list-tab-main header-title="results to show"
-                           data="[[data]]"
+                           data="[[partnersList]]"
                            headings="[[listHeadings]]"
                            query-params="{{queryParams}}">
             </list-tab-main>

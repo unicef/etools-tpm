@@ -15,8 +15,8 @@
                     order-by="{{orderBy}}">
             </list-header>
 
-            <template is="dom-repeat" items="[[data]]">
-                <list-element data="[[item]]" headings="[[headings]]"></list-element>
+            <template is="dom-repeat" items="[[data]]" as="partner" initial-count="10">
+                <list-element data="[[partner]]" headings="[[headings]]"></list-element>
             </template>
 
             <list-pagination

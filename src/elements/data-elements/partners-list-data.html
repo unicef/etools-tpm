@@ -1,0 +1,107 @@
+<!--import [polymer, etools-ajax, query-params-controller]-->
+
+<dom-module id="partners-list-data">
+
+    <template>
+
+        <etools-ajax
+                logs
+                endpoint="[[endpoint]]"
+                caching-storage="custom"
+                dexie-db-collection="partners"
+                on-success="_partnersLoaded"
+                on-fail="_responseError"></etools-ajax>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'partners-list-data',
+            behaviors: [
+                etoolsAppConfig.globals,
+                TPMBehaviors.QueryParamsController
+            ],
+
+            properties: {
+                partners: {
+                    type: Array,
+                    value: [],
+                    notify: true
+                },
+                partnersList: {
+                    type: Array,
+                    readOnly: true,
+                    notify: true
+                },
+                requestQueries: {
+                    type: Object,
+                    observer: 'getPartnersList'
+                }
+
+
+            },
+
+            ready: function () {
+                this.endpoint = this.getEndpoint('partnersList');
+            },
+
+            _partnersLoaded: function(data) {
+                this.partners = data.detail;
+                if (this._validatePageQuery()) this.getPartnersList();
+            },
+            _responseError: function() {},
+
+            getPartnersList: function() {
+                if (!this.partners.length) return;
+                if (this.currentTransaction) {
+                    this.currentTransaction.abort();
+                }
+
+                this.appDexieDb.transaction('r', this.appDexieDb.partners, () => {
+                    this.currentTransaction = Dexie.currentTransaction;
+
+
+                    let partners = this.appDexieDb.partners,
+                            params = this.requestQueries || {};
+
+                    if (params.ordered_by) {
+                        let [field, order] = params.ordered_by.split('.');
+                        partners = partners.orderBy(field);
+                        if (order === 'desc') { partners = partners.reverse(); }
+                    }
+                    if (params.size) {
+                        partners
+                                .offset( ((params.page || 1) - 1) * params.size )
+                                .limit(+params.size)
+                    }
+
+
+
+                    return partners.toArray();
+                }).then((result) => {
+                    this._setPartnersList(result);
+                });
+//                console.log(this.requestQueries)
+            },
+
+            _validatePageQuery: function() {
+                if (!this.requestQueries.page || !this.requestQueries.size) return true;
+                let lastPage = this.partners.length % this.requestQueries.size ?
+                        Math.floor(this.partners.length / this.requestQueries.size + 1) :
+                        this.partners.length / this.requestQueries.size;
+
+                if (+this.requestQueries.page >= lastPage) {
+                    //update page query
+                    this.updateQueries({page: `${lastPage}`})
+                } else {
+                    return true;
+                }
+            }
+
+        });
+
+    </script>
+
+</dom-module>

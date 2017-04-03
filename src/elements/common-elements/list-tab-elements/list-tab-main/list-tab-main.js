@@ -21,6 +21,10 @@ Polymer({
         datalength: {
             type: Number,
             computed: '_calcDataLength(data)'
+        },
+        data: {
+            type: Array,
+            notify: true
         }
     },
     _orderChanged: function (newOrder) {
@@ -44,10 +48,12 @@ Polymer({
     _computeResultsToShow: function(lengthAmount, size) {
         let page = (this.queryParams.page || 1) - 1;
         size = +(size || 10);
+
         let last = size*page+size;
         if (last > lengthAmount) last = lengthAmount;
+        let first = last ? size*page+1 : 0;
 
-        return `${size*page+1} - ${last} of ${lengthAmount}`
+        return `${first} - ${last} of ${lengthAmount}`
     },
     _calcDataLength: function(data) { return data.length; }
 });

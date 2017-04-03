@@ -69,8 +69,8 @@
                         'ordered': false
                     }, {
                         'size': 25,
-                        'label': 'Status',
-                        'name': 'status',
+                        'label': 'Country',
+                        'name': 'country',
                         'ordered': false
                     }];
                 }
@@ -78,14 +78,16 @@
             filters: {
                 type: Array,
                 value: filters
+            },
+            partnersList: {
+                type: Array,
+                value: []
             }
         },
         listeners: {
             'addNewVendor': 'openNewVendorDialog'
         },
-        openNewVendorDialog: function() {
-            this.newVendorOpened = true;
-        }
+        openNewVendorDialog: function() { this.newVendorOpened = true; }
     });
 })();
 

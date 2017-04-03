@@ -6,69 +6,69 @@ App global configuration
 <script>
     'use strict';
 
-    /* exported etoolsAjaxDefaultDexieDbPrefix */
-    var etoolsAjaxDefaultDexieDbPrefix = 'TPM_Db';
+
+    var etoolsCustomDexieDb = new Dexie('TPM');
+    etoolsCustomDexieDb.version(1).stores({
+        collectionsList: '&name, expire',
+        partners: 'id, name, vendor_number, country'
+    });
+
 
     var etoolsAppConfig = {
-      // dexie js
-      appDexieDb: new Dexie('etoolsApp'),
 
-      // app endpoints
-      endpoints: {
-        userInfo: {
-          url: '/users/api/profile/',
-          exp: 30 * 60 * 1000, // 30min
-          cachingKey: 'userData'
+        // app endpoints
+        endpoints: {
+
         },
-        countries: {
-          url: '../../data/countries.json',
-          exp: 6 * 60 * 60 * 1000, // 6h
-          cachingKey: 'countries'
-        },
-        testTemplateEndpointUse: {
-          template: '/api/country/<%=id%>',
-          exp: 30 * 60 * 1000, // 30min
-          cachingKey: 'countries'
-        }
-      },
-
-      globals: {
-        // globals
-        baseSite: window.location.origin,
-        basePath: (window.location.port === '8080') ? '/' : '/partners/',
-
-        getEndpoint: function(endpointName, data) {
-          var endpoint = etoolsAppConfig.endpoints[endpointName];
-          if (endpoint && endpoint.hasOwnProperty('template') && endpoint.template !== '') {
-            endpoint.url = this.baseSite + _.template(endpoint.template)(data);
-          }
-          return endpoint;
+        localEndpoints: {
+            userInfo: {
+                url: '/users/api/profile/',
+                exp: 30 * 60 * 1000, // 30min
+                cachingKey: 'userData'
+            },
+            countries: {
+                url: '/data/countries.json',
+                exp: 6 * 60 * 60 * 1000, // 6h
+                cachingKey: 'countries'
+            },
+            partnersList: {
+                url: '/data/partners-list.json',
+                exp: 6 * 60 * 60 * 1000, // 6h
+                cachingKey: 'partners'
+            }
         },
 
-        getAllPermissions: function() {
-          return etoolsAppConfig.permissions;
-        }
-      },
+        globals: {
+            // globals
+            baseSite: window.location.origin,
+            basePath: (window.location.port === '5000') ? '/' : '/partners/',
+            epsPath: (window.location.port !== '5000') ? 'endpoints' : 'localEndpoints',
 
-      // permissions
-      permissions: {
-        superPermissions: ['loggedInDefault', 'userInfoMenu',
-                           'interventionsMenu', 'statsMenu'], //for testing
-        partnerOnlyPermissions: ['interventionsMenu'],
-        defaultPermissions: ['loggedInDefault','userInfoMenu'],
-        partnerPermissions: ['interventionsMenu'],
-        managementPermissions: ['statsMenu']
-      },
+            // dexie js
+            appDexieDb: etoolsCustomDexieDb,
+
+            getEndpoint: function (endpointName, data) {
+                var endpoint = etoolsAppConfig[etoolsAppConfig.globals.epsPath][endpointName];
+                if (endpoint && endpoint.hasOwnProperty('template') && endpoint.template !== '') {
+                    endpoint.url = this.baseSite + _.template(endpoint.template)(data);
+                }
+                return endpoint;
+            },
+
+            getAllPermissions: function () {
+                return etoolsAppConfig.permissions;
+            }
+        },
+
+        // permissions
+        permissions: {
+            superPermissions: [], //for testing
+            unicefUsersPermissions: [],
+            unicefFpPermissions: [],
+            pmePermissions: [],
+            tpmPermissions: []
+        },
 
     };
-
-    /**
-     * for db versioning check
-     * https://github.com/dfahlander/Dexie.js/wiki/Design#database-versioning
-     */
-    etoolsAppConfig.appDexieDb.version(1).stores({
-      collectionsList: '&name,expire',
-      countries: 'id, name'
-    });
 
 </script>
