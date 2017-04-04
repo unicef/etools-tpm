@@ -47,6 +47,7 @@
 
     Polymer({
         is: 'partners-list-view-main',
+        behaviors: [TPMBehaviors.PermissionController],
         properties: {
             newVendorOpened: Boolean,
             queryParams: {
@@ -87,7 +88,8 @@
         listeners: {
             'addNewVendor': 'openNewVendorDialog'
         },
-        openNewVendorDialog: function() { this.newVendorOpened = true; }
+        openNewVendorDialog: function() { this.newVendorOpened = true; },
+        _showAddButton: function() { return this.checkPermission('addNewPartner') }
     });
 })();
 

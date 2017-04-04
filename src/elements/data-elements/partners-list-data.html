@@ -91,6 +91,7 @@
             },
 
             _validatePageQuery: function() {
+                if (!this.requestQueries) return;
                 if (!this.requestQueries.page || !this.requestQueries.size) return true;
                 let lastPage = this.partners.length % this.requestQueries.size ?
                         Math.floor(this.partners.length / this.requestQueries.size + 1) :

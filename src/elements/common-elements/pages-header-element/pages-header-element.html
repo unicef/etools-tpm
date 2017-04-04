@@ -36,9 +36,9 @@
                         Print
                     </paper-button>
 
-                    <paper-button class="add-btn" raised hidden$="[[_hideNewTravelButton(showNewTravelButton)]]" on-tap="addNewVendor">
+                    <paper-button class="add-btn" raised hidden$="[[_hideAddButton(showAddButton)]]" on-tap="addNewVendor">
                         <iron-icon icon="add"></iron-icon>
-                        <span>Add New Vendor</span>
+                        <span>[[btnText]]</span>
                     </paper-button>
 
                 </div>

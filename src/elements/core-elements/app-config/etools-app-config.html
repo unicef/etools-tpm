@@ -24,7 +24,7 @@ App global configuration
         localEndpoints: {
             userProfile: {
                 url: '/data/user-profile.json',
-                exp: 30 * 60 * 1000, // 30min
+//                exp: 30 * 60 * 1000, // 30min
                 cachingKey: 'userData'
             },
             countries: {
@@ -72,11 +72,19 @@ App global configuration
                     'downloadPartnerAttachments',
                     'editPartnerAttachments'
             ], //for testing
-            unicefUsersPermissions: [],
+            unicefUserPermissions: [
+                'viewPartnersList',
+                'viewPartnersDetails',
+                'viewPartnerAttachments'
+            ],
             unicefFpPermissions: [],
             pmePermissions: [],
-            tpmPermissions: []
-        },
+            tpmPermissions: [
+                'viewPartnersDetails',
+                'viewPartnerAttachments',
+                'downloadPartnerAttachments'
+            ]
+        }
 
     };
 

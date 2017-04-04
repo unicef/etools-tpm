@@ -26,11 +26,11 @@
 
             <app-header id="header" fixed shadow>
                 <app-main-header></app-main-header>
-
             </app-header>
 
             <pages-header-element show-export-button
-                                  show-new-travel-button
+                                  show-add-button="{{_showAddButton()}}"
+                                  btn-text="Add New Partner"
                                   title="Third Party Monitors"></pages-header-element>
 
             <search-and-filter query-params="{{queryParams}}" filters="[[filters]]"></search-and-filter>

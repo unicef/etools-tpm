@@ -4,7 +4,7 @@ Polymer({
     is: 'pages-header-element',
     properties: {
         title: String,
-        showNewTravelButton: {
+        showAddButton: {
             type: Boolean,
             value: false
         },
@@ -47,7 +47,7 @@ Polymer({
         var endpoint = event.model.item.endpoint;
         this.set('csvEndpoint', endpoint);
     },
-    _hideNewTravelButton: function(show) {
+    _hideAddButton: function(show) {
         return !show;
     },
     _handleCSVData: function(e, data) {

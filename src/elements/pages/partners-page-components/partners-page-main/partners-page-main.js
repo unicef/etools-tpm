@@ -2,7 +2,10 @@
 
 Polymer({
     is: 'partners-page-main',
-    behaviors: [TPMBehaviors.QueryParamsController],
+    behaviors: [
+        TPMBehaviors.QueryParamsController,
+        TPMBehaviors.PermissionController
+    ],
     properties: {
         queryParams: {
             type: Object,
@@ -14,9 +17,16 @@ Polymer({
         '_routeConfig(routeData.view)'
     ],
 
+    created: function() {
+        if (this.checkPermission('viewPartnersList')) {
+            let url = this.resolveUrl('../partners-list-view/partners-list-view-main.html');
+            this.importHref(url, null, null, true);
+        }
+    },
+
     _routeConfig: function(view) {
         if (this.base !== 'partners') return;
-        if (view === 'list') {
+        if (view === 'list' && this.checkPermission('viewPartnersList')) {
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
             this.view = 'list'
