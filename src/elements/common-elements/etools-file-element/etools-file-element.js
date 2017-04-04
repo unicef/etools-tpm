@@ -138,7 +138,6 @@
         },
 
         _showDownloadBtn: function(file, allowDownload) {
-            console.log(allowDownload)
             return allowDownload && file && typeof file.attachment_file === 'string' && file.attachment_file !== '';
         },
 

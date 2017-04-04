@@ -31,6 +31,7 @@ Polymer({
             this._setPartnersListQueries(queries);
             this.view = 'list'
         } else if (!isNaN(+view)) {
+            this.clearQueries();
             this.partnerId = +view;
             this.view = 'info';
         } else {
@@ -48,7 +49,6 @@ Polymer({
             let page = +queries.page;
             if (page < 2 || isNaN(page) ||
                 (!!this.lastParams && (queries.size !== this.lastParams.size || queries.ordered_by !== this.lastParams.ordered_by))) {
-
                 queriesUpdates.page = false;
             }
         }

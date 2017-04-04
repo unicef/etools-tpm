@@ -18,7 +18,7 @@ Polymer({
         if (this.base !== 'trips') return;
         if (view === 'list') {
             let queries = this._configListParams();
-            this._loadTripsListData(queries);
+            this._setTripsListQueries(queries);
             this.view = 'list'
         } else if (!isNaN(+view)) {
             this.view = 'visit';
@@ -36,17 +36,9 @@ Polymer({
 
         if (queries.page) {
             let page = +queries.page;
-            if (page < 2 || isNaN(page) || (!!this.lastParams && queries.size !== this.lastParams.size)) {
+            if (page < 2 || isNaN(page) ||
+                (!!this.lastParams && (queries.size !== this.lastParams.size || queries.ordered_by !== this.lastParams.ordered_by))) {
                 queriesUpdates.page = false;
-            } else {
-                let lastPage = this.datalength % this.queryParams.size ?
-                    Math.floor(this.datalength / this.queryParams.size + 1) :
-                this.datalength / this.queryParams.size;
-
-                if (page >= lastPage) {
-                    page = lastPage;
-                }
-                queriesUpdates.page = `${page}`;
             }
         }
 
@@ -61,25 +53,13 @@ Polymer({
         if (this.base !== 'trips' || !this.routeData) return;
         if (this.routeData.view === 'list') {
             let queries = this._configListParams();
-            this._loadTripsListData(queries)
+            this._setTripsListQueries(queries)
         } else if (!isNaN(+this.routeData.view)) {
             this.clearQueries();
         }
     },
-    _loadTripsListData: function(queries) {
+    _setTripsListQueries: function(queries) {
         if (!_.isEmpty(queries) && (!this.lastListDataRequest || !_.isEqual(this.lastListDataRequest, queries))) {
-            console.log(queries);
-            setTimeout(() => {
-                this.listData = [{
-                    "id": 192,
-                    "vendor_number": "2300015180",
-                    "name": "MINISTRY OF SOCIAL WELFARE & CULTURE - EL FASHERNORTH DARFUR",
-                    "short_name": "",
-                    "vision_synced": true,
-                    "location": 'Ghazze(#125646)',
-                    "focal_point": 'John Smith'
-                }]
-            }, 500);
             this.lastListDataRequest = queries;
         }
     }

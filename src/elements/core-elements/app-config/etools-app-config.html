@@ -11,6 +11,7 @@ App global configuration
     etoolsCustomDexieDb.version(1).stores({
         collectionsList: '&name, expire',
         partners: 'id, name, vendor_number, country',
+        trips: 'id, name, vendor_number, location, focal_point, status',
         profile: 'id'
     });
 
@@ -39,6 +40,11 @@ App global configuration
                 url: '/data/partners-list.json',
                 exp: 6 * 60 * 60 * 1000, // 6h
                 cachingKey: 'partners'
+            },
+            tripsList: {
+                url: '/data/trips-list.json',
+                exp: 6 * 60 * 60 * 1000, // 6h
+                cachingKey: 'trips'
             }
         },
 
