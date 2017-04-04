@@ -15,15 +15,15 @@
                     order-by="{{orderBy}}">
             </list-header>
 
-            <template is="dom-repeat" items="[[data]]" as="partner" initial-count="10">
-                <list-element data="[[partner]]" headings="[[headings]]"></list-element>
+            <template id="list-elements" is="dom-repeat" items="[[data]]" as="partner" initial-count="10"  on-dom-change="_listDataChanged">
+                <list-element class="list-element" data="[[partner]]" headings="[[headings]]" no-animation="[[noAnimation]]"></list-element>
             </template>
 
             <list-pagination
                     id="list-pagination"
                     page-size="{{queryParams.size}}"
                     page-number="{{queryParams.page}}"
-                    datalength="[[datalength]]"
+                    datalength="[[listLength]]"
                     page-marker="[[pageMarker]]"
                     showing-results="{{showingResults}}">
             </list-pagination>

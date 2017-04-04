@@ -18,6 +18,7 @@
 
         <partners-list-data
                 partners-list="{{partnersList}}"
+                list-length="{{listLength}}"
                 request-queries="[[requestQueries]]"></partners-list-data>
 
         <app-header-layout>
@@ -36,6 +37,7 @@
 
             <list-tab-main header-title="results to show"
                            data="[[partnersList]]"
+                           list-length="[[listLength]]"
                            headings="[[listHeadings]]"
                            query-params="{{queryParams}}">
             </list-tab-main>

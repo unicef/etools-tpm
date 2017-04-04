@@ -35,7 +35,9 @@ Polymer({
 
         if (queries.page) {
             let page = +queries.page;
-            if (page < 2 || isNaN(page) || (!!this.lastParams && queries.size !== this.lastParams.size)) {
+            if (page < 2 || isNaN(page) ||
+                (!!this.lastParams && (queries.size !== this.lastParams.size || queries.ordered_by !== this.lastParams.ordered_by))) {
+
                 queriesUpdates.page = false;
             }
         }

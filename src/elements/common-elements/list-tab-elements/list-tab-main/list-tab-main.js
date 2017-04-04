@@ -11,17 +11,14 @@ Polymer({
         },
         showingResults: {
             type: String,
-            computed: '_computeResultsToShow(datalength, queryParams.size)'
+            computed: '_computeResultsToShow(listLength, queryParams.size)'
         },
         orderBy: {
             type: String,
             value: '',
             observer: '_orderChanged'
         },
-        datalength: {
-            type: Number,
-            computed: '_calcDataLength(data)'
-        },
+        listLength: Number,
         data: {
             type: Array,
             notify: true
@@ -55,5 +52,16 @@ Polymer({
 
         return `${first} - ${last} of ${lengthAmount}`
     },
-    _calcDataLength: function(data) { return data.length; }
+    _listDataChanged: function() {
+        var rows = Polymer.dom(this.root).querySelectorAll('.list-element');
+        if (rows && rows.length) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].detailsOpened) {
+                    this.noAnimation = true;
+                    rows[i]._toggleRowDetails();
+                    this.noAnimation = false;
+                }
+            }
+        }
+    }
 });
