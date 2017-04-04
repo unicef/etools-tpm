@@ -10,7 +10,8 @@ App global configuration
     var etoolsCustomDexieDb = new Dexie('TPM');
     etoolsCustomDexieDb.version(1).stores({
         collectionsList: '&name, expire',
-        partners: 'id, name, vendor_number, country'
+        partners: 'id, name, vendor_number, country',
+        profile: 'id'
     });
 
 
@@ -21,8 +22,8 @@ App global configuration
 
         },
         localEndpoints: {
-            userInfo: {
-                url: '/users/api/profile/',
+            userProfile: {
+                url: '/data/user-profile.json',
                 exp: 30 * 60 * 1000, // 30min
                 cachingKey: 'userData'
             },
@@ -55,14 +56,22 @@ App global configuration
                 return endpoint;
             },
 
-            getAllPermissions: function () {
-                return etoolsAppConfig.permissions;
+            getPermissionsList: function (userType) {
+                return etoolsAppConfig.permissions[`${userType}Permissions`];
             }
         },
 
         // permissions
         permissions: {
-            superPermissions: [], //for testing
+            superPermissions: [
+                    'viewPartnersList',
+                    'viewPartnersDetails',
+                    'addNewPartner',
+                    'editPartnerDetails',
+                    'viewPartnerAttachments',
+                    'downloadPartnerAttachments',
+                    'editPartnerAttachments'
+            ], //for testing
             unicefUsersPermissions: [],
             unicefFpPermissions: [],
             pmePermissions: [],

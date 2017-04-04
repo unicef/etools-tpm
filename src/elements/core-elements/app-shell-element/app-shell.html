@@ -1,234 +1,269 @@
 <!--import [polymer, app-route/app-location, app-route, app-layout, paper-icon-button,
-             paper-toast, paper-material, iron-selector, iron-pages, iron-collapse, iron-icons, iron-icons/social-icons, iron-icons/maps-icons]-->
+             paper-toast, paper-material, iron-selector, iron-pages, iron-collapse, iron-icons, iron-icons/social-icons,
+             etools-loading/etools-loading-behavior, iron-icons/maps-icons]-->
 
 <!--import [etools-app-config, user-data, countries-data, side-bar-item, countries-dropdown]-->
 <!--import [shared-styles, page-layout-styles, app-theme]-->
 
 <dom-module id="app-shell">
 
-  <template>
+    <template>
 
-    <style include="shared-styles">
+        <style include="shared-styles">
 
-      :host {
-        display: block;
-      }
+            :host {
+                display: block;
+            }
 
-      app-drawer {
-        --app-drawer-width: 220px;
-        --app-drawer-content-container: {
-            background-color: var(--light-theme-content-color);
-        };
-      }
+            app-drawer {
+                --app-drawer-width: 220px;
+                --app-drawer-content-container: {
+                    background-color: var(--light-theme-content-color);
+                };
+            }
 
-      .side-nav-wrapper {
-        @apply(--layout-vertical);
+            .side-nav-wrapper {
+                @apply(--layout-vertical);
 
-        height: 100%;
-        overflow-y: var(--side-bar-scrolling);
-        overflow-x: hidden;
-        border-right: 1px solid var(--dark-divider-color);
-      }
+                height: 100%;
+                overflow-y: var(--side-bar-scrolling);
+                overflow-x: hidden;
+                border-right: 1px solid var(--dark-divider-color);
+            }
 
-      .side-nav-wrapper .header {
-        min-height: 60px;
-        border-bottom: 1px solid var(--dark-divider-color);
-      }
+            .side-nav-wrapper .header {
+                min-height: 60px;
+                border-bottom: 1px solid var(--dark-divider-color);
+            }
 
-      #etools-logo {
-        height: 50%;
-        width: 60%;
-      }
+            #etools-logo {
+                height: 50%;
+                width: 60%;
+            }
 
-      #unicef-logo {
-        height: 100%;
-        width: 60%;
-      }
+            #unicef-logo {
+                height: 100%;
+                width: 60%;
+            }
 
-      #app-select {
-        margin-left: auto;
-        width: 47px;
-        height: 47px;
-      }
+            #app-select {
+                margin-left: auto;
+                width: 47px;
+                height: 47px;
+            }
 
-      .side-nav-wrapper .nav-menu {
-        padding: 8px 0;
-      }
+            .side-nav-wrapper .nav-menu {
+                padding: 8px 0;
+            }
 
-      .side-nav-wrapper .divider {
-        margin: 8px 0;
-        border-bottom: 1px solid var(--dark-divider-color);
-      }
+            .side-nav-wrapper .divider {
+                margin: 8px 0;
+                border-bottom: 1px solid var(--dark-divider-color);
+            }
 
-      .side-nav-wrapper .footer {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
+            .side-nav-wrapper .footer {
+                @apply(--layout-horizontal);
+                @apply(--layout-center-center);
 
-        margin-top: auto;
-        min-height: 26px;
-        padding: 16px 16px;
-        border-top: 1px solid var(--dark-divider-color);
-      }
+                margin-top: auto;
+                min-height: 26px;
+                padding: 16px 16px;
+                border-top: 1px solid var(--dark-divider-color);
+            }
 
-      #countries {
-        position: fixed;
-        top: 9px;
-        right: 20px;
-      }
+            #countries {
+                position: fixed;
+                top: 9px;
+                right: 20px;
+            }
 
 
+        </style>
 
-    </style>
+        <user-data></user-data>
 
-    <user-data permissions="{{permissions}}"></user-data>
+        <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
 
-    <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
+        <app-route
+                route="{{route}}"
+                pattern="/:page"
+                data="{{routeData}}"
+                query-params="{{queryParams}}"
+                tail="{{subroute}}"></app-route>
 
-    <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        query-params="{{queryParams}}"
-        tail="{{subroute}}"></app-route>
+        <etools-loading id="global-loading"></etools-loading>
 
-    <app-drawer-layout id="layout" responsive-width="850px" narrow="{{narrow}}" fullbleed>
+        <app-drawer-layout id="layout" responsive-width="850px" narrow="{{narrow}}" fullbleed>
 
-      <!-- Drawer content -->
-      <app-drawer id="drawer" transition-duration="350">
+            <!-- Drawer content -->
+            <app-drawer id="drawer" transition-duration="350">
 
-        <div class="side-nav-wrapper">
+                <div class="side-nav-wrapper">
 
-          <app-toolbar class="header">
-            <img id="etools-logo" src="/images/etools_logo.svg" alt="etools logo">
-          </app-toolbar>
+                    <app-toolbar class="header">
+                        <img id="etools-logo" src="/images/etools_logo.svg" alt="etools logo">
+                    </app-toolbar>
 
-          <div class="nav-menu">
-            <iron-selector selected="[[page]]" attr-for-selected="name" selectable="side-bar-item" role="navigation">
+                    <div class="nav-menu">
+                        <iron-selector selected="[[page]]" attr-for-selected="name" selectable="side-bar-item"
+                                       role="navigation">
 
-              <side-bar-item name="partners" icon="social:people" href="/partners/list"></side-bar-item>
-              <side-bar-item name="trips" icon="maps:transfer-within-a-station" href="/trips/list"></side-bar-item>
+                            <side-bar-item name="partners" icon="social:people" href="/partners/list"></side-bar-item>
+                            <side-bar-item name="trips" icon="maps:transfer-within-a-station"
+                                           href="/trips/list"></side-bar-item>
 
-            </iron-selector>
-          </div>
+                        </iron-selector>
+                    </div>
 
-          <div class="footer">
-            <img id="unicef-logo" src="/images/UNICEF_logo.png" alt="UNICEF logo">
-          </div>
+                    <div class="footer">
+                        <img id="unicef-logo" src="/images/UNICEF_logo.png" alt="UNICEF logo">
+                    </div>
 
-        </div>
+                </div>
 
-      </app-drawer>
+            </app-drawer>
 
-      <!-- Main content -->
+            <!-- Main content -->
 
-      <iron-pages id="pages"
-                  selected="[[page]]"
-                  attr-for-selected="name"
-                  fallback-selection="not-found"
-                  role="main">
-        <partners-page-main name="partners" route="{{subroute}}" base="{{page}}" query-params="{{queryParams}}"></partners-page-main>
-        <trips-page-main name="trips" route="{{subroute}}" base="{{page}}" query-params="{{queryParams}}"></trips-page-main>
-        <not-found-page-view name="not-found"></not-found-page-view>
-      </iron-pages>
+            <iron-pages id="pages"
+                        selected="[[page]]"
+                        attr-for-selected="name"
+                        fallback-selection="not-found"
+                        role="main">
+                <partners-page-main name="partners" route="{{subroute}}" base="{{page}}"
+                                    query-params="{{queryParams}}"></partners-page-main>
+                <trips-page-main name="trips" route="{{subroute}}" base="{{page}}"
+                                 query-params="{{queryParams}}"></trips-page-main>
+                <not-found-page-view name="not-found"></not-found-page-view>
+            </iron-pages>
 
-    </app-drawer-layout>
+        </app-drawer-layout>
 
-  </template>
+    </template>
 
-  <script>
+    <script>
 
-    Polymer({
+        Polymer({
 
-      is: 'app-shell',
+            is: 'app-shell',
 
-      properties: {
+            behaviors: [
+                etoolsBehaviors.LoadingBehavior
+            ],
 
-        page: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged'
-        },
+            properties: {
 
-        narrow: {
-          type: Boolean,
-          reflectToAttribute: true
-        },
+                page: {
+                    type: String,
+                    reflectToAttribute: true,
+                    observer: '_pageChanged'
+                },
 
-        _toast: {
-          type: Object,
-          value: null
-        },
+                narrow: {
+                    type: Boolean,
+                    reflectToAttribute: true
+                },
 
-        _toastQueue: {
-          type: Array,
-          value: function() { return []; }
-        }
+                _toast: {
+                    type: Object,
+                    value: null
+                },
 
-      },
+                _toastQueue: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                }
 
-      observers: [
-        '_routePageChanged(routeData.page)'
-      ],
+            },
 
-      listeners: {
-        'toast': 'queueToast',
-        'drawer': 'toggleDrawer',
-        '404': '_pageNotFound'
-      },
+            observers: [
+                '_routePageChanged(routeData.page)'
+            ],
 
-      attached: function() {
-        if (this.route.path === '/') {
-          this.set('route.path', '/partners/list');
-        }
-      },
+            listeners: {
+                'global-loading': '_handleGlobalLoading',
+                'toast': 'queueToast',
+                'drawer': 'toggleDrawer',
+                '404': '_pageNotFound',
+                'user-profile-loaded': '_profileLoaded'
+            },
 
-      toggleDrawer: function() {
-        this.$.drawer.toggle();
-      },
+            attached: function () {
+                this.fire('global-loading', {message: 'Loading...', active: true});
+                if (this.route.path === '/') {
+                    this.set('route.path', '/partners/list');
+                }
+            },
 
-      queueToast: function(e, detail) {
-        if (!this._toast) {
-          this._toast = document.createElement('paper-toast');
-          this.listen(this._toast, 'iron-overlay-closed', 'dequeueToast');
-          Polymer.dom(this.$.layout).appendChild(this._toast);
-          Polymer.dom.flush();
-        }
-        if (!this._toastQueue.length) {
-          this.push('_toastQueue', detail);
-          this._toast.show(detail);
-        } else {
-          this.push('_toastQueue', detail);
-        }
-      },
+            toggleDrawer: function () {
+                this.$.drawer.toggle();
+            },
 
-      dequeueToast: function() {
-        this.shift('_toastQueue');
-        if (this._toastQueue.length) {
-          this._toast.show(this._toastQueue[0]);
-        }
-      },
+            queueToast: function (e, detail) {
+                if (!this._toast) {
+                    this._toast = document.createElement('paper-toast');
+                    this.listen(this._toast, 'iron-overlay-closed', 'dequeueToast');
+                    Polymer.dom(this.$.layout).appendChild(this._toast);
+                    Polymer.dom.flush();
+                }
+                if (!this._toastQueue.length) {
+                    this.push('_toastQueue', detail);
+                    this._toast.show(detail);
+                } else {
+                    this.push('_toastQueue', detail);
+                }
+            },
 
-      _routePageChanged: function(page) {
-        this.page = page || 'partners';
-      },
+            dequeueToast: function () {
+                this.shift('_toastQueue');
+                if (this._toastQueue.length) {
+                    this._toast.show(this._toastQueue[0]);
+                }
+            },
 
-      _pageChanged: function(page) {
-        var resolvedPageUrl;
-        if (page === 'not-found') {
-          resolvedPageUrl = this.resolveUrl('../../pages/not-found-page-view/not-found-page-view.html');
-        } else {
-          resolvedPageUrl = this.resolveUrl(`/elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`);
-        }
-        this.importHref(resolvedPageUrl, null, this._pageNotFound, true);
-      },
+            _routePageChanged: function (page) {
+                if (!this.initLoadingComplete) return;
+                this.page = page || 'partners';
+            },
 
-      _pageNotFound: function() {
-        this.page = 'not-found';
-        this.fire('toast', {text: 'Oops you hit a 404!'});
-      }
+            _pageChanged: function (page) {
+                var resolvedPageUrl;
+                if (page === 'not-found') {
+                    resolvedPageUrl = this.resolveUrl('../../pages/not-found-page-view/not-found-page-view.html');
+                } else {
+                    resolvedPageUrl = this.resolveUrl(`/elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`);
+                }
+                this.importHref(resolvedPageUrl, () => {
+                    if (!this.initLoadingComplete) {
+                        this.initLoadingComplete = true;
+                        this.fire('global-loading');
+                    }
+                }, this._pageNotFound, true);
+            },
 
-    });
+            _pageNotFound: function () {
+                this.page = 'not-found';
+                this.fire('toast', {text: 'Oops you hit a 404!'});
+            },
 
-  </script>
+            _profileLoaded: function() {
+                if (this.routeData) this.page = this.routeData.page || 'partners';
+            },
+
+            _handleGlobalLoading: function(event) {
+                if (!event.detail) return;
+                let loadingElement =  this.$['global-loading'];
+
+                if (typeof event.detail.message === 'string' && event.detail.message !== '') {
+                    loadingElement.loadingText = event.detail.message;
+                }
+                loadingElement.active = event.detail.active;
+            }
+
+        });
+
+    </script>
 
 </dom-module>

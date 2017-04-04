@@ -133,7 +133,7 @@ gulp.task('default', gulp.series([
 
 gulp.task('watch', function () {
   gulp.watch(['./src/elements/**/*.*'], gulp.series(buildElements));
-  gulp.watch(['./src/index.html', './src/assets/**/*.*'], gulp.series(copyAssets));
+  gulp.watch(['./src/*.*', './src/assets/**/*.*'], gulp.series(copyAssets));
   gulp.watch(['./src/bower_components/**/*.*'], gulp.series(copyBower));
 });
 

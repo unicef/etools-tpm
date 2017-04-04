@@ -1,0 +1,35 @@
+<!--import [lodash]-->
+<script>
+    'use strict';
+    (function () {
+        var _permissions = {},
+            _permissions_setted = false;
+
+        window.TPMBehaviors = window.TPMBehaviors || {};
+        window.TPMBehaviors.PermissionController = {
+            _setPermissions: function(userData) {
+                if (_permissions_setted) return _.cloneDeep(_permissions);
+
+                let permissionsList = this.getPermissionsList(userData.user_type);
+                if (!permissionsList) { console.error('Can\'t set permissions: Invalid user type!'); return; }
+
+                permissionsList.forEach((permission) => {
+                    _permissions[permission] = true;
+                });
+
+                _permissions_setted = true;
+                return _.cloneDeep(_permissions);
+            },
+
+            getPermissions: function() {
+                return _.cloneDeep(_permissions);
+            },
+
+            checkPermission: function(permission) {
+                return !!_permissions[permission];
+            }
+        };
+    })()
+
+
+</script>
