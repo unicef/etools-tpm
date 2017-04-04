@@ -71,7 +71,7 @@
                                 <paper-input label="E-mail address"
                                              value="{{item.email}}"
                                              placeholder="&#8212;"
-                                             readonly$="[[!_canBeRemoved(index)]]"
+                                             readonly$="[[!editMode]]"
                                              invalid$="[[!_isValid('emailAddress', item.title, item.first_name, item.last_name, item.phone, item.email, index)]]"
                                              error-message="A valid & unused email address is required">
                                     <iron-icon prefix icon="communication:email"></iron-icon>

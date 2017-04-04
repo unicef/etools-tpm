@@ -137,11 +137,9 @@
             return filesLength === 0 && readonly === true;
         },
 
-        _showDownloadBtn: function(file) {
-            if (file && typeof file.path === 'string' && file.path !== '') {
-                return true;
-            }
-            return false;
+        _showDownloadBtn: function(file, allowDownload) {
+            console.log(allowDownload)
+            return allowDownload && file && typeof file.attachment_file === 'string' && file.attachment_file !== '';
         },
 
         _getFileSelectedClass: function(file) {

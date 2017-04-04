@@ -67,6 +67,7 @@
   "email": "adi@unicef.org",
   "is_staff": true,
   "is_active": true,
-  "user_type": "super",
+  "user_type": "unicefUser",
+  "user_type2": "super",
   "date_joined": "2016-12-21T15:04:10Z"
 }]

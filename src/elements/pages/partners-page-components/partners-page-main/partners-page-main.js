@@ -31,6 +31,7 @@ Polymer({
             this._setPartnersListQueries(queries);
             this.view = 'list'
         } else if (!isNaN(+view)) {
+            this.partnerId = +view;
             this.view = 'info';
         } else {
             this.fire('404');

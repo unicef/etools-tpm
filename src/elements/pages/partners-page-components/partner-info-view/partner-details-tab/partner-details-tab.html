@@ -17,14 +17,14 @@
                     <paper-input label="Full Name"
                                  value="[[partner.name]]"
                                  placeholder="&#8212;"
-                                 readonly></paper-input>
+                                 readonly$="[[!editMode]]"></paper-input>
                 </div>
                 <div class="input-container">
                     <!-- Short name -->
                     <paper-input label="Vendor Number"
                                  value="[[partner.vendor_number]]"
                                  placeholder="&#8212;"
-                                 readonly></paper-input>
+                                 readonly$="[[!editMode]]"></paper-input>
                 </div>
 
             </div>
@@ -35,7 +35,7 @@
                     <paper-input label="Address"
                                  value="{{partner.address}}"
                                  placeholder="&#8212;"
-                                 readonly>
+                                 readonly$="[[!editMode]]">
                         <iron-icon prefix icon="communication:location-on"></iron-icon>
                     </paper-input>
                 </div>
@@ -48,7 +48,7 @@
                     <paper-input label="Phone Number"
                                  value="{{partner.phone_number}}"
                                  placeholder="&#8212;"
-                                 readonly>
+                                 readonly$="[[!editMode]]">
                         <iron-icon prefix icon="communication:phone"></iron-icon>
                     </paper-input>
                 </div>
@@ -58,7 +58,7 @@
                     <paper-input label="E-mail address"
                                  value="{{partner.email}}"
                                  placeholder="&#8212;"
-                                 readonly>
+                                 readonly$="[[!editMode]]">
                         <iron-icon prefix icon="communication:email"></iron-icon>
                     </paper-input>
                 </div>

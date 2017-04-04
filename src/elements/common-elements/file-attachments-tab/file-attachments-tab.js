@@ -18,10 +18,6 @@ Polymer({
                 {file_name: 'Filename_document.doc', type: '3'}
             ]
         },
-        readonly: {
-            type: Boolean,
-            value: false
-        },
         title: {
             type: String,
             value: 'Attachments'

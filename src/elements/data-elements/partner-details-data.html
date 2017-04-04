@@ -1,0 +1,54 @@
+<!--import [polymer, etools-ajax, lodash, permission-controller]-->
+
+<dom-module id="partner-details-data">
+
+    <template>
+
+        <etools-ajax endpoint="[[endpoint]]"
+                     on-success="_handleResponse"
+                     on-fail="_handleError"></etools-ajax>
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'partner-details-data',
+
+            behaviors: [
+                etoolsAppConfig.globals
+            ],
+
+            properties: {
+                partnerId: {
+                    type: Number,
+                    observer: '_idChanged'
+                },
+                partnerDetails: {
+                    type: Object,
+                    notify: true
+                }
+            },
+
+
+            _handleResponse: function (data) {
+                this.partnerDetails = data.detail;
+                this.set('endpoint', {})
+                this.fire('global-loading');
+            },
+
+            _handleError: function (rsp, err) {
+                this.fire('404');
+            },
+
+            _idChanged: function(id) {
+                if (!id || isNaN(id)) return;
+                this.fire('global-loading', {message: 'Loading data...', active: true});
+                this.endpoint = this.getEndpoint('partnerDetails', {id: id});
+            }
+
+        });
+
+    </script>
+
+</dom-module>

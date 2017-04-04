@@ -22,6 +22,9 @@ App global configuration
 
         },
         localEndpoints: {
+            partnerDetails: {
+                template: '/data/partner-details.json?id="<%=id%>"'
+            },
             userProfile: {
                 url: '/data/user-profile.json',
 //                exp: 30 * 60 * 1000, // 30min

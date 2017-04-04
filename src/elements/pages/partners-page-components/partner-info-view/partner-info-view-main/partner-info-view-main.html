@@ -21,7 +21,6 @@
 
             <app-header id="header" fixed shadow>
                 <app-main-header></app-main-header>
-
             </app-header>
 
             <pages-header-element show-export-button
@@ -39,15 +38,15 @@
                                 attr-for-selected="name">
 
                         <div name="details">
-                            <partner-details-tab partner="[[partner]]"></partner-details-tab>
+                            <partner-details-tab partner="[[partner]]" edit-mode="[[_allowEdit()]]"></partner-details-tab>
 
                             <etools-content-panel title$="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
-                                <partner-staff-members-tab  data-items="{{partner.staff_members}}" edit-mode="[[editMode]]"></partner-staff-members-tab>
+                                <partner-staff-members-tab  data-items="{{partner.staff_members}}" edit-mode="[[_allowEdit()]]"></partner-staff-members-tab>
                             </etools-content-panel>
                         </div>
 
                         <div name="attachments">
-                            <file-attachments-tab></file-attachments-tab>
+                            <file-attachments-tab files="{{partner.attachments}}" edit-mode="[[_allowEdit()]]" allow-download="[[_allowDownload()]]"></file-attachments-tab>
                         </div>
 
                     </iron-pages>

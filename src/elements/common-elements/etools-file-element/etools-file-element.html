@@ -61,8 +61,8 @@
                             <div class$="file-actions [[_getFileSelectedClass(file)]]">
                                 <!-- download btn if file was uploaded -->
                                 <paper-button class="download-button"
-                                              disabled$="[[!_showDownloadBtn(file)]]"
-                                              hidden$="[[!_showDownloadBtn(file)]]"
+                                              disabled$="[[!_showDownloadBtn(file, allowDownload)]]"
+                                              hidden$="[[!_showDownloadBtn(file, allowDownload)]]"
                                               on-tap="_downloadFile"
                                               title="Download">
                                     <iron-icon icon="cloud-download"></iron-icon>

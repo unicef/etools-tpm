@@ -9,7 +9,8 @@
 
             <etools-file-element activate-file-types
                          multiple
-                         readonly="[[readonly]]"
+                         readonly="[[!editMode]]"
+                         allow-download="[[allowDownload]]"
                          label=""
                          files="{{files}}"
                          file-types="[[fileTypes]]"></etools-file-element>
