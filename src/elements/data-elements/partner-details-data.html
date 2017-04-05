@@ -35,7 +35,7 @@
             _handleResponse: function (data) {
                 this.partnerDetails = data.detail;
                 this.set('endpoint', {});
-                this.fire('global-loading');
+                this.fire('global-loading', {type: 'partner-details'});
             },
 
             _handleError: function (rsp, err) {
@@ -46,7 +46,7 @@
                 if (!id || isNaN(id) || id === this.lastId) return;
                 this.lastId = id;
                 this.partnerDetails = {};
-                this.fire('global-loading', {message: 'Loading data...', active: true});
+                this.fire('global-loading', {message: 'Loading data...', active: true, type: 'partner-details'});
                 this.endpoint = this.getEndpoint('partnerDetails', {id: id});
             }
 

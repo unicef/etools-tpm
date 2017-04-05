@@ -29,8 +29,11 @@ Polymer({
             value: function () {
                 return [];
             }
+        },
+        globalLoadingQueue: {
+            type: Array,
+            value: function() {return [];}
         }
-
     },
 
     observers: [
@@ -46,7 +49,7 @@ Polymer({
     },
 
     attached: function () {
-        this.fire('global-loading', {message: 'Loading...', active: true});
+        this.fire('global-loading', {message: 'Loading...', active: true, type: 'initialisation'});
         if (this.route.path === '/') {
             this.set('route.path', '/partners/list');
         }
@@ -85,7 +88,7 @@ Polymer({
 
     _pageChanged: function (page) {
         if (Polymer.isInstance(this.$[`${page}`])) return;
-        this.fire('global-loading', {message: 'Loading...', active: true});
+        this.fire('global-loading', {message: 'Loading...', active: true, type: 'initialisation'});
 
         var resolvedPageUrl;
         if (page === 'not-found') {
@@ -95,7 +98,7 @@ Polymer({
         }
         this.importHref(resolvedPageUrl, () => {
             if (!this.initLoadingComplete) { this.initLoadingComplete = true; }
-            this.fire('global-loading');
+            this.fire('global-loading', {type: 'initialisation'});
         }, this._pageNotFound, true);
     },
 
@@ -109,14 +112,23 @@ Polymer({
     },
 
     _handleGlobalLoading: function(event) {
-        if (!event.detail) return;
+        if (!event.detail || !event.detail.type) {
+            console.error('Bad details object', JSON.stringify(event.detail));
+            return;
+        }
         let loadingElement =  this.$['global-loading'];
 
-        if (event.detail.active && loadingElement.active) return;
-        if (typeof event.detail.message === 'string' && event.detail.message !== '') {
+
+        if (event.detail.active && loadingElement.active) {
+            this.globalLoadingQueue.push(event);
+        } else if (event.detail.active && typeof event.detail.message === 'string' && event.detail.message !== '') {
             loadingElement.loadingText = event.detail.message;
+            loadingElement.active = true;
+        } else {
+            loadingElement.active = false;
+            this.globalLoadingQueue = this.globalLoadingQueue.filter((element) => {return element.detail.type !== event.detail.type});
+            this.globalLoadingQueue.length ? this._handleGlobalLoading(this.globalLoadingQueue.shift()) : '';
         }
-        loadingElement.active = event.detail.active;
     }
 
 });
