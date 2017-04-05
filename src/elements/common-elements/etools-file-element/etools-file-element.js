@@ -108,7 +108,6 @@
                 var type = this.fileTypes.filter(function(type) {
                     return parseInt(type.id, 10) === parseInt(fileType, 10);
                 })[0];
-                console.log(this.fileTypes)
                 if (type) {
                     return type.name;
                 }
