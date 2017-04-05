@@ -7,5 +7,6 @@ Polymer({
             type: Boolean,
             observer: 'updateStyles'
         }
-    }
+    },
+    _getTitleValue: function(value) { return value || ''; }
 });

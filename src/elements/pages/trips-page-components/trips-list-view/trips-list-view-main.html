@@ -1,4 +1,4 @@
-<!--import [polymer, module-styles, page-layout-styles, shared-styles, app-main-header, pages-header-element, search-and-filter, list-tab-main, trips-list-data]-->
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, app-main-header, pages-header-element, list-tab-main, trips-list-data]-->
 
 <dom-module id="trips-list-view-main">
     <template>
@@ -27,7 +27,6 @@
             <pages-header-element show-export-button
                                   title="List of Trips"></pages-header-element>
 
-            <search-and-filter query-params="{{queryParams}}" filters="[[filters]]"></search-and-filter>
 
             <list-tab-main header-title="results to show"
                            list-length="[[listLength]]"

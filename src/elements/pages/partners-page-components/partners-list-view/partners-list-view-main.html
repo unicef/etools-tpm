@@ -1,4 +1,4 @@
-<!--import [polymer, module-styles, page-layout-styles, shared-styles, dialog-element, app-main-header, search-and-filter, list-tab-main, partners-list-data]-->
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, dialog-element, app-main-header, list-tab-main, partners-list-data]-->
 
 <dom-module id="partners-list-view-main">
     <template>
@@ -32,8 +32,6 @@
                                   show-add-button="{{_showAddButton()}}"
                                   btn-text="Add New Partner"
                                   title="Third Party Monitors"></pages-header-element>
-
-            <search-and-filter query-params="{{queryParams}}" filters="[[filters]]"></search-and-filter>
 
             <list-tab-main header-title="results to show"
                            data="[[partnersList]]"

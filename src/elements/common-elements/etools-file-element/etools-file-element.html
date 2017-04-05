@@ -1,9 +1,9 @@
 <!--import [polymer, iron-flex-layout, paper-toast, paper-input, paper-input/paper-input-container,
-            paper-input/paper-input-error, paper-dropdown-menu, paper-menu, paper-item, etools-file-styles]-->
+            paper-input/paper-input-error, paper-dropdown-menu, paper-menu, paper-item, etools-file-styles, tab-inputs-styles]-->
 
 <dom-module id="etools-file-element">
     <template>
-        <style include="etools-file-styles">
+        <style include="etools-file-styles tab-inputs-styles">
             :host {
                 position: relative;
                 display: block;
@@ -37,9 +37,9 @@
 
                                 <template is="dom-if" if="[[_showReadonlyType(file.type, readonly)]]">
                                     <div class="file-type-input-wrapper">
-                                        <paper-input class="file-type-input" label="[[fileTypesLabel]]"
+                                        <paper-input class="file-type-input disabled-as-readonly" label="[[fileTypesLabel]]"
                                                      value$="[[_getFileTypeStr(file.type)]]"
-                                                     placeholder="&#8212;" readonly></paper-input>
+                                                     placeholder="&#8212;" readonly disabled></paper-input>
                                     </div>
                                 </template>
                                 <template is="dom-if" if="[[_showFileType(fileTypes.length, readonly)]]">

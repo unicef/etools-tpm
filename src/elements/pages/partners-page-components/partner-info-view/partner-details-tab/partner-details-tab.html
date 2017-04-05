@@ -12,7 +12,7 @@
 
         <etools-content-panel class="content-section clearfix" title="Partner Details">
             <div class="row-h group">
-                <div class="input-container">
+                <div class="input-container" title="[[_getTitleValue(partner.name)]]">
                     <!-- Organization name -->
                     <paper-input label="Full Name"
                                  value="[[partner.name]]"
@@ -20,7 +20,7 @@
                                  class="disabled-as-readonly"
                                  disabled$="[[!editMode]]"></paper-input>
                 </div>
-                <div class="input-container">
+                <div class="input-container" title="[[_getTitleValue(partner.vendor_number)]]">
                     <!-- Short name -->
                     <paper-input label="Vendor Number"
                                  value="[[partner.vendor_number]]"
@@ -32,7 +32,7 @@
             </div>
 
             <div class="row-h group">
-                <div class="input-container">
+                <div class="input-container" title="{{_getTitleValue(partner.address)}}">
                     <!-- Address -->
                     <paper-input label="Address"
                                  value="{{partner.address}}"
@@ -46,7 +46,7 @@
 
 
             <div class="row-h group">
-                <div class="input-container">
+                <div class="input-container" title="{{_getTitleValue(partner.phone_number)}}">
                     <!-- Telephone number -->
                     <paper-input label="Phone Number"
                                  value="{{partner.phone_number}}"
@@ -57,7 +57,7 @@
                     </paper-input>
                 </div>
 
-                <div class="input-container">
+                <div class="input-container" title="{{_getTitleValue(partner.email)}}">
                     <!-- Email address -->
                     <paper-input label="E-mail address"
                                  value="{{partner.email}}"

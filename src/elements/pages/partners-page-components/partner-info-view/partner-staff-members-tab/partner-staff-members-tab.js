@@ -108,5 +108,6 @@ Polymer({
                 this._addElement();
             }
         }
-    }
+    },
+    _getTitleValue: function(value) { return value || ''; }
 });
