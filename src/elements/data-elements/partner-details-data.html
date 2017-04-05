@@ -27,13 +27,14 @@
                 partnerDetails: {
                     type: Object,
                     notify: true
-                }
+                },
+                lastId: Number
             },
 
 
             _handleResponse: function (data) {
                 this.partnerDetails = data.detail;
-                this.set('endpoint', {})
+                this.set('endpoint', {});
                 this.fire('global-loading');
             },
 
@@ -42,7 +43,9 @@
             },
 
             _idChanged: function(id) {
-                if (!id || isNaN(id)) return;
+                if (!id || isNaN(id) || id === this.lastId) return;
+                this.lastId = id;
+                this.partnerDetails = {};
                 this.fire('global-loading', {message: 'Loading data...', active: true});
                 this.endpoint = this.getEndpoint('partnerDetails', {id: id});
             }
