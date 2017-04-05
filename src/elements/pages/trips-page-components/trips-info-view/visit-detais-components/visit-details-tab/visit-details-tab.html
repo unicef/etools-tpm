@@ -64,12 +64,13 @@
                             options="[[partners]]"
                             readonly="[[!editMode]]"
                             label="Implementing Partner"
+                            on-value-change="_partnerFieldChanged"
                             placeholder="&#8212;"></etools-searchable-multiselection-menu>
                 </div>
                 <div class="input-container input-container-s">
                     <!-- Partnership -->
                     <etools-searchable-multiselection-menu
-                            readonly="[[!editMode]]"
+                            disabled="[[partnershipDisabled]]"
                             readonly="[[!editMode]]"
                             label="Partnership"
                             placeholder="&#8212;"></etools-searchable-multiselection-menu>
@@ -98,7 +99,9 @@
                 <div class="input-container">
                     <!-- Section of UNICEF Focal Point -->
                     <etools-searchable-multiselection-menu
-                            readonly="[[!editMode]]"
+                            class="disabled-as-readonly"
+                            readonly
+                            disabled
                             label="Section of UNICEF Focal Point"
                             placeholder="&#8212;"></etools-searchable-multiselection-menu>
                 </div>

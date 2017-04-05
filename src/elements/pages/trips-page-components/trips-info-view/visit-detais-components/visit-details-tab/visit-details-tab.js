@@ -22,10 +22,17 @@
             partners: {
                 type: Array,
                 value: partners
+            },
+            partnershipDisabled: {
+                type: Boolean,
+                value: true
             }
         },
         _editMoseChanged: function() {
             this.updateStyles();
+        },
+        _partnerFieldChanged: function(e) {
+            if (this.partnershipDisabled) this.partnershipDisabled = false
         }
     });
 
