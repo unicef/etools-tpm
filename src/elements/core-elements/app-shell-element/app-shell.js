@@ -84,6 +84,9 @@ Polymer({
     },
 
     _pageChanged: function (page) {
+        if (Polymer.isInstance(this.$[`${page}`])) return;
+        this.fire('global-loading', {message: 'Loading...', active: true});
+
         var resolvedPageUrl;
         if (page === 'not-found') {
             resolvedPageUrl = this.resolveUrl('../../pages/not-found-page-view/not-found-page-view.html');
@@ -91,10 +94,8 @@ Polymer({
             resolvedPageUrl = this.resolveUrl(`/elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`);
         }
         this.importHref(resolvedPageUrl, () => {
-            if (!this.initLoadingComplete) {
-                this.initLoadingComplete = true;
-                this.fire('global-loading');
-            }
+            if (!this.initLoadingComplete) { this.initLoadingComplete = true; }
+            this.fire('global-loading');
         }, this._pageNotFound, true);
     },
 
@@ -111,6 +112,7 @@ Polymer({
         if (!event.detail) return;
         let loadingElement =  this.$['global-loading'];
 
+        if (event.detail.active && loadingElement.active) return;
         if (typeof event.detail.message === 'string' && event.detail.message !== '') {
             loadingElement.loadingText = event.detail.message;
         }

@@ -61,11 +61,11 @@
                         attr-for-selected="name"
                         fallback-selection="not-found"
                         role="main">
-                <partners-page-main name="partners" route="{{subroute}}" base="{{page}}"
+                <partners-page-main name="partners" id="partners" route="{{subroute}}" base="{{page}}"
                                     query-params="{{queryParams}}"></partners-page-main>
-                <trips-page-main name="trips" route="{{subroute}}" base="{{page}}"
+                <trips-page-main name="trips" id="trips" route="{{subroute}}" base="{{page}}"
                                  query-params="{{queryParams}}"></trips-page-main>
-                <not-found-page-view name="not-found"></not-found-page-view>
+                <not-found-page-view name="not-found" id="not-found"></not-found-page-view>
             </iron-pages>
 
         </app-drawer-layout>
