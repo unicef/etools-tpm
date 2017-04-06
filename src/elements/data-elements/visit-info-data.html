@@ -1,6 +1,6 @@
-<!--import [polymer, etools-ajax, lodash, permission-controller]-->
+<!--import [polymer, etools-ajax, lodash]-->
 
-<dom-module id="partner-details-data">
+<dom-module id="visit-info-data">
 
     <template>
 
@@ -13,19 +13,19 @@
 
         Polymer({
 
-            is: 'partner-details-data',
+            is: 'visit-info-data',
 
             behaviors: [
                 etoolsAppConfig.globals
             ],
 
             properties: {
-                partnerId: {
+                visitId: {
                     type: Number,
                     notify: true,
                     observer: '_idChanged'
                 },
-                partnerDetails: {
+                visitInfo: {
                     type: Object,
                     notify: true
                 },
@@ -38,31 +38,32 @@
 
 
             _handleResponse: function (data) {
-                this.partnerDetails = data.detail;
-                this.fire('global-loading', {type: 'partner-details'});
-                this.view = 'info';
-                this.partnerId = null;
+                this.visitInfo = data.detail;
+                this.set('endpoint', {});
+                this.fire('global-loading', {type: 'visit-info'});
+                this.view = 'visit';
+                this.visitId = null;
                 this.lastError = false;
             },
 
             _handleError: function (rsp, err) {
-                this.fire('global-loading', {type: 'partner-details'});
-                this.fire('404', {message: 'Partner not found!'});
-                this.partnerId = null;
+                this.fire('global-loading', {type: 'visit-info'});
+                this.fire('404', {message: 'Visit not found!'});
+                this.visitId = null;
                 this.lastError = true;
             },
 
             _idChanged: function(id) {
                 if (!id || isNaN(id)) return;
                 if (+id === this.lastId) {
-                    this.lastError ? this._handleError() : this.view = 'info';
-                    this.partnerId = null;
+                    this.lastError ? this._handleError() : this.view = 'visit';
+                    this.visitId = null;
                     return;
                 }
-                this.lastId = id;
-                this.partnerDetails = {};
-                this.fire('global-loading', {message: 'Loading partner data...', active: true, type: 'partner-details'});
-                this.endpoint = this.getEndpoint('partnerDetails', {id: id});
+                this.lastId = +id;
+                this.visitInfo = {};
+                this.fire('global-loading', {message: 'Loading visit data...', active: true, type: 'visit-info'});
+                this.endpoint = this.getEndpoint('visitInfo', {id: id});
             }
 
         });

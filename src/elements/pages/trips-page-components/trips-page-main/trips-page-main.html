@@ -1,6 +1,6 @@
 <!--import [polymer, iron-pages, app-route]-->
 
-<!--import [page-layout-styles, shared-styles,  module-styles,
+<!--import [page-layout-styles, shared-styles,  module-styles, visit-info-data,
             trips-list-view-main, trips-info-view-main, query-params-controller]-->
 
 <dom-module id="trips-page-main">
@@ -12,6 +12,8 @@
                 pattern="/:view"
                 data="{{routeData}}"
                 tail="{{subroute}}"></app-route>
+
+        <visit-info-data visit-info="{{visitInfo}}" visit-id="{{visitId}}" view="{{view}}"></visit-info-data>
 
         <iron-pages id="categoryPages"
                     selected="{{view}}"

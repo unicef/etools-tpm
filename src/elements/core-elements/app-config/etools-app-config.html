@@ -26,6 +26,9 @@ App global configuration
             partnerDetails: {
                 template: '/data/partner-details.json?id="<%=id%>"'
             },
+            visitInfo: {
+                template: '/data/visit-info.json?id="<%=id%>"'
+            },
             userProfile: {
                 url: '/data/user-profile.json',
 //                exp: 30 * 60 * 1000, // 30min
@@ -73,13 +76,13 @@ App global configuration
         // permissions
         permissions: {
             superPermissions: [
-                    'viewPartnersList',
-                    'viewPartnersDetails',
-                    'addNewPartner',
-                    'editPartnerDetails',
-                    'viewPartnerAttachments',
-                    'downloadPartnerAttachments',
-                    'editPartnerAttachments'
+                'viewPartnersList',
+                'viewPartnersDetails',
+                'addNewPartner',
+                'editPartnerDetails',
+                'viewPartnerAttachments',
+                'downloadPartnerAttachments',
+                'editPartnerAttachments'
             ], //for testing
             unicefUserPermissions: [
                 'viewPartnersList',

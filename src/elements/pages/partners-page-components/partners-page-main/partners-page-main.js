@@ -33,7 +33,6 @@ Polymer({
         } else if (!isNaN(+view)) {
             this.clearQueries();
             this.partnerId = +view;
-            // this.view = 'info';
         } else {
             this.fire('404');
         }

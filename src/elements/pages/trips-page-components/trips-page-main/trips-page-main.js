@@ -21,8 +21,8 @@ Polymer({
             this._setTripsListQueries(queries);
             this.view = 'list'
         } else if (!isNaN(+view)) {
-            this.view = 'visit';
             this.clearQueries();
+            this.visitId = +view;
         } else {
             this.fire('404');
         }

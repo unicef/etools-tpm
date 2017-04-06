@@ -37,7 +37,8 @@ Polymer({
     },
 
     observers: [
-        '_routePageChanged(routeData.page)'
+        // '_routePageChanged(routeData.page)',
+        '_routePageChanged(route)'
     ],
 
     listeners: {
@@ -81,9 +82,9 @@ Polymer({
         }
     },
 
-    _routePageChanged: function (page) {
-        if (!this.initLoadingComplete) return;
-        this.page = page || 'partners';
+    _routePageChanged: function () {
+        if (!this.initLoadingComplete || !this.routeData.page) return;
+        this.page = this.routeData.page || 'partners';
     },
 
     _pageChanged: function (page) {
@@ -131,6 +132,9 @@ Polymer({
             this.globalLoadingQueue = this.globalLoadingQueue.filter((element) => {return element.detail.type !== event.detail.type});
             this.globalLoadingQueue.length ? this._handleGlobalLoading(this.globalLoadingQueue.shift()) : '';
         }
+    },
+    test: function(t) {
+        console.log(t)
     }
 
 });
