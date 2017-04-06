@@ -13,11 +13,9 @@ Polymer({
         }
     },
 
-    _canBeRemoved: function(index) {
-        if (!this.editMode) {
-            return false;
-        }
-        return true;
+    ready: function() {window.test = this;},
+    _canBeRemoved: function() {
+        return this.editMode;
     },
 
     _revertIndicator: function() {
@@ -41,10 +39,4 @@ Polymer({
             this._openDeleteConfirmation(e);
         }
     }
-    // _addTypeOfSite: function(event) {
-    //     let model = event.model;
-    //     if (!model.location.type_of_sites) model.set('location.type_of_sites', []);
-    //
-    //     model.push('location.type_of_sites', {site: '', visits: []})
-    // }
 });
