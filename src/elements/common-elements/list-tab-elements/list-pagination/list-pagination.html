@@ -46,14 +46,14 @@
                 </paper-icon-button>
 
                 <paper-icon-button
-                        disabled$="{{_disableButton(currentPage, datalength, showingResults)}}"
+                        disabled$="{{_disableButton(currentPage, datalength, pageSize)}}"
                         icon="icons:chevron-right"
                         class$="chev next-arr [[pageMarker]]"
                         on-click="goToRight">
                 </paper-icon-button>
 
                 <paper-icon-button
-                        disabled$="{{_disableButton(currentPage, datalength, showingResults)}}"
+                        disabled$="{{_disableButton(currentPage, datalength, pageSize)}}"
                         icon="pagination:last-page"
                         on-click="goToLast"
                         class$="chev next-arr [[pageMarker]]">
