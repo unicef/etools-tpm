@@ -22,13 +22,18 @@
             properties: {
                 partnerId: {
                     type: Number,
+                    notify: true,
                     observer: '_idChanged'
                 },
                 partnerDetails: {
                     type: Object,
                     notify: true
                 },
-                lastId: Number
+                lastId: Number,
+                view: {
+                    type: String,
+                    notify: true
+                }
             },
 
 
@@ -36,17 +41,27 @@
                 this.partnerDetails = data.detail;
                 this.set('endpoint', {});
                 this.fire('global-loading', {type: 'partner-details'});
+                this.view = 'info';
+                this.partnerId = null;
+                this.lastError = false;
             },
 
             _handleError: function (rsp, err) {
-                this.fire('404');
+                this.fire('global-loading', {type: 'partner-details'});
+                this.fire('404', {message: 'Partner not found!'});
+                this.partnerId = null;
+                this.lastError = true;
             },
 
             _idChanged: function(id) {
-                if (!id || isNaN(id) || id === this.lastId) return;
+                if (!id || isNaN(id)) return;
+                if (+id === this.lastId) {
+                    this.lastError ? this._handleError() : this.view = 'info';
+                    return;
+                }
                 this.lastId = id;
                 this.partnerDetails = {};
-                this.fire('global-loading', {message: 'Loading data...', active: true, type: 'partner-details'});
+                this.fire('global-loading', {message: 'Loading partner data...', active: true, type: 'partner-details'});
                 this.endpoint = this.getEndpoint('partnerDetails', {id: id});
             }
 

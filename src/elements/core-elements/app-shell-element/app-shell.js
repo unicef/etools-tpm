@@ -102,9 +102,10 @@ Polymer({
         }, this._pageNotFound, true);
     },
 
-    _pageNotFound: function () {
+    _pageNotFound: function (event) {
         this.page = 'not-found';
-        this.fire('toast', {text: 'Oops you hit a 404!'});
+        let message = event && event.detail && event.detail.message ? `${event.detail.message}` : 'Oops you hit a 404!';
+        this.fire('toast', {text: message});
     },
 
     _profileLoaded: function() {
@@ -119,6 +120,7 @@ Polymer({
         let loadingElement =  this.$['global-loading'];
 
 
+        // console.log(`${event.detail.message}/${event.detail.type}`)
         if (event.detail.active && loadingElement.active) {
             this.globalLoadingQueue.push(event);
         } else if (event.detail.active && typeof event.detail.message === 'string' && event.detail.message !== '') {

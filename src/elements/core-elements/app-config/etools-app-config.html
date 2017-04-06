@@ -62,7 +62,7 @@ App global configuration
                 if (endpoint && endpoint.hasOwnProperty('template') && endpoint.template !== '') {
                     endpoint.url = this.baseSite + _.template(endpoint.template)(data);
                 }
-                return endpoint;
+                return _.clone(endpoint);
             },
 
             getPermissionsList: function (userType) {
