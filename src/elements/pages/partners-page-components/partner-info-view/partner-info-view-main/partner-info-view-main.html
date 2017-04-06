@@ -1,5 +1,5 @@
 <!--import [polymer, etools-content-panel, app-route, paper-tabs, app-layout]-->
-<!--import [module-styles, shared-styles, partner-status, app-main-header, search-and-filter,
+<!--import [module-styles, shared-styles, partner-actions-tab, app-main-header, search-and-filter,
             partner-details-tab, partner-staff-members-tab, file-attachments-tab]-->
 
 <dom-module id="partner-info-view-main">
@@ -24,7 +24,7 @@
             </app-header>
 
             <pages-header-element show-export-button
-                                  title="ACTION AGAINST HUNGER"></pages-header-element>
+                                  title="[[partner.name]]"></pages-header-element>
             <div class="tab-selector">
                 <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                     <paper-tab name="details"><span class="tab-content">Partner details</span></paper-tab>
@@ -54,9 +54,11 @@
 
                 </div>
 
-                <div id="sidebar">
-                    <partner-status partner="[[partner]]"></partner-status>
-                </div>
+               <template is="dom-if" if="[[_allowEdit()]]" restamp>
+                   <div id="sidebar">
+                       <partner-actions-tab></partner-actions-tab>
+                   </div>
+               </template>
             </div>
 
         </app-header-layout>

@@ -50,6 +50,11 @@
 
                 --paper-input-container-input: #{'{
                     font-size: 15px;
+                    box-sizing: border-box;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    padding-right: 3px;
                 }'};
 
                 --paper-input-prefix: #{'{
@@ -61,13 +66,6 @@
             paper-input[readonly], paper-input[disabled].disabled-as-readonly {
                 --paper-input-container: #{'{
                     opacity: 1 !important;
-                }'};
-                --paper-input-container-input: #{'{
-                    box-sizing: border-box;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    padding-right: 3px;
                 }'};
                 --paper-input-container-underline: #{'{
                     border-bottom: 1px dashed rgba(0, 0, 0, 0.20) !important;

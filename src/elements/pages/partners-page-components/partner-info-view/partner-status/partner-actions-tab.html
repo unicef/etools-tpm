@@ -1,0 +1,60 @@
+<!--import [polymer, iron-icons, iron-icons/av-icons, iron-flex-layout, paper-button, etools-content-panel]-->
+
+<dom-module id="partner-actions-tab">
+    <template>
+        <style>
+            :host {
+                position: relative;
+                display: block;
+                width: 100%;
+
+                --ecp-content: #{'{
+                    padding: 0;
+                }'};
+
+
+
+                .buttons-section {
+                    text-align: center;
+
+                    .partner-save-btn {
+                        height: 35px;
+                        width: 40%;
+                        min-width: 70px;
+                        margin: 21px 0;
+                        color: #ffffff;
+                        font-weight: 500;
+                        background-color: var(--module-primary);
+                    }
+                }
+
+            }
+        </style>
+
+        <etools-content-panel title="Actions">
+
+                <div class="buttons-section vertical">
+                    <paper-button
+                            raised
+                            class="partner-save-btn"
+                            on-tap="_triggerPartnerSave">
+                        Save
+                    </paper-button>
+                </div>
+
+        </etools-content-panel>
+
+    </template>
+
+    <script>
+        'use strict';
+
+        Polymer({
+            is: 'partner-actions-tab',
+
+            _triggerPartnerSave: function() {
+                this.fire('save-partner', {});
+            }
+        });
+    </script>
+</dom-module>
