@@ -9,11 +9,16 @@
 .side-heading {
     margin: 0;
     height: 80px;
-    margin-right: 48px;
+    padding-right: 275px;
+    box-sizing: border-box;
 }
 .side-heading span.title {
     font-size: 24px;
     padding-left: 48px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .side-heading .grey-buttons {
     color: var(--gray-mid);
@@ -39,3 +44,8 @@
     background-color: var(--module-primary);
 }
 
+.side-heading-button-holder {
+    position: absolute;
+    right: 45px;
+    top: 10px;
+}
