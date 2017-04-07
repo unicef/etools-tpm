@@ -37,7 +37,6 @@ Polymer({
     },
 
     observers: [
-        // '_routePageChanged(routeData.page)',
         '_routePageChanged(route)'
     ],
 

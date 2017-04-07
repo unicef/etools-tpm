@@ -8,6 +8,10 @@ Polymer({
             type: Object,
             notify: true,
             observer: '_queryParamsChanged'
+        },
+        withoutPagination: {
+            type: Boolean,
+            value: false
         }
     },
     observers: [

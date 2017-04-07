@@ -11,6 +11,10 @@ Polymer({
             type: Object,
             notify: true,
             observer: '_queryParamsChanged'
+        },
+        withoutPagination: {
+            type: Boolean,
+            value: true
         }
     },
     observers: [
@@ -26,12 +30,12 @@ Polymer({
 
     _routeConfig: function(view) {
         if (this.base !== 'partners') return;
+        this.clearQueries();
         if (view === 'list' && this.checkPermission('viewPartnersList')) {
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
             this.view = 'list'
         } else if (!isNaN(+view)) {
-            this.clearQueries();
             this.partnerId = +view;
         } else {
             this.fire('404');
@@ -41,10 +45,10 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!queries.size)  queriesUpdates.size = '10';
+        if (!this.withoutPagination && !queries.size)  queriesUpdates.size = '10';
         if (!queries.ordered_by) queriesUpdates.ordered_by = 'vendor_number.asc';
 
-        if (queries.page) {
+        if (!this.withoutPagination && queries.page) {
             let page = +queries.page;
             if (page < 2 || isNaN(page) ||
                 (!!this.lastParams && (queries.size !== this.lastParams.size || queries.ordered_by !== this.lastParams.ordered_by))) {
