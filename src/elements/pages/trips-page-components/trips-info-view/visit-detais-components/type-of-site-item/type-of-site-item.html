@@ -1,4 +1,4 @@
-<!--import [polymer, paper-fab, paper-icon-button, paper-input, etools-searchable-multiselection-menu]-->
+<!--import [polymer, paper-fab, paper-icon-button, paper-input]-->
 <!--import [tab-inputs-styles, repeatable-data-sets-behavior]-->
 
 <dom-module id="type-of-site-item">
@@ -22,22 +22,13 @@
 
                 <div class="repeatable-item-content">
                     <div class="row-h group">
-                        <div class="input-container input-container-ms">
+                        <div class="input-container input-container-s">
                             <!-- Type of Site -->
-                            <etools-searchable-multiselection-menu
+                            <paper-input
+                                    value="{{site.site}}"
                                     readonly="[[!editMode]]"
                                     label="Type of Site"
-                                    placeholder="&#8212;"></etools-searchable-multiselection-menu>
-                        </div>
-                    </div>
-
-                    <div class="row-h group">
-                        <div class="input-container input-container-l">
-                            <!-- Types of Visit -->
-                            <etools-searchable-multiselection-menu
-                                    readonly="[[!editMode]]"
-                                    label="Types of Visit"
-                                    placeholder="&#8212;"></etools-searchable-multiselection-menu>
+                                    placeholder="&#8212;"></paper-input>
                         </div>
                     </div>
                 </div>
