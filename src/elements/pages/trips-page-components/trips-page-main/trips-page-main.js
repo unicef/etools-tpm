@@ -35,8 +35,8 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!this.withoutPagination && !queries.size) { queriesUpdates.size = '10' };
-        if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc' };
+        if (!this.withoutPagination && !queries.size) { queriesUpdates.size = '10'; }
+        if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
 
         if (!this.withoutPagination && queries.page) {
             let page = +queries.page;
