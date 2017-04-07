@@ -29,12 +29,12 @@ Polymer({
     },
 
     _routeConfig: function(view) {
-        if (this.base !== 'partners') return;
+        if (this.base !== 'partners') { return; }
         this.clearQueries();
         if (view === 'list' && this.checkPermission('viewPartnersList')) {
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
-            this.view = 'list'
+            this.view = 'list';
         } else if (!isNaN(+view)) {
             this.partnerId = +view;
         } else {
@@ -45,8 +45,8 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!this.withoutPagination && !queries.size)  queriesUpdates.size = '10';
-        if (!queries.ordered_by) queriesUpdates.ordered_by = 'vendor_number.asc';
+        if (!this.withoutPagination && !queries.size)  { queriesUpdates.size = '10'; }
+        if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
 
         if (!this.withoutPagination && queries.page) {
             let page = +queries.page;
@@ -56,18 +56,20 @@ Polymer({
             }
         }
 
-        if (!this.lastParams) { this.lastParams = _.clone(queries); }
-        else if (!_.isEqual(this.lastParams, queries)) { this.lastParams = _.clone(queries); }
-
+        if (!this.lastParams) {
+            this.lastParams = _.clone(queries);
+        } else if (!_.isEqual(this.lastParams, queries)) {
+            this.lastParams = _.clone(queries);
+        }
 
         this.updateQueries(queriesUpdates);
         return this.parseQueries();
     },
     _queryParamsChanged: function() {
-        if (this.base !== 'partners' || !this.routeData) return;
+        if (this.base !== 'partners' || !this.routeData) { return; }
         if (this.routeData.view === 'list') {
             let queries = this._configListParams();
-            this._setPartnersListQueries(queries)
+            this._setPartnersListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
             this.clearQueries();
         }

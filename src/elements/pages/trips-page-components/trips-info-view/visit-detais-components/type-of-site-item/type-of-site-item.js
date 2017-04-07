@@ -6,7 +6,7 @@ Polymer({
     behaviors: [
         TPMBehaviors.RepeatableDataSetsBehavior
     ],
-    properties: { },
+    properties: {},
 
     ready: function() {
         this.dataSetModel = {
@@ -34,11 +34,11 @@ Polymer({
     _addTypeOfSite: function() {
         if (this.editMode) {
             var lastLocationAdded = this.dataItems[this.dataItems.length - 1];
-            if (lastLocationAdded
-                && !this._notEmpty(lastLocationAdded.site)) {
+            if (lastLocationAdded &&
+                !this._notEmpty(lastLocationAdded.site)) {
                 this.fire('toast', {text: 'Last Type of Site field is empty!', showCloseBtn: true});
             } else {
-            this._addElement();
+                this._addElement();
             }
         }
     },

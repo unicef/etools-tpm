@@ -42,7 +42,7 @@
             },
             listHeadings: {
                 type: Array,
-                value: function () {
+                value: function() {
                     return [{
                         'size': 20,
                         'label': 'Vendor #',

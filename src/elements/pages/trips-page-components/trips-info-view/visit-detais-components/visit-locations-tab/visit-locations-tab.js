@@ -45,12 +45,12 @@ Polymer({
 
     _addNewLocation: function() {
         if (this.editMode) {
-            var lastLocationAdded = this.dataItems[this.dataItems.length - 1];
+            // var lastLocationAdded = this.dataItems[this.dataItems.length - 1];
             // if (lastLocationAdded
             //     && !this._notEmpty(lastLocationAdded.location)) {
             //     this.fire('toast', {text: 'Last staff member fields are empty!', showCloseBtn: true});
             // } else {
-                this._addElement();
+            this._addElement();
             // }
         }
     },
@@ -59,8 +59,8 @@ Polymer({
     },
     _addTypeOfSite: function(event) {
         let model = event.model;
-        if (!model.location.type_of_sites) model.set('location.type_of_sites', []);
+        if (!model.location.type_of_sites) { model.set('location.type_of_sites', []); }
 
-        model.push('location.type_of_sites', {site: '', visits: []})
+        model.push('location.type_of_sites', {site: '', visits: []});
     }
 });

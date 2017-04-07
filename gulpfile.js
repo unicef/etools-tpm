@@ -76,6 +76,7 @@ const buildElements = require('./gulp-tasks/build-elements');
 const copyAssets = require('./gulp-tasks/copy-assets');
 const copyBower = require('./gulp-tasks/copy-bower');
 const runTests = require('./gulp-tasks/test');
+const jsLinter = require('./gulp-tasks/js-linter');
 
 // Log task end messages
 var log = function (message) {
@@ -132,10 +133,12 @@ gulp.task('default', gulp.series([
   project.serviceWorker
 ]));
 
+gulp.task('lint', jsLinter);
+
 gulp.task('test', gulp.series(gulp.parallel(buildElements, copyAssets, copyBower), runTests));
 
 gulp.task('watch', function () {
-  gulp.watch(['./src/elements/**/*.*'], gulp.series(buildElements));
+  gulp.watch(['./src/elements/**/*.*'], gulp.series(jsLinter, buildElements));
   gulp.watch(['./src/*.*', './src/assets/**/*.*'], gulp.series(copyAssets));
   gulp.watch(['./src/bower_components/**/*.*'], gulp.series(copyBower));
   gulp.watch(['./src/tests/**/*.*'], gulp.series(buildElements, runTests));
@@ -144,8 +147,8 @@ gulp.task('watch', function () {
 
 gulp.task('start', function () { nodemon({ script: 'server.js' }) });
 
-gulp.task('build', gulp.series(clean.build, gulp.parallel(buildElements, copyAssets, copyBower), 'watch'));
-gulp.task('server', gulp.series(clean.build, gulp.parallel(buildElements, copyAssets, copyBower), gulp.parallel('start', 'watch')));
+gulp.task('build', gulp.series(clean.build, jsLinter, gulp.parallel(buildElements, copyAssets, copyBower), 'watch'));
+gulp.task('server', gulp.series(clean.build, jsLinter, gulp.parallel(buildElements, copyAssets, copyBower), gulp.parallel('start', 'watch')));
 
 // DO NOT RUN
 // Fully builds project

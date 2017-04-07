@@ -97,12 +97,12 @@ Polymer({
     _addNewStaffMember: function() {
         if (this.editMode) {
             var lastStaffMemberAdded = this.dataItems[this.dataItems.length - 1];
-            if (lastStaffMemberAdded
-                && !this._notEmpty(lastStaffMemberAdded.title)
-                && !this._notEmpty(lastStaffMemberAdded.first_name)
-                && !this._notEmpty(lastStaffMemberAdded.last_name)
-                && !this._notEmpty(lastStaffMemberAdded.phone)
-                && !this._notEmpty(lastStaffMemberAdded.email)) {
+            if (lastStaffMemberAdded &&
+                !this._notEmpty(lastStaffMemberAdded.title) &&
+                !this._notEmpty(lastStaffMemberAdded.first_name) &&
+                !this._notEmpty(lastStaffMemberAdded.last_name) &&
+                !this._notEmpty(lastStaffMemberAdded.phone) &&
+                !this._notEmpty(lastStaffMemberAdded.email)) {
                 this.fire('toast', {text: 'Last staff member fields are empty!', showCloseBtn: true});
             } else {
                 this._addElement();
