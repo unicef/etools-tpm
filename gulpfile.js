@@ -75,6 +75,7 @@ const project = require('./gulp-tasks/project.js');
 const buildElements = require('./gulp-tasks/build-elements');
 const copyAssets = require('./gulp-tasks/copy-assets');
 const copyBower = require('./gulp-tasks/copy-bower');
+const runTests = require('./gulp-tasks/test');
 
 // Log task end messages
 var log = function (message) {
@@ -131,11 +132,15 @@ gulp.task('default', gulp.series([
   project.serviceWorker
 ]));
 
+gulp.task('test', gulp.series(gulp.parallel(buildElements, copyAssets, copyBower), runTests));
+
 gulp.task('watch', function () {
   gulp.watch(['./src/elements/**/*.*'], gulp.series(buildElements));
   gulp.watch(['./src/*.*', './src/assets/**/*.*'], gulp.series(copyAssets));
   gulp.watch(['./src/bower_components/**/*.*'], gulp.series(copyBower));
+  gulp.watch(['./src/tests/**/*.*'], gulp.series(buildElements, runTests));
 });
+
 
 gulp.task('start', function () { nodemon({ script: 'server.js' }) });
 
