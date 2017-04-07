@@ -76,7 +76,7 @@
                         trips = trips.orderBy(field);
                         if (order === 'desc') { trips = trips.reverse(); }
                     }
-                    if (params.size) {
+                    if (!this.withoutPagination && params.size) {
                         trips
                                 .offset( ((params.page || 1) - 1) * params.size )
                                 .limit(+params.size)

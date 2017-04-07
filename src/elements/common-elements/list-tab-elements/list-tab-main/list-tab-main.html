@@ -9,10 +9,10 @@
         <paper-card class="data-table">
 
             <template is="dom-if" if="[[!withoutPagination]]" restamp>
-                <span class="textprim data-card-heading">{{showingResults}} results to show</span>
+                <span class="textprim data-card-heading">{{showingResults}} {{headerTitle}}</span>
             </template>
             <template is="dom-if" if="[[withoutPagination]]" restamp>
-                <span class="textprim data-card-heading table-title">Partners List</span>
+                <span class="textprim data-card-heading table-title">{{headerTitle}}</span>
             </template>
 
             <list-header id="list-header"

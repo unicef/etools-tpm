@@ -11,7 +11,7 @@ Polymer({
         },
         withoutPagination: {
             type: Boolean,
-            value: false
+            value: true
         }
     },
     observers: [
@@ -35,10 +35,10 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!queries.size)  queriesUpdates.size = '10';
+        if (!this.withoutPagination && !queries.size)  queriesUpdates.size = '10';
         if (!queries.ordered_by) queriesUpdates.ordered_by = 'vendor_number.asc';
 
-        if (queries.page) {
+        if (!this.withoutPagination && queries.page) {
             let page = +queries.page;
             if (page < 2 || isNaN(page) ||
                 (!!this.lastParams && (queries.size !== this.lastParams.size || queries.ordered_by !== this.lastParams.ordered_by))) {
