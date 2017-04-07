@@ -10,9 +10,7 @@ Polymer({
     },
     _getStatusContainerClass: function(status, statusNumber) {
         let currentStatusNumber = this._getStatusNumber(status);
-        if (+statusNumber === currentStatusNumber) return 'active';
-        else if (+statusNumber < currentStatusNumber) return 'completed';
-        else  return '';
+        if (+statusNumber === currentStatusNumber) { return 'active'; } else if (+statusNumber < currentStatusNumber) { return 'completed'; } else { return ''; }
     },
     _getStatusNumber: function(status) {
         return ['draft', 'submitted', 'tpm_accepted', 'confirmed', 'tpm_reported', 'approved'].indexOf(status) + 1;

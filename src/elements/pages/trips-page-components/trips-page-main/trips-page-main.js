@@ -15,11 +15,11 @@ Polymer({
     ],
 
     _routeConfig: function(view) {
-        if (this.base !== 'trips') return;
+        if (this.base !== 'trips') { return; }
         if (view === 'list') {
             let queries = this._configListParams();
             this._setTripsListQueries(queries);
-            this.view = 'list'
+            this.view = 'list';
         } else if (!isNaN(+view)) {
             this.clearQueries();
             this.visitId = +view;
@@ -31,8 +31,8 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!queries.size)  queriesUpdates.size = '10';
-        if (!queries.ordered_by) queriesUpdates.ordered_by = 'vendor_number.asc';
+        if (!queries.size) { queriesUpdates.size = '10'; }
+        if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
 
         if (queries.page) {
             let page = +queries.page;
@@ -42,18 +42,16 @@ Polymer({
             }
         }
 
-        if (!this.lastParams) { this.lastParams = _.clone(queries); }
-        else if (!_.isEqual(this.lastParams, queries)) { this.lastParams = _.clone(queries); }
-
+        if (!this.lastParams) { this.lastParams = _.clone(queries); } else if (!_.isEqual(this.lastParams, queries)) { this.lastParams = _.clone(queries); }
 
         this.updateQueries(queriesUpdates);
         return this.parseQueries();
     },
     _queryParamsChanged: function() {
-        if (this.base !== 'trips' || !this.routeData) return;
+        if (this.base !== 'trips' || !this.routeData) { return; }
         if (this.routeData.view === 'list') {
             let queries = this._configListParams();
-            this._setTripsListQueries(queries)
+            this._setTripsListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
             this.clearQueries();
         }

@@ -1,7 +1,6 @@
 'use strict';
 
 (function() {
-    'use strict';
 
     Polymer({
 
@@ -10,7 +9,7 @@
         properties: {
             label: {
                 type: String,
-                value: "File attachment"
+                value: 'File attachment'
             },
             files: {
                 type: Object,
@@ -81,11 +80,9 @@
                 value: 'File Type'
             }
         },
-
         observers: [
             '_filesChange(files.*)'
         ],
-
         ready: function() {
             if (this.multiple && this.label === 'File attachment') {
                 this.set('label', this.label + '(s)');
@@ -94,15 +91,12 @@
                 this.files = [];
             }
         },
-
         _showFileType: function(fileTypesLength, readonly) {
             return this.activateFileTypes && fileTypesLength > 0 && readonly === false;
         },
-
         _showReadonlyType: function(fileType, readonly) {
             return readonly && this.activateFileTypes;
         },
-
         _getFileTypeStr: function(fileType) {
             if (this.fileTypes.length > 0) {
                 var type = this.fileTypes.filter(function(type) {
@@ -119,7 +113,6 @@
         _showLabel: function(label) {
             return typeof label === 'string' && label !== '';
         },
-
         _showUploadBtn: function(filesLength, readonly) {
             if (!this.multiple && filesLength > 0) {
                 return false;
@@ -135,14 +128,12 @@
         _showNoFileAttachedMsg: function(filesLength, readonly) {
             return filesLength === 0 && readonly === true;
         },
-
         _showDownloadBtn: function(file, allowDownload) {
             return allowDownload && file && typeof file.attachment_file === 'string' && file.attachment_file !== '';
         },
-
         _getFileSelectedClass: function(file) {
             if (!this._showDownloadBtn(file)) {
-                return 'only-selected'
+                return 'only-selected';
             }
             return '';
         },
@@ -156,7 +147,7 @@
             }
         },
 
-        _typeChanged: function(event) {
+        _typeChanged: function() {
             // var typeVal = Polymer.dom(event).localTarget.selected;
             // console.log(event.model.index, typeVal);
             return;
@@ -167,16 +158,13 @@
                 this.$.fileInput.setAttribute('multiple', this.multiple);
                 // this.set('disabled', false);
                 if (this.files[this.changeFileIndex]) {
-                    if (this.multiple) {
-                        // check for already selected
-                        var fileAlreadySelected = this._checkFileAlreadySelected(newFile);
-                        if (fileAlreadySelected.length > 0) {
-                            this._displayAlreadySelectedWarning(fileAlreadySelected);
-                            this.changeFileIndex = -1;
-                            // reset file input
-                            this.$.fileInput.value = null;
-                            return;
-                        }
+                    var fileAlreadySelected = this._checkFileAlreadySelected(newFile);
+                    if (this.multiple && fileAlreadySelected.length > 0) {
+                        this._displayAlreadySelectedWarning(fileAlreadySelected);
+                        this.changeFileIndex = -1;
+                        // reset file input
+                        this.$.fileInput.value = null;
+                        return;
                     }
                     var oldFile = this.files[this.changeFileIndex];
                     var newFileObj = JSON.parse(JSON.stringify(oldFile));
@@ -188,7 +176,7 @@
                 this.changeFileIndex = -1;
                 // reset file input
                 this.$.fileInput.value = null;
-                return true
+                return true;
             }
             this.changeFileIndex = -1;
             return false;
@@ -222,7 +210,7 @@
             return fileAlreadySelected;
         },
 
-        _displayAlreadySelectedWarning: function(filesAlreadySelected) {
+        _displayAlreadySelectedWarning: function() {
             // show a warning with the already selected files
             // var toastWarningMessage = '<p><strong>The following file are already selected:</strong><p>';
             // filesAlreadySelected.forEach(function(alreadySelectedFile) {
@@ -230,7 +218,7 @@
             // });
             // Polymer.dom(this.$.fileAlreadySelectedToast).innerHTML = toastWarningMessage;
             // this.$.fileAlreadySelectedToast.open();
-            this.fire('toast', {text: 'The following file are already selected'})
+            this.fire('toast', {text: 'The following file are already selected'});
         },
 
         _getFileModel: function() {
@@ -346,8 +334,7 @@
                 return 'multiple';
             }
             return '';
-        },
-
+        }
 
     });
 })();

@@ -59,6 +59,6 @@ Polymer({
         this.set('csvEndpoint', undefined);
     },
     addNewVendor: function() {
-        this.fire('addNewVendor')
+        this.fire('addNewVendor');
     }
 });

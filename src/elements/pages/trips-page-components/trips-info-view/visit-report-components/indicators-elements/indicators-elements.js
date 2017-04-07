@@ -20,7 +20,7 @@ Polymer({
 
     _revertIndicator: function() {
         if (this.editMode) {
-            var lastLocationAdded = this.dataItems[this.dataItems.length - 1];
+            // var lastLocationAdded = this.dataItems[this.dataItems.length - 1];
             // if (lastLocationAdded
             //     && !this._notEmpty(lastLocationAdded.location)) {
             //     this.fire('toast', {text: 'Last staff member fields are empty!', showCloseBtn: true});
@@ -34,7 +34,7 @@ Polymer({
     },
     _deleteIndicator: function(e) {
         if (this.dataItems.length === 1) {
-            this.fire('toast', {text: 'You can\'t remove last indicator!'})
+            this.fire('toast', {text: 'You can\'t remove last indicator!'});
         } else {
             this._openDeleteConfirmation(e);
         }

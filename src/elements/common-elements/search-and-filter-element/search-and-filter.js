@@ -1,8 +1,6 @@
 'use strict';
 
 (function() {
-
-
     Polymer({
         is: 'search-and-filter',
         behaviors: [TPMBehaviors.QueryParamsController],
@@ -19,7 +17,7 @@
             }
         },
         observers: ['hiddenOn(queryParams.show_hidden)'],
-        searchKeyDown: function(e) {
+        searchKeyDown: function() {
             //    search logic
         },
         addFilter: function(e) {
@@ -47,12 +45,18 @@
             this.splice('usedFilters', indexToRemove, 1);
         },
         _changeShowHidden: function() {
-            if (this.showHidden) this.updateQueries({show_hidden: 'true'})
-            else this.updateQueries({show_hidden: false})
+            if (this.showHidden) {
+                this.updateQueries({show_hidden: 'true'});
+            } else {
+                this.updateQueries({show_hidden: false});
+            }
         },
         hiddenOn: function(on) {
-            if (on && !this.showHidden) this.showHidden = true;
-            else if (!on && this.showHidden) this.showHidden = false;
+            if (on && !this.showHidden) {
+                this.showHidden = true;
+            } else if (!on && this.showHidden) {
+                this.showHidden = false;
+            }
         },
         ready: function() {
             this.availableFilters = this.filters;

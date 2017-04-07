@@ -13,7 +13,7 @@ Polymer({
         },
         categories: {
             type: Array,
-            value: [{"value":1,"label":"Quality"}, {"value":2,"label":"Access"}, {"value":3,"label":"Other"}]
+            value: [{'value': 1,'label': 'Quality'}, {'value': 2,'label': 'Access'}, {'value': 3,'label': 'Other'}]
         }
     },
 
@@ -32,6 +32,6 @@ Polymer({
         return typeof value !== 'undefined' && value !== null && value !== '';
     },
     _addNewQuestion: function() {
-        if (this.editMode) this._addElement();
+        if (this.editMode) { this._addElement(); }
     }
 });

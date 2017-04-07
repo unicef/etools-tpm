@@ -8,7 +8,7 @@ Polymer({
             notify: true
         }
     },
-    _changeOrder: function (event) {
+    _changeOrder: function(event) {
         let newOrderBy = event.model.item.name,
             [currentOrderName, direction] = this.orderBy.split('.');
 
