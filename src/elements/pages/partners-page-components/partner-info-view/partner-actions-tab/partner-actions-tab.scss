@@ -1,0 +1,44 @@
+:host {
+    position: relative;
+    display: block;
+    width: 100%;
+
+    --ecp-content: #{'{
+                    padding: 0;
+                }'};
+
+
+
+    .buttons-section {
+        text-align: center;
+
+        .partner-save-btn {
+            height: 35px;
+            width: 40%;
+            min-width: 70px;
+            margin: 21px 10px 21px 0;
+            color: #ffffff;
+            font-weight: 500;
+            background-color: var(--module-primary);
+        }
+        .spinner {
+            margin-right: -45px;
+            vertical-align: middle;
+        }
+    }
+
+    .action-message {
+        font-size: 16px;
+        padding: 30px;
+        text-align: center;
+        border-bottom: 1px solid #dddddd;
+        &.hidden { display: none; }
+
+        .message-text {
+            &.hidden { display: none; }
+            &.success { color: var(--module-sec-lightgreen); }
+            &.error { color: var(--module-error); }
+        }
+    }
+
+}

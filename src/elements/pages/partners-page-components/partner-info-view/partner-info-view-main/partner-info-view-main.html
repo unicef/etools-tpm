@@ -56,7 +56,8 @@
 
                <template is="dom-if" if="[[_allowEdit()]]" restamp>
                    <div id="sidebar">
-                       <partner-actions-tab></partner-actions-tab>
+                       <partner-actions-tab partner-saved="{{partnerSaved}}"
+                                            partner-saving-error="{{partnerSavingError}}"></partner-actions-tab>
                    </div>
                </template>
             </div>
