@@ -2,20 +2,11 @@
   "entrypoint": "index.html",
   "shell": "src/app-shell.html",
   "fragments": [
-    "src/pages/page-section1.html",
-    "src/pages/page-section2.html",
-    "src/pages/page-section3.html",
-    "src/pages/page-not-found.html"
+    "src/elements/pages/not-found-page-view/not-found-page-view.html",
+    "src/elements/pages/partners-page-components/partners-page-main/partners-page-main.html",
+    "src/elements/pages/trips-page-components/trips-page-main/trips-page-main.html"
   ],
   "sourceGlobs": [
    "src/**/*",
-   "images/**/*",
-   "styles/**/*",
-   "scripts/**/*",
-   "data/**/*",
-   "bower.json"
-  ],
-  "includeDependencies": [
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }

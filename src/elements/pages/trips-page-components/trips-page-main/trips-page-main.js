@@ -19,7 +19,7 @@ Polymer({
     ],
 
     _routeConfig: function(view) {
-        if (this.base !== 'trips') { return; }
+        if (this.base !== 'trips' || (this.route && this.route.prefix !== '/trips')) { return; }
         if (view === 'list') {
             let queries = this._configListParams();
             this._setTripsListQueries(queries);

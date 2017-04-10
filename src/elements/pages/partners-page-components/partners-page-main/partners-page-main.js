@@ -29,7 +29,7 @@ Polymer({
     },
 
     _routeConfig: function(view) {
-        if (this.base !== 'partners') { return; }
+        if (this.base !== 'partners' || (this.route && this.route.prefix !== '/partners')) { return; }
         this.clearQueries();
         if (view === 'list' && this.checkPermission('viewPartnersList')) {
             let queries = this._configListParams();
