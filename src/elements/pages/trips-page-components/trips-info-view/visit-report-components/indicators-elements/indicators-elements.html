@@ -57,7 +57,7 @@
         <!--Deleted Indicators-->
 
         <div class="undo-block" hidden$="{{_hideUndo(deletedIndicators.length)}}">
-            <div class="undo-text">You have been removed this indicators. <paper-button on-tap="_revertAll"><span>UNDO</span></paper-button></div>
+            <div class="undo-text">You have been removed this indicators. <paper-button on-tap="revertAll"><span>UNDO</span></paper-button></div>
         </div>
 
         <template is="dom-repeat" items="{{deletedIndicators}}">
@@ -67,7 +67,7 @@
                 <div class="repeatable-item-actions">
                     <div class="row-v actions">
                         <paper-icon-button class="action add"
-                                           on-tap="_revertIndicator"
+                                           on-tap="revertIndicator"
                                            data-args$="[[index]]"
                                            disabled="[[!_canBeRemoved(index)]]"
                                            hidden$="[[!editMode]]"

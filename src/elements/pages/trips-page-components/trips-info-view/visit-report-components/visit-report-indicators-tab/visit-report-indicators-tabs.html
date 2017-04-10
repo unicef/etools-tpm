@@ -24,11 +24,11 @@
                         </div>
                     </div>
 
-                    <indicators-elements data-items="{{item.indicators_points}}"></indicators-elements>
+                    <indicators-elements edit-mode="[[editMode]]" data-items="{{item.indicators_points}}"></indicators-elements>
 
                 </template>
 
-                <visit-report-questions-tab data-items="{{indicator.questions}}"></visit-report-questions-tab>
+                <visit-report-questions-tab data-items="{{indicator.questions}}" edit-mode="[[editMode]]"></visit-report-questions-tab>
 
             </etools-content-panel>
 

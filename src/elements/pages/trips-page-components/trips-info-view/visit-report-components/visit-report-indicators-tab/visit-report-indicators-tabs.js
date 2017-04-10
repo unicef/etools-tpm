@@ -6,6 +6,10 @@ Polymer({
         indicators: {
             type: Array,
             notify: true
+        },
+        editMode: {
+            type: Boolean,
+            value: true
         }
     }
 });

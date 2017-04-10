@@ -44,6 +44,7 @@
                 &:last-child { margin-bottom: 0; }
             }
 
+
             paper-input {
                 padding: 0 12px;
                 color: var(--gray-mid);
@@ -63,6 +64,7 @@
                 }'};
             }
 
+            paper-textarea[readonly], paper-textarea[disabled].disabled-as-readonly,
             paper-input[readonly], paper-input[disabled].disabled-as-readonly {
                 --paper-input-container: #{'{
                     opacity: 1 !important;
@@ -81,6 +83,7 @@
 
             }
 
+            paper-textarea.required,
             paper-input.required {
                 --paper-input-container-label: #{"{
                     background: url(/images/required.svg) no-repeat 99% 20%/8px;

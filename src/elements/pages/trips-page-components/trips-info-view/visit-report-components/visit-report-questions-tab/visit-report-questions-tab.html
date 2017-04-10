@@ -34,7 +34,9 @@
                                     <!-- Category -->
                                     <etools-searchable-multiselection-menu
                                             hide-search
+                                            class="disabled-as-readonly"
                                             readonly="[[!editMode]]"
+                                            disabled="[[!editMode]]"
                                             label="Category"
                                             value="{{item.category}}"
                                             options="[[categories]]"
@@ -43,9 +45,10 @@
                                 <div class="input-container input-container-m">
                                     <!-- Question -->
                                     <paper-textarea label="Question"
-                                                 value="{{item.question}}"
-                                                 placeholder="&#8212;"
-                                                 readonly$="[[!editMode]]">
+                                                    class="disabled-as-readonly"
+                                                    value="{{item.question}}"
+                                                    placeholder="&#8212;"
+                                                    disabled$="[[!editMode]]">
                                     </paper-textarea>
                                 </div>
                             </div>
