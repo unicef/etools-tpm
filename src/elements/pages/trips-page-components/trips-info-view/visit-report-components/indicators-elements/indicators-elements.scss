@@ -10,11 +10,10 @@
         .input-container-prefix {
             width: 120px;
             height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
+            margin-left: -110px;
             padding: 10px 0;
             box-sizing: border-box;
+            cursor: default;
 
             .reported-label {
                 font-size: 12px;
@@ -34,6 +33,33 @@
 
     .row-h.indicator-row {
         margin-bottom: 0;
+    }
+
+    .undo-block {
+        width: 100%;
+        margin: 20px auto;
+        text-align: center;
+
+        .undo-text {
+            display: inline;
+            padding: 10px 20px;
+            background-color: #f4f4f4;
+            box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
+            color: var(--gray-light);
+            font-weight: 500;
+
+            paper-button { line-height: 5px; }
+            span {
+                text-decoration: underline;
+                color: var(--module-primary);
+                cursor: pointer;
+            }
+        }
+    }
+
+    .repeatable-item-container.deleted-indicators {
+        .repeatable-item-content { border-left: 1px dashed #9D9D9D; }
+        .row-h.group.with-reported-prefix .input-container-prefix .reported-value { background-color: #f1f1f1; color: #898989; }
     }
 
 
@@ -65,3 +91,9 @@ paper-input.bold {
                     display: none !important;
                 }'};
 }
+
+paper-input.deleted {
+     --paper-input-container-input: #{'{
+                    color: #b0b0b0;
+                }'};
+ }

@@ -6,4 +6,23 @@
         margin-top: 20px;
     }
 
+    .questions-title {
+        margin: 30px 0;
+        font-weight: 400;
+        font-size: 18px;
+    }
+
+    .add-question-button {
+        height: 38px;
+        padding: 0 13px;
+        background-color: var(--module-primary);
+        color: #ffffff;
+        iron-icon { margin-right: 8px; }
+    }
+
+    .repeatable-item-content {
+        padding-bottom: 25px;
+        padding-top: 25px;
+    }
+
 }

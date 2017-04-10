@@ -1,5 +1,5 @@
 <!--import [polymer, etools-content-panel, paper-input, etools-searchable-multiselection-menu, etools-checkable-input]-->
-<!--import [tab-inputs-styles, module-styles, visit-report-indicators-tab, visit-report-questions-tab]-->
+<!--import [tab-inputs-styles, module-styles, visit-report-indicators-tabs, visit-report-questions-tab]-->
 
 <dom-module id="visit-report-tab">
     <template>
@@ -19,9 +19,7 @@
             </div>
         </etools-content-panel>
 
-        <visit-report-indicators-tab results="{{report.results}}"></visit-report-indicators-tab>
-
-        <visit-report-questions-tab data-items="{{report.questions}}"></visit-report-questions-tab>
+        <visit-report-indicators-tabs indicators="{{report.indicators}}"></visit-report-indicators-tabs>
 
     </template>
 

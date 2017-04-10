@@ -6,8 +6,8 @@
 
         <style include="tab-inputs-styles module-styles"></style>
         <!-- inject styles './visit-report-questions-tab.scss'-->
+            <div class="questions-title">Questions</div>
 
-        <etools-content-panel class="content-section clearfix questions-tab" title="Questions">
             <div hidden$="[[_emptyList(dataItems.length)]]">
                 <template is="dom-repeat" items="{{dataItems}}">
 
@@ -24,6 +24,11 @@
                             </div>
                         </div>
                         <div class="repeatable-item-content">
+
+                            <div class="repeatable-item-index">
+                                <div class="item-index">[[_getItemNumber(index)]]</div>
+                            </div>
+
                             <div class="row-h group">
                                 <div class="input-container input-container-s">
                                     <!-- Category -->
@@ -57,11 +62,12 @@
             </div>
 
             <div id="bottom-actions" class="row-h" hidden$="[[!editMode]]">
-                <paper-fab icon="add"
-                           on-tap="_addNewQuestion"
-                           title="Add"></paper-fab>
+                <paper-button
+                        class="add-question-button"
+                        raised
+                        on-tap="_addNewQuestion"
+                        title="Add"><iron-icon icon="add"></iron-icon>Add question</paper-button>
             </div>
-        </etools-content-panel>
     </template>
 
     <!-- inject scripts './visit-report-questions-tab.js'-->

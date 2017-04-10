@@ -1,9 +1,9 @@
 'use strict';
 
 Polymer({
-    is: 'visit-report-indicators-tab',
+    is: 'visit-report-indicators-tabs',
     properties: {
-        results: {
+        indicators: {
             type: Array,
             notify: true
         }
