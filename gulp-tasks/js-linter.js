@@ -3,7 +3,7 @@ const jscs = require('gulp-jscs');
 const jshint = require('gulp-jshint');
 
 
-module.exports = () => {
+module.exports = function lint() {
     return gulp.src('./src/elements/**/*.js')
         .pipe(jscs())
         .pipe(jscs.reporter())

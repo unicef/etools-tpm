@@ -17,13 +17,6 @@ Polymer({
         '_routeConfig(routeData.view)'
     ],
 
-    created: function() {
-        if (this.checkPermission('viewPartnersList')) {
-            let url = this.resolveUrl('../partners-list-view/partners-list-view-main.html');
-            this.importHref(url, null, null, true);
-        }
-    },
-
     _routeConfig: function(view) {
         if (this.base !== 'partners') { return; }
         if (view === 'list' && this.checkPermission('viewPartnersList')) {
