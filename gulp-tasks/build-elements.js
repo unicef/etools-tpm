@@ -12,8 +12,8 @@ var gulp = require('gulp'),
 
 
 
-module.exports = function (done) {
-    gulp.src(['./src/elements/**/*.html', './src/tests/**/*.html'], {since: gulp.lastRun('build-elements')})
+function buildElements(done) {
+    gulp.src(['./src/elements/**/*.html', './src/tests/**/*.*'], {since: gulp.lastRun(buildElements)})
         .pipe(builder([process.cwd() + '/src/bower_components/']))
         .pipe(gulpIf(
             function(file) {
@@ -40,4 +40,6 @@ module.exports = function (done) {
         ))
         .pipe(gulp.dest('./build/'))
         .on('end', function() {done();})
-};
+}
+
+module.exports = buildElements;
