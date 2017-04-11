@@ -59,9 +59,8 @@ gulp.task('watch', function () {
   gulp.watch(['./src/bower_components/**/*.*'], gulp.series(copyBower));
   gulp.watch(['./src/tests/**/*.*'], gulp.series(buildElements, runTests));
 });
-gulp.task('lint', jsLinter);
-gulp.task('build-elements', buildElements);
-gulp.task('test', gulp.series(gulp.parallel(buildElements, copyAssets, copyBower), runTests));
+
+gulp.task('test', gulp.series(clean.build, gulp.parallel(buildElements, copyAssets, copyBower), runTests));
 gulp.task('start', function () { nodemon({ script: 'server.js' }) });
 gulp.task('build', gulp.series(clean.build, jsLinter, gulp.parallel(buildElements, copyAssets, copyBower), 'watch'));
 
