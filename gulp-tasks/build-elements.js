@@ -13,7 +13,7 @@ var gulp = require('gulp'),
 
 
 module.exports = function (done) {
-    gulp.src(['./src/elements/**/*.html', './src/tests/**/*.html'])
+    gulp.src(['./src/elements/**/*.html', './src/tests/**/*.html'], {since: gulp.lastRun('build-elements')})
         .pipe(builder([process.cwd() + '/src/bower_components/']))
         .pipe(gulpIf(
             function(file) {

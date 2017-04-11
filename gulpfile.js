@@ -135,6 +135,8 @@ gulp.task('default', gulp.series([
 
 gulp.task('lint', jsLinter);
 
+gulp.task('build-elements', buildElements);
+
 gulp.task('test', gulp.series(gulp.parallel(buildElements, copyAssets, copyBower), runTests));
 
 gulp.task('watch', function () {
