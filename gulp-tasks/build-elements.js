@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 
 
 
-module.exports = function (done) {
+module.exports = function buildElements(done) {
     gulp.src(['./src/elements/**/*.html', './src/tests/**/*.html'])
         .pipe(builder([process.cwd() + '/src/bower_components/']))
         .pipe(gulpIf(

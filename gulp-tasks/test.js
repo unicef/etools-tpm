@@ -1,6 +1,6 @@
 const spawn = require('child_process').spawn;
 
-module.exports = function(done) {
+module.exports = function testElements(done) {
     var tests = spawn('npm', ['test']);
     tests.stdout.on('data', (data) => {
         if (~data.indexOf('Error')) data = `\x1b[31m${data}\x1b[0m`;

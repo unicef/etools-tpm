@@ -1,12 +1,15 @@
 {
-  "entrypoint": "index.html",
-  "shell": "src/app-shell.html",
+  "entrypoint": "src/index.html",
+  "shell": "src/elements/core-elements/app-shell-element/app-shell.html",
   "fragments": [
     "src/elements/pages/not-found-page-view/not-found-page-view.html",
     "src/elements/pages/partners-page-components/partners-page-main/partners-page-main.html",
-    "src/elements/pages/trips-page-components/trips-page-main/trips-page-main.html"
+    "src/elements/pages/trips-page-components/trips-page-main/trips-page-main.html",
+    "src/elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html"
   ],
   "sourceGlobs": [
-   "src/**/*",
+    "src/assets/**/*",
+    "src/elements/**/*",
+    "src/*"
   ]
 }
