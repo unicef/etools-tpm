@@ -4,7 +4,7 @@ const jshint = require('gulp-jshint');
 
 
 module.exports = () => {
-    return gulp.src('./src/elements/**/*.js')
+    return gulp.src('./src/elements/**/*.js', {since: gulp.lastRun('lint')})
         .pipe(jscs())
         .pipe(jscs.reporter())
         .pipe(jshint())
