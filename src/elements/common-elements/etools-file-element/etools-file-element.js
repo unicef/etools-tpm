@@ -162,7 +162,7 @@
             return allowDelete && readonly === false && file;
         },
         _getFileSelectedClass: function(file) {
-            if (!this._showDownloadBtn(file)) {
+            if (!this._showDownloadBtn(file, this.allowDownload)) {
                 return 'only-selected';
             }
             return '';
