@@ -17,10 +17,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <title>eTools</title>
     <meta name="description" content="Partnership Management Portal">
 
-    <link rel="icon" href="/src/assets/images/favicon.ico">
+    <link rel="icon" href="assets/images/favicon.ico">
 
     <!-- See https://goo.gl/OOhYW5 -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
 
     <!-- See https://goo.gl/qRE0vM -->
     <meta name="theme-color" content="#2E3AA1">
@@ -35,11 +35,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="apple-mobile-web-app-title" content="eTools - Partnership Management">
 
     <!-- Homescreen icons -->
-    <link rel="apple-touch-icon" href="/src/assets/images/manifest/icon-48x48.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/src/assets/images/manifest/icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="96x96" href="/src/assets/images/manifest/icon-96x96.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/src/assets/images/manifest/icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="/src/assets/images/manifest/icon-192x192.png">
+    <link rel="apple-touch-icon" href="assets/images/manifest/icon-48x48.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/images/manifest/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="assets/images/manifest/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/images/manifest/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="assets/images/manifest/icon-192x192.png">
 
     <!-- Tile icon for Windows 8 (144x144 + tile color) -->
     <meta name="msapplication-TileImage" content="/images/manifest/icon-144x144.png">
@@ -52,6 +52,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         dom: 'shadow',
         lazyRegister: true
       };
+
+      var serverBackend = (window.location.port !== '8080');
+      var baseUrl = serverBackend ? '/tpm/' : '/';
+
+      // add base tag with href set to baseUrl
+      var base = document.createElement('base');
+      base.href = baseUrl;
+      document.head.appendChild(base);
 
       // Load webcomponentsjs polyfill if browser does not support native Web Components
       (function() {
@@ -92,7 +100,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 //      }
     </script>
 
-    <link rel="import" href="/elements/core-elements/app-shell-element/app-shell.html">
+    <link rel="import" href="elements/core-elements/app-shell-element/app-shell.html">
 
     <style>
       body {

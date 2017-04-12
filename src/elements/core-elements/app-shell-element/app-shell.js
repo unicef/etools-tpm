@@ -89,9 +89,9 @@ Polymer({
         if (page === 'not-found') {
             resolvedPageUrl = this.resolveUrl('../../pages/not-found-page-view/not-found-page-view.html');
         } else {
-            resolvedPageUrl = this.resolveUrl(`/elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`);
+            resolvedPageUrl = this.resolveUrl(`../../pages/${page}-page-components/${page}-page-main/${page}-page-main.html`);
             if (page === 'partners' && this.checkPermission('viewPartnersList')) {
-                let url = this.resolveUrl('/elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html');
+                let url = this.resolveUrl('../../pages/partners-page-components/partners-list-view/partners-list-view-main.html');
                 this.importHref(url, null, null, true);
             }
         }
