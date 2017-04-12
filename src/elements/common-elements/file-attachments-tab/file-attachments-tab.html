@@ -10,10 +10,15 @@
             <etools-file-element activate-file-types
                          multiple
                          readonly="[[!editMode]]"
-                         allow-download="[[allowDownload]]"
                          label=""
                          files="{{files}}"
-                         file-types="[[fileTypes]]"></etools-file-element>
+                         file-types="[[fileTypes]]"
+                         allow-download="[[allowDownload]]"
+                         allow-change="[[allowChange]]"
+                         allow-delete="[[allowDelete]]"
+                         file-checkbox-visible="[[fileCheckboxVisible]]"
+                         file-checkbox-title="[[fileCheckboxTitle]]"
+                         file-checkbox-label="[[fileCheckboxLabel]]"></etools-file-element>
         </etools-content-panel>
     </template>
 

@@ -3,7 +3,7 @@
 
 <dom-module id="etools-file-element">
     <template>
-        <style include="etools-file-styles tab-inputs-styles">
+        <style include="etools-file-styles tab-inputs-styles module-styles">
             :host {
                 position: relative;
                 display: block;
@@ -17,6 +17,28 @@
                     background-color: #ffffff;
                     border-bottom: 1px solid #ffffff;
                 } '};
+            }
+
+            .file-checkbox {
+                display: inline-block;
+                float: left;
+                width: 100px;
+                padding-top: 12px;
+            }
+
+            .file-checkbox paper-checkbox {
+                --paper-checkbox-margin: 8px;
+            }
+
+            .file-checkbox-title {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                height: 12px;
+                padding-left: 8px;
+                line-height: 1;
+                font-size: 12px;
+                color: rgba(0, 0, 0, 0.38);
             }
         </style>
         <paper-input-container always-float-label disabled$="[[disabled]]" invalid$="[[invalid]]">
@@ -71,33 +93,40 @@
 
                                 <paper-button class="change-button"
                                               on-tap="_changeFile"
-                                              disabled$="[[readonly]]"
-                                              hidden$="[[readonly]]">
+                                              disabled$="[[!_showChangeBtn(file, allowChange, readonly)]]"
+                                              hidden$="[[!_showChangeBtn(file, allowChange, readonly)]]">
                                     Change
                                 </paper-button>
 
                                 <paper-button class="delete-button"
                                               on-tap="_deleteFile"
-                                              disabled$="[[readonly]]"
-                                              hidden$="[[readonly]]">
+                                              disabled$="[[!_showDeleteBtn(file, allowDelete, readonly)]]"
+                                              hidden$="[[!_showDeleteBtn(file, allowDelete, readonly)]]">
                                     Delete
                                 </paper-button>
+
+                                <div class="file-checkbox"
+                                     disabled$="[[!fileCheckboxVisible]]"
+                                     hidden$="[[!fileCheckboxVisible]]">
+                                    <div class="file-checkbox-title">[[fileCheckboxTitle]]</div>
+                                    <paper-checkbox checked$="{{file.selected}}">[[fileCheckboxLabel]]</paper-checkbox>
+                                </div>
                             </div>
                         </div>
                     </template>
                 </div>
 
                 <div class="upload-button-wrapper" hidden$="[[!_showUploadBtn(files.length, readonly)]]">
-          <span>
-            <paper-button class="upload-button"
-                          on-tap="_openFileChooser"
-                          title="[[uploadLabel]]"
-                          disabled$="[[readonly]]"
-                          raised>
-            <iron-icon icon="file-upload"></iron-icon>
-            [[uploadLabel]]
-            </paper-button>
-          </span>
+                  <span>
+                    <paper-button class="upload-button"
+                                  on-tap="_openFileChooser"
+                                  title="[[uploadLabel]]"
+                                  disabled$="[[readonly]]"
+                                  raised>
+                    <iron-icon icon="file-upload"></iron-icon>
+                    [[uploadLabel]]
+                    </paper-button>
+                  </span>
                 </div>
                 <div class="no-file-and-readonly" hidden$="[[!_showNoFileAttachedMsg(files.length, readonly)]]">
                     [[noFileAttachedMsg]]

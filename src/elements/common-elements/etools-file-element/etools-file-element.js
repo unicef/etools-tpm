@@ -78,6 +78,30 @@
             fileTypesLabel: {
                 type: String,
                 value: 'File Type'
+            },
+            allowDownload: {
+                type: Boolean,
+                value: false
+            },
+            allowChange: {
+                type: Boolean,
+                value: false
+            },
+            allowDelete: {
+                type: Boolean,
+                value: false
+            },
+            fileCheckboxVisible: {
+                type: Boolean,
+                value: false
+            },
+            fileCheckboxTitle: {
+                type: String,
+                value: ''
+            },
+            fileCheckboxLabel: {
+                type: String,
+                value: 'Allow'
             }
         },
         observers: [
@@ -99,7 +123,7 @@
         },
         _getFileTypeStr: function(fileType) {
             if (this.fileTypes.length > 0) {
-                var type = this.fileTypes.filter(function(type) {
+                let type = this.fileTypes.filter(function(type) {
                     return parseInt(type.id, 10) === parseInt(fileType, 10);
                 })[0];
                 if (type) {
@@ -129,7 +153,13 @@
             return filesLength === 0 && readonly === true;
         },
         _showDownloadBtn: function(file, allowDownload) {
-            return allowDownload && file && typeof file.attachment_file === 'string' && file.attachment_file !== '';
+            return allowDownload && file && (file.attachment_file || file.raw);
+        },
+        _showChangeBtn: function(file, allowChange, readonly) {
+            return allowChange && readonly === false && file;
+        },
+        _showDeleteBtn: function(file, allowDelete, readonly) {
+            return allowDelete && readonly === false && file;
         },
         _getFileSelectedClass: function(file) {
             if (!this._showDownloadBtn(file)) {
@@ -139,18 +169,18 @@
         },
 
         _openFileChooser: function() {
-            var elem = this.$.fileInput;
+            let elem = this.$.fileInput;
             if (elem && document.createEvent) {
-                var evt = document.createEvent('MouseEvents');
+                let evt = document.createEvent('MouseEvents');
                 evt.initEvent('click', true, false);
                 elem.dispatchEvent(evt);
             }
         },
 
         _typeChanged: function() {
-            // var typeVal = Polymer.dom(event).localTarget.selected;
+            // let typeVal = Polymer.dom(event).localTarget.selected;
             // console.log(event.model.index, typeVal);
-            return;
+            // return;
         },
 
         _replaceFile: function(newFile) {
@@ -158,7 +188,7 @@
                 this.$.fileInput.setAttribute('multiple', this.multiple);
                 // this.set('disabled', false);
                 if (this.files[this.changeFileIndex]) {
-                    var fileAlreadySelected = this._checkFileAlreadySelected(newFile);
+                    let fileAlreadySelected = this._checkFileAlreadySelected(newFile);
                     if (this.multiple && fileAlreadySelected.length > 0) {
                         this._displayAlreadySelectedWarning(fileAlreadySelected);
                         this.changeFileIndex = -1;
@@ -166,8 +196,8 @@
                         this.$.fileInput.value = null;
                         return;
                     }
-                    var oldFile = this.files[this.changeFileIndex];
-                    var newFileObj = JSON.parse(JSON.stringify(oldFile));
+                    let oldFile = this.files[this.changeFileIndex];
+                    let newFileObj = JSON.parse(JSON.stringify(oldFile));
                     newFileObj.file_name = newFile.name;
                     newFileObj.raw = newFile;
                     newFileObj.path = null;
@@ -183,12 +213,12 @@
         },
 
         _addMultipleFiles: function(files) {
-            var filesAlreadySelected = [];
-            for (var i = 0; i < files.length; i++) {
-                var fileAlreadySelected = this._checkFileAlreadySelected(files[i]);
+            let filesAlreadySelected = [];
+            for (let i = 0; i < files.length; i++) {
+                let fileAlreadySelected = this._checkFileAlreadySelected(files[i]);
                 if (fileAlreadySelected.length === 0) {
 
-                    var fileObj = this._getFileModel();
+                    let fileObj = this._getFileModel();
                     fileObj.file_name = files[i].name;
                     fileObj.raw = files[i];
 
@@ -199,12 +229,12 @@
             }
             if (filesAlreadySelected.length > 0) {
                 this._displayAlreadySelectedWarning(filesAlreadySelected);
-                filesAlreadySelected = [];
+                // filesAlreadySelected = [];
             }
         },
 
         _checkFileAlreadySelected: function(file) {
-            var fileAlreadySelected = this.files.filter(function(f) {
+            let fileAlreadySelected = this.files.filter(function(f) {
                 return f.file_name === file.name && (f.path === '' || f.path === null || typeof f.path === 'undefined');
             });
             return fileAlreadySelected;
@@ -212,7 +242,7 @@
 
         _displayAlreadySelectedWarning: function() {
             // show a warning with the already selected files
-            // var toastWarningMessage = '<p><strong>The following file are already selected:</strong><p>';
+            // let toastWarningMessage = '<p><strong>The following file are already selected:</strong><p>';
             // filesAlreadySelected.forEach(function(alreadySelectedFile) {
             //     toastWarningMessage += '<p>' + alreadySelectedFile.file_name + '</p>';
             // });
@@ -236,7 +266,7 @@
 
         _addSingleFile: function(file) {
             if (file) {
-                var fileObj = this._getFileModel();
+                let fileObj = this._getFileModel();
                 fileObj.file_name = file.name;
                 fileObj.raw = file;
 
@@ -251,7 +281,7 @@
         },
 
         _fileSelected: function(e) {
-            var files = e.target.files;
+            let files = e.target.files;
             // replace file if case
             if (this._replaceFile(files[0]) === true) {
                 return;
@@ -262,7 +292,7 @@
                 this._addMultipleFiles(files);
             } else {
                 // single file upload
-                var file = e.target.files[0];
+                let file = e.target.files[0];
                 this._addSingleFile(file);
             }
             // reset file input
@@ -315,17 +345,24 @@
 
         _downloadFile: function(e) {
             if (this.files.length > 0) {
-                var file = this.files[0];
+                let file = this.files[0];
+                let a = this.$.downloader;
+
                 if (this.multiple && this.files[e.model.index]) {
                     file = this.files[e.model.index];
                 }
-                if (typeof file !== 'undefined' && file.path !== '') {
-                    var a = this.$.downloader;
-                    a.href = file.path;
-                    a.download = file.file_name;
-                    a.click();
-                    window.URL.revokeObjectURL(file.path);
+
+                if (file && file.raw) {
+                    let blob = new Blob([file.raw]);
+                    a.href = URL.createObjectURL(blob);
+                } else if (file && file.attachment_file) {
+                    a.href = file.attachment_file;
                 }
+
+                a.download = file.file_name;
+                a.target = '_blank';
+                a.click();
+                window.URL.revokeObjectURL(a.href);
             }
         },
 
