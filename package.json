@@ -26,6 +26,7 @@
     "gulp-htmlmin": "^2.0.0",
     "gulp-if": "^2.0.1",
     "gulp-imagemin": "^3.0.1",
+    "gulp-inject-string": "^1.1.0",
     "gulp-jscs": "^4.0.0",
     "gulp-jscs-stylish": "^1.4.0",
     "gulp-jshint": "^2.0.1",
@@ -54,6 +55,6 @@
     "through2": "^2.0.3"
   },
   "scripts": {
-    "test": "./node_modules/.bin/wct ./build/tests"
+    "test": "./node_modules/.bin/wct ./build/tests/index.spec.html"
   }
 }
