@@ -1,7 +1,9 @@
 'use strict';
 var gulp = require('gulp');
 
-module.exports = function copyBower() {
-    return gulp.src(['./src/bower_components/**/*'])
+function copyBower() {
+    return gulp.src(['./src/bower_components/**/*'], {since: gulp.lastRun(copyBower)})
         .pipe(gulp.dest('./build/bower_components/'));
 }
+
+module.exports = copyBower;

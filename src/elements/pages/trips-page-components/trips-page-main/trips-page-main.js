@@ -19,7 +19,7 @@ Polymer({
     ],
 
     _routeConfig: function(view) {
-        if (this.base !== 'trips' || (this.route && this.route.prefix !== '/trips')) { return; }
+        if (this.route && !~this.route.prefix.indexOf('/trips')) { return; }
         if (view === 'list') {
             let queries = this._configListParams();
             this._setTripsListQueries(queries);
@@ -52,7 +52,7 @@ Polymer({
         return this.parseQueries();
     },
     _queryParamsChanged: function() {
-        if (this.base !== 'trips' || !this.routeData) { return; }
+        if (!~this.route.prefix.indexOf('/trips') || !this.routeData) { return; }
         if (this.routeData.view === 'list') {
             let queries = this._configListParams();
             this._setTripsListQueries(queries);

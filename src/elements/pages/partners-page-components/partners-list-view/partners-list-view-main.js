@@ -61,7 +61,7 @@
                         'size': 25,
                         'label': 'Vendor #',
                         'name': 'vendor_number',
-                        'link': '/partners/*data_id*/details',
+                        'link': 'partners/*data_id*/details',
                         'ordered': false
                     }, {
                         'size': 50,

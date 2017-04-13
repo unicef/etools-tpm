@@ -4,7 +4,8 @@ Polymer({
 
     behaviors: [
         etoolsBehaviors.LoadingBehavior,
-        TPMBehaviors.PermissionController
+        TPMBehaviors.PermissionController,
+        etoolsAppConfig.globals
     ],
 
     properties: {
@@ -49,9 +50,11 @@ Polymer({
         'user-profile-loaded': '_profileLoaded'
     },
     attached: function() {
+        this.baseUrl = this.basePath;
         this.fire('global-loading', {message: 'Loading...', active: true, type: 'initialisation'});
-        if (this.route.path === '/') {
-            this.set('route.path', '/partners/list');
+        if (this.route.path === '/' || this.route.path === '/tpm') {
+            let path = `${this.basePath}partners/list`;
+            this.set('route.path', path);
         }
     },
     toggleDrawer: function() {
@@ -87,11 +90,11 @@ Polymer({
 
         var resolvedPageUrl;
         if (page === 'not-found') {
-            resolvedPageUrl = this.resolveUrl('../../pages/not-found-page-view/not-found-page-view.html');
+            resolvedPageUrl = 'elements/pages/not-found-page-view/not-found-page-view.html';
         } else {
-            resolvedPageUrl = this.resolveUrl(`/elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`);
+            resolvedPageUrl = `elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`;
             if (page === 'partners' && this.checkPermission('viewPartnersList')) {
-                let url = this.resolveUrl('/elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html');
+                let url = 'elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html';
                 this.importHref(url, null, null, true);
             }
         }
@@ -118,7 +121,6 @@ Polymer({
         }
         let loadingElement =  this.$['global-loading'];
 
-        // console.log(`${event.detail.message}/${event.detail.type}`)
         if (event.detail.active && loadingElement.active) {
             this.globalLoadingQueue.push(event);
         } else if (event.detail.active && typeof event.detail.message === 'string' && event.detail.message !== '') {

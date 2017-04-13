@@ -7,7 +7,7 @@ var ROOT = __dirname + "/build";
 
 http.createServer(function(req, res) {
     sendFileSafe(url.parse(req.url).pathname, res);
-}).listen(5000);
+}).listen(8080);
 
 function sendFileSafe(filePath, res) {
     try {
@@ -25,7 +25,10 @@ function sendFileSafe(filePath, res) {
     }
 
     if (filePath.indexOf('.') < 0) {
-        filePath = '/index.html'
+        filePath = '/index.html';
+    }
+    if (filePath.indexOf('/tpm') === 0) {
+        filePath = filePath.slice(4);
     }
 
     filePath = path.normalize(path.join(ROOT, filePath));
@@ -61,4 +64,4 @@ function sendFile(filePath, res) {
     });
 }
 
-console.log("Server listening on port 5000!");
+console.log("Server is listening!");

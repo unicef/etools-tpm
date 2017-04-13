@@ -22,7 +22,7 @@ Polymer({
     ],
 
     _routeConfig: function(view) {
-        if (this.base !== 'partners' || (this.route && this.route.prefix !== '/partners')) { return; }
+        if (this.route && !~this.route.prefix.indexOf('/partners')) { return; }
         this.clearQueries();
         if (view === 'list' && this.checkPermission('viewPartnersList')) {
             let queries = this._configListParams();
@@ -59,7 +59,7 @@ Polymer({
         return this.parseQueries();
     },
     _queryParamsChanged: function() {
-        if (this.base !== 'partners' || !this.routeData) { return; }
+        if (!~this.route.prefix.indexOf('/partners') || !this.routeData) { return; }
         if (this.routeData.view === 'list') {
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
