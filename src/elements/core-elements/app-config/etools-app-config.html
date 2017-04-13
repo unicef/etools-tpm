@@ -21,7 +21,7 @@ App global configuration
         // app endpoints
         endpoints: {
             partnerDetails: {
-                template: '/tpm/data/partner-details.json?id="<%=id%>"'
+                template: '/api/tpm/partners/<%=id%>'
             },
             visitInfo: {
                 template: '/tpm/data/visit-info.json?id="<%=id%>"'
@@ -37,8 +37,8 @@ App global configuration
                 cachingKey: 'countries'
             },
             partnersList: {
-                url: '/tpm/data/partners-list.json',
-                exp: 6 * 60 * 60 * 1000, // 6h
+                url: '/api/tpm/partners/',
+                exp: 1 * 60 * 1000, // 6h
                 cachingKey: 'partners'
             },
             tripsList: {
