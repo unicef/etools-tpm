@@ -47,7 +47,7 @@
                         'size': 20,
                         'label': 'Vendor #',
                         'name': 'vendor_number',
-                        'link': '/trips/*data_id*/details',
+                        'link': 'trips/*data_id*/details',
                         'ordered': false
                     }, {
                         'size': 20,
