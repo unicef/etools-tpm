@@ -11,13 +11,14 @@ Polymer({
         }
     },
     observers: [
-        '_routeConfig(routeData.view)'
+        '_routeConfig(route)'
     ],
 
-    _routeConfig: function(view) {
+    _routeConfig: function(route) {
         if (this.route && !~this.route.prefix.indexOf('/trips')) { return; }
+        let view = this.routeData ? this.routeData.view : route.path.split('/')[1];
         if (view === 'list') {
-            let queries = this._configListParams();
+            let queries = this._configListParams('noNotify');
             this._setTripsListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
@@ -27,7 +28,7 @@ Polymer({
             this.fire('404');
         }
     },
-    _configListParams: function() {
+    _configListParams: function(noNotify) {
         let queriesUpdates = {},
             queries = this.parseQueries();
 
@@ -44,7 +45,7 @@ Polymer({
 
         if (!this.lastParams) { this.lastParams = _.clone(queries); } else if (!_.isEqual(this.lastParams, queries)) { this.lastParams = _.clone(queries); }
 
-        this.updateQueries(queriesUpdates);
+        this.updateQueries(queriesUpdates, null, noNotify);
         return this.parseQueries();
     },
     _queryParamsChanged: function() {

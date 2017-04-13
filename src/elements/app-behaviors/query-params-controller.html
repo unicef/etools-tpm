@@ -22,7 +22,7 @@
             if (~path.indexOf('/tpm')) { path = path.slice(4) }
             return path.slice(1);
         },
-        updateQueries: function (newQueries, path) {
+        updateQueries: function (newQueries, path, noNotify) {
             path = path || this.getPath();
             let keys = Object.keys(newQueries);
             if (!keys.length) return;
@@ -40,7 +40,7 @@
             });
 
             window.history.replaceState({}, '', `${path}?${queries.join('&')}`);
-            window.dispatchEvent(new CustomEvent('location-changed'));
+            if (!noNotify) window.dispatchEvent(new CustomEvent('location-changed'));
         },
         clearQueries: function() {
             window.history.replaceState({}, '', window.location.pathname);
