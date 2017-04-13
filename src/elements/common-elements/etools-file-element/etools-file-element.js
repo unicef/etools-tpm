@@ -161,8 +161,8 @@
         _showDeleteBtn: function(file, allowDelete, readonly) {
             return allowDelete && readonly === false && file;
         },
-        _getFileSelectedClass: function(file) {
-            if (!this._showDownloadBtn(file, this.allowDownload)) {
+        _getFileSelectedClass: function(file, allowDownload) {
+            if (!this._showDownloadBtn(file, allowDownload)) {
                 return 'only-selected';
             }
             return '';
