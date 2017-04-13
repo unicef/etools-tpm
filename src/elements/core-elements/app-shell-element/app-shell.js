@@ -39,7 +39,7 @@ Polymer({
     },
 
     observers: [
-        '_routePageChanged(route)'
+        '_routePageChanged(route.path)'
     ],
 
     listeners: {
@@ -52,7 +52,7 @@ Polymer({
     attached: function() {
         this.baseUrl = this.basePath;
         this.fire('global-loading', {message: 'Loading...', active: true, type: 'initialisation'});
-        if (this.route.path === '/' || this.route.path === '/tpm') {
+        if (this.route.path === '/' || this.route.path === '/tpm/') {
             let path = `${this.basePath}partners/list`;
             this.set('route.path', path);
         }

@@ -22,10 +22,9 @@ Polymer({
     ],
 
     _routeConfig: function(view) {
-        if (this.route && !~this.route.prefix.indexOf('/partners')) { return; }
-        this.clearQueries();
+        if (!this.route || !~this.route.prefix.indexOf('/partners')) { return; }
         if (view === 'list' && this.checkPermission('viewPartnersList')) {
-            let queries = this._configListParams();
+            let queries = this._configListParams('noNotify');
             this._setPartnersListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
@@ -34,11 +33,11 @@ Polymer({
             this.fire('404');
         }
     },
-    _configListParams: function() {
+    _configListParams: function(noNotify) {
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!this.withoutPagination && !queries.size)  { queriesUpdates.size = '10'; }
+        if (!this.withoutPagination && !queries.size) { queriesUpdates.size = '10'; }
         if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
 
         if (!this.withoutPagination && queries.page) {
@@ -55,7 +54,7 @@ Polymer({
             this.lastParams = _.clone(queries);
         }
 
-        this.updateQueries(queriesUpdates);
+        this.updateQueries(queriesUpdates, null, noNotify);
         return this.parseQueries();
     },
     _queryParamsChanged: function() {
