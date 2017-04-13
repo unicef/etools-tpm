@@ -8,17 +8,22 @@ Polymer({
             type: Object,
             notify: true,
             observer: '_queryParamsChanged'
+        },
+        initiation: {
+            type: Number,
+            value: 0
         }
     },
     observers: [
         '_routeConfig(route)'
     ],
 
+
     _routeConfig: function(route) {
         if (this.route && !~this.route.prefix.indexOf('/trips')) { return; }
         let view = this.routeData ? this.routeData.view : route.path.split('/')[1];
         if (view === 'list') {
-            let queries = this._configListParams('noNotify');
+            let queries = this._configListParams(this.initiation++);
             this._setTripsListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
