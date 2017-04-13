@@ -12,6 +12,10 @@ Polymer({
         withoutPagination: {
             type: Boolean,
             value: true
+        },
+        initiation: {
+            type: Number,
+            value: 0
         }
     },
     observers: [
@@ -22,7 +26,7 @@ Polymer({
         if (this.route && !~this.route.prefix.indexOf('/trips')) { return; }
         let view = this.routeData ? this.routeData.view : route.path.split('/')[1];
         if (view === 'list') {
-            let queries = this._configListParams('noNotify');
+            let queries = this._configListParams(this.initiation++);
             this._setTripsListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {

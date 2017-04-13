@@ -15,6 +15,10 @@ Polymer({
         withoutPagination: {
             type: Boolean,
             value: true
+        },
+        initiation: {
+            type: Number,
+            value: 0
         }
     },
     observers: [
@@ -24,10 +28,11 @@ Polymer({
     _routeConfig: function(view) {
         if (!this.route || !~this.route.prefix.indexOf('/partners')) { return; }
         if (view === 'list' && this.checkPermission('viewPartnersList')) {
-            let queries = this._configListParams('noNotify');
+            let queries = this._configListParams(this.initiation++);
             this._setPartnersListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
+            this.clearQueries();
             this.partnerId = +view;
         } else {
             this.fire('404');
