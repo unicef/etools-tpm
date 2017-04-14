@@ -45,7 +45,8 @@
     "etools-checkable-input": "^1.0.3",
     "etools-file": "^1.0.7",
     "etools-datepicker": "^1.0.10",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "iron-validator-behavior": "PolymerElements/iron-validator-behavior#^1.0.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -7,40 +7,40 @@ Polymer({
         loading: {
             type: Boolean,
             reflectToAttribute: true,
-            value: false
+            value: false,
+            notify: true
         },
         partnerSaved: {
             type: Boolean,
-            notify: true
+            notify: true,
+            observer: '_loadingComplete'
         },
         partnerSavingError: {
             type: Boolean,
-            notify: true
+            notify: true,
+            observer: '_loadingError'
         }
     },
-
-    observers: ['_loadingComplete(partnerSaved, partnerSavingError)'],
 
     _triggerPartnerSave: function() {
         if (this.loading) { return; }
-        if (this.partnerSaved) {
-            this.partnerSaved = false;
-        } else {
-            this.partnerSavingError = false;
-        }
-        this.loading = true;
         this.fire('save-partner');
     },
 
-    _loadingComplete: function(saved, error) {
-        this.loading = false;
-
-        if (!saved && !error) {
+    _loadingComplete: function(saved) {
+        this.success = saved || 'hidden';
+        if (this.error === 'hidden' && this.success === 'hidden') {
             this.showMessage = 'hidden';
         } else {
-            this.showMessage = '';
-            this.success = saved || 'hidden';
-            this.error = error || 'hidden';
+            this.showMessage = true;
+        }
+    },
+    _loadingError: function(error) {
+        this.error = error || 'hidden';
+        if (this.error === 'hidden' && this.success === 'hidden') {
+            this.showMessage = 'hidden';
+        } else {
+            this.showMessage = true;
         }
     }
 });

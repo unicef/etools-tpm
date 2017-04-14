@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <!--import [partner-info-view-main]-->
+</head>
+<body>
+
+<test-fixture id="element-fixture">
+    <template>
+        <partner-info-view-main id="element"></partner-info-view-main>
+    </template>
+</test-fixture>
+
+<script>
+    describe('<partner-info-view-main>', function () {
+        var myEl;
+
+        beforeEach(function () {
+            myEl = fixture('element-fixture');
+            myEl.partner = {};
+            myEl.set('routeData.tab', 'details');
+        });
+
+        it('has several properties and methods', function () {
+            assert.isDefined(myEl.partner);
+            assert.isDefined(myEl.partnerSaved);
+            assert.isDefined(myEl.partnerSavingError);
+            assert.isDefined(myEl._allowEdit);
+            assert.isDefined(myEl._allowDownload);
+            assert.isDefined(myEl._savePartner);
+            assert.isDefined(myEl._partnerSaved);
+        });
+
+        it('change tabs', function () {
+            var attachmentsTab = Polymer.dom(myEl.root).querySelector('.attachments-tab'),
+                    detailsTab = Polymer.dom(myEl.root).querySelector('.details-tab');
+
+            attachmentsTab.click();
+            assert.equal(myEl.routeData.tab, 'attachments');
+
+            detailsTab.click();
+            assert.equal(myEl.routeData.tab, 'details');
+        });
+
+        it('change tab if data is not valid', function (done) {
+            myEl.set('routeData.tab', 'attachments');
+            myEl.set('partner.staff_members', [{}]);
+
+            myEl.addEventListener('toast', function(e) {
+                assert.equal(e.detail.text, 'Fix invalid fields before saving');
+                assert.equal(myEl.routeData.tab, 'details');
+                done();
+            }, false);
+
+            myEl.addEventListener('dom-change', function() {
+                myEl.debounce('done', myEl._savePartner, 0);
+            }, false);
+        });
+
+        it('start updating process if data is valid', function (done) {
+            assert.isFalse(!!myEl.updatingInProcess);
+            myEl.set('partner.staff_members', []);
+
+            myEl.addEventListener('dom-change', function() {
+                myEl.debounce('done', function() {
+                    myEl._savePartner();
+                    assert.isTrue(myEl.updatingInProcess);
+                    assert.deepEqual(myEl.partner, myEl.newPartnerDetails);
+                    done();
+                }, 0);
+            }, false);
+        });
+
+        it('call method on \'partner-updated\' event', function () {
+            var spy = sinon.spy(myEl, "_partnerSaved");
+            myEl.fire('partner-updated');
+            assert.isTrue(spy.calledOnce);
+        });
+
+        it('set properties after partner updating', function () {
+            myEl.fire('partner-updated', {success: true});
+            assert.isTrue(myEl.partnerSaved);
+            assert.isFalse(myEl.partnerSavingError);
+            assert.isFalse(myEl.updatingInProcess);
+        });
+
+    });
+</script>
+
+</body>
+</html>
