@@ -1,6 +1,6 @@
 'use strict';
 
-var gulp = require('gulp'),
+const gulp = require('gulp'),
     compileHtmlTags = require('gulp-compile-html-tags'),
     sass = require('gulp-sass'),
     babel = require("gulp-babel"),
@@ -8,16 +8,35 @@ var gulp = require('gulp'),
     gulpIf = require('gulp-if'),
     combine = require('stream-combiner2').obj,
     through2 = require('through2').obj,
-    path = require('path');
+    path = require('path'),
+    inject = require('gulp-inject-string');
 
 
 
 function buildElements(done) {
-    gulp.src(['./src/elements/**/*.html', './src/tests/**/*.*'])
-        .pipe(builder([process.cwd() + '/src/bower_components/']))
+    let testSources = [];
+
+    gulp.src(['./src/elements/**/*.html'])
         .pipe(gulpIf(
             function(file) {
-                return !~file.path.indexOf('test');
+                return ~file.basename.indexOf('.spec.html');
+            },
+            // move test files into /tests folder
+            through2(function(file, enc, callback){
+                file.base = path.normalize(file.base + '..');
+                file.path = `${file.base}/tests/${file.basename}`;
+
+                testSources.push(file.basename);
+                testSources.push(`${file.basename}?dom=shadow`);
+                callback(null, file);
+            })
+        ))
+        // combine html/js/scss
+        .pipe(builder([`${process.cwd()}/src/bower_components/`]))
+        // compile html/js/scss
+        .pipe(gulpIf(
+            function(file) {
+                return !~file.basename.indexOf('.spec.html');
             },
             combine(
                 compileHtmlTags('style', function (tag, data) {
@@ -32,14 +51,17 @@ function buildElements(done) {
                     file.base = path.normalize(file.base + '..');
                     callback(null, file);
                 })
-            ),
-            through2(function(file, enc, callback){
-                file.base = path.normalize(file.base + '..');
-                callback(null, file);
-            })
+            )
         ))
         .pipe(gulp.dest('./build/'))
-        .on('end', function() {done();})
+        .on('end', function () {
+            // add test sources to index.spec.html and move file to the build folder
+            gulp.src('./src/tests/index.spec.html')
+                .pipe(inject.replace('<!--testSources-->', `"${testSources.join('", "')}"`))
+                .pipe(gulp.dest('./build/tests/'));
+
+            done();
+        });
 }
 
 module.exports = buildElements;
