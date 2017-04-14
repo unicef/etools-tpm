@@ -118,7 +118,7 @@
         _showFileType: function(fileTypesLength, readonly) {
             return this.activateFileTypes && fileTypesLength > 0 && readonly === false;
         },
-        _showReadonlyType: function(fileType, readonly) {
+        _showReadonlyType: function(readonly) {
             return readonly && this.activateFileTypes;
         },
         _getFileTypeStr: function(fileType) {
@@ -138,11 +138,11 @@
             return typeof label === 'string' && label !== '';
         },
         _showUploadBtn: function(filesLength, readonly) {
-            if (!this.multiple && filesLength > 0) {
+            if (readonly === true) {
                 return false;
             }
 
-            if (filesLength === 0 && readonly === true) {
+            if (!this.multiple && filesLength > 0) {
                 return false;
             }
 
@@ -153,13 +153,14 @@
             return filesLength === 0 && readonly === true;
         },
         _showDownloadBtn: function(file, allowDownload) {
-            return allowDownload && file && (file.attachment_file || file.raw);
+            let hasUrl = (typeof file.attachment_file === 'string' && file.attachment_file) || file.raw instanceof File;
+            return !!(allowDownload && file && hasUrl);
         },
         _showChangeBtn: function(file, allowChange, readonly) {
-            return allowChange && readonly === false && file;
+            return !!(file && allowChange && readonly === false);
         },
         _showDeleteBtn: function(file, allowDelete, readonly) {
-            return allowDelete && readonly === false && file;
+            return !!(file && allowDelete && readonly === false);
         },
         _getFileSelectedClass: function(file, allowDownload) {
             if (!this._showDownloadBtn(file, allowDownload)) {
@@ -177,14 +178,8 @@
             }
         },
 
-        _typeChanged: function() {
-            // let typeVal = Polymer.dom(event).localTarget.selected;
-            // console.log(event.model.index, typeVal);
-            // return;
-        },
-
         _replaceFile: function(newFile) {
-            if (this.changeFileIndex >= 0 && newFile) {
+            if (this.changeFileIndex >= 0 && newFile && newFile instanceof File) {
                 this.$.fileInput.setAttribute('multiple', this.multiple);
                 // this.set('disabled', false);
                 if (this.files[this.changeFileIndex]) {
