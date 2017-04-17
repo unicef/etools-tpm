@@ -181,50 +181,61 @@
         _replaceFile: function(newFile) {
             if (this.changeFileIndex >= 0 && newFile && newFile instanceof File) {
                 this.$.fileInput.setAttribute('multiple', this.multiple);
-                // this.set('disabled', false);
+
                 if (this.files[this.changeFileIndex]) {
                     let fileAlreadySelected = this._checkFileAlreadySelected(newFile);
-                    if (this.multiple && fileAlreadySelected.length > 0) {
-                        this._displayAlreadySelectedWarning(fileAlreadySelected);
+
+                    if (fileAlreadySelected.length > 0) {
+                        this._displayAlreadySelectedWarning();
+
                         this.changeFileIndex = -1;
-                        // reset file input
-                        this.$.fileInput.value = null;
-                        return;
+                        this.$.fileInput.value = '';
+                        return false;
                     }
+
                     let oldFile = this.files[this.changeFileIndex];
                     let newFileObj = JSON.parse(JSON.stringify(oldFile));
+
                     newFileObj.file_name = newFile.name;
                     newFileObj.raw = newFile;
                     newFileObj.path = null;
                     this.set('files.' + this.changeFileIndex, newFileObj);
                 }
+
                 this.changeFileIndex = -1;
                 // reset file input
-                this.$.fileInput.value = null;
+                this.$.fileInput.value = '';
                 return true;
             }
+
             this.changeFileIndex = -1;
             return false;
         },
 
         _addMultipleFiles: function(files) {
+            if (!files || files instanceof Array === false) {
+                return;
+            }
+
             let filesAlreadySelected = [];
+
             for (let i = 0; i < files.length; i++) {
                 let fileAlreadySelected = this._checkFileAlreadySelected(files[i]);
-                if (fileAlreadySelected.length === 0) {
 
+                if (fileAlreadySelected.length === 0 && files[i] instanceof File) {
                     let fileObj = this._getFileModel();
+
                     fileObj.file_name = files[i].name;
                     fileObj.raw = files[i];
 
                     this.push('files', fileObj);
-                } else {
+                } else if (fileAlreadySelected.length) {
                     filesAlreadySelected.push(fileAlreadySelected[0]);
                 }
             }
+
             if (filesAlreadySelected.length > 0) {
-                this._displayAlreadySelectedWarning(filesAlreadySelected);
-                // filesAlreadySelected = [];
+                this._displayAlreadySelectedWarning();
             }
         },
 
@@ -232,17 +243,11 @@
             let fileAlreadySelected = this.files.filter(function(f) {
                 return f.file_name === file.name && (f.path === '' || f.path === null || typeof f.path === 'undefined');
             });
+
             return fileAlreadySelected;
         },
 
         _displayAlreadySelectedWarning: function() {
-            // show a warning with the already selected files
-            // let toastWarningMessage = '<p><strong>The following file are already selected:</strong><p>';
-            // filesAlreadySelected.forEach(function(alreadySelectedFile) {
-            //     toastWarningMessage += '<p>' + alreadySelectedFile.file_name + '</p>';
-            // });
-            // Polymer.dom(this.$.fileAlreadySelectedToast).innerHTML = toastWarningMessage;
-            // this.$.fileAlreadySelectedToast.open();
             this.fire('toast', {text: 'The following file are already selected'});
         },
 
@@ -260,22 +265,21 @@
         },
 
         _addSingleFile: function(file) {
-            if (file) {
+            if (file && file instanceof File && this.files.length === 0) {
                 let fileObj = this._getFileModel();
+
                 fileObj.file_name = file.name;
                 fileObj.raw = file;
 
-                if (this.files.length === 0) {
-                    // add file
-                    this.push('files', fileObj);
-                } else {
-                    // replace/change file
-                    this.set('files.0', fileObj);
-                }
+                this.push('files', fileObj);
             }
         },
 
         _fileSelected: function(e) {
+            if (!e || !e.target) {
+                return;
+            }
+
             let files = e.target.files;
             // replace file if case
             if (this._replaceFile(files[0]) === true) {
@@ -291,36 +295,30 @@
                 this._addSingleFile(file);
             }
             // reset file input
-            this.$.fileInput.value = null;
+            this.$.fileInput.value = '';
         },
 
         _changeFile: function(e) {
-            if (e.model.index >= 0) {
+            if (e && e.model && e.model.index >= 0) {
                 this.changeFileIndex = e.model.index;
-                // this.set('disabled', true);
                 this.$.fileInput.removeAttribute('multiple');
                 this._openFileChooser();
             }
         },
 
         _deleteFile: function(e) {
-            if (!this.multiple) {
-                if (this.files.length > 0) {
-                    if (this.useDeleteEvents) {
-                        this.fire('delete-file', {file: this.files[0], index: 0});
-                    } else {
-                        this.set('files', []);
-                    }
-                    this.$.fileInput.value = null;
-                }
+            if (!e || !e.model) {
+                return;
+            }
+
+            if (typeof e.model.index !== 'number' || e.model.index < 0 || this.files.length === 0) {
+                return;
+            }
+
+            if (this.useDeleteEvents) {
+                this.fire('delete-file', {file: this.files[e.model.index], index: e.model.index});
             } else {
-                if (typeof e.model.index === 'number' && e.model.index >= 0) {
-                    if (this.useDeleteEvents) {
-                        this.fire('delete-file', {file: this.files[e.model.index], index: e.model.index});
-                    } else {
-                        this.splice('files', e.model.index, 1);
-                    }
-                }
+                this.splice('files', e.model.index, 1);
             }
         },
 
