@@ -8,24 +8,38 @@ Polymer({
             value: function() {
                 return {};
             }
+        },
+        details: {
+            type: Array,
+            value: function() {
+                return [];
+            }
+        },
+        hasCollapse: {
+            type: Boolean,
+            value: false
+        },
+        showCollapse: {
+            type: Boolean,
+            computed: '_computeShowCollapse(details, hasCollapse)'
         }
     },
+    _computeShowCollapse(details, hasCollapse) {
+        return details.length > 0 && hasCollapse;
+    },
     _toggleRowDetails: function() {
-        this.$.details.toggle();
+        Polymer.dom(this.root).querySelector('#details').toggle();
     },
     _isLink: function(link) {
         return !!link;
     },
     _getValue: function(item) {
-        let value = this.data;
-        if (!item.path) {
-            value = value[item.name] || '--';
-        } else {
-            let fields = item.path.split('.');
+        let value;
 
-            while (fields.length && value) {
-                value = value[fields.shift()];
-            }
+        if (!item.path) {
+            value = this.get('data.' + item.name);
+        } else {
+            value = this.get('data.' + item.path);
         }
         // if (item.name === 'type' || item.name ==='status') {
         //     value = this._refactorValue(item.name, value);
@@ -39,9 +53,6 @@ Polymer({
     },
     _getStatus: function(synced) {
         if (synced) { return 'Synced from VISION'; }
-    },
-    _getDisplayValue: function(value) {
-        return value || '--';
     },
     _getLink: function(pattern) {
         return pattern

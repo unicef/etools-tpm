@@ -22,7 +22,17 @@ Polymer({
         data: {
             type: Array,
             notify: true
-        }
+        },
+        hasCollapse: {
+            type: Boolean,
+            value: false
+        },
+        details: {
+            type: Array,
+            value: function() {
+                return [];
+            }
+        },
     },
     _orderChanged: function(newOrder) {
         if (!newOrder) { return; }

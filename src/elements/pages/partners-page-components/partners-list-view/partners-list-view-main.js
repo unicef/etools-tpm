@@ -54,6 +54,10 @@
                 type: Object,
                 notify: true
             },
+            hasCollapse: {
+                type: Boolean,
+                value: false
+            },
             listHeadings: {
                 type: Array,
                 value: function() {
@@ -73,6 +77,18 @@
                         'label': 'Country',
                         'name': 'country',
                         'ordered': false
+                    }];
+                }
+            },
+            listDetails: {
+                type: Array,
+                value: function() {
+                    return [{
+                        'label': 'Email',
+                        'name': 'email'
+                    }, {
+                        'label': 'Phone #',
+                        'name': 'phone_number'
                     }];
                 }
             },
