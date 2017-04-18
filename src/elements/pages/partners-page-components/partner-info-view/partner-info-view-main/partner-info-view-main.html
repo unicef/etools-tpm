@@ -46,7 +46,12 @@
                         </div>
 
                         <div name="attachments">
-                            <file-attachments-tab files="{{partner.attachments}}" edit-mode="[[_allowEdit()]]" allow-download="[[_allowDownload()]]"></file-attachments-tab>
+                            <file-attachments-tab title="Files"
+                                                  allow-download="[[_allowDownload()]]"
+                                                  allow-delete
+                                                  file-types="[[fileTypes]]"
+                                                  files="{{partner.attachments}}"
+                                                  readonly="[[!_allowEdit()]]"></file-attachments-tab>
                         </div>
 
                     </iron-pages>
