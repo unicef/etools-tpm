@@ -1,4 +1,4 @@
-FROM nodesource/trusty:6.3.0
+FROM nodesource/trusty:7.6.0
 
 RUN apt-get update
 RUN apt-get install -qqy software-properties-common
@@ -18,26 +18,10 @@ RUN apt-get install -y xvfb;
 # Gulp, bower
 RUN npm install -g gulp bower web-component-tester
 
-
-# Source
-ADD bower.json /tmp
-ADD package.json /tmp
-
-# Dependencies
-WORKDIR /tmp
-RUN npm install && bower install --allow-root --config.interactive=false -s
-
-# test script
-ADD test.sh /test.sh
-RUN chmod a+x /test.sh
-
-# add code
 ADD . /code/
 WORKDIR /code
-RUN cp -a /tmp/node_modules /code/node_modules
-RUN cp -a /tmp/bower_components /code/bower_components
-
+RUN npm install && bower install --allow-root --config.interactive=false -s
+RUN gulp
 
 # Run test
-#CMD ["xvfb-run", "polymer", "test"]
-CMD /bin/sh -c "/test.sh"
+CMD test.sh
