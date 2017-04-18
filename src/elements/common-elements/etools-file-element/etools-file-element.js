@@ -213,7 +213,7 @@
         },
 
         _addMultipleFiles: function(files) {
-            if (!files || files instanceof Array === false) {
+            if (!files || (files instanceof Array === false && files instanceof FileList === false)) {
                 return;
             }
 
@@ -337,25 +337,23 @@
         },
 
         _downloadFile: function(e) {
-            if (this.files.length > 0) {
-                let file = this.files[0];
+            if (e && e.model && this.files.length > 0) {
+                let file = this.files[e.model.index];
                 let a = this.$.downloader;
-
-                if (this.multiple && this.files[e.model.index]) {
-                    file = this.files[e.model.index];
-                }
 
                 if (file && file.raw) {
                     let blob = new Blob([file.raw]);
                     a.href = URL.createObjectURL(blob);
                 } else if (file && file.attachment_file) {
                     a.href = file.attachment_file;
+                } else {
+                    return;
                 }
 
                 a.download = file.file_name;
                 a.target = '_blank';
                 a.click();
-                window.URL.revokeObjectURL(a.href);
+                URL.revokeObjectURL(a.href);
             }
         },
 

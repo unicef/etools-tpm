@@ -26,25 +26,25 @@
 
         suite('_showFileType', function () {
             test('returns true when fileTypesLength > 0, readonly is false and activateFileTypes is true', function () {
-                myEl.setAttribute('activate-file-types', true);
+                myEl.activateFileTypes = true;
 
                 assert.equal(myEl._showFileType(1, false), true);
             });
 
-            test('returns false when fileTypesLength === 0', function () {
-                myEl.setAttribute('activate-file-types', true);
+            test('returns false when fileTypesLength = 0', function () {
+                myEl.activateFileTypes = true;
 
                 assert.equal(myEl._showFileType(0, false), false);
             });
 
             test('returns false when readonly is true', function () {
-                myEl.setAttribute('activate-file-types', true);
+                myEl.activateFileTypes = true;
 
                 assert.equal(myEl._showFileType(1, true), false);
             });
 
             test('returns false when activateFileTypes is false', function () {
-                myEl.removeAttribute('activate-file-types');
+                myEl.activateFileTypes = false;
 
                 assert.equal(myEl._showFileType(1, false), false);
             });
@@ -52,19 +52,19 @@
 
         suite('_showReadonlyType', function () {
             test('returns true when readonly and activateFileTypes is true', function () {
-                myEl.setAttribute('activate-file-types', true);
+                myEl.activateFileTypes = true;
 
                 assert.equal(myEl._showReadonlyType(true), true);
             });
 
             test('returns false when readonly is false', function () {
-                myEl.setAttribute('activate-file-types', true);
+                myEl.activateFileTypes = true;
 
                 assert.equal(myEl._showReadonlyType(false), false);
             });
 
             test('returns false when activateFileTypes is false', function () {
-                myEl.removeAttribute('activate-file-types');
+                myEl.activateFileTypes = false;
 
                 assert.equal(myEl._showReadonlyType(true), false);
             });
@@ -112,7 +112,7 @@
 
         suite('_showUploadBtn', function () {
             test('returns true when readonly = false, multiple = true and filesLength >= 0', function () {
-                myEl.setAttribute('multiple', true);
+                myEl.multiple = true;
 
                 assert.equal(myEl._showUploadBtn(0, false), true);
                 assert.equal(myEl._showUploadBtn(1, false), true);
@@ -120,13 +120,13 @@
             });
 
             test('returns true when readonly = false, multiple = false and filesLength = 0', function () {
-                myEl.removeAttribute('multiple');
+                myEl.multiple = false;
 
                 assert.equal(myEl._showUploadBtn(0, false), true);
             });
 
             test('returns false when readonly = false, multiple = false and filesLength > 0', function () {
-                myEl.removeAttribute('multiple');
+                myEl.multiple = false;
 
                 assert.equal(myEl._showUploadBtn(1, false), false);
             });
@@ -258,7 +258,7 @@
                     {file_name: 'name2', type: '1', attachment_file: 'url2'}
                 ];
 
-                myEl.setAttribute('multiple', true);
+                myEl.multiple = true;
                 myEl.files = files;
             });
 
@@ -346,7 +346,7 @@
                     {file_name: 'name2', type: '1', attachment_file: 'url2'}
                 ];
 
-                myEl.setAttribute('multiple', true);
+                myEl.multiple = true;
                 myEl.files = files;
             });
 
@@ -396,7 +396,7 @@
                     {file_name: 'name2', type: '1', attachment_file: 'url2'}
                 ];
 
-                myEl.setAttribute('multiple', true);
+                myEl.multiple = true;
                 myEl.files = files;
             });
 
@@ -457,7 +457,7 @@
         });
 
         suite('_fileSelected', function () {
-            var e = { target: { files: [] } };
+            var e = {target: {files: []}};
 
             test('calls _replaceFile() method', function () {
                 var file = new File([''], 'name');
@@ -490,7 +490,7 @@
                 sinon.stub(myEl, '_replaceFile').returns(false);
 
                 e.target.files = [file];
-                myEl.setAttribute('multiple', true);
+                myEl.multiple = true;
                 myEl._fileSelected(e);
 
                 assert.equal(spyAddMultiple.calledOnce, true);
@@ -510,7 +510,7 @@
         });
 
         suite('_changeFile', function () {
-            var e = { model: { index: 0 } };
+            var e = {model: {index: 0}};
 
             test('sets changeFileIndex property', function () {
                 myEl._changeFile(e);
@@ -531,7 +531,7 @@
         });
 
         suite('_deleteFile', function () {
-            var e = { model: { index: 0 } };
+            var e = {model: {index: 0}};
 
             setup(function () {
                 var files = [
@@ -539,7 +539,7 @@
                     {file_name: 'name2', type: '1', attachment_file: 'url2'}
                 ];
 
-                myEl.setAttribute('multiple', true);
+                myEl.multiple = true;
                 myEl.files = files;
             });
 
@@ -597,8 +597,42 @@
             });
         });
 
-        suite('', function () {
+        suite('_downloadFile', function () {
+            setup(function () {
+                var files = [
+                    {file_name: 'name', type: '1', attachment_file: 'url'},
+                    {file_name: 'name2', type: '1', raw: new File([''], 'name2'),  attachment_file: 'url2'}
+                ];
 
+                myEl.multiple = true;
+                myEl.files = files;
+            });
+
+            test('downloads file from attachment_file property', function (done) {
+                var e = {model: {index: 0}};
+                let downloader = myEl.$.downloader;
+
+                downloader.addEventListener('click', function (e) {
+                    assert.isDefined(e);
+                    done();
+                });
+
+                myEl._downloadFile(e);
+                assert.equal(downloader.href, myEl.files[0].attachment_file);
+            });
+
+            test('downloads file from raw property', function (done) {
+                var e = {model: {index: 1}};
+                let downloader = myEl.$.downloader;
+
+                downloader.addEventListener('click', function (e) {
+                    assert.isDefined(e);
+                    done();
+                });
+
+                myEl._downloadFile(e);
+                assert.notEqual(downloader.href, myEl.files[1].attachment_file);
+            });
         });
 
         suite('_getMultipleClass', function () {
@@ -611,7 +645,86 @@
             });
         });
 
+        suite('.files-wrapper', function () {
+            var files = [
+                {file_name: 'name.png', type: '1', attachment_file: 'url'},
+                {file_name: 'name2.png', type: '1', attachment_file: 'url2'}
+            ];
 
+            test('contains maximum 1 file without multiple attribute', function (done) {
+                myEl.files = files;
+
+                flush(function () {
+                    var fileAreas = Polymer.dom(myEl.root).querySelectorAll('.file-area');
+                    assert.equal(fileAreas.length, 1);
+                    done();
+                });
+            });
+
+            test('contains correct number of files with multiple attribute', function (done) {
+                myEl.multiple = true;
+                myEl.files = files;
+
+                flush(function () {
+                    var fileAreas = Polymer.dom(myEl.root).querySelectorAll('.file-area');
+                    assert.equal(fileAreas.length, 2);
+                    done();
+                });
+            });
+        });
+
+        suite('<paper-dropdown-menu>', function () {
+            test('has correct number of <paper-item>', function (done) {
+                myEl.activateFileTypes = true;
+                myEl.readonly = false;
+                myEl.fileTypes = [
+                    {id: '1', name: 'Training materials'},
+                    {id: '2', name: 'ToRs'},
+                    {id: '3', name: 'Other'}
+                ];
+                myEl.files = [
+                    {file_name: 'name.png', type: '1', attachment_file: 'url'}
+                ];
+
+                flush(function () {
+                    var paperDropdown = myEl.$$('paper-dropdown-menu');
+                    var paperItems = Polymer.dom(myEl.root).querySelectorAll('paper-item');
+                    assert.equal(paperItems.length, 3);
+                    done();
+                });
+            });
+        });
+
+        suite('.delete-button', function () {
+            test('removes file when clicked', function (done) {
+                myEl.allowDelete = true;
+                myEl.readonly = false;
+                myEl.files = [
+                    {file_name: 'name.png', type: '1', attachment_file: 'url'}
+                ];
+
+                flush(function () {
+                    var deleteBtn = myEl.$$('.delete-button');
+                    var fileAreas = Polymer.dom(myEl.root).querySelectorAll('.file-area');
+
+                    assert.equal(myEl.files.length, 1);
+                    assert.equal(fileAreas.length, 1);
+
+                    deleteBtn.addEventListener('click', function (event) {
+                        flush(function () {
+                            fileAreas = Polymer.dom(myEl.root).querySelectorAll('.file-area');
+
+                            assert.isDefined(event);
+                            assert.equal(myEl.files.length, 0);
+                            assert.equal(fileAreas.length, 0);
+                            done();
+                        });
+                    });
+
+                    deleteBtn.click();
+                });
+            });
+        });
     });
 </script>
 
