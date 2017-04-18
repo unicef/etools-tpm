@@ -24,4 +24,4 @@ RUN npm install && bower install --allow-root --config.interactive=false -s
 RUN node_modules/.bin/gulp build
 
 # Run test
-CMD test.sh
+CMD ./test.sh
