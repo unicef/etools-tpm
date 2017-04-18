@@ -5,18 +5,11 @@ Polymer({
     properties: {
         fileTypes: {
             type: Array,
-            value: [
-                {id: '1', name: 'Training materials'},
-                {id: '2', name: 'ToRs'},
-                {id: '3', name: 'Other'}
-            ]
+            value: []
         },
         files: {
             type: Array,
-            value: [
-                {file_name: 'etools_logo_icon.png', type: '1', attachment_file: 'http://localhost:5000/images/etools_logo_icon.png'},
-                {file_name: 'etools_logo_icon.png', type: '3', attachment_file: 'http://localhost:5000/images/etools_logo_icon.png', selected: true}
-            ]
+            value: []
         },
         title: {
             type: String,
@@ -43,7 +36,7 @@ Polymer({
         },
         fileCheckboxLabel: {
             type: String
-        },
+        }
     },
     _hideEmptyState: function(length) { return length > 0;}
 });

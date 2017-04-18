@@ -54,14 +54,18 @@
 
                         <div name="attachments">
                             <file-attachments-tab title="Related Documents"
-                                                  edit-mode
+                                                  readonly
                                                   allow-download
+                                                  file-types="[[fileTypes]]"
+                                                  files="[[files]]"
                                                   file-checkbox-visible
                                                   file-checkbox-title="Access to TPM"></file-attachments-tab>
 
                             <file-attachments-tab title="Upload New"
                                                   allow-download
-                                                  allow-delete></file-attachments-tab>
+                                                  allow-delete
+                                                  file-types="[[fileTypes]]"
+                                                  files="[[files]]"></file-attachments-tab>
                         </div>
 
                     </iron-pages>

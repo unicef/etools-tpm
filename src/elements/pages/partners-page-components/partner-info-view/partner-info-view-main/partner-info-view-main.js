@@ -4,6 +4,14 @@ Polymer({
     is: 'partner-info-view-main',
     behaviors: [TPMBehaviors.PermissionController],
     properties: {
+        fileTypes: {
+            type: Array,
+            value: [
+                {id: '1', name: 'Training materials'},
+                {id: '2', name: 'ToRs'},
+                {id: '3', name: 'Other'}
+            ]
+        },
         partner: {
             type: Object,
             notify: true

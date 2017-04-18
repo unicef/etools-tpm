@@ -49,8 +49,9 @@
                             <file-attachments-tab title="Files"
                                                   allow-download="[[_allowDownload()]]"
                                                   allow-delete
+                                                  file-types="[[fileTypes]]"
                                                   files="{{partner.attachments}}"
-                                                  edit-mode="[[_allowEdit()]]"></file-attachments-tab>
+                                                  readonly="[[!_allowEdit()]]"></file-attachments-tab>
                         </div>
 
                     </iron-pages>
