@@ -1,4 +1,4 @@
-<!--import [polymer, module-styles, page-layout-styles, shared-styles, app-main-header, pages-header-element, list-tab-main, trips-list-data]-->
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, pages-header-element, list-tab-main, trips-list-data]-->
 
 <dom-module id="trips-list-view-main">
     <template>
@@ -17,26 +17,16 @@
                 request-queries="[[requestQueries]]"
                 without-pagination="[[withoutPagination]]"></trips-list-data>
 
-
-        <app-header-layout>
-
-
-            <app-header id="header" fixed shadow>
-                <app-main-header></app-main-header>
-            </app-header>
-
-            <pages-header-element show-export-button
-                                  title="List of Trips"></pages-header-element>
+        <pages-header-element show-export-button
+                              title="List of Trips"></pages-header-element>
 
 
-            <list-tab-main header-title="Trips List"
-                           list-length="[[listLength]]"
-                           data="[[tripsList]]"
-                           headings="[[listHeadings]]"
-                           without-pagination="[[withoutPagination]]"
-                           query-params="{{queryParams}}"></list-tab-main>
-
-        </app-header-layout>
+        <list-tab-main header-title="Trips List"
+                       list-length="[[listLength]]"
+                       data="[[tripsList]]"
+                       headings="[[listHeadings]]"
+                       without-pagination="[[withoutPagination]]"
+                       query-params="{{queryParams}}"></list-tab-main>
 
         <!--<dialog-element title="Add Vendor" confirm-btn-text="sync from vision" opened="{{newVendorOpened}}">-->
             <!--<paper-input class="vendor-number-input" label="Vendor Number"></paper-input>-->

@@ -1,5 +1,5 @@
 <!--import [polymer, etools-content-panel, app-route, paper-tabs, app-layout]-->
-<!--import [module-styles, shared-styles, partner-actions-tab, app-main-header, search-and-filter,
+<!--import [module-styles, shared-styles, partner-actions-tab, search-and-filter,
             partner-details-tab, partner-staff-members-tab, file-attachments-tab, permission-controller,
             update-partner-details-data]-->
 
@@ -19,54 +19,44 @@
 
         <update-partner-details-data new-partner-details="{{newPartnerDetails}}"></update-partner-details-data>
 
-        <app-header-layout>
+        <pages-header-element show-export-button
+                              title="[[partner.name]]"></pages-header-element>
+        <div class="tab-selector">
+            <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
+                <paper-tab name="details" class="details-tab"><span class="tab-content">Partner details</span></paper-tab>
+                <paper-tab name="attachments" class="attachments-tab"><span class="tab-content">Attachments</span></paper-tab>
+            </paper-tabs>
+        </div>
+        <div class="view-container">
+            <div id="pageContent">
+                <iron-pages id="info-tabs"
+                            selected="{{routeData.tab}}"
+                            attr-for-selected="name">
+
+                    <div name="details">
+                        <partner-details-tab id="partner-details" partner="[[partner]]" edit-mode="[[_allowEdit()]]"></partner-details-tab>
+
+                        <etools-content-panel title$="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
+                            <partner-staff-members-tab id="staff-members"  data-items="{{partner.staff_members}}" edit-mode="[[_allowEdit()]]"></partner-staff-members-tab>
+                        </etools-content-panel>
+                    </div>
+
+                    <div name="attachments">
+                        <file-attachments-tab files="{{partner.attachments}}" edit-mode="[[_allowEdit()]]" allow-download="[[_allowDownload()]]"></file-attachments-tab>
+                    </div>
+
+                </iron-pages>
 
 
-            <app-header id="header" fixed shadow>
-                <app-main-header></app-main-header>
-            </app-header>
-
-            <pages-header-element show-export-button
-                                  title="[[partner.name]]"></pages-header-element>
-            <div class="tab-selector">
-                <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
-                    <paper-tab name="details" class="details-tab"><span class="tab-content">Partner details</span></paper-tab>
-                    <paper-tab name="attachments" class="attachments-tab"><span class="tab-content">Attachments</span></paper-tab>
-                </paper-tabs>
-            </div>
-            <div class="view-container">
-                <div id="pageContent">
-                    <iron-pages id="info-tabs"
-                                selected="{{routeData.tab}}"
-                                attr-for-selected="name">
-
-                        <div name="details">
-                            <partner-details-tab id="partner-details" partner="[[partner]]" edit-mode="[[_allowEdit()]]"></partner-details-tab>
-
-                            <etools-content-panel title$="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
-                                <partner-staff-members-tab id="staff-members"  data-items="{{partner.staff_members}}" edit-mode="[[_allowEdit()]]"></partner-staff-members-tab>
-                            </etools-content-panel>
-                        </div>
-
-                        <div name="attachments">
-                            <file-attachments-tab files="{{partner.attachments}}" edit-mode="[[_allowEdit()]]" allow-download="[[_allowDownload()]]"></file-attachments-tab>
-                        </div>
-
-                    </iron-pages>
-
-
-                </div>
-
-               <template is="dom-if" if="[[_allowEdit()]]" restamp>
-                   <div id="sidebar">
-                       <partner-actions-tab partner-saved="{{partnerSaved}}"
-                                            partner-saving-error="{{partnerSavingError}}" loading="{{updatingInProcess}}"></partner-actions-tab>
-                   </div>
-               </template>
             </div>
 
-        </app-header-layout>
-
+           <template is="dom-if" if="[[_allowEdit()]]" restamp>
+               <div id="sidebar">
+                   <partner-actions-tab partner-saved="{{partnerSaved}}"
+                                        partner-saving-error="{{partnerSavingError}}" loading="{{updatingInProcess}}"></partner-actions-tab>
+               </div>
+           </template>
+        </div>
 
     </template>
 
