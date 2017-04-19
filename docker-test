@@ -21,6 +21,7 @@ RUN npm install -g bower web-component-tester
 ADD . /code/
 WORKDIR /code
 RUN npm install && bower install --allow-root --config.interactive=false -s
+RUN npm rebuild node-sass
 RUN node_modules/.bin/gulp build
 
 # Run test
