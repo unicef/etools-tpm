@@ -19,7 +19,8 @@
         <partners-list-data
                 partners-list="{{partnersList}}"
                 list-length="{{listLength}}"
-                request-queries="[[requestQueries]]"></partners-list-data>
+                request-queries="[[requestQueries]]"
+                without-pagination="[[withoutPagination]]"></partners-list-data>
 
         <app-header-layout>
 
@@ -33,11 +34,12 @@
                                   btn-text="Add New Partner"
                                   title="Third Party Monitors"></pages-header-element>
 
-            <list-tab-main header-title="results to show"
+            <list-tab-main header-title="Partners List"
                            data="[[partnersList]]"
                            list-length="[[listLength]]"
                            headings="[[listHeadings]]"
-                           query-params="{{queryParams}}">
+                           query-params="{{queryParams}}"
+                           without-pagination="[[withoutPagination]]">
             </list-tab-main>
 
         </app-header-layout>

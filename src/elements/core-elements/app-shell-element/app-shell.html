@@ -17,7 +17,7 @@
 
         <app-route
                 route="{{route}}"
-                pattern="/:page"
+                pattern="[[baseUrl]]:page"
                 data="{{routeData}}"
                 query-params="{{queryParams}}"
                 tail="{{subroute}}"></app-route>
@@ -32,21 +32,21 @@
                 <div class="side-nav-wrapper">
 
                     <app-toolbar class="header">
-                        <img id="etools-logo" src="/images/etools_logo.svg" alt="etools logo">
+                        <img id="etools-logo" src="/tpm/images/etools_logo.svg" alt="etools logo">
                     </app-toolbar>
 
                     <div class="nav-menu">
                         <iron-selector selected="[[page]]" attr-for-selected="name" selectable="side-bar-item"
                                        role="navigation">
 
-                            <side-bar-item name="partners" icon="social:people" href="/partners/list"></side-bar-item>
-                            <side-bar-item name="trips" icon="maps:transfer-within-a-station"  href="/trips/list"></side-bar-item>
+                            <side-bar-item name="partners" icon="social:people" side-bar-link="partners/list"></side-bar-item>
+                            <side-bar-item name="trips" icon="maps:transfer-within-a-station"  side-bar-link="trips/list"></side-bar-item>
 
                         </iron-selector>
                     </div>
 
                     <div class="footer">
-                        <img id="unicef-logo" src="/images/UNICEF_logo.png" alt="UNICEF logo">
+                        <img id="unicef-logo" src="/tpm/images/UNICEF_logo.png" alt="UNICEF logo">
                     </div>
 
                 </div>
@@ -60,10 +60,16 @@
                         attr-for-selected="name"
                         fallback-selection="not-found"
                         role="main">
-                <partners-page-main name="partners" id="partners" route="{{subroute}}" base="{{routeData.page}}"
+                <partners-page-main name="partners"
+                                    id="partners"
+                                    route="{{subroute}}"
                                     query-params="{{queryParams}}"></partners-page-main>
-                <trips-page-main name="trips" id="trips" route="{{subroute}}" base="{{routeData.page}}"
+
+                <trips-page-main name="trips"
+                                 id="trips"
+                                 route="{{subroute}}"
                                  query-params="{{queryParams}}"></trips-page-main>
+
                 <not-found-page-view name="not-found" id="not-found"></not-found-page-view>
             </iron-pages>
 

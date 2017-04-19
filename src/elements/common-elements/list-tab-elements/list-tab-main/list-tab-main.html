@@ -8,7 +8,12 @@
 
         <paper-card class="data-table">
 
-            <span class="textprim data-card-heading">{{showingResults}} results to show</span>
+            <template is="dom-if" if="[[!withoutPagination]]" restamp>
+                <span class="textprim data-card-heading">{{showingResults}} {{headerTitle}}</span>
+            </template>
+            <template is="dom-if" if="[[withoutPagination]]" restamp>
+                <span class="textprim data-card-heading table-title">{{headerTitle}}</span>
+            </template>
 
             <list-header id="list-header"
                     data="[[headings]]"
@@ -19,14 +24,17 @@
                 <list-element class="list-element" data="[[partner]]" headings="[[headings]]" no-animation="[[noAnimation]]"></list-element>
             </template>
 
-            <list-pagination
-                    id="list-pagination"
-                    page-size="{{queryParams.size}}"
-                    page-number="{{queryParams.page}}"
-                    datalength="[[listLength]]"
-                    page-marker="[[pageMarker]]"
-                    showing-results="{{showingResults}}">
-            </list-pagination>
+            <template is="dom-if" if="[[!withoutPagination]]" restamp>
+                <list-pagination
+                        id="list-pagination"
+                        page-size="{{queryParams.size}}"
+                        page-number="{{queryParams.page}}"
+                        datalength="[[listLength]]"
+                        page-marker="[[pageMarker]]"
+                        showing-results="{{showingResults}}">
+                </list-pagination>
+            </template>
+
         </paper-card>
 
     </template>

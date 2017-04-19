@@ -1,4 +1,4 @@
-<!--import [polymer, etools-content-panel, paper-input, etools-searchable-multiselection-menu]-->
+<!--import [polymer, etools-content-panel, paper-input, etools-searchable-multiselection-menu, paper-button]-->
 <!--import [tab-inputs-styles, module-styles, repeatable-data-sets-behavior]-->
 
 <dom-module id="indicators-elements">
@@ -7,60 +7,99 @@
         <style include="tab-inputs-styles module-styles"></style>
         <!-- inject styles './indicators-elements.scss'-->
 
-            <template is="dom-repeat" items="{{dataItems}}">
+        <!--Active Indicators-->
+        <template is="dom-repeat" items="{{dataItems}}">
 
 
-                <div class="row-h repeatable-item-container">
-                    <div class="repeatable-item-actions">
-                        <div class="row-v actions">
-                            <paper-icon-button class="action delete"
-                                               on-tap="_deleteIndicator"
-                                               data-args$="[[index]]"
-                                               disabled="[[!_canBeRemoved(index)]]"
-                                               hidden$="[[!editMode]]"
-                                               icon="cancel"></paper-icon-button>
-                        </div>
-                    </div>
-                    <div class="repeatable-item-content">
-
-                        <div class="repeatable-item-index">
-                            <div class="item-index">[[_getItemNumber(index)]]</div>
-                        </div>
-
-                        <div class="row-h group indicator-row">
-                            <div class="input-container input-container-l">
-                                <!-- Indicator -->
-                                <paper-input class="bold"
-                                        value="[[item.indicator]]"
-                                        readonly
-                                        label="Indicator"
-                                        placeholder="&#8212;"></paper-input>
-                            </div>
-                        </div>
-
-                        <template is="dom-repeat" items="[[item.results]]" as="result">
-                            <div class="row-h group with-reported-prefix indicator-row">
-                                <div class="input-container input-container-prefix">
-                                    <!-- Reported -->
-                                    <div class="reported-label">Reported</div>
-                                    <div class="reported-value">[[result.reported]]</div>
-                                </div>
-
-                                <div class="input-container input-container-s">
-                                    <!-- Reporting Location -->
-                                    <paper-input class="indicator-location"
-                                            value="[[result.location]]"
-                                            readonly
-                                            label="Reporting Location"
-                                            placeholder="&#8212;">[[result.location]]</paper-input>
-                                </div>
-                            </div>
-
-                        </template>
-
+            <div class="row-h repeatable-item-container">
+                <div class="repeatable-item-actions">
+                    <div class="row-v actions">
+                        <paper-icon-button class="action delete"
+                                           on-tap="_deleteIndicator"
+                                           data-args$="[[index]]"
+                                           disabled="[[!_canBeRemoved(index)]]"
+                                           hidden$="[[!editMode]]"
+                                           icon="cancel"></paper-icon-button>
                     </div>
                 </div>
-            </template>
+                <div class="repeatable-item-content">
+
+                    <div class="repeatable-item-index">
+                        <div class="item-index">[[_getItemNumber(index)]]</div>
+                    </div>
+
+                    <div class="row-h group indicator-row">
+                        <div class="input-container input-container-l">
+                            <!-- Indicator -->
+                            <paper-input class="bold disabled-as-readonly"
+                                         value="[[item.indicator]]"
+                                         readonly disabled
+                                         label="Indicator"
+                                         placeholder="&#8212;"></paper-input>
+                        </div>
+                    </div>
+
+
+                    <div class="row-h group with-reported-prefix indicator-row">
+                        <div class="input-container input-container-prefix">
+                            <!-- Reported -->
+                            <div class="reported-label">Reported</div>
+                            <div class="reported-value">[[item.reported]]</div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </template>
+
+
+        <!--Deleted Indicators-->
+
+        <div class="undo-block" hidden$="{{_hideUndo(deletedIndicators.length)}}">
+            <div class="undo-text">You have been removed this indicators. <paper-button on-tap="revertAll"><span>UNDO</span></paper-button></div>
+        </div>
+
+        <template is="dom-repeat" items="{{deletedIndicators}}">
+
+
+            <div class="row-h repeatable-item-container deleted-indicators">
+                <div class="repeatable-item-actions">
+                    <div class="row-v actions">
+                        <paper-icon-button class="action add"
+                                           on-tap="revertIndicator"
+                                           data-args$="[[index]]"
+                                           disabled="[[!_canBeRemoved(index)]]"
+                                           hidden$="[[!editMode]]"
+                                           icon="add-circle"></paper-icon-button>
+                    </div>
+                </div>
+                <div class="repeatable-item-content">
+
+                    <div class="row-h group indicator-row">
+                        <div class="input-container input-container-l">
+                            <!-- Indicator -->
+                            <paper-input class="deleted bold disabled-as-readonly"
+                                         value="[[item.indicator]]"
+                                         readonly disabled
+                                         label="Indicator"
+                                         placeholder="&#8212;"></paper-input>
+                        </div>
+                    </div>
+
+
+                    <div class="row-h group with-reported-prefix indicator-row">
+                        <div class="input-container input-container-prefix">
+                            <!-- Reported -->
+                            <div class="reported-label">Reported</div>
+                            <div class="reported-value">[[item.reported]]</div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </template>
 
     </template>
 

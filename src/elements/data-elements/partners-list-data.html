@@ -76,7 +76,7 @@
                         partners = partners.orderBy(field);
                         if (order === 'desc') { partners = partners.reverse(); }
                     }
-                    if (params.size) {
+                    if (!this.withoutPagination && params.size) {
                         partners
                                 .offset( ((params.page || 1) - 1) * params.size )
                                 .limit(+params.size)

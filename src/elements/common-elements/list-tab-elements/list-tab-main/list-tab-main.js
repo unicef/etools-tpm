@@ -22,6 +22,9 @@ Polymer({
         data: {
             type: Array,
             notify: true
+        },
+        withoutPagination: {
+            type: Boolean
         }
     },
     _orderChanged: function(newOrder) {

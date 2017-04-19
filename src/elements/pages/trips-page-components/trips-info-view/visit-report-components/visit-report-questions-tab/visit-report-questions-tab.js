@@ -33,5 +33,8 @@ Polymer({
     },
     _addNewQuestion: function() {
         if (this.editMode) { this._addElement(); }
+    },
+    _getItemNumber: function(index) {
+        return index + 1;
     }
 });

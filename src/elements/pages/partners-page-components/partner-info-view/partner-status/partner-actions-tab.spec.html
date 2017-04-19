@@ -18,7 +18,7 @@
 </test-fixture>
 
 <script>
-    suite('<not-found-page-view>', function () {
+    suite('<partner-actions-tab>', function () {
         var myEl;
         setup(function () {
             myEl = fixture('element-fixture');
@@ -38,6 +38,45 @@
                 done();
             });
             Polymer.dom(myEl.root).querySelector('.partner-save-btn').click();
+        });
+
+        test('show a spinner when loading in process', function () {
+            var spinner = Polymer.dom(myEl.root).querySelector('.spinner');
+            assert.isFalse(myEl.loading);
+            assert.isFalse(spinner.active);
+
+            myEl.loading = true;
+            assert.isTrue(spinner.active);
+        });
+
+        test('show success message on attribute change', function () {
+            myEl.partnerSaved = false;
+            myEl.partnerSavingError = false;
+            var message = Polymer.dom(myEl.root).querySelector('.action-message'),
+                successText = Polymer.dom(myEl.root).querySelector('.message-text.success'),
+                errorText = Polymer.dom(myEl.root).querySelector('.message-text.error');
+
+            assert.equal(getComputedStyle(message).display, 'none');
+
+            myEl.partnerSaved = true;
+            assert.notEqual(getComputedStyle(message).display, 'none');
+            assert.notEqual(getComputedStyle(successText).display, 'none');
+            assert.equal(getComputedStyle(errorText).display, 'none');
+        });
+
+        test('show error message on attribute change', function () {
+            myEl.partnerSaved = false;
+            myEl.partnerSavingError = false;
+            var message = Polymer.dom(myEl.root).querySelector('.action-message'),
+                    successText = Polymer.dom(myEl.root).querySelector('.message-text.success'),
+                    errorText = Polymer.dom(myEl.root).querySelector('.message-text.error');
+
+            assert.equal(getComputedStyle(message).display, 'none');
+
+            myEl.partnerSavingError = true;
+            assert.notEqual(getComputedStyle(message).display, 'none');
+            assert.equal(getComputedStyle(successText).display, 'none');
+            assert.notEqual(getComputedStyle(errorText).display, 'none');
         });
     });
 </script>

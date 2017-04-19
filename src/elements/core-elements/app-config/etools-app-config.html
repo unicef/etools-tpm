@@ -20,7 +20,35 @@ App global configuration
 
         // app endpoints
         endpoints: {
-
+            partnerDetails: {
+                template: '/api/tpm/partners/<%=id%>'
+            },
+            updatePartnerDetails: {
+                template: '/api/tpm/partners/<%=id%>/'
+            },
+            visitInfo: {
+                template: '/tpm/data/visit-info.json?id="<%=id%>"'
+            },
+            userProfile: {
+                url: '/tpm/data/user-profile.json',
+//                exp: 30 * 60 * 1000, // 30min
+                cachingKey: 'userData'
+            },
+            countries: {
+                url: '/tpm/data/countries.json',
+                exp: 6 * 60 * 60 * 1000, // 6h
+                cachingKey: 'countries'
+            },
+            partnersList: {
+                url: '/api/tpm/partners/',
+                exp: 1 * 60 * 1000, // 6h
+                cachingKey: 'partners'
+            },
+            tripsList: {
+                url: '/tpm/data/trips-list.json',
+                exp: 6 * 60 * 60 * 1000, // 6h
+                cachingKey: 'trips'
+            }
         },
         localEndpoints: {
             partnerDetails: {
@@ -53,9 +81,12 @@ App global configuration
 
         globals: {
             // globals
+
+
             baseSite: window.location.origin,
-            basePath: (window.location.port === '5000') ? '/' : '/partners/',
-            epsPath: (window.location.port !== '5000') ? 'endpoints' : 'localEndpoints',
+            basePath: (window.location.port === '8080') ? '/' : '/tpm/',
+            serverBackend: (window.location.port !== '8080'),
+            epsPath: (window.location.port !== '8080') ? 'endpoints' : 'localEndpoints',
 
             // dexie js
             appDexieDb: etoolsCustomDexieDb,

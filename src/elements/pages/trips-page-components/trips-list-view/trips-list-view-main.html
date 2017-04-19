@@ -14,7 +14,8 @@
         <trips-list-data
                 trips-list="{{tripsList}}"
                 list-length="{{listLength}}"
-                request-queries="[[requestQueries]]"></trips-list-data>
+                request-queries="[[requestQueries]]"
+                without-pagination="[[withoutPagination]]"></trips-list-data>
 
 
         <app-header-layout>
@@ -28,10 +29,11 @@
                                   title="List of Trips"></pages-header-element>
 
 
-            <list-tab-main header-title="results to show"
+            <list-tab-main header-title="Trips List"
                            list-length="[[listLength]]"
                            data="[[tripsList]]"
                            headings="[[listHeadings]]"
+                           without-pagination="[[withoutPagination]]"
                            query-params="{{queryParams}}"></list-tab-main>
 
         </app-header-layout>

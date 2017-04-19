@@ -1,0 +1,31 @@
+<!--import [polymer, iron-icons, iron-icons/av-icons, iron-flex-layout, paper-button, etools-content-panel, etools-loading]-->
+
+<dom-module id="partner-actions-tab">
+    <template>
+        <!-- inject styles './partner-actions-tab.scss'-->
+
+        <etools-content-panel title="Actions">
+
+            <div class$="action-message [[showMessage]]">
+                <span class$="message-text success [[success]]">Your changes have been saved</span>
+                <span class$="message-text error [[error]]">Error occurred. Please try again later</span>
+            </div>
+
+
+            <div class="buttons-section vertical">
+                <paper-button
+                        raised
+                        disabled="[[loading]]"
+                        class="partner-save-btn"
+                        on-tap="_triggerPartnerSave">
+                    Save
+                </paper-button>
+                <etools-loading class="spinner" no-overlay active="[[loading]]" loading-text=""></etools-loading>
+            </div>
+
+        </etools-content-panel>
+
+    </template>
+
+    <!-- inject scripts './partner-actions-tab.js'-->
+</dom-module>

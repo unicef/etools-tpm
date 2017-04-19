@@ -1,6 +1,7 @@
 <!--import [polymer, etools-content-panel, app-route, paper-tabs, app-layout]-->
 <!--import [module-styles, shared-styles, partner-actions-tab, app-main-header, search-and-filter,
-            partner-details-tab, partner-staff-members-tab, file-attachments-tab]-->
+            partner-details-tab, partner-staff-members-tab, file-attachments-tab, permission-controller,
+            update-partner-details-data]-->
 
 <dom-module id="partner-info-view-main">
     <template>
@@ -16,6 +17,8 @@
                 pattern="/:tab"
                 data="{{routeData}}"></app-route>
 
+        <update-partner-details-data new-partner-details="{{newPartnerDetails}}"></update-partner-details-data>
+
         <app-header-layout>
 
 
@@ -27,8 +30,8 @@
                                   title="[[partner.name]]"></pages-header-element>
             <div class="tab-selector">
                 <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
-                    <paper-tab name="details"><span class="tab-content">Partner details</span></paper-tab>
-                    <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
+                    <paper-tab name="details" class="details-tab"><span class="tab-content">Partner details</span></paper-tab>
+                    <paper-tab name="attachments" class="attachments-tab"><span class="tab-content">Attachments</span></paper-tab>
                 </paper-tabs>
             </div>
             <div class="view-container">
@@ -38,10 +41,10 @@
                                 attr-for-selected="name">
 
                         <div name="details">
-                            <partner-details-tab partner="[[partner]]" edit-mode="[[_allowEdit()]]"></partner-details-tab>
+                            <partner-details-tab id="partner-details" partner="[[partner]]" edit-mode="[[_allowEdit()]]"></partner-details-tab>
 
                             <etools-content-panel title$="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
-                                <partner-staff-members-tab  data-items="{{partner.staff_members}}" edit-mode="[[_allowEdit()]]"></partner-staff-members-tab>
+                                <partner-staff-members-tab id="staff-members"  data-items="{{partner.staff_members}}" edit-mode="[[_allowEdit()]]"></partner-staff-members-tab>
                             </etools-content-panel>
                         </div>
 
@@ -56,7 +59,8 @@
 
                <template is="dom-if" if="[[_allowEdit()]]" restamp>
                    <div id="sidebar">
-                       <partner-actions-tab></partner-actions-tab>
+                       <partner-actions-tab partner-saved="{{partnerSaved}}"
+                                            partner-saving-error="{{partnerSavingError}}" loading="{{updatingInProcess}}"></partner-actions-tab>
                    </div>
                </template>
             </div>

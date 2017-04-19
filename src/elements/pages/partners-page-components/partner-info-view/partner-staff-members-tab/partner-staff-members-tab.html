@@ -1,5 +1,5 @@
 <!--import [polymer, paper-fab, paper-icon-button, paper-input, etools-checkable-input]-->
-<!--import [tab-inputs-styles, repeatable-data-sets-behavior]-->
+<!--import [tab-inputs-styles, repeatable-data-sets-behavior, custom-validator]-->
 
 <dom-module id="partner-staff-members-tab">
     <template>
@@ -24,14 +24,12 @@
                     <div class="repeatable-item-content">
                         <div class="row-h group">
                             <div class="input-container" title="{{_getTitleValue(item.title)}}">
-                                <!-- Title -->
+                                <!-- Position -->
                                 <paper-input label="Position"
                                              value="{{item.title}}"
                                              placeholder="&#8212;"
                                              disabled$="[[!editMode]]"
-                                             class="disabled-as-readonly"
-                                             invalid$="[[!_isValid('title', item.title, item.first_name, item.last_name, item.phone, item.email, index)]]"
-                                             error-message="Title is required">
+                                             class$="disabled-as-readonly">
                                 </paper-input>
                             </div>
                             <div class="input-container" title="{{_getTitleValue(item.first_name)}}">
@@ -40,8 +38,8 @@
                                              value="{{item.first_name}}"
                                              placeholder="&#8212;"
                                              disabled$="[[!editMode]]"
-                                             class="disabled-as-readonly"
-                                             invalid$="[[!_isValid('firstName', item.title, item.first_name, item.last_name, item.phone, item.email, index)]]"
+                                             class="disabled-as-readonly validate-input"
+                                             required
                                              error-message="First name is required">
                                 </paper-input>
                             </div>
@@ -51,8 +49,8 @@
                                              value="{{item.last_name}}"
                                              placeholder="&#8212;"
                                              disabled$="[[!editMode]]"
-                                             class="disabled-as-readonly"
-                                             invalid$="[[!_isValid('lastName', item.title, item.first_name, item.last_name, item.phone, item.email, index)]]"
+                                             class="disabled-as-readonly validate-input"
+                                             required
                                              error-message="Last name is required">
                                 </paper-input>
                             </div>
@@ -62,11 +60,10 @@
                                 <!-- Phone number -->
                                 <paper-input label="Phone number"
                                              value="{{item.phone}}"
+                                             allowed-pattern="[\d]"
                                              placeholder="&#8212;"
                                              disabled$="[[!editMode]]"
-                                             class="disabled-as-readonly"
-                                             invalid$="[[!_isValid('phoneNumber', item.title, item.first_name, item.last_name, item.phone, item.email, index)]]"
-                                             error-message="Phone number is required">
+                                             class="disabled-as-readonly">
                                     <iron-icon prefix icon="communication:phone"></iron-icon>
                                 </paper-input>
                             </div>
@@ -76,9 +73,9 @@
                                              value="{{item.email}}"
                                              placeholder="&#8212;"
                                              disabled$="[[!editMode]]"
-                                             class="disabled-as-readonly"
-                                             invalid$="[[!_isValid('emailAddress', item.title, item.first_name, item.last_name, item.phone, item.email, index)]]"
-                                             error-message="A valid & unused email address is required">
+                                             class="disabled-as-readonly validate-input"
+                                             validator="emailValidator"
+                                             error-message="A valid email address is required">
                                     <iron-icon prefix icon="communication:email"></iron-icon>
                                 </paper-input>
                             </div>
@@ -109,10 +106,10 @@
                     </div>
                 </div>
 
-
-
             </template>
         </div>
+
+        <custom-validator id="email-validator" validator-name="emailValidator"></custom-validator>
 
         <div class="row-h" hidden$="[[!_emptyList(dataItems.length)]]">
             <p>There are no assessments added.</p>
