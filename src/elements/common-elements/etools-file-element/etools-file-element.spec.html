@@ -136,18 +136,6 @@
             });
         });
 
-        describe('_showNoFileAttachedMsg', function () {
-            it('returns true when filesLength = 0 and readonly = true', function () {
-                assert.equal(myEl._showNoFileAttachedMsg(0, true), true);
-            });
-
-            it('returns false when filesLength != 0 or readonly = false', function () {
-                assert.equal(myEl._showNoFileAttachedMsg(0, false), false);
-                assert.equal(myEl._showNoFileAttachedMsg(1, false), false);
-                assert.equal(myEl._showNoFileAttachedMsg(1, true), false);
-            });
-        });
-
         describe('_showDownloadBtn', function () {
             it('returns true when file has an URL and allowDownload = true', function () {
                 var file = {file_name: 'name', type: '1', attachment_file: 'url'};
