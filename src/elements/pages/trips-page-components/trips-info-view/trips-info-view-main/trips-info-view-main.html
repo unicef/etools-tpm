@@ -10,6 +10,10 @@
                 display: flex;
                 padding: 15px;
             }
+
+            file-attachments-tab {
+                margin-bottom: 30px;
+            }
         </style>
         <app-route
                 route="{{route}}"
@@ -49,7 +53,19 @@
                         </div>
 
                         <div name="attachments">
-                            <file-attachments-tab title="Related Documents"></file-attachments-tab>
+                            <file-attachments-tab title="Related Documents"
+                                                  readonly
+                                                  allow-download
+                                                  file-types="[[fileTypes]]"
+                                                  files="[[files]]"
+                                                  file-checkbox-visible
+                                                  file-checkbox-title="Access to TPM"></file-attachments-tab>
+
+                            <file-attachments-tab title="Upload New"
+                                                  allow-download
+                                                  allow-delete
+                                                  file-types="[[fileTypes]]"
+                                                  files="[[files]]"></file-attachments-tab>
                         </div>
 
                     </iron-pages>

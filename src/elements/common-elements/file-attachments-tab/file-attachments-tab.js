@@ -5,22 +5,37 @@ Polymer({
     properties: {
         fileTypes: {
             type: Array,
-            value: [
-                {id: '1', name: 'Training materials'},
-                {id: '2', name: 'ToRs'},
-                {id: '3', name: 'Other'}
-            ]
+            value: []
         },
         files: {
             type: Array,
-            value: [
-                {file_name: 'Filename_document.doc', type: '1'},
-                {file_name: 'Filename_document.doc', type: '3'}
-            ]
+            value: []
         },
         title: {
             type: String,
             value: 'Attachments'
+        },
+        readonly: {
+            type: Boolean
+        },
+        allowDownload: {
+            type: Boolean
+        },
+        allowChange: {
+            type: Boolean
+        },
+        allowDelete: {
+            type: Boolean
+        },
+        fileCheckboxVisible: {
+            type: Boolean,
+            value: false
+        },
+        fileCheckboxTitle: {
+            type: String
+        },
+        fileCheckboxLabel: {
+            type: String
         }
     },
     _hideEmptyState: function(length) { return length > 0;}
