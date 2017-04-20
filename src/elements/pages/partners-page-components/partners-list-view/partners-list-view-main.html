@@ -1,4 +1,4 @@
-<!--import [polymer, module-styles, page-layout-styles, shared-styles, dialog-element, app-main-header, list-tab-main, partners-list-data]-->
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, dialog-element, list-tab-main, partners-list-data]-->
 
 <dom-module id="partners-list-view-main">
     <template>
@@ -22,29 +22,20 @@
                 request-queries="[[requestQueries]]"
                 without-pagination="[[withoutPagination]]"></partners-list-data>
 
-        <app-header-layout>
+        <pages-header-element show-export-button
+                              show-add-button="{{_showAddButton()}}"
+                              btn-text="Add New Partner"
+                              title="Third Party Monitors"></pages-header-element>
 
-
-            <app-header id="header" fixed shadow>
-                <app-main-header></app-main-header>
-            </app-header>
-
-            <pages-header-element show-export-button
-                                  show-add-button="{{_showAddButton()}}"
-                                  btn-text="Add New Partner"
-                                  title="Third Party Monitors"></pages-header-element>
-
-            <list-tab-main header-title="Partners List"
-                           data="[[partnersList]]"
-                           list-length="[[listLength]]"
-                           headings="[[listHeadings]]"
-                           query-params="{{queryParams}}"
-                           without-pagination="[[withoutPagination]]">
-                           details="[[listDetails]]"
-                           has-collapse
-            </list-tab-main>
-
-        </app-header-layout>
+        <list-tab-main header-title="Partners List"
+                       data="[[partnersList]]"
+                       list-length="[[listLength]]"
+                       headings="[[listHeadings]]"
+                       query-params="{{queryParams}}"
+                       without-pagination="[[withoutPagination]]"
+                       details="[[listDetails]]"
+                       has-collapse>
+        </list-tab-main>
 
         <dialog-element title="Add Vendor" confirm-btn-text="sync from vision" opened="{{newVendorOpened}}">
             <paper-input class="vendor-number-input" label="Vendor Number"></paper-input>

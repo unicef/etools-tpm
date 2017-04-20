@@ -1,5 +1,5 @@
 <!--import [polymer, app-route, app-layout, paper-tabs, iron-pages]-->
-<!--import [shared-styles, module-styles, app-main-header, pages-header-element, file-attachments-tab,
+<!--import [shared-styles, module-styles, pages-header-element, file-attachments-tab,
             visit-status, visit-details-tab, visit-locations-tab, visit-report-tab]-->
 
 <dom-module id="trips-info-view-main">
@@ -20,66 +20,56 @@
                 pattern="/:tab"
                 data="{{routeData}}"></app-route>
 
-        <app-header-layout>
+        <pages-header-element show-export-button
+                              title="Assign TPM visit"></pages-header-element>
+        <div class="tab-selector">
+            <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
+                <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
+                <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
+                <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
+            </paper-tabs>
+        </div>
+
+        <div class="view-container">
+            <div id="pageContent">
+                <iron-pages id="info-tabs"
+                            selected="{{routeData.tab}}"
+                            attr-for-selected="name">
+
+                    <div name="details">
+                        <visit-details-tab></visit-details-tab>
+                        <visit-locations-tab></visit-locations-tab>
+                    </div>
+
+                    <div name="report">
+                        <visit-report-tab></visit-report-tab>
+                    </div>
+
+                    <div name="attachments">
+                        <file-attachments-tab title="Related Documents"
+                                              readonly
+                                              allow-download
+                                              file-types="[[fileTypes]]"
+                                              files="[[files]]"
+                                              file-checkbox-visible
+                                              file-checkbox-title="Access to TPM"></file-attachments-tab>
+
+                        <file-attachments-tab title="Upload New"
+                                              allow-download
+                                              allow-delete
+                                              file-types="[[fileTypes]]"
+                                              files="[[files]]"></file-attachments-tab>
+                    </div>
+
+                </iron-pages>
 
 
-            <app-header id="header" fixed shadow>
-                <app-main-header></app-main-header>
-            </app-header>
-
-            <pages-header-element show-export-button
-                                  title="Assign TPM visit"></pages-header-element>
-            <div class="tab-selector">
-                <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
-                    <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
-                    <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
-                    <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
-                </paper-tabs>
             </div>
 
-            <div class="view-container">
-                <div id="pageContent">
-                    <iron-pages id="info-tabs"
-                                selected="{{routeData.tab}}"
-                                attr-for-selected="name">
-
-                        <div name="details">
-                            <visit-details-tab></visit-details-tab>
-                            <visit-locations-tab></visit-locations-tab>
-                        </div>
-
-                        <div name="report">
-                            <visit-report-tab></visit-report-tab>
-                        </div>
-
-                        <div name="attachments">
-                            <file-attachments-tab title="Related Documents"
-                                                  readonly
-                                                  allow-download
-                                                  file-types="[[fileTypes]]"
-                                                  files="[[files]]"
-                                                  file-checkbox-visible
-                                                  file-checkbox-title="Access to TPM"></file-attachments-tab>
-
-                            <file-attachments-tab title="Upload New"
-                                                  allow-download
-                                                  allow-delete
-                                                  file-types="[[fileTypes]]"
-                                                  files="[[files]]"></file-attachments-tab>
-                        </div>
-
-                    </iron-pages>
-
-
-                </div>
-
-                <div id="sidebar">
-                    <visit-status></visit-status>
-                </div>
+            <div id="sidebar">
+                <visit-status></visit-status>
             </div>
-
-        </app-header-layout>
-
+        </div>
 
     </template>
 
