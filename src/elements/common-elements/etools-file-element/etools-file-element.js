@@ -362,6 +362,49 @@
                 return 'multiple';
             }
             return '';
+        },
+
+        _getUploadedFile: function(fileModel) {
+            return new Promise((resolve, reject) => {
+                let reader = new FileReader();
+                let uploadedFile = {
+                    name: fileModel.file_name,
+                    type: fileModel.type
+                };
+
+                reader.readAsDataURL(fileModel.raw);
+
+                reader.onload = function () {
+                    uploadedFile.file = reader.result;
+                    resolve(uploadedFile);
+                };
+
+                reader.onerror = function (error) {
+                    reject(error);
+                };
+            });
+        },
+        
+        uploadFiles: function() {
+            return new Promise((resolve, reject) => {
+                let promises = this.files.map((fileModel) => {
+                    if (fileModel && fileModel.raw && fileModel.raw instanceof File) {
+                        return this._getUploadedFile(fileModel);
+                    }
+                });
+
+                promises = promises.filter((promise) => {
+                    return promise !== undefined;
+                });
+
+                Promise.all(promises)
+                    .then((uploadedFiles) => {
+                        resolve(uploadedFiles);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
         }
 
     });
