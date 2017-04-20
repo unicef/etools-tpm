@@ -374,17 +374,17 @@
 
                 reader.readAsDataURL(fileModel.raw);
 
-                reader.onload = function () {
+                reader.onload = function() {
                     uploadedFile.file = reader.result;
                     resolve(uploadedFile);
                 };
 
-                reader.onerror = function (error) {
+                reader.onerror = function(error) {
                     reject(error);
                 };
             });
         },
-        
+
         uploadFiles: function() {
             return new Promise((resolve, reject) => {
                 let promises = this.files.map((fileModel) => {
