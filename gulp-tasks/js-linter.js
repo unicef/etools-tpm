@@ -7,11 +7,10 @@ const through2 = require('through2').obj;
 const fs = require('fs');
 const gulpIf = require('gulp-if');
 const combine = require('stream-combiner2').obj;
+const argv = require('yargs').argv;
 
 function lint() {
-
     let eslintResults = {};
-
     let cacheFilePath = process.cwd() + '/build/lintCache.json';
 
     try {
@@ -44,7 +43,11 @@ function lint() {
         ))
         .pipe(jshint.reporter('default'))
         .pipe(jscs.reporter())
+        .pipe(gulpIf(argv.pc, jshint.reporter('fail')))
         .on('end', function() {
+            if (!fs.existsSync('build')) {
+                fs.mkdirSync('build');
+            }
             fs.writeFileSync(cacheFilePath, JSON.stringify(eslintResults));
         });
 }
