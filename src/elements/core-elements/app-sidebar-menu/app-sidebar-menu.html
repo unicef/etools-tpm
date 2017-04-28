@@ -1,0 +1,58 @@
+<!--import [iron-icon, iron-icons, iron-selector]-->
+<!--import [nav-menu-styles]-->
+
+<dom-module id="app-sidebar-menu">
+
+  <template>
+
+    <style include="nav-menu-styles"></style>
+
+    <div class="menu-header">
+      Third Party<br>
+      Management
+    </div>
+
+    <div class="nav-menu">
+
+      <iron-selector selected="[[page]]"
+                     attr-for-selected="name"
+                     selectable="side-bar-item"
+                     role="navigation">
+
+        <side-bar-item name="partners" icon="social:people" side-bar-link="partners/list"></side-bar-item>
+
+        <side-bar-item name="trips" icon="maps:transfer-within-a-station" side-bar-link="trips/list"></side-bar-item>
+
+      </iron-selector>
+
+      <!--<div class="secondary-header">eTools Community Channels</div>-->
+      <div class="divider"></div>
+
+      <side-bar-item class="lighter-item" name="User Support" icon="icons:help" side-bar-link="https://etools.uservoice.com"></side-bar-item>
+
+      <side-bar-item class="lighter-item" name="Discussion" icon="icons:question-answer" side-bar-link="https://www.yammer.com/unicef.org/#/threads/inGroup?type=in_group&feedId=5782560"></side-bar-item>
+
+      <side-bar-item class="lighter-item" name="Information" icon="icons:info" side-bar-link="http://etools.unicefresults.org"></side-bar-item>
+
+    </div>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+
+        is: 'app-sidebar-menu',
+
+        properties: {
+          page: String
+        }
+
+      });
+
+    })();
+  </script>
+
+</dom-module>
