@@ -6,6 +6,7 @@
 
       :host {
         @apply(--layout-vertical);
+
         height: 100%;
         overflow-y: auto;
         overflow-x: hidden;
@@ -15,14 +16,13 @@
       .menu-header {
         @apply(--layout-horizontal);
         @apply(--layout-center);
+
         background-color: var(--module-primary);
         color: white;
         border-bottom: 1px solid var(--dark-divider-color);
-        min-height: 59px;
-        padding: 0 16px;
+        height: 59px;
         font-size: 16px;
         text-transform: uppercase;
-        pointer-events: none;
       }
 
       .divider {
@@ -32,9 +32,10 @@
 
       .nav-menu {
         @apply(--layout-vertical);
+
         background: #fff;
         min-height: 450px;
-        padding: 0;
+        padding: 8px 0;
       }
 
       .nav-menu,
@@ -48,11 +49,6 @@
         line-height: 60px;
         text-align: center;
         font-size: 12px;
-        border-top: 1px solid var(--gray-lighter);
-      }
-
-      .lighter-item:last-child {
-        margin-bottom: 10px;
       }
     </style>
   </template>
