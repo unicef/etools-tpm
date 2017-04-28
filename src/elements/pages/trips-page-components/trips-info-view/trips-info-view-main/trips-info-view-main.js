@@ -6,9 +6,9 @@ Polymer({
         fileTypes: {
             type: Array,
             value: [
-                {id: '1', name: 'Training materials'},
-                {id: '2', name: 'ToRs'},
-                {id: '3', name: 'Other'}
+                {value: '1', display_name: 'Training materials'},
+                {value: '2', display_name: 'ToRs'},
+                {value: '3', display_name: 'Other'}
             ]
         },
         files: {
