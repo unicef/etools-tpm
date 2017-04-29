@@ -16,11 +16,11 @@ services:
     links:
       - selenium-hub:hub
 
-  ap:
+  tpm:
     build:
       context: .
       dockerfile: ./Dockerfile
-    image: etoolsdev/etools-ap:dev
+    image: etoolsdev/etools-tpm:dev
     command: ["sh", "./test.sh"]
     depends_on:
       - selenium-hub
