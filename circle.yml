@@ -1,6 +1,10 @@
 machine:
-   services:
-     - docker
+  pre:
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+    - pip install docker-compose
+
+  services:
+    - docker
 
 dependencies:
   cache_directories:
@@ -8,15 +12,13 @@ dependencies:
 
   override:
     - if [[ -e ~/dockercache/tpm.tar ]]; then docker load -i ~/dockercache/tpm.tar; fi
-    - if [[ -e ~/dockercache/tpmtest.tar ]]; then docker load -i ~/dockercache/tpmtest.tar; fi
-    - docker build --rm=false -t unicef/etools-tpm:$CIRCLE_BRANCH .
-    - docker build --rm=false -t unicef/etools-tpm-test:$CIRCLE_BRANCH --file docker-test .
-    - mkdir -p ~/dockercache; docker save unicef/etools-tpm-test > ~/dockercache/tpmtest.tar; docker save unicef/etools-tpm > ~/dockercache/tpm.tar
+    - docker-compose -f docker-compose.test.yml build
+    - mkdir -p ~/dockercache; docker save etoolsdev/etools-tpm:dev > ~/dockercache/tpm.tar
 
 
 test:
    override:
-     - docker run -it unicef/etools-tpm-test:$CIRCLE_BRANCH
+     - docker-compose -f docker-compose.test.yml up --abort-on-container-exit
 
 #deployment:
 #   hub:

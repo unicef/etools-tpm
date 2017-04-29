@@ -7,9 +7,9 @@ Polymer({
         fileTypes: {
             type: Array,
             value: [
-                {id: '1', name: 'Training materials'},
-                {id: '2', name: 'ToRs'},
-                {id: '3', name: 'Other'}
+                {value: '1', display_name: 'Training materials'},
+                {value: '2', display_name: 'ToRs'},
+                {value: '3', display_name: 'Other'}
             ]
         },
         partner: {
@@ -36,9 +36,9 @@ Polymer({
         return !this.checkPermission('editPartnerDetails') && this.checkPermission('downloadPartnerAttachments');
     },
     _savePartner: function() {
-        if (!this.$['partner-details'].validate() || !this.$['staff-members'].validate()) {
+        if (!this.$['partner-details'].valvalueate() || !this.$['staff-members'].valvalueate()) {
             this.set('routeData.tab', 'details');
-            this.fire('toast', {text: 'Fix invalid fields before saving'});
+            this.fire('toast', {text: 'Fix invalvalue fields before saving'});
             return;
         }
         this.updatingInProcess = true;

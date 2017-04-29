@@ -73,9 +73,9 @@
         describe('_getFileTypeStr', function () {
             beforeEach(function () {
                 var fileTypes = [
-                    {id: '1', name: 'Training materials'},
-                    {id: '2', name: 'ToRs'},
-                    {id: '3', name: 'Other'}
+                    {value: 1, display_name: 'Training materials'},
+                    {value: 2, display_name: 'ToRs'},
+                    {value: 3, display_name: 'Other'}
                 ];
 
                 myEl.fileTypes = fileTypes;
@@ -92,7 +92,7 @@
             });
 
             it('returns type name', function () {
-                assert.equal(myEl._getFileTypeStr('3'), myEl.fileTypes[2].name);
+                assert.equal(myEl._getFileTypeStr('3'), myEl.fileTypes[2].display_name);
             });
         });
 
@@ -138,7 +138,7 @@
 
         describe('_showDownloadBtn', function () {
             it('returns true when file has an URL and allowDownload = true', function () {
-                var file = {file_name: 'name', type: '1', attachment_file: 'url'};
+                var file = {file_name: 'name', type: '1', file: 'url'};
 
                 assert.equal(myEl._showDownloadBtn(file, true), true);
             });
@@ -152,7 +152,7 @@
             });
 
             it('returns false when allowDownload = false', function () {
-                var file = {file_name: 'name', type: '1', attachment_file: 'url'};
+                var file = {file_name: 'name', type: '1', file: 'url'};
 
                 assert.equal(myEl._showDownloadBtn(file, false), false);
             });
@@ -202,7 +202,7 @@
 
         describe('_getFileSelectedClass', function () {
             it('returns "" when file has an URL and allowDownload = true', function () {
-                var file = {file_name: 'name', type: '1', attachment_file: 'url'};
+                var file = {file_name: 'name', type: '1', file: 'url'};
 
                 assert.equal(myEl._getFileSelectedClass(file, true), '');
             });
@@ -216,7 +216,7 @@
             });
 
             it('returns "only-selected" when allowDownload = false', function () {
-                var file = {file_name: 'name', type: '1', attachment_file: 'url'};
+                var file = {file_name: 'name', type: '1', file: 'url'};
 
                 assert.equal(myEl._getFileSelectedClass(file, false), 'only-selected');
             });
@@ -228,22 +228,11 @@
             });
         });
 
-        describe('_openFileChooser', function () {
-            it('triggers click event on the fileInput', function (done) {
-                myEl.$.fileInput.addEventListener('click', function (event) {
-                    assert.isDefined(event);
-                    done();
-                });
-
-                myEl._openFileChooser();
-            });
-        });
-
         describe('_replaceFile', function () {
             beforeEach(function () {
                 var files = [
-                    {file_name: 'name', type: '1', attachment_file: 'url'},
-                    {file_name: 'name2', type: '1', attachment_file: 'url2'}
+                    {file_name: 'name', type: '1', file: 'url'},
+                    {file_name: 'name2', type: '1', file: 'url2'}
                 ];
 
                 myEl.multiple = true;
@@ -325,13 +314,24 @@
                 assert.equal(myEl.files[changeIndex].raw, newFile);
                 assert.isNull(myEl.files[changeIndex].path);
             });
+
+            it('replaces attachment file and adds it to deletedAttachments Array', function () {
+                var newFile = new File([''], 'newName');
+
+                myEl.files.push({id: 1, file: 'path/file.name'});
+                myEl.changeFileIndex = 2;
+
+                assert.equal(myEl.deletedAttachments.length, 0);
+                assert.equal(myEl._replaceFile(newFile), true);
+                assert.equal(myEl.deletedAttachments.length, 1);
+            });
         });
 
         describe('_addMultipleFiles', function () {
             beforeEach(function () {
                 var files = [
-                    {file_name: 'name', type: '1', attachment_file: 'url'},
-                    {file_name: 'name2', type: '1', attachment_file: 'url2'}
+                    {file_name: 'name', type: '1', file: 'url'},
+                    {file_name: 'name2', type: '1', file: 'url2'}
                 ];
 
                 myEl.multiple = true;
@@ -380,8 +380,8 @@
         describe('_checkFileAlreadySelected', function () {
             beforeEach(function () {
                 var files = [
-                    {file_name: 'name', type: '1', attachment_file: 'url'},
-                    {file_name: 'name2', type: '1', attachment_file: 'url2'}
+                    {file_name: 'name', type: '1', file: 'url'},
+                    {file_name: 'name2', type: '1', file: 'url2'}
                 ];
 
                 myEl.multiple = true;
@@ -497,34 +497,13 @@
             });
         });
 
-        describe('_changeFile', function () {
-            var e = {model: {index: 0}};
-
-            it('sets changeFileIndex property', function () {
-                myEl._changeFile(e);
-                assert.equal(myEl.changeFileIndex, e.model.index);
-            });
-
-            it('removes multiple attribute from fileInput', function () {
-                myEl._changeFile(e);
-                assert.isNull(myEl.$.fileInput.getAttribute('multiple'));
-            });
-
-            it('fires _openFileChooser() method', function () {
-                var spyFileChooser = sinon.spy(myEl, '_openFileChooser');
-
-                myEl._changeFile(e);
-                assert.equal(spyFileChooser.calledOnce, true);
-            });
-        });
-
         describe('_deleteFile', function () {
             var e = {model: {index: 0}};
 
             beforeEach(function () {
                 var files = [
-                    {file_name: 'name', type: '1', attachment_file: 'url'},
-                    {file_name: 'name2', type: '1', attachment_file: 'url2'}
+                    {file_name: 'name', type: '1', file: 'url'},
+                    {file_name: 'name2', type: '1', file: 'url2'}
                 ];
 
                 myEl.multiple = true;
@@ -547,12 +526,32 @@
                 assert.equal(myEl.files.length, 1);
                 assert.equal(myEl.files[0].file_name, 'name2');
             });
+
+            it('removes attachment file and adds it to deletedAttachments Array', function () {
+                e.model.index = 2;
+                myEl.files.push({id: 1, file: 'path/file.name'});
+
+                assert.equal(myEl.files.length, 3);
+                assert.equal(myEl.deletedAttachments.length, 0);
+                myEl._deleteFile(e);
+                assert.equal(myEl.files.length, 2);
+                assert.equal(myEl.deletedAttachments.length, 1);
+            });
+        });
+
+        describe('_deleteAttachedFile', function () {
+            it('adds provided file to the deletedAttachments Array and sets it property _deleted to true', function () {
+                assert.equal(myEl.deletedAttachments.length, 0);
+                myEl._deleteAttachedFile({id: 1, file: 'path/file.name'});
+                assert.equal(myEl.deletedAttachments.length, 1);
+                assert.equal(myEl.deletedAttachments[0]._deleted, true);
+            });
         });
 
         describe('_filesChange', function () {
             var files = [
-                {file_name: 'name', type: '1', attachment_file: 'url'},
-                {file_name: 'name2', type: '1', attachment_file: 'url2'}
+                {file_name: 'name', type: '1', file: 'url'},
+                {file_name: 'name2', type: '1', file: 'url2'}
             ];
 
             it('sets showFilesContainer = true when files.length > 0', function () {
@@ -583,43 +582,42 @@
 
                 assert.equal(myEl.files.length, 1);
             });
+
+            it('removes files without file_name property', function (done) {
+                var newFile = new File([''], 'newFile');
+
+                myEl.files = [];
+                myEl.files.push({raw: newFile, type: '1'});
+
+                assert.equal(myEl.files.length, 1);
+                myEl._filesChange();
+
+                flush(function () {
+                    assert.equal(myEl.files.length, 0);
+                    done();
+                });
+            });
+
+            it('removes files with incorrect file property', function (done) {
+                myEl.files.push({file: '', id: 1});
+
+                assert.equal(myEl.files.length, 1);
+                myEl._filesChange();
+
+                flush(function () {
+                    assert.equal(myEl.files.length, 0);
+                    done();
+                });
+            });
         });
 
-        describe('_downloadFile', function () {
-            beforeEach(function () {
-                var files = [
-                    {file_name: 'name', type: '1', attachment_file: 'url'},
-                    {file_name: 'name2', type: '1', raw: new File([''], 'name2'),  attachment_file: 'url2'}
-                ];
-
-                myEl.multiple = true;
-                myEl.files = files;
+        describe('_getFilenameFromUrl', function () {
+            it('returns filename', function () {
+                assert.equal(myEl._getFilenameFromUrl('path/to/file/filename'), 'filename');
             });
 
-            it('downloads file from attachment_file property', function (done) {
-                var e = {model: {index: 0}};
-                let downloader = myEl.$.downloader;
-
-                downloader.addEventListener('click', function (e) {
-                    assert.isDefined(e);
-                    done();
-                });
-
-                myEl._downloadFile(e);
-                assert.equal(downloader.href, myEl.files[0].attachment_file);
-            });
-
-            it('downloads file from raw property', function (done) {
-                var e = {model: {index: 1}};
-                let downloader = myEl.$.downloader;
-
-                downloader.addEventListener('click', function (e) {
-                    assert.isDefined(e);
-                    done();
-                });
-
-                myEl._downloadFile(e);
-                assert.notEqual(downloader.href, myEl.files[1].attachment_file);
+            it('returns undefined', function () {
+                assert.isUndefined(myEl._getFilenameFromUrl(''));
             });
         });
 
@@ -654,7 +652,7 @@
             });
         });
 
-        describe('uploadFiles', function () {
+        describe('getFiles', function () {
             beforeEach(function () {
                 myEl.files = [{
                     file_name: 'name',
@@ -663,7 +661,7 @@
             });
 
             it('Promise resolves an Array of Objects', function () {
-                myEl.uploadFiles().then((resolved) => {
+                myEl.getFiles().then((resolved) => {
                     assert.isArray(resolved);
                     assert.isObject(resolved[0]);
                 });
@@ -676,7 +674,7 @@
                     });
                 });
 
-                myEl.uploadFiles().catch((rejected) => {
+                myEl.getFiles().catch((rejected) => {
                     assert.isDefined(rejected);
                 });
             });
@@ -684,8 +682,8 @@
 
         describe('.files-wrapper', function () {
             var files = [
-                {file_name: 'name.png', type: '1', attachment_file: 'url'},
-                {file_name: 'name2.png', type: '1', attachment_file: 'url2'}
+                {file_name: 'name.png', type: '1', file: 'url'},
+                {file_name: 'name2.png', type: '1', file: 'url2'}
             ];
 
             it('contains maximum 1 file without multiple attribute', function (done) {
@@ -715,16 +713,15 @@
                 myEl.activateFileTypes = true;
                 myEl.readonly = false;
                 myEl.fileTypes = [
-                    {id: '1', name: 'Training materials'},
-                    {id: '2', name: 'ToRs'},
-                    {id: '3', name: 'Other'}
+                    {value: '1', display_name: 'Training materials'},
+                    {value: '2', display_name: 'ToRs'},
+                    {value: '3', display_name: 'Other'}
                 ];
                 myEl.files = [
-                    {file_name: 'name.png', type: '1', attachment_file: 'url'}
+                    {file_name: 'name.png', type: '1', file: 'url'}
                 ];
 
                 flush(function () {
-                    var paperDropdown = myEl.$$('paper-dropdown-menu');
                     var paperItems = Polymer.dom(myEl.root).querySelectorAll('paper-item');
                     assert.equal(paperItems.length, 3);
                     done();
@@ -737,7 +734,7 @@
                 myEl.allowDelete = true;
                 myEl.readonly = false;
                 myEl.files = [
-                    {file_name: 'name.png', type: '1', attachment_file: 'url'}
+                    {file_name: 'name.png', type: '1', file: 'url'}
                 ];
 
                 flush(function () {
