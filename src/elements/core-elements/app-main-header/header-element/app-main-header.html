@@ -1,10 +1,11 @@
 <!--import [polymer, app-layout/app-toolbar/app-toolbar, paper-icon-button, iron-flex-layout, etools-page-refresh]-->
 
-<!--import [etools-app-selector, countries-dropdown, shared-styles]-->
+<!--import [etools-app-selector, countries-dropdown, user-dropdown, shared-styles]-->
 
 <dom-module id="app-main-header">
 
   <template>
+
     <style include="shared-styles">
 
       app-toolbar {
@@ -14,7 +15,7 @@
 
       div[main-title] {
         position: relative;
-      bottom: 1px;
+        bottom: 1px;
         margin-left: 24px;
         min-height: 30px;
         background: url('../../../images/etools_logo_icon.png') no-repeat center left;
@@ -30,6 +31,8 @@
 
       #menuButton {
         display: block;
+        width: 45px;
+        height: 45px;
       }
 
       .right-side {
@@ -56,7 +59,7 @@
         @apply(--layout-center);
       }
 
-      @media (min-width: 850px) {
+      @media (min-width: 851px) {
         #menuButton {
           display: none;
         }
@@ -65,18 +68,27 @@
         }
       }
     </style>
+
     <app-toolbar sticky class="content-align">
       <paper-icon-button id="menuButton" class="light" icon="menu" on-tap="openDrawer"></paper-icon-button>
+
       <div class="titlebar content-align">
         <etools-app-selector menu-options="[[menuOptions]]"></etools-app-selector>
         <img src="../../../../images/etools_logo_icon.png">
         eTools
       </div>
+
       <div class="content-align">
         <countries-dropdown id="countries" countries="[[countries]]" current="[[user.profile.country]]"></countries-dropdown>
+
+        <user-dropdown></user-dropdown>
+        <!--<user-dropdown is-admin></user-dropdown>-->
+
         <etools-page-refresh id="refresh"></etools-page-refresh>
       </div>
+
     </app-toolbar>
+
   </template>
 
   <script>
