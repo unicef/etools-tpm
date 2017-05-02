@@ -1,6 +1,6 @@
 <!--import [polymer, app-layout/app-toolbar/app-toolbar, paper-icon-button, iron-flex-layout, etools-page-refresh]-->
 
-<!--import [etools-app-selector, countries-dropdown, user-dropdown, shared-styles]-->
+<!--import [etools-app-selector, countries-dd-old, countries-dropdown, user-dropdown, shared-styles]-->
 
 <dom-module id="app-main-header">
 
@@ -79,6 +79,7 @@
       </div>
 
       <div class="content-align">
+        <!--<countries-dd-old id="countries" countries="[[countries]]" current="[[user.profile.country]]"></countries-dd-old>-->
         <countries-dropdown id="countries" countries="[[countries]]" current="[[user.profile.country]]"></countries-dropdown>
 
         <user-dropdown></user-dropdown>

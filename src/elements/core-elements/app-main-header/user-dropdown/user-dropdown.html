@@ -2,7 +2,7 @@
 
 <dom-module id="user-dropdown">
     <template>
-        <!-- inject styles './user-dropdown.scss'-->
+        <!-- inject styles './../header-styles.scss'-->
 
         <paper-menu-button id="dropdown" vertical-align="top"
                            vertical-offset="56"
@@ -14,21 +14,21 @@
                 </template>
 
                 <template is="dom-if" if="[[isAdmin]]" restamp>
-                    <iron-icon icon="icons:account-circle"></iron-icon>
-                    <span class="admin-text">Admin</span>
+                    <iron-icon class="mr-8" icon="icons:account-circle"></iron-icon>
+                    <span class="dropdown-text">Admin</span>
                 </template>
 
                 <iron-icon class="arrow-down" icon="icons:arrow-drop-down"></iron-icon>
                 <iron-icon class="arrow-up" icon="icons:arrow-drop-up"></iron-icon>
             </paper-button>
 
-            <paper-menu class="dropdown-content selectable-content">
-                <paper-item>
+            <paper-menu class="dropdown-content no-focus mw-160">
+                <paper-item on-tap="_selectUser">
                     <iron-icon icon="icons:account-circle"></iron-icon>
                     Profile
                 </paper-item>
 
-                <paper-item>
+                <paper-item on-tap="_selectAdmin">
                     <iron-icon icon="icons:settings-applications"></iron-icon>
                     Admin
                 </paper-item>

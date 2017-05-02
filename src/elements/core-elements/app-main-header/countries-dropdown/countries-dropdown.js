@@ -1,15 +1,11 @@
 Polymer({
 
-    is: 'user-dropdown',
+    is: 'countries-dropdown',
 
     properties: {
         opened: {
             type: Boolean,
             reflectToAttribute: true,
-            value: false
-        },
-        isAdmin: {
-            type: Boolean,
             value: false
         }
     },
@@ -23,12 +19,8 @@ Polymer({
         this.set('opened', this.$.dropdown.opened);
     },
 
-    _selectUser: function() {
-        this.isAdmin = false;
-    },
-
-    _selectAdmin: function() {
-        this.isAdmin = true;
+    _countrySelected: function(e) {
+        this.set('country', this.$.repeat.itemForElement(e.detail.item));
     }
 
 });
