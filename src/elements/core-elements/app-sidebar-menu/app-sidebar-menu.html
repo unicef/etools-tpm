@@ -1,14 +1,17 @@
 <!--import [iron-icon, iron-icons, iron-selector]-->
-<!--import [nav-menu-styles]-->
+<!--import [module-styles]-->
 
 <dom-module id="app-sidebar-menu">
 
   <template>
 
-    <style include="nav-menu-styles"></style>
+    <style include="module-styles"></style>
+    <!-- inject styles './app-sidebar-menu.scss'-->
 
     <app-toolbar class="menu-header">
+      <paper-icon-button id="toggle-drawer" on-tap="_toggleDrawer" icon="menu" drawer-toggle></paper-icon-button>
       <div main-title>Third Party<br>Management</div>
+      <paper-icon-button id="close-drawer" on-tap="_toggleDrawer" icon="icons:chevron-left" drawer-toggle></paper-icon-button>
     </app-toolbar>
 
     <div class="nav-menu">
@@ -37,21 +40,6 @@
 
   </template>
 
-  <script>
-    (function() {
-      'use strict';
-
-      Polymer({
-
-        is: 'app-sidebar-menu',
-
-        properties: {
-          page: String
-        }
-
-      });
-
-    })();
-  </script>
+  <!-- inject scripts './app-sidebar-menu.js'-->
 
 </dom-module>
