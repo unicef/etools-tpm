@@ -36,9 +36,9 @@ Polymer({
         return !this.checkPermission('editPartnerDetails') && this.checkPermission('downloadPartnerAttachments');
     },
     _savePartner: function() {
-        if (!this.$['partner-details'].valvalueate() || !this.$['staff-members'].valvalueate()) {
+        if (!this.$['partner-details'].validate() || !this.$['staff-members'].validate()) {
             this.set('routeData.tab', 'details');
-            this.fire('toast', {text: 'Fix invalvalue fields before saving'});
+            this.fire('toast', {text: 'Fix invalid fields before saving'});
             return;
         }
         this.updatingInProcess = true;
