@@ -84,7 +84,7 @@
         <!--<countries-dd-old id="countries" countries="[[countries]]" current="[[user.profile.country]]"></countries-dd-old>-->
         <countries-dropdown id="countries"></countries-dropdown>
 
-        <user-dropdown is-admin="[[!user.is_superuser]]"></user-dropdown>
+        <user-dropdown is-admin="[[user.is_superuser]]"></user-dropdown>
         <!--<user-dropdown is-admin></user-dropdown>-->
 
         <etools-page-refresh id="refresh"></etools-page-refresh>
@@ -162,7 +162,9 @@
           }
 
           let filteredCountries = this.countries.filter((country) => {
-              return countriesAvailable.indexOf(country.id) >= 0;
+              return !!countriesAvailable.find((countryAvailable) => {
+                  return countryAvailable.id === country.id;
+              });
           });
           let userCountryIndex = filteredCountries.findIndex((country) => {
               return country.id === this.user.profile.country;
