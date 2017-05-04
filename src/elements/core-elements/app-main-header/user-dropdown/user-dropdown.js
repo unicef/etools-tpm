@@ -20,15 +20,24 @@ Polymer({
     },
 
     _toggleOpened: function() {
+        this.$.dropdownMenu.select(null);
         this.set('opened', this.$.dropdown.opened);
     },
 
-    _selectUser: function() {
-        this.isAdmin = false;
+    _openUserProfile: function() {
+
     },
 
-    _selectAdmin: function() {
-        this.isAdmin = true;
+    _changeLocation: function(path) {
+        window.location.href = window.location.origin + '/' + path + '/';
+    },
+
+    _navigateToAdminPAge: function() {
+        this._changeLocation('admin');
+    },
+
+    _logout: function() {
+        this._changeLocation('tpm/logout');
     }
 
 });

@@ -35,6 +35,12 @@ Polymer({
         globalLoadingQueue: {
             type: Array,
             value: function() {return [];}
+        },
+        user: {
+            type: Object,
+            value: function() {
+                return {};
+            }
         }
     },
 

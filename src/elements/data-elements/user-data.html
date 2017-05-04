@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax, lodash, permission-controller]-->
+<!--import [polymer, etools-ajax, lodash]-->
 
 <dom-module id="user-data">
 
@@ -18,18 +18,18 @@
             is: 'user-data',
 
             behaviors: [
-                etoolsAppConfig.globals,
-                TPMBehaviors.PermissionController
+                etoolsAppConfig.globals
             ],
 
             properties: {
-
                 user: {
                     type: Object,
                     readOnly: true,
-                    notify: true
+                    notify: true,
+                    value: function() {
+                        return {};
+                    }
                 }
-
             },
 
             ready: function () {
@@ -37,16 +37,12 @@
             },
 
             _handleResponse: function (data) {
-                // TODO: check response to make sure it contains a valid user
-                this._setUser(data.detail[0]);
-                this._setPermissions(data.detail[0]);
+                this._setUser(data.detail);
                 this.fire('user-profile-loaded')
             },
 
             _handleError: function (rsp, err) {
-                // TODO: handle error response
-                console.log(rsp);
-                console.log(err);
+                console.error('Can\'t load user data');
             },
 
         });
