@@ -6,12 +6,28 @@
   <template>
     <style>
       app-header {
+        box-sizing: border-box;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
         background-color: var(--primary-background-color);
         z-index: 1;
       }
 
+      @media (min-width: 851px) {
+        app-header {
+          padding-left: 220px;
+        }
+      }
+
+      app-drawer {
+        z-index: 1;
+      }
+
       #pages {
-        min-height: calc(100% - 150px);
+        padding-top: 60px;
+        min-height: calc(100% - 110px);
       }
 
       .page {

@@ -1,4 +1,4 @@
-<!--import [polymer, app-route/app-location, app-route, app-layout, app-main-header, page-footer, paper-icon-button,
+<!--import [polymer, app-route/app-location, app-route, app-layout, app-main-header, app-sidebar-menu, page-footer, paper-icon-button,
              paper-toast, paper-material, iron-selector, iron-pages, iron-collapse, iron-icons, iron-icons/social-icons,
              etools-loading/etools-loading-behavior, iron-icons/maps-icons]-->
 
@@ -29,27 +29,7 @@
             <!-- Drawer content -->
             <app-drawer id="drawer" transition-duration="350">
 
-                <div class="side-nav-wrapper">
-
-                    <app-toolbar class="header">
-                        <img id="etools-logo" src="/tpm/images/etools_logo.svg" alt="etools logo">
-                    </app-toolbar>
-
-                    <div class="nav-menu">
-                        <iron-selector selected="[[page]]" attr-for-selected="name" selectable="side-bar-item"
-                                       role="navigation">
-
-                            <side-bar-item name="partners" icon="social:people" side-bar-link="partners/list"></side-bar-item>
-                            <side-bar-item name="trips" icon="maps:transfer-within-a-station"  side-bar-link="trips/list"></side-bar-item>
-
-                        </iron-selector>
-                    </div>
-
-                    <div class="footer">
-                        <img id="unicef-logo" src="/tpm/images/UNICEF_logo.png" alt="UNICEF logo">
-                    </div>
-
-                </div>
+                <app-sidebar-menu page="[[page]]"></app-sidebar-menu>
 
             </app-drawer>
 
