@@ -54,15 +54,19 @@ const dependencies = require('./gulp-tasks/project-dependencies');
 
 
 gulp.task('watch', function () {
-  gulp.watch(['./src/elements/**/*.*'], gulp.series(jsLinter, buildElements, runTests));
+  gulp.watch(['./src/elements/**/*.*'], gulp.series(jsLinter, buildElements));
   gulp.watch(['./src/*.*', './src/assets/**/*.*'], gulp.series(copyAssets));
   gulp.watch(['./src/bower_components/**/*.*'], gulp.series(copyBower));
+  gulp.watch(['./src/elements/**/*.spec.html'], gulp.series(runTests));
 });
 
+gulp.task('lint', gulp.series(jsLinter));
 gulp.task('test', gulp.series(clean.build, gulp.parallel(buildElements, copyAssets, copyBower), runTests));
-gulp.task('start', function () { nodemon({ script: 'server.js' }) });
-gulp.task('build', gulp.series(clean.build, jsLinter, gulp.parallel(buildElements, copyAssets, copyBower), 'watch'));
 
+gulp.task('start', function () { nodemon({ script: 'server.js' }) });
+gulp.task('build', gulp.series(clean.build, jsLinter, gulp.parallel(buildElements, copyAssets, copyBower)));
+
+gulp.task('precommit', gulp.series('lint', 'test'));
 
 
 gulp.task('default', gulp.series([

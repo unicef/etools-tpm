@@ -8,5 +8,6 @@ Polymer({
             observer: 'updateStyles'
         }
     },
-    _getTitleValue: function(value) { return value || ''; }
+    _getTitleValue: function(value) { return value || ''; },
+    validate: function() { return true; }
 });

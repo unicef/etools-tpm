@@ -7,16 +7,18 @@
         is: 'etools-file-element',
 
         properties: {
-            label: {
-                type: String,
-                value: 'File attachment'
-            },
             files: {
                 type: Object,
                 value: function() {
                     return [];
                 },
                 notify: true
+            },
+            deletedAttachments: {
+                type: Array,
+                value: function() {
+                    return [];
+                }
             },
             multiple: {
                 type: Boolean,
@@ -50,10 +52,6 @@
                     return '';
                 }
             },
-            noFileAttachedMsg: {
-                type: String,
-                value: 'No file attached'
-            },
             fileModel: {
                 type: Object,
                 value: null
@@ -66,158 +64,186 @@
             },
             activateFileTypes: {
                 type: Boolean,
-                value: function() {
-                    return false;
-                },
+                value: false,
                 reflectToAttribute: true
             },
             fileTypes: {
                 type: Array,
-                value: []
+                value: function() {
+                    return [];
+                }
+            },
+            fileTypeRequired: {
+                type: Boolean,
+                value: false
             },
             fileTypesLabel: {
                 type: String,
                 value: 'File Type'
+            },
+            allowDownload: {
+                type: Boolean,
+                value: false
+            },
+            allowChange: {
+                type: Boolean,
+                value: false
+            },
+            allowDelete: {
+                type: Boolean,
+                value: false
+            },
+            fileCheckboxVisible: {
+                type: Boolean,
+                value: false
+            },
+            fileCheckboxTitle: {
+                type: String,
+                value: ''
+            },
+            fileCheckboxLabel: {
+                type: String,
+                value: 'Allow'
             }
         },
         observers: [
             '_filesChange(files.*)'
         ],
         ready: function() {
-            if (this.multiple && this.label === 'File attachment') {
-                this.set('label', this.label + '(s)');
-            }
             if (!Array.isArray(this.files)) {
                 this.files = [];
             }
         },
-        _showFileType: function(fileTypesLength, readonly) {
-            return this.activateFileTypes && fileTypesLength > 0 && readonly === false;
+        _showReadonlyType: function(readonly, fileTypesLength) {
+            return readonly || fileTypesLength <= 0;
         },
-        _showReadonlyType: function(fileType, readonly) {
-            return readonly && this.activateFileTypes;
-        },
-        _getFileTypeStr: function(fileType) {
+        _getFileType: function(fileType) {
             if (this.fileTypes.length > 0) {
-                var type = this.fileTypes.filter(function(type) {
-                    return parseInt(type.id, 10) === parseInt(fileType, 10);
+                let type = this.fileTypes.filter(function(type) {
+                    return parseInt(type.value, 10) === parseInt(fileType, 10);
                 })[0];
                 if (type) {
-                    return type.name;
+                    return type;
                 }
                 return null;
             }
             return null;
         },
 
-        _showLabel: function(label) {
-            return typeof label === 'string' && label !== '';
-        },
         _showUploadBtn: function(filesLength, readonly) {
-            if (!this.multiple && filesLength > 0) {
+            if (readonly === true) {
                 return false;
             }
 
-            if (filesLength === 0 && readonly === true) {
+            if (!this.multiple && filesLength > 0) {
                 return false;
             }
 
             return true;
         },
 
-        _showNoFileAttachedMsg: function(filesLength, readonly) {
-            return filesLength === 0 && readonly === true;
-        },
         _showDownloadBtn: function(file, allowDownload) {
-            return allowDownload && file && typeof file.attachment_file === 'string' && file.attachment_file !== '';
+            let hasUrl = (file.file && typeof file.file === 'string') || file.raw instanceof File;
+            return !!(allowDownload && file && hasUrl);
         },
-        _getFileSelectedClass: function(file) {
-            if (!this._showDownloadBtn(file)) {
+        _showChangeBtn: function(file, allowChange, readonly) {
+            return !!(file && allowChange && readonly === false);
+        },
+        _showDeleteBtn: function(file, allowDelete, readonly) {
+            return !!(file && allowDelete && readonly === false);
+        },
+        _getFileSelectedClass: function(file, allowDownload) {
+            if (!this._showDownloadBtn(file, allowDownload)) {
                 return 'only-selected';
             }
             return '';
         },
 
         _openFileChooser: function() {
-            var elem = this.$.fileInput;
+            let elem = this.$.fileInput;
             if (elem && document.createEvent) {
-                var evt = document.createEvent('MouseEvents');
+                let evt = document.createEvent('MouseEvents');
                 evt.initEvent('click', true, false);
                 elem.dispatchEvent(evt);
             }
         },
 
-        _typeChanged: function() {
-            // var typeVal = Polymer.dom(event).localTarget.selected;
-            // console.log(event.model.index, typeVal);
-            return;
-        },
-
         _replaceFile: function(newFile) {
-            if (this.changeFileIndex >= 0 && newFile) {
+            if (this.changeFileIndex >= 0 && newFile && newFile instanceof File) {
                 this.$.fileInput.setAttribute('multiple', this.multiple);
-                // this.set('disabled', false);
+
                 if (this.files[this.changeFileIndex]) {
-                    var fileAlreadySelected = this._checkFileAlreadySelected(newFile);
-                    if (this.multiple && fileAlreadySelected.length > 0) {
-                        this._displayAlreadySelectedWarning(fileAlreadySelected);
+                    let fileAlreadySelected = this._checkFileAlreadySelected(newFile);
+
+                    if (fileAlreadySelected.length > 0) {
+                        this._displayAlreadySelectedWarning();
+
                         this.changeFileIndex = -1;
-                        // reset file input
-                        this.$.fileInput.value = null;
-                        return;
+                        this.$.fileInput.value = '';
+                        return false;
                     }
-                    var oldFile = this.files[this.changeFileIndex];
-                    var newFileObj = JSON.parse(JSON.stringify(oldFile));
+
+                    let oldFile = this.files[this.changeFileIndex];
+                    let newFileObj = JSON.parse(JSON.stringify(oldFile));
+
+                    if (oldFile.file && oldFile.id) {
+                        this._deleteAttachedFile(oldFile);
+                        newFileObj.file = undefined;
+                        newFileObj.id = undefined;
+                    }
+
                     newFileObj.file_name = newFile.name;
                     newFileObj.raw = newFile;
                     newFileObj.path = null;
                     this.set('files.' + this.changeFileIndex, newFileObj);
                 }
+
                 this.changeFileIndex = -1;
                 // reset file input
-                this.$.fileInput.value = null;
+                this.$.fileInput.value = '';
                 return true;
             }
+
             this.changeFileIndex = -1;
             return false;
         },
 
         _addMultipleFiles: function(files) {
-            var filesAlreadySelected = [];
-            for (var i = 0; i < files.length; i++) {
-                var fileAlreadySelected = this._checkFileAlreadySelected(files[i]);
-                if (fileAlreadySelected.length === 0) {
+            if (!files || (files instanceof Array === false && files instanceof FileList === false)) {
+                return;
+            }
 
-                    var fileObj = this._getFileModel();
+            let filesAlreadySelected = [];
+
+            for (let i = 0; i < files.length; i++) {
+                let fileAlreadySelected = this._checkFileAlreadySelected(files[i]);
+
+                if (fileAlreadySelected.length === 0 && files[i] instanceof File) {
+                    let fileObj = this._getFileModel();
+
                     fileObj.file_name = files[i].name;
                     fileObj.raw = files[i];
 
                     this.push('files', fileObj);
-                } else {
+                } else if (fileAlreadySelected.length) {
                     filesAlreadySelected.push(fileAlreadySelected[0]);
                 }
             }
+
             if (filesAlreadySelected.length > 0) {
-                this._displayAlreadySelectedWarning(filesAlreadySelected);
-                filesAlreadySelected = [];
+                this._displayAlreadySelectedWarning();
             }
         },
 
         _checkFileAlreadySelected: function(file) {
-            var fileAlreadySelected = this.files.filter(function(f) {
+            let fileAlreadySelected = this.files.filter(function(f) {
                 return f.file_name === file.name && (f.path === '' || f.path === null || typeof f.path === 'undefined');
             });
+
             return fileAlreadySelected;
         },
 
         _displayAlreadySelectedWarning: function() {
-            // show a warning with the already selected files
-            // var toastWarningMessage = '<p><strong>The following file are already selected:</strong><p>';
-            // filesAlreadySelected.forEach(function(alreadySelectedFile) {
-            //     toastWarningMessage += '<p>' + alreadySelectedFile.file_name + '</p>';
-            // });
-            // Polymer.dom(this.$.fileAlreadySelectedToast).innerHTML = toastWarningMessage;
-            // this.$.fileAlreadySelectedToast.open();
             this.fire('toast', {text: 'The following file are already selected'});
         },
 
@@ -235,23 +261,22 @@
         },
 
         _addSingleFile: function(file) {
-            if (file) {
-                var fileObj = this._getFileModel();
+            if (file && file instanceof File && this.files.length === 0) {
+                let fileObj = this._getFileModel();
+
                 fileObj.file_name = file.name;
                 fileObj.raw = file;
 
-                if (this.files.length === 0) {
-                    // add file
-                    this.push('files', fileObj);
-                } else {
-                    // replace/change file
-                    this.set('files.0', fileObj);
-                }
+                this.push('files', fileObj);
             }
         },
 
         _fileSelected: function(e) {
-            var files = e.target.files;
+            if (!e || !e.target) {
+                return;
+            }
+
+            let files = e.target.files;
             // replace file if case
             if (this._replaceFile(files[0]) === true) {
                 return;
@@ -262,40 +287,49 @@
                 this._addMultipleFiles(files);
             } else {
                 // single file upload
-                var file = e.target.files[0];
+                let file = e.target.files[0];
                 this._addSingleFile(file);
             }
             // reset file input
-            this.$.fileInput.value = null;
+            this.$.fileInput.value = '';
         },
 
         _changeFile: function(e) {
-            if (e.model.index >= 0) {
+            if (e && e.model && e.model.index >= 0) {
                 this.changeFileIndex = e.model.index;
-                // this.set('disabled', true);
                 this.$.fileInput.removeAttribute('multiple');
                 this._openFileChooser();
             }
         },
 
         _deleteFile: function(e) {
-            if (!this.multiple) {
-                if (this.files.length > 0) {
-                    if (this.useDeleteEvents) {
-                        this.fire('delete-file', {file: this.files[0], index: 0});
-                    } else {
-                        this.set('files', []);
-                    }
-                    this.$.fileInput.value = null;
-                }
+            if (!e || !e.model) {
+                return;
+            }
+
+            if (typeof e.model.index !== 'number' || e.model.index < 0 || this.files.length === 0) {
+                return;
+            }
+
+            let file = this.files[e.model.index];
+
+            if (this.useDeleteEvents) {
+                this.fire('delete-file', {file: file, index: e.model.index});
             } else {
-                if (typeof e.model.index === 'number' && e.model.index >= 0) {
-                    if (this.useDeleteEvents) {
-                        this.fire('delete-file', {file: this.files[e.model.index], index: e.model.index});
-                    } else {
-                        this.splice('files', e.model.index, 1);
-                    }
-                }
+                this.splice('files', e.model.index, 1);
+            }
+
+            if (file.file && file.id) {
+                this._deleteAttachedFile(file);
+            }
+        },
+
+        _deleteAttachedFile: function(file) {
+            if (file) {
+                this.deletedAttachments.push({
+                    id: file.id,
+                    _delete: true
+                });
             }
         },
 
@@ -304,7 +338,18 @@
                 this.set('showFilesContainer', true);
             } else {
                 this.set('showFilesContainer', false);
+                return;
             }
+
+            this.files.forEach((file, index) => {
+                if (file.file && file.id && !file.file_name) {
+                    file.file_name = this._getFilenameFromUrl(file.file);
+                }
+
+                if (!file.file_name) {
+                    this.splice('files', index, 1);
+                }
+            });
 
             if (!this.multiple) {
                 if (this.files instanceof Array && this.files.length > 1) {
@@ -313,19 +358,32 @@
             }
         },
 
+        _getFilenameFromUrl: function(url) {
+            if (typeof url !== 'string' || url === '') {
+                return;
+            }
+
+            return url.split('/').pop();
+        },
+
         _downloadFile: function(e) {
-            if (this.files.length > 0) {
-                var file = this.files[0];
-                if (this.multiple && this.files[e.model.index]) {
-                    file = this.files[e.model.index];
+            if (e && e.model && this.files.length > 0) {
+                let file = this.files[e.model.index];
+                let a = this.$.downloader;
+
+                if (file && file.raw) {
+                    let blob = new Blob([file.raw]);
+                    a.href = URL.createObjectURL(blob);
+                } else if (file && file.file) {
+                    a.href = file.file;
+                } else {
+                    return;
                 }
-                if (typeof file !== 'undefined' && file.path !== '') {
-                    var a = this.$.downloader;
-                    a.href = file.path;
-                    a.download = file.file_name;
-                    a.click();
-                    window.URL.revokeObjectURL(file.path);
-                }
+
+                a.download = file.file_name;
+                a.target = '_blank';
+                a.click();
+                URL.revokeObjectURL(a.href);
             }
         },
 
@@ -334,6 +392,91 @@
                 return 'multiple';
             }
             return '';
+        },
+
+        _getFileTypeRequiredClass: function() {
+            return this.fileTypeRequired ? 'required' : '';
+        },
+
+        _getUploadedFile: function(fileModel) {
+            return new Promise((resolve, reject) => {
+                let reader = new FileReader();
+                let uploadedFile = {
+                    file_name: fileModel.file_name,
+                    file_type: fileModel.file_type
+                };
+
+                reader.readAsDataURL(fileModel.raw);
+
+                reader.onload = function() {
+                    uploadedFile.file = reader.result;
+                    resolve(uploadedFile);
+                };
+
+                reader.onerror = function(error) {
+                    reject(error);
+                };
+            });
+        },
+
+        getFiles: function() {
+            return new Promise((resolve, reject) => {
+                let promises = this.files.map((fileModel) => {
+                    if (fileModel && fileModel.raw && fileModel.raw instanceof File) {
+                        return this._getUploadedFile(fileModel);
+                    }
+                });
+
+                promises = promises.filter((promise) => {
+                    return promise !== undefined;
+                });
+
+                Promise.all(promises)
+                    .then((uploadedFiles) => {
+                        resolve(uploadedFiles.concat(this.deletedAttachments));
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        },
+
+        validate: function() {
+            if (!this.fileTypeRequired || (this.files  && this.files.length === 0)) {
+                this.invalid = false;
+                this.errorMessage = '';
+                return true;
+            }
+
+            if (!this.fileTypes || !this.fileTypes.length) {
+                this.invalid = true;
+                this.errorMessage = 'File type field is required but types are not defined';
+                return false;
+            }
+
+            let dropdowns = Polymer.dom(this.root).querySelectorAll('etools-searchable-multiselection-menu');
+            let dropdownsLength = dropdowns.length;
+            let isValid = true;
+
+            for (let i = 0; i < dropdownsLength; i++) {
+                if (!dropdowns[i].validate()) {
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        },
+
+        _resetFieldError: function(event) {
+            event.target.invalid = false;
+        },
+
+        _setFileType: function(e, value) {
+            let index = e.target.getAttribute('data-index');
+
+            if (value.selectedValues) {
+                this.set(`files.${index}.file_type`, value.selectedValues.value);
+            }
         }
 
     });

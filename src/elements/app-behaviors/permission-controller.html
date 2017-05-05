@@ -1,12 +1,12 @@
-<!--import [lodash]-->
+<!--import [lodash, etools-app-config]-->
 <script>
     'use strict';
     (function () {
         var _permissions = {},
-            _permissions_setted = false;
+                _permissions_setted = false;
 
         window.TPMBehaviors = window.TPMBehaviors || {};
-        window.TPMBehaviors.PermissionController = {
+        window.TPMBehaviors.PermissionController = [etoolsAppConfig.globals, {
             _setPermissions: function(userData) {
                 if (_permissions_setted) return _.cloneDeep(_permissions);
 
@@ -28,7 +28,7 @@
             checkPermission: function(permission) {
                 return !!_permissions[permission];
             }
-        };
+        }];
     })()
 
 

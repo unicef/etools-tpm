@@ -15,7 +15,7 @@
                 <div class="input-container" title="[[_getTitleValue(partner.name)]]">
                     <!-- Organization name -->
                     <paper-input label="Full Name"
-                                 value="[[partner.name]]"
+                                 value="{{partner.name}}"
                                  placeholder="&#8212;"
                                  class="disabled-as-readonly"
                                  disabled$="[[!editMode]]"></paper-input>
@@ -23,7 +23,7 @@
                 <div class="input-container" title="[[_getTitleValue(partner.vendor_number)]]">
                     <!-- Short name -->
                     <paper-input label="Vendor Number"
-                                 value="[[partner.vendor_number]]"
+                                 value="{{partner.vendor_number}}"
                                  placeholder="&#8212;"
                                  class="disabled-as-readonly"
                                  disabled$="[[!editMode]]"></paper-input>
@@ -35,7 +35,7 @@
                 <div class="input-container" title="{{_getTitleValue(partner.address)}}">
                     <!-- Address -->
                     <paper-input label="Address"
-                                 value="{{partner.address}}"
+                                 value="{{partner.street_address}}"
                                  placeholder="&#8212;"
                                  class="disabled-as-readonly"
                                  disabled$="[[!editMode]]">

@@ -40,17 +40,13 @@
             Polymer.dom(myEl.root).querySelector('.partner-save-btn').click();
         });
 
-        test('set loading attribute and show a spinner after click on save btn', function (done) {
+        test('show a spinner when loading in process', function () {
             var spinner = Polymer.dom(myEl.root).querySelector('.spinner');
             assert.isFalse(myEl.loading);
             assert.isFalse(spinner.active);
 
-            myEl.addEventListener('save-partner', function (event) {
-                assert.isTrue(myEl.loading);
-                assert.isTrue(spinner.active);
-                done();
-            });
-            Polymer.dom(myEl.root).querySelector('.partner-save-btn').click();
+            myEl.loading = true;
+            assert.isTrue(spinner.active);
         });
 
         test('show success message on attribute change', function () {

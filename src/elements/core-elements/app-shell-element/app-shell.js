@@ -35,6 +35,12 @@ Polymer({
         globalLoadingQueue: {
             type: Array,
             value: function() {return [];}
+        },
+        user: {
+            type: Object,
+            value: function() {
+                return {};
+            }
         }
     },
 
@@ -47,7 +53,8 @@ Polymer({
         'toast': 'queueToast',
         'drawer': 'toggleDrawer',
         '404': '_pageNotFound',
-        'user-profile-loaded': '_profileLoaded'
+        'user-profile-loaded': '_profileLoaded',
+        'drawer-toggle-tap': 'toggleDrawer',
     },
     attached: function() {
         this.baseUrl = this.basePath;
@@ -56,9 +63,27 @@ Polymer({
             let path = `${this.basePath}partners/list`;
             this.set('route.path', path);
         }
+        this.$.drawer.$.scrim.remove();
     },
     toggleDrawer: function() {
-        this.$.drawer.toggle();
+        let drawerWidth = '220px';
+        let isOpened = !this.$.drawer.opened;
+
+        if (!this.$.drawer.opened) {
+            drawerWidth = '220px';
+        } else {
+            drawerWidth = '60px';
+        }
+
+        this.$.drawer.customStyle['--app-drawer-width'] = drawerWidth;
+        this.$.drawer.updateStyles();
+
+        this.$.layout.style.paddingLeft = drawerWidth;
+        this.$.header.style.paddingLeft = drawerWidth;
+
+        this.$.drawer.querySelector('app-sidebar-menu').toggleClass('opened', isOpened);
+        this.$.drawer.toggleClass('opened', isOpened);
+        this.$.drawer.toggleAttribute('opened', isOpened);
     },
     queueToast: function(e, detail) {
         if (!this._toast) {

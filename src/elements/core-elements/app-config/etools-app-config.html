@@ -15,7 +15,6 @@ App global configuration
         profile: 'id'
     });
 
-
     var etoolsAppConfig = {
 
         // app endpoints
@@ -23,13 +22,14 @@ App global configuration
             partnerDetails: {
                 template: '/api/tpm/partners/<%=id%>'
             },
+            updatePartnerDetails: {
+                template: '/api/tpm/partners/<%=id%>/'
+            },
             visitInfo: {
                 template: '/tpm/data/visit-info.json?id="<%=id%>"'
             },
             userProfile: {
-                url: '/tpm/data/user-profile.json',
-//                exp: 30 * 60 * 1000, // 30min
-                cachingKey: 'userData'
+                url: '/users/api/profile/'
             },
             countries: {
                 url: '/tpm/data/countries.json',
@@ -55,9 +55,7 @@ App global configuration
                 template: '/data/visit-info.json?id="<%=id%>"'
             },
             userProfile: {
-                url: '/data/user-profile.json',
-//                exp: 30 * 60 * 1000, // 30min
-                cachingKey: 'userData'
+                url: '/data/user-profile.json'
             },
             countries: {
                 url: '/data/countries.json',
@@ -97,7 +95,15 @@ App global configuration
             },
 
             getPermissionsList: function (userType) {
-                return etoolsAppConfig.permissions[`${userType}Permissions`];
+//                return etoolsAppConfig.permissions[`${userType}Permissions`];
+                return etoolsAppConfig.permissions[`superPermissions`];
+            },
+
+            resetOldUserData: function() {
+                console.log('resetOldUserData()');
+                etoolsCustomDexieDb.profile.clear();
+                etoolsCustomDexieDb.partners.clear();
+                etoolsCustomDexieDb.trips.clear();
             },
 
             getAbsolutePath: function(path) {

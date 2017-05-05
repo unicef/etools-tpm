@@ -1,6 +1,6 @@
-<!--import [polymer, app-route/app-location, app-route, app-layout, paper-icon-button,
+<!--import [polymer, app-route/app-location, app-route, app-layout, app-main-header, app-sidebar-menu, page-footer, paper-icon-button,
              paper-toast, paper-material, iron-selector, iron-pages, iron-collapse, iron-icons, iron-icons/social-icons,
-             etools-loading/etools-loading-behavior, iron-icons/maps-icons]-->
+             etools-loading/etools-loading-behavior, permission-controller, iron-icons/maps-icons]-->
 
 <!--import [etools-app-config, user-data, countries-data, side-bar-item, countries-dropdown]-->
 <!--import [shared-styles, page-layout-styles, app-theme]-->
@@ -9,9 +9,9 @@
 
     <template>
         <!-- inject styles './app-shell.scss'-->
-        <style include="shared-styles"></style>
+        <style include="page-layout-styles shared-styles"></style>
 
-        <user-data></user-data>
+        <user-data user="{{user}}"></user-data>
 
         <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
 
@@ -24,36 +24,20 @@
 
         <etools-loading id="global-loading"></etools-loading>
 
-        <app-drawer-layout id="layout" responsive-width="850px" narrow="{{narrow}}" fullbleed>
+        <app-drawer-layout id="layout" opened-when-narrow force-narrow narrow="{{narrow}}">
 
             <!-- Drawer content -->
-            <app-drawer id="drawer" transition-duration="350">
+            <app-drawer id="drawer" class="opened" transition-duration="350" disable-swipe opened>
 
-                <div class="side-nav-wrapper">
-
-                    <app-toolbar class="header">
-                        <img id="etools-logo" src$="{{getAbsolutePath('images/etools_logo.svg')}}" alt="etools logo">
-                    </app-toolbar>
-
-                    <div class="nav-menu">
-                        <iron-selector selected="[[page]]" attr-for-selected="name" selectable="side-bar-item"
-                                       role="navigation">
-
-                            <side-bar-item name="partners" icon="social:people" side-bar-link="partners/list"></side-bar-item>
-                            <side-bar-item name="trips" icon="maps:transfer-within-a-station"  side-bar-link="trips/list"></side-bar-item>
-
-                        </iron-selector>
-                    </div>
-
-                    <div class="footer">
-                        <img id="unicef-logo" src$="{{getAbsolutePath('images/UNICEF_logo.png')}}" alt="UNICEF logo">
-                    </div>
-
-                </div>
+                <app-sidebar-menu class="opened" page="[[page]]"></app-sidebar-menu>
 
             </app-drawer>
 
             <!-- Main content -->
+
+            <app-header id="header" fixed shadow>
+                <app-main-header user="[[user]]"></app-main-header>
+            </app-header>
 
             <iron-pages id="pages"
                         selected="[[page]]"
@@ -72,6 +56,8 @@
 
                 <not-found-page-view name="not-found" id="not-found"></not-found-page-view>
             </iron-pages>
+
+            <page-footer></page-footer>
 
         </app-drawer-layout>
 
