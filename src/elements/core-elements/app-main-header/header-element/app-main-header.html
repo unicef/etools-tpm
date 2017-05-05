@@ -29,12 +29,6 @@
         color: #BCC1C6;
       }
 
-      #menuButton {
-        display: block;
-        width: 45px;
-        height: 45px;
-      }
-
       .right-side {
         @apply(--layout-horizontal);
         @apply(--layout-center);
@@ -60,9 +54,6 @@
       }
 
       @media (min-width: 851px) {
-        #menuButton {
-          display: none;
-        }
         div[main-title] {
           margin-left: 32px;
         }
@@ -70,8 +61,6 @@
     </style>
 
     <app-toolbar sticky class="content-align">
-      <paper-icon-button id="menuButton" class="light" icon="menu" on-tap="openDrawer"></paper-icon-button>
-
       <div class="titlebar content-align">
         <etools-app-selector menu-options="[[menuOptions]]"></etools-app-selector>
         <img src="../../../../images/etools_logo_icon.png">
