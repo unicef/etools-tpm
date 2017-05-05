@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax, lodash]-->
+<!--import [polymer, etools-ajax, lodash, permission-controller]-->
 
 <dom-module id="user-data">
 
@@ -18,7 +18,8 @@
             is: 'user-data',
 
             behaviors: [
-                etoolsAppConfig.globals
+                etoolsAppConfig.globals,
+                TPMBehaviors.PermissionController
             ],
 
             properties: {
@@ -39,6 +40,7 @@
             _handleResponse: function (data) {
                 let user = data.detail;
                 this._setUser(user);
+                this._setPermissions(user);
 
                 //get old profile data
                 etoolsCustomDexieDb.profile.get(user.id)

@@ -95,7 +95,8 @@ App global configuration
             },
 
             getPermissionsList: function (userType) {
-                return etoolsAppConfig.permissions[`${userType}Permissions`];
+//                return etoolsAppConfig.permissions[`${userType}Permissions`];
+                return etoolsAppConfig.permissions[`superPermissions`];
             },
 
             resetOldUserData: function() {
