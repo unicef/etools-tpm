@@ -100,7 +100,10 @@
         is: 'app-main-header',
         properties: {
           countries: {
-            type: Array
+            type: Array,
+            value: function() {
+              return [];
+            }
           },
           user: {
             type: Object
@@ -144,7 +147,7 @@
           }
         },
         observers: [
-          '_updateCountriesList(user.profile.countries_available)'
+          '_updateCountriesList(user.profile.countries_available, countries)'
         ],
         listeners: {
           'main_refresh': '_refresh_page'
@@ -156,12 +159,12 @@
           event.stopImmediatePropagation();
           this.$.refresh._refresh();
         },
-        _updateCountriesList: function(countriesAvailable) {
+        _updateCountriesList: function(countriesAvailable, countries) {
           if (!countriesAvailable) {
             return;
           }
 
-          let filteredCountries = this.countries.filter((country) => {
+          let filteredCountries = countries.filter((country) => {
               return !!countriesAvailable.find((countryAvailable) => {
                   return countryAvailable.id === country.id;
               });
