@@ -109,6 +109,11 @@ App global configuration
                 etoolsCustomDexieDb.profile.clear();
                 etoolsCustomDexieDb.partners.clear();
                 etoolsCustomDexieDb.trips.clear();
+            },
+
+            getAbsolutePath: function(path) {
+                path = path || '';
+                return this.basePath + path;
             }
         },
 
