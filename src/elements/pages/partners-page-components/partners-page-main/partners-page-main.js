@@ -27,7 +27,7 @@ Polymer({
 
     _routeConfig: function(view) {
         if (!this.route || !~this.route.prefix.indexOf('/partners')) { return; }
-        if (view === 'list' && this.checkPermission('viewPartnersList')) {
+        if (view === 'list') {
             let queries = this._configListParams(this.initiation++);
             this._setPartnersListQueries(queries);
             this.view = 'list';

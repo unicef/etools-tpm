@@ -4,27 +4,36 @@ Polymer({
     is: 'partner-staff-members-tab',
 
     behaviors: [
-        TPMBehaviors.RepeatableDataSetsBehavior
+        TPMBehaviors.RepeatableDataSetsBehavior,
+        TPMBehaviors.PermissionController
     ],
     properties: {},
 
     ready: function() {
-        this.dataSetModel = {
-            title: '',
-            first_name: '',
-            last_name: '',
-            phone: '',
-            email: '',
-            active: true,
-            notify: false
+        this.dataSetModel =  {
+            user: {
+                first_name: '',
+                last_name: '',
+                email: '',
+                is_active: true,
+                profile: {
+                    job_title: '',
+                    phone_number: ''
+                }
+            },
+            receive_audit_notifications: false
         };
 
         this.$['email-validator'].validate = this._validEmailAddress.bind(this);
     },
 
     _canBeRemoved: function() {
-        return this.editMode;
+        if (!this.basePermissionPath) { return true; }
 
+        let readOnly = this.isReadonly(`${this.basePermissionPath}.staff_members`);
+        if (readOnly === null) { readOnly = true; }
+
+        return !readOnly;
     },
 
     _validEmailAddress: function(emailAddress) {
@@ -41,22 +50,24 @@ Polymer({
 
         let elements = Polymer.dom(this.root).querySelectorAll('.validate-input'),
             valid = true;
+
         Array.prototype.forEach.call(elements, (element) => {
-            if (!element.validate()) { valid = false; }
+            //TODO: improve validation
+            if (element.required && !element.validate()) { valid = false; }
         });
 
         return valid;
     },
 
     _addNewStaffMember: function() {
-        if (this.editMode) {
+        if (this._canBeRemoved()) {
             var lastStaffMemberAdded = this.dataItems[this.dataItems.length - 1];
             if (lastStaffMemberAdded &&
-                !this._notEmpty(lastStaffMemberAdded.title) &&
-                !this._notEmpty(lastStaffMemberAdded.first_name) &&
-                !this._notEmpty(lastStaffMemberAdded.last_name) &&
-                !this._notEmpty(lastStaffMemberAdded.phone) &&
-                !this._notEmpty(lastStaffMemberAdded.email)) {
+                !this._notEmpty(lastStaffMemberAdded.user.profile.job_title) &&
+                !this._notEmpty(lastStaffMemberAdded.user.first_name) &&
+                !this._notEmpty(lastStaffMemberAdded.user.last_name) &&
+                !this._notEmpty(lastStaffMemberAdded.user.profile.phone_number) &&
+                !this._notEmpty(lastStaffMemberAdded.user.email)) {
                 this.fire('toast', {text: 'Last staff member fields are empty!', showCloseBtn: true});
             } else {
                 this._addElement();
@@ -65,5 +76,25 @@ Polymer({
     },
 
     _getTitleValue: function(value) { return value || ''; },
+
+    _setRequired: function(field) {
+        if (!this.basePermissionPath) { return false; }
+
+        let required = this.isRequired(`${this.basePermissionPath}.staff_members.${field}`);
+
+        return required ? 'required' : false;
+    },
+
+    _resetFieldError: function(event) {
+        event.target.invalid = false;
+    },
+    isReadOnly: function(field) {
+        if (!this.basePermissionPath) { return true; }
+
+        let readOnly = this.isReadonly(`${this.basePermissionPath}.staff_members.${field}`);
+        if (readOnly === null) { readOnly = true; }
+
+        return readOnly;
+    }
 
 });

@@ -1,0 +1,87 @@
+<!--import [polymer, etools-ajax, static-data-behavior, permission-controller]-->
+
+<dom-module id="static-data">
+
+    <template>
+
+        <!--partners-->
+        <etools-ajax
+                endpoint="[[partnersEndpoint]]"
+                caching-storage="custom"
+                dexie-db-collection="partner_organizations"
+                on-success="_partnersLoaded"
+                on-fail="_partnersError"></etools-ajax>
+
+        <!--<etools-ajax method="OPTIONS"-->
+                     <!--url="{{newEngagementPermissions}}"-->
+                     <!--on-success="_handleNewEngagementResponse"-->
+                     <!--on-fail="_handleError"></etools-ajax>-->
+
+    </template>
+
+    <script>
+
+        (function() {
+            'use strict';
+
+            let dataLoaded = {};
+
+            Polymer({
+
+                is: 'static-data',
+                behaviors: [
+                    etoolsAppConfig.globals,
+                    TPMBehaviors.StaticDataController,
+                    TPMBehaviors.PermissionController
+                ],
+
+                properties: {},
+
+                ready: function () {
+                    this.partnersEndpoint = this.getEndpoint('partnerOrganisations');
+//                    this.newEngagementPermissions = this.getEndpoint('createEngagement', {type: 'micro-assessments'}).url;
+                },
+
+                _allDataLoaded: function() {
+                    if (dataLoaded.partners) {
+                        this.fire('static-data-loaded');
+                    }
+                },
+
+                _partnersLoaded: function(data) {
+                    this._setData('partnerOrganisations', data.detail);
+                    dataLoaded.partners = true;
+                    this._allDataLoaded();
+                },
+
+                _handleNewEngagementResponse: function(data) {
+                    this._allDataLoaded();
+                    if (data.detail.actions && data.detail.actions.POST) {
+                        data.detail.actions.POST.type.read_only = false; //TODO: remove this line when using /engagement/ OPTIONS api
+                        data.detail.actions.POST.type.required = true; //TODO: remove this line when using /engagement/ OPTIONS api
+                        this._addToCollection('new_engagement', data.detail.actions.POST);
+                        let attachmentsTypes = this.getChoices('new_engagement.attachments.file_type');
+                        if (!attachmentsTypes) {
+                            this._responseError();
+                            return;
+                        }
+                        this._setData('attachments_types', attachmentsTypes);
+                        dataLoaded.engagementOptions = true;
+                        this._allDataLoaded();
+                    } else {
+                        this._responseError();
+                    }
+                },
+
+                _responseError: function() {
+                    console.error('Can not load initial data');
+                    this.fire('static-data-loaded');
+                }
+
+            });
+
+        })();
+
+    </script>
+
+</dom-module>

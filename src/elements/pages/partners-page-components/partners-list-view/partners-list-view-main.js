@@ -105,7 +105,7 @@
             'addNewVendor': 'openNewVendorDialog'
         },
         openNewVendorDialog: function() { this.newVendorOpened = true; },
-        _showAddButton: function() { return this.checkPermission('addNewPartner'); }
+        _showAddButton: function() { return true; }
     });
 })();
 

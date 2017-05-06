@@ -45,6 +45,11 @@ App global configuration
                 url: '/tpm/data/trips-list.json',
                 exp: 6 * 60 * 60 * 1000, // 6h
                 cachingKey: 'trips'
+            },
+            partnerOrganisations: {
+                url: '/api/v2/partners/',
+                exp: 24 * 60 * 60 * 1000, // 24h
+                cachingKey: 'partners'
             }
         },
         localEndpoints: {

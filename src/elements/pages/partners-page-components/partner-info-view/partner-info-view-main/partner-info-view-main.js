@@ -30,10 +30,10 @@ Polymer({
         'partner-updated': '_partnerSaved'
     },
     _allowEdit: function() {
-        return this.checkPermission('editPartnerDetails');
+        return true;
     },
     _allowDownload: function() {
-        return !this.checkPermission('editPartnerDetails') && this.checkPermission('downloadPartnerAttachments');
+        return true;
     },
     _savePartner: function() {
         if (!this.$['partner-details'].validate() || !this.$['staff-members'].validate()) {

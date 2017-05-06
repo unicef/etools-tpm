@@ -40,7 +40,7 @@
             _handleResponse: function (data) {
                 let user = data.detail;
                 this._setUser(user);
-                this._setPermissions(user);
+//                this._setPermissions(user);
 
                 //get old profile data
                 etoolsCustomDexieDb.profile.get(user.id)

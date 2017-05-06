@@ -1,34 +1,101 @@
-<!--import [lodash, etools-app-config]-->
+<!--import [lodash]-->
 <script>
     'use strict';
     (function () {
-        var _permissions = {},
-                _permissions_setted = false;
+        var _permissionCollection = {};
 
         window.TPMBehaviors = window.TPMBehaviors || {};
-        window.TPMBehaviors.PermissionController = [etoolsAppConfig.globals, {
-            _setPermissions: function(userData) {
-                if (_permissions_setted) return _.cloneDeep(_permissions);
+        window.TPMBehaviors.PermissionController = {
 
-                let permissionsList = this.getPermissionsList(userData.user_type);
-                if (!permissionsList) { console.error('Can\'t set permissions: Invalid user type!'); return; }
+            _addToCollection: function(collectionName, data) {
+                //check arguments
+                if (!collectionName || !data) {
+                    console.warn('collectionName and data arguments must be provided!');
+                    return false;
+                }
+                if (typeof collectionName !== 'string') {
+                    console.warn('collectionName must be a string');
+                    return false;
+                }
+                if (typeof data !== 'object' || typeof data.forEach === 'function') {
+                    console.warn('data must be an object');
+                    return false;
+                }
 
-                permissionsList.forEach((permission) => {
-                    _permissions[permission] = true;
-                });
+                //check existance
+                if (_permissionCollection[collectionName]) { return false; }
 
-                _permissions_setted = true;
-                return _.cloneDeep(_permissions);
+                _permissionCollection[collectionName] = data;
+
+                return true;
             },
 
-            getPermissions: function() {
-                return _.cloneDeep(_permissions);
+            _updateCollection: function(collectionName, data) {
+                if (!_permissionCollection[collectionName]) {
+                    console.warn(`Collection ${collectionName} does not exist!`);
+                    return false;
+                }
+                if (typeof data !== 'object' || typeof data.forEach === 'function') {
+                    console.warn('data must be an object');
+                    return false;
+                }
+
+                _permissionCollection[collectionName] = data;
+                return true;
             },
 
-            checkPermission: function(permission) {
-                return !!_permissions[permission];
+            getFieldAttribute: function(path, attribute) {
+                if (!path || !attribute) { throw new Error('path and attribute arguments must be provided'); }
+                if (typeof path !== 'string') { throw new Error('path argument must be a string'); }
+                if (typeof attribute !== 'string') { throw new Error('attribute argument must be a string'); }
+
+                let value = this._getCollection(path);
+
+                if (value) { value = value[attribute]; }
+
+                return value === undefined ? null : value;
+
+            },
+
+            isReadonly: function(path) {
+                return this.getFieldAttribute(path, 'read_only');
+            },
+
+            isRequired: function(path) {
+                return this.getFieldAttribute(path, 'required');
+            },
+
+            collectionExists: function(path) {
+                if (!path) { throw new Error('path argument must be provided'); }
+                if (typeof path !== 'string') { throw new Error('path argument must be a string'); }
+
+                return this._getCollection(path) !== undefined;
+            },
+
+            getChoices: function(path) {
+                return this.getFieldAttribute(path, 'choices');
+            },
+
+            _getCollection: function(path) {
+                path = path.split('.');
+
+                let value = _permissionCollection;
+
+                while (path.length) {
+                    let key = path.shift();
+                    if (value[key]) {
+                        value = value[key];
+                    } else {
+                        value = value.child || value.children;
+                        path.unshift(key);
+                    }
+
+                    if (!value) { break; }
+                }
+
+                return value;
             }
-        }];
+        };
     })()
 
 

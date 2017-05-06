@@ -4,7 +4,6 @@ Polymer({
 
     behaviors: [
         etoolsBehaviors.LoadingBehavior,
-        TPMBehaviors.PermissionController,
         etoolsAppConfig.globals
     ],
 
@@ -53,16 +52,13 @@ Polymer({
         'toast': 'queueToast',
         'drawer': 'toggleDrawer',
         '404': '_pageNotFound',
-        'user-profile-loaded': '_profileLoaded',
+        'user-profile-loaded': '_initialDataLoaded',
+        'static-data-loaded': '_initialDataLoaded',
         'drawer-toggle-tap': 'toggleDrawer',
     },
     attached: function() {
         this.baseUrl = this.basePath;
         this.fire('global-loading', {message: 'Loading...', active: true, type: 'initialisation'});
-        if (this.route.path === '/' || this.route.path === '/tpm/') {
-            let path = `${this.basePath}partners/list`;
-            this.set('route.path', path);
-        }
         this.$.drawer.$.scrim.remove();
     },
     toggleDrawer: function() {
@@ -118,7 +114,7 @@ Polymer({
             resolvedPageUrl = 'elements/pages/not-found-page-view/not-found-page-view.html';
         } else {
             resolvedPageUrl = `elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`;
-            if (page === 'partners' && this.checkPermission('viewPartnersList')) {
+            if (page === 'partners') {
                 let url = 'elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html';
                 this.importHref(url, null, null, true);
             }
@@ -136,8 +132,12 @@ Polymer({
 
         this.fire('toast', {text: message});
     },
-    _profileLoaded: function() {
-        if (this.routeData) { this.page = this.routeData.page || 'partners'; }
+    _initialDataLoaded: function(e) {
+        if (e && e.type === 'user-profile-loaded') { this.profileLoaded = true; }
+        if (e && e.type === 'static-data-loaded') { this.staticDataLoaded = true; }
+        if (this.routeData && this.profileLoaded && this.staticDataLoaded) {
+            this.page = this.routeData.page || this._configPath();
+        }
     },
     _handleGlobalLoading: function(event) {
         if (!event.detail || !event.detail.type) {
@@ -158,6 +158,11 @@ Polymer({
                 this._handleGlobalLoading(this.globalLoadingQueue.shift());
             }
         }
+    },
+    _configPath: function() {
+        let path = `${this.basePath}partners/list`;
+        this.set('route.path', path);
+        return 'partners';
     }
 
 });
