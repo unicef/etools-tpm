@@ -42,7 +42,7 @@ Polymer({
 
     _logout: function() {
         this.resetOldUserData();
-        this._changeLocation('admin/logout');
+        this._changeLocation('tpm/logout');
     }
 
 });
