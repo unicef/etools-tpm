@@ -11,8 +11,7 @@ App global configuration
     etoolsCustomDexieDb.version(1).stores({
         collectionsList: '&name, expire',
         partners: 'id, name, vendor_number, country',
-        trips: 'id, name, vendor_number, location, focal_point, status',
-        profile: 'id'
+        trips: 'id, name, vendor_number, location, focal_point, status'
     });
 
     var etoolsAppConfig = {
@@ -106,7 +105,10 @@ App global configuration
 
             resetOldUserData: function() {
                 console.log('resetOldUserData()');
-                etoolsCustomDexieDb.profile.clear();
+
+                localStorage.removeItem('userId');
+
+                etoolsCustomDexieDb.collectionsList.clear();
                 etoolsCustomDexieDb.partners.clear();
                 etoolsCustomDexieDb.trips.clear();
             },

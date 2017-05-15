@@ -2,6 +2,10 @@ Polymer({
 
     is: 'user-dropdown',
 
+    behaviors: [
+        etoolsAppConfig.globals
+    ],
+
     properties: {
         opened: {
             type: Boolean,
@@ -37,7 +41,8 @@ Polymer({
     },
 
     _logout: function() {
-        this._changeLocation('tpm/logout');
+        this.resetOldUserData();
+        this._changeLocation('admin/logout');
     }
 
 });
