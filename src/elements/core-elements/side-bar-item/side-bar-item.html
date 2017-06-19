@@ -51,9 +51,11 @@
       }
 
       iron-icon {
+        width: 100%;
         margin: 0 16px;
         color: var(--dark-icon-color);
-        min-width: 24px;
+        min-width: 26px;
+        min-height: 26px;
       }
 
       #name {
@@ -80,9 +82,8 @@
       }
     </style>
 
-    <a id="main" href$="[[sideBarLink]]" on-tap="_handleMainTap">
+    <a id="main" target$="[[_setTarget(external)]]" href$="[[sideBarLink]]" on-tap="_handleMainTap">
       <iron-icon icon="{{icon}}"></iron-icon>
-      <div id="name">{{name}}</div>
     </a>
 
     <iron-collapse id="collapse" opened="{{opened}}">
@@ -99,18 +100,21 @@
 
       is: 'side-bar-item',
 
-      _handleMainTap: function() {
-        if (this.hasAttribute('nested-nav')) {
-          this.toggleDrawer();
+      properties: {
+        external: {
+          type: Boolean,
+          value: false
         }
+      },
+
+      _handleMainTap: function() {
         this.fire('selected');
       },
 
-      toggleDrawer: function() {
-        if (this.hasAttribute('nested-nav')) {
-          this.opened = this.opened ? false : true;
-        }
-      },
+      _setTarget: function() {
+        if (this.external) { return '_blank'; }
+        return '_self'
+      }
 
     });
 

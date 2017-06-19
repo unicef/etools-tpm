@@ -9,9 +9,9 @@
     <!-- inject styles './app-sidebar-menu.scss'-->
 
     <app-toolbar class="menu-header">
-      <paper-icon-button id="toggle-drawer" on-tap="_toggleDrawer" icon="menu" drawer-toggle></paper-icon-button>
-      <div main-title>Third Party<br>Management</div>
-      <paper-icon-button id="close-drawer" on-tap="_toggleDrawer" icon="icons:chevron-left" drawer-toggle></paper-icon-button>
+      <paper-icon-button id="toggle-drawer" icon="menu"></paper-icon-button>
+      <!--TODO: replace with app icon-->
+      <!--<img src$="[[getAbsolutePath('images/...')]]">-->
     </app-toolbar>
 
     <div class="nav-menu">
@@ -28,13 +28,12 @@
       </iron-selector>
 
       <div class="divider"></div>
-      <!--<div class="secondary-header">eTools Community Channels</div>-->
 
-      <side-bar-item class="lighter-item" name="User Support" icon="icons:help" side-bar-link="https://etools.uservoice.com"></side-bar-item>
+      <side-bar-item class="lighter-item" name="User Support" icon="icons:help" external side-bar-link="https://etools.uservoice.com"></side-bar-item>
 
-      <side-bar-item class="lighter-item" name="Discussion" icon="icons:question-answer" side-bar-link="https://www.yammer.com/unicef.org/#/threads/inGroup?type=in_group&feedId=5782560"></side-bar-item>
+      <side-bar-item class="lighter-item" name="Discussion" icon="icons:question-answer" external side-bar-link="https://www.yammer.com/unicef.org/#/threads/inGroup?type=in_group&feedId=5782560"></side-bar-item>
 
-      <side-bar-item class="lighter-item" name="Information" icon="icons:info" side-bar-link="http://etools.unicefresults.org"></side-bar-item>
+      <side-bar-item class="lighter-item" name="Information" icon="icons:info" external side-bar-link="http://etools.unicefresults.org"></side-bar-item>
 
     </div>
 
