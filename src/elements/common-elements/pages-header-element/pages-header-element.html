@@ -1,30 +1,24 @@
 <!--import [polymer, iron-flex-layout/iron-flex-layout-classes, paper-button, paper-menu-button, paper-menu, etools-ajax, etools-dialog, paper-dialog]-->
-<!--import [etools-app-config, shared-styles, module-styles, pdf-print]-->
+<!--import [etools-app-config, shared-styles, module-styles]-->
 
 <dom-module id="pages-header-element">
     <template>
         <style include="iron-flex shared-styles module-styles"></style>
         <!-- inject styles './pages-header-element.scss'-->
 
-        <!--<pdf-print id="pdfPrint" data="[[data]]" export-type="[[exportType]]" ></pdf-print>-->
         <!--<etools-ajax download-csv handle-as="text" url="[[csvEndpoint]]" params="[[exportParams]]" on-success="_handleCSVData"></etools-ajax>-->
 
         <div class="header-wrapper">
             <div class="side-heading horizontal layout center">
 
-                <span class="flex title" title="[[title]]">[[title]]</span>
+                <span class="flex title" title="[[title]]">[[_setTitle(visit, title)]]</span>
 
                 <div class="side-heading-button-holder">
-                    <paper-menu-button hidden$="[[!showExportButton]]" >
+                    <paper-menu-button hidden$="[[!showExportButton]]" on-tap="exportData">
                         <paper-button class="grey-buttons dropdown-trigger">
                             <iron-icon icon="file-download"></iron-icon>
                             Export
                         </paper-button>
-                        <paper-menu class="dropdown-content">
-                            <template is="dom-repeat" items="[[exportList]]">
-                                <paper-item on-tap="_export">{{item.name}}</paper-item>
-                            </template>
-                        </paper-menu>
                     </paper-menu-button>
 
                     <paper-button
@@ -36,10 +30,12 @@
                         Print
                     </paper-button>
 
-                    <paper-button class="add-btn" raised hidden$="[[_hideAddButton(showAddButton)]]" on-tap="addNewVendor">
-                        <iron-icon icon="add"></iron-icon>
-                        <span>[[btnText]]</span>
-                    </paper-button>
+                        <paper-button class="add-btn" raised hidden$="[[_hideAddButton(showAddButton)]]"
+                                      on-tap="addNewTap">
+                            <template is="dom-if" if="{{_showLink(link)}}"><a href="{{link}}" class="btn-link"></a></template>
+                            <iron-icon icon="add"></iron-icon>
+                            <span>[[btnText]]</span>
+                        </paper-button>
 
                 </div>
             </div>

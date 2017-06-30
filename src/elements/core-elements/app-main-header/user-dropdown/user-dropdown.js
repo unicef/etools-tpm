@@ -28,21 +28,17 @@ Polymer({
         this.set('opened', this.$.dropdown.opened);
     },
 
-    _openUserProfile: function() {
-
-    },
-
     _changeLocation: function(path) {
         window.location.href = window.location.origin + '/' + path + '/';
     },
 
-    _navigateToAdminPAge: function() {
+    _navigateToAdminPage: function() {
         this._changeLocation('admin');
     },
 
     _logout: function() {
         this.resetOldUserData();
-        this._changeLocation('tpm/logout');
+        this._changeLocation('accounts/logout');
     }
 
 });

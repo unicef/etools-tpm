@@ -31,7 +31,7 @@
 
     paper-menu {
         &.mw-160 { min-width: 160px; }
-        &.mw-220 { min-width: 220px; }
+        &.mw-220 { min-width: 180px; }
 
         iron-icon {
             margin-right: 20px;
@@ -39,9 +39,12 @@
         }
 
         paper-item {
+            height: 48px;
+            min-height: initial;
             font-weight: bold;
             color: #233944;
             cursor: pointer;
+            padding: 0px 30px;
         }
     }
 }

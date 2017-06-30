@@ -34,31 +34,42 @@ Polymer({
         exportType: {
             type: String
         },
+        link: {
+            type: String,
+            value: ''
+        },
         exportList: Array
     },
+
     behaviors: [etoolsAppConfig.globals],
+
     attached: function() {
         this.baseUrl = this.basePath;
     },
-    print: function() {
-        // this.$.pdfPrint.printPDF();
-    },
-    _export: function(event) {
-        var endpoint = event.model.item.endpoint;
-        this.set('csvEndpoint', endpoint);
-    },
+
     _hideAddButton: function(show) {
         return !show;
     },
-    _handleCSVData: function(e, data) {
-        var a = document.createElement('a');
-        a.href =  window.URL.createObjectURL(data);
-        a.download = 'csv_export_' + Date.now() + '.csv';
-        a.click();
-        window.URL.revokeObjectURL(a.href);
-        this.set('csvEndpoint', undefined);
+
+    addNewTap: function() {
+        this.fire('add-new-tap');
     },
-    addNewVendor: function() {
-        this.fire('addNewVendor');
+
+    _showLink: function(link) {
+        return !!link;
+    },
+
+    _showBtn: function(link) {
+        return !link;
+    },
+
+    _setTitle: function(visit, title) {
+        if (!visit || !visit.unique_id) { return title; }
+        return visit.unique_id;
+    },
+
+    exportData: function() {
+        if (!this.exportLink) { throw 'Can not find export link!'; }
+        window.open(this.exportLink, '_blank');
     }
 });
