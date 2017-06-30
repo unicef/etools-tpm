@@ -51,7 +51,6 @@ Polymer({
         'global-loading': '_handleGlobalLoading',
         'toast': 'queueToast',
         '404': '_pageNotFound',
-        'user-profile-loaded': '_initialDataLoaded',
         'static-data-loaded': '_initialDataLoaded'
     },
     ready: function() {
@@ -116,9 +115,8 @@ Polymer({
         this.fire('toast', {text: message});
     },
     _initialDataLoaded: function(e) {
-        if (e && e.type === 'user-profile-loaded') { this.profileLoaded = true; }
         if (e && e.type === 'static-data-loaded') { this.staticDataLoaded = true; }
-        if (this.routeData && this.profileLoaded && this.staticDataLoaded) {
+        if (this.routeData && this.staticDataLoaded) {
             this.page = this.routeData.page || this._configPath();
         }
     },

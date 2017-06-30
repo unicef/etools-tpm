@@ -8,6 +8,13 @@ Polymer({
 
     behaviors: [
         etoolsAppConfig.globals
-    ]
+    ],
 
+    setPartnersIcon: function(user) {
+        return user.partnerId ? 'person' : 'people';
+    },
+
+    setPartnersLink: function(user) {
+        return user.partnerId ? `partners/${user.partnerId}/details` : 'partners/list';
+    }
 });
