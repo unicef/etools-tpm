@@ -4,6 +4,7 @@ Polymer({
 
     behaviors: [
         etoolsBehaviors.LoadingBehavior,
+        TPMBehaviors.StaticDataController,
         etoolsAppConfig.globals
     ],
 
@@ -95,7 +96,7 @@ Polymer({
             resolvedPageUrl = 'elements/pages/not-found-page-view/not-found-page-view.html';
         } else {
             resolvedPageUrl = `elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`;
-            if (page === 'partners') {
+            if (page === 'partners' && !~this.userGroups.indexOf('Third Party Monitor')) {
                 let url = 'elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html';
                 this.importHref(url, null, null, true);
             }
@@ -117,6 +118,7 @@ Polymer({
     _initialDataLoaded: function(e) {
         if (e && e.type === 'static-data-loaded') { this.staticDataLoaded = true; }
         if (this.routeData && this.staticDataLoaded) {
+            this.userGroups = this.getData('userGroups');
             this.page = this.routeData.page || this._configPath();
         }
     },
@@ -141,8 +143,8 @@ Polymer({
         }
     },
     _configPath: function() {
-        let path = `${this.basePath}partners/list`;
-        this.set('route.path', path);
+        let path = ~this.userGroups.indexOf('Third Party Monitor') ? `partners/${this.user.partnerId}/details` : 'partners/list';
+        this.set('route.path', `${this.basePath}${path}`);
         return 'partners';
     }
 

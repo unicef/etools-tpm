@@ -66,7 +66,6 @@
                     //TODO: !format of response detail may be changed later!
                     let partnerId = detail && detail[0] && detail[0].id;
                     this.user.partnerId = partnerId;
-                    console.log(this.user)
                     if(!partnerId) { console.error('Can not get TPM Partner id!'); }
                     dataLoaded.partners = true;
                     this._allDataLoaded();

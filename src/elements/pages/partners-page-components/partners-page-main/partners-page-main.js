@@ -4,6 +4,7 @@ Polymer({
     is: 'partners-page-main',
     behaviors: [
         TPMBehaviors.QueryParamsController,
+        TPMBehaviors.StaticDataController,
         TPMBehaviors.PermissionController
     ],
     properties: {
@@ -25,9 +26,16 @@ Polymer({
         '_routeConfig(routeData.view)'
     ],
 
+    checkUser: function(user) {
+        if (!this.userGroups) {
+            this.userGroups = this.getData('userGroups');
+        }
+        return !!~this.userGroups.indexOf(user);
+    },
+
     _routeConfig: function(view) {
         if (!this.route || !~this.route.prefix.indexOf('/partners')) { return; }
-        if (view === 'list') {
+        if (view === 'list' && !this.checkUser('Third Party Monitor')) {
             let queries = this._configListParams(this.initiation++);
             this._setPartnersListQueries(queries);
             this.view = 'list';
@@ -42,16 +50,8 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!this.withoutPagination && !queries.size) { queriesUpdates.size = '10'; }
         if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
 
-        if (!this.withoutPagination && queries.page) {
-            let page = +queries.page;
-            if (page < 2 || isNaN(page) ||
-                (!!this.lastParams && (queries.size !== this.lastParams.size || queries.ordered_by !== this.lastParams.ordered_by))) {
-                queriesUpdates.page = false;
-            }
-        }
 
         if (!this.lastParams) {
             this.lastParams = _.clone(queries);
