@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax, query-params-controller]-->
+<!--import [polymer, etools-ajax, query-params-controller, etools-app-config]-->
 
 <dom-module id="partners-list-data">
 
@@ -6,10 +6,9 @@
 
         <etools-ajax
                 endpoint="[[endpoint]]"
-                caching-storage="custom"
-                dexie-db-collection="partners"
                 on-success="_partnersLoaded"
-                on-fail="_responseError"></etools-ajax>
+                on-fail="_responseError">
+        </etools-ajax>
 
     </template>
 
@@ -24,91 +23,58 @@
             ],
 
             properties: {
-                partners: {
-                    type: Array,
-                    value: [],
-                    notify: true
-                },
                 partnersList: {
                     type: Array,
                     readOnly: true,
                     notify: true
                 },
                 requestQueries: {
-                    type: Object,
-                    observer: 'getPartnersList'
+                    type: Object
                 },
-                listLength: {
-                    type: Number,
-                    notify: true,
-                    computed: '_setListLength(partners)'
+                lastOrder: {
+                    type: String
+                },
+            },
+
+            observers: [
+                'getPartnersList(requestQueries.*)'
+            ],
+
+            _partnersLoaded: function(e, detail) {
+                if (!detail || !detail.length) {
+                    this._responseError(e, detail);
+                    return;
                 }
 
+                this._setPartnersList(detail);
+                this.fire('global-loading', {type: 'partners-list'});
             },
-
-            ready: function () {
-                this.endpoint = this.getEndpoint('partnersList');
-            },
-
-            _partnersLoaded: function(data) {
-                this.partners = data.detail;
-                if (this._validatePageQuery()) {
-                    this.getPartnersList();
-                }
-            },
-            _responseError: function() {},
 
             getPartnersList: function() {
-                if (!this.partners.length) return;
-                if (this.currentTransaction) {
-                    this.currentTransaction.abort();
+                let newOrder = this.requestQueries && this.requestQueries.ordering;
+                let reloadRequired = !this.lastOrder || (newOrder !== this.lastOrder);
+
+                this.lastOrder = newOrder;
+
+                if (!reloadRequired) {
+                    //not reload the page
+                    return;
                 }
 
-                this.appDexieDb.transaction('r', this.appDexieDb.partners, () => {
-                    this.currentTransaction = Dexie.currentTransaction;
+                this.fire('global-loading', {type: 'partners-list', active: true, message: 'Loading of partners list...'});
 
-
-                    let partners = this.appDexieDb.partners,
-                            params = this.requestQueries || {};
-
-                    if (params.ordered_by) {
-                        let [field, order] = params.ordered_by.split('.');
-                        partners = partners.orderBy(field);
-                        if (order === 'desc') { partners = partners.reverse(); }
-                    }
-                    if (!this.withoutPagination && params.size) {
-                        partners
-                                .offset( ((params.page || 1) - 1) * params.size )
-                                .limit(+params.size)
-                    }
-
-
-
-                    return partners.toArray();
-                }).then((result) => {
-                    this._setPartnersList(result);
-                });
+                let endpoint = this.getEndpoint('partnersList');
+                endpoint.url += this.getQueriesString();
+                this.endpoint = endpoint;
             },
 
-            _validatePageQuery: function() {
-                if (!this.requestQueries) return;
-                if (!this.requestQueries.page || !this.requestQueries.size) return true;
-                let lastPage = this.partners.length % this.requestQueries.size ?
-                        Math.floor(this.partners.length / this.requestQueries.size + 1) :
-                        this.partners.length / this.requestQueries.size;
+            _responseError: function(e, detail) {
+                let responseData = detail && detail.request && detail.request.detail &&
+                    detail.request.detail.request && detail.request.detail.request.xhr;
+                let {status, response} = responseData || {};
 
-                if (+this.requestQueries.page > lastPage) {
-                    //update page query
-                    this.updateQueries({page: `${lastPage}`})
-                } else {
-                    return true;
-                }
+                this.fire('global-loading', {type: 'partners-list'});
             },
-
-            _setListLength: function(partners) {
-                return partners.length;
-            }
-
         });
 
     </script>

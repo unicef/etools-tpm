@@ -11,7 +11,7 @@ Polymer({
         },
         showingResults: {
             type: String,
-            computed: '_computeResultsToShow(listLength, queryParams.size)'
+            computed: '_computeResultsToShow(listLength, queryParams.page_size)'
         },
         orderBy: {
             type: String,
@@ -23,8 +23,15 @@ Polymer({
             type: Array,
             notify: true
         },
+        emptyObj: {
+            type: Object,
+            value: function() {
+                return {empty: true};
+            }
+        },
         withoutPagination: {
-            type: Boolean
+            type: Boolean,
+            value: false
         },
         hasCollapse: {
             type: Boolean,
@@ -36,11 +43,21 @@ Polymer({
                 return [];
             }
         },
+        noAdditional: {
+            type: Boolean,
+            value: false
+        }
     },
     _orderChanged: function(newOrder) {
-        if (!newOrder) { return; }
+        if (!newOrder || !(this.headings instanceof Array)) { return false; }
 
-        let [name, direction] = newOrder.split('.');
+        let direction = 'asc';
+        let name = newOrder;
+
+        if (name.startsWith('-')) {
+            direction = 'desc';
+            name = name.slice(1);
+        }
 
         this.headings.forEach((heading, index) => {
             if (heading.name === name) {
@@ -50,14 +67,14 @@ Polymer({
             }
         });
 
-        if (this.queryParams.ordered_by !== this.orderBy) { this.set('queryParams.ordered_by', this.orderBy); }
+        if (this.queryParams.ordering !== this.orderBy) { this.set('queryParams.ordering', this.orderBy); }
     },
     _paramsChanged: function(newParams) {
-        if (this.orderBy !== newParams.ordered_by) { this.orderBy = newParams.ordered_by; }
+        if (this.orderBy !== newParams.ordering) { this.orderBy = newParams.ordering; }
     },
     _computeResultsToShow: function(lengthAmount, size) {
         let page = (this.queryParams.page || 1) - 1;
-        size = +(size || 10);
+        size = +size || 10;
 
         let last = size * page + size;
         if (last > lengthAmount) { last = lengthAmount; }
@@ -66,15 +83,18 @@ Polymer({
         return `${first} - ${last} of ${lengthAmount}`;
     },
     _listDataChanged: function() {
-        var rows = Polymer.dom(this.root).querySelectorAll('.list-element');
+        let rows = Polymer.dom(this.root).querySelectorAll('.list-element');
+
         if (rows && rows.length) {
-            for (var i = 0; i < rows.length; i++) {
+            this.noAnimation = true;
+
+            for (let i = 0; i < rows.length; i++) {
                 if (rows[i].detailsOpened) {
-                    this.noAnimation = true;
                     rows[i]._toggleRowDetails();
-                    this.noAnimation = false;
                 }
             }
+
+            this.noAnimation = false;
         }
     }
 });

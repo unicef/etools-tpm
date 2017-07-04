@@ -10,7 +10,7 @@ App global configuration
     var etoolsCustomDexieDb = new Dexie('TPM');
     etoolsCustomDexieDb.version(1).stores({
         collectionsList: '&name, expire',
-        partners: 'id, name, vendor_number, country',
+        partners: 'id',
         trips: 'id, name, vendor_number, location, focal_point, status'
     });
 
@@ -36,9 +36,7 @@ App global configuration
                 cachingKey: 'countries'
             },
             partnersList: {
-                url: '/api/tpm/partners/',
-                exp: 1 * 60 * 1000, // 6h
-                cachingKey: 'partners'
+                url: '/api/tpm/partners/'
             },
             visitsList: {
                 url: '/tpm/data/trips-list.json',
@@ -70,9 +68,7 @@ App global configuration
                 cachingKey: 'countries'
             },
             partnersList: {
-                url: '/data/partners-list.json',
-                exp: 6 * 60 * 60 * 1000, // 6h
-                cachingKey: 'partners'
+                url: '/data/partners-list.json'
             },
             visitsList: {
                 url: '/data/trips-list.json',

@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <!--import [partners-list-view, lodash]-->
+</head>
+<body>
+
+<test-fixture id="partners-list-view-fixture">
+    <template>
+        <partners-list-view></partners-list-view>
+    </template>
+</test-fixture>
+
+<script>
+    describe('<partners-list-view>', function () {
+        let myEl;
+
+        beforeEach(function () {
+            myEl = fixture('partners-list-view-fixture');
+        });
+
+        describe('method openNewVendorDialog()', function () {
+            it('sets newVendorOpened property to true', function () {
+                assert.isFalse(myEl.newVendorOpened);
+                myEl.openNewVendorDialog();
+                assert.isTrue(myEl.newVendorOpened);
+            });
+
+            it('called when fired "add-new-tap" event', function () {
+                let spy = sinon.spy(myEl, 'openNewVendorDialog');
+
+                assert.isFalse(spy.called);
+                myEl.fire('add-new-tap');
+                assert.isTrue(spy.calledOnce);
+            });
+        });
+
+        describe('method _showAddButton()', function () {
+            it('returns result of actionAllowed() method', function () {
+                let spy = sinon.stub(myEl, 'actionAllowed');
+                spy.withArgs('new_partner', 'addPartner').returns('returned_value');
+
+                assert.equal(myEl._showAddButton(), 'returned_value');
+                assert.isTrue(spy.calledOnce);
+                assert.isTrue(spy.calledWithExactly('new_partner', 'addPartner'));
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

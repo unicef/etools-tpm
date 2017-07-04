@@ -6,28 +6,63 @@
     display: block;
     border-bottom: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
 
+    .question-title {
+        font-weight: 500;
+        font-size: 14px !important;
+        letter-spacing: 0.5px
+    }
+
     .partner-data {
-        display: block;
+        display: table-cell;
+        vertical-align: middle;
         width: 100%;
-        height: 100%;
+        box-sizing: border-box;
+        white-space: nowrap;
+        font-size: 0; //skip gaps between inline-blocks
+        overflow: inherit;
+
         .col-data {
-            float: left;
-            line-height: 48px;
+            display: inline-block;
             overflow: hidden;
+            font-size: 13px;
             text-overflow: ellipsis;
-            padding-right: 25px;
+            padding-right: 10px;
+            padding-left: 1px;
             box-sizing: border-box;
+            vertical-align: middle;
+
+            &:not(.truncate) {
+                padding-right: 0;
+                overflow: visible;
+            }
             .truncate { white-space: nowrap; }
+            .additional {
+                color: var(--dark-secondary-text-color);
+                font-size: 11px;
+            }
+
+            &.right { text-align: right; }
+            &.center { text-align: center; }
         }
-        a.col-data { color: #40c4ff; }
+        a.col-data {
+            color: #40c4ff;
+
+            &[href="#"] {
+                color: initial;
+                pointer-events: none;
+            }
+        }
     }
 
     .partners-data-details {
-        display: flex;
+        position: relative;
+        display: block;
+        width: 100%;
+
         .row-details-content {
-            flex: 0 0 16.66666667%;
-            max-width: 16%;
+            float: left;
             padding-right: 25px;
+            padding-bottom: 20px;
             vertical-align: top;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -36,7 +71,8 @@
                 display: inline-block;
                 width: 100%;
                 color: rgba(0, 0, 0, 0.54);
-                font-weight: bold;
+                font-weight: 500;
+                font-size: 13px;
                 margin-bottom: 10px;
             }
 
@@ -45,25 +81,48 @@
             }
         }
     }
-
-
 }
 
-:host(:hover) paper-material {
-    background-color: #EEEEEE;
-    @apply (--hover-setting);
+:host([hover]) {
+    paper-material {
+        background-color: #EEEEEE;
+    }
 }
 
 paper-material {
-    @apply (--layout-horizontal);
-    @apply (--layout-center);
+    display: table;
+    table-layout: fixed;
     width: 100%;
     height: 48px;
+    min-height: 48px;
     font-size: 13px;
     color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
     background-color: var(--primary-background-color, #FFFFFF);
-    padding: 0 0 0 72px !important;
+    padding: 0 15px 0 72px !important;
     box-sizing: border-box;
+}
+
+:host([no-additional]) {
+    paper-material {
+        padding: 0 15px !important;
+    }
+}
+
+:host([multiline]) {
+    .partner-data {
+        .col-data {
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            .truncate { white-space: normal; }
+        }
+    }
+}
+
+:host([no-hover]) {
+    paper-material:hover {
+        background-color: initial;
+    }
 }
 
 paper-material ::slotted(*) {
@@ -74,10 +133,11 @@ paper-material ::slotted(*) {
 
 #iconWrapper {
     position: absolute;
-    left: 0;
-    height: 48px;
-    line-height: 48px;
+    top: 50%;
+    margin-top: -24px;
     padding: 0 24px;
+    margin-left: -72px;
+    line-height: 48px;
     cursor: pointer;
 }
 
@@ -86,7 +146,7 @@ iron-icon {
 }
 
 #collapse-wrapper {
-    padding: 15px 24px 15px 72px;
+    padding: 15px 15px 5px;
     background-color: #EEEEEE;
     /* TODO: replace with app-theme var */
     border-top: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
