@@ -1,0 +1,121 @@
+<!--import [polymer, etools-ajax, static-data-behavior, user-controller, user-data]-->
+
+<dom-module id="initial-data">
+
+    <template>
+
+        <user-data user="{{user}}"></user-data>
+
+        <!--partners-->
+        <etools-ajax
+                endpoint="[[partnersEndpoint]]"
+                caching-storage="custom"
+                dexie-db-collection="partner_organizations"
+                on-success="_partnersLoaded"
+                on-fail="_partnersError"></etools-ajax>
+
+        <etools-ajax method="OPTIONS"
+                     url="[[partnersOptionsUrl]]"
+                     on-success="_handlePartnersOptions"
+                     on-fail="_handlePartnersOptions"></etools-ajax>
+
+        <etools-ajax method="OPTIONS"
+                     url="[[visitsOptionsUrl]]"
+                     on-success="_handleVisitsOptions"
+                     on-fail="_handleVisitsOptions"></etools-ajax>
+
+    </template>
+
+    <script>
+
+        (function() {
+            'use strict';
+
+            let dataLoaded = {};
+
+            Polymer({
+
+                is: 'initial-data',
+                behaviors: [
+                    etoolsAppConfig.globals,
+                    TPMBehaviors.UserController,
+                    TPMBehaviors.StaticDataController,
+                    TPMBehaviors.PermissionController
+                ],
+
+                listeners: {
+                    'user-profile-loaded': 'loadStaticData'
+                },
+
+                loadStaticData: function () {
+                    if (this.isTpmUser()) {
+                        this.partnersEndpoint = this.getEndpoint('partnerOrganisations');
+                    } else {
+                        this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
+                    }
+                    this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
+                    this._allDataLoaded();
+                },
+
+                _allDataLoaded: function() {
+                    let tpmUser = this.isTpmUser();
+                    if ((dataLoaded.partners || !tpmUser) && dataLoaded.visitsOptions && (dataLoaded.partnersOptions || tpmUser)) {
+                        this.fire('initial-data-loaded');
+                    }
+                },
+
+                _partnersLoaded: function(data, detail) {
+                    //TODO: !format of response detail may be changed later!
+                    let partnerId = detail && detail[0] && detail[0].id;
+                    this._setPartnerId(partnerId);
+                    if(!partnerId) { console.error('Can not get TPM Partner id!'); }
+                    dataLoaded.partners = true;
+                    this._allDataLoaded();
+                },
+
+                _handleVisitsOptions: function(data, detail) {
+                    let actions = detail && detail.actions;
+                    if (!this.isValidCollection(actions)) {
+                        this._responseError('visit options');
+                        return;
+                    }
+
+                    if (this.isValidCollection(actions.POST)) {
+                        actions.allowed_actions = ['addVisit'].concat(actions.allowed_FSM_transitions || []);
+                    }
+
+                    this._addToCollection('new_visit', actions);
+
+                    dataLoaded.visitsOptions = true;
+                    this._allDataLoaded();
+                },
+
+                _handlePartnersOptions: function(data, detail) {
+                    let actions = detail && detail.actions;
+                    if (!this.isValidCollection(actions)) {
+                        this._responseError('partners options');
+                        return;
+                    }
+
+                    if (this.isValidCollection(actions.POST)) {
+                        actions.allowed_actions = ['addPartner'].concat(actions.allowed_FSM_transitions || []);
+                    }
+
+                    this._addToCollection('new_partner', actions);
+
+                    dataLoaded.partnersOptions = true;
+                    this._allDataLoaded();
+                },
+
+                _responseError: function(request) {
+                    console.error(`Can not load initial data${request ? ': ' + request : ''}`);
+                    this.fire('initial-data-loaded');
+                }
+
+            });
+
+        })();
+
+    </script>
+
+</dom-module>

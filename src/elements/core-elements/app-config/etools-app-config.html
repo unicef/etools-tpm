@@ -40,7 +40,7 @@ App global configuration
                 exp: 1 * 60 * 1000, // 6h
                 cachingKey: 'partners'
             },
-            tripsList: {
+            visitsList: {
                 url: '/tpm/data/trips-list.json',
                 exp: 6 * 60 * 60 * 1000, // 6h
                 cachingKey: 'trips'
@@ -74,7 +74,7 @@ App global configuration
                 exp: 6 * 60 * 60 * 1000, // 6h
                 cachingKey: 'partners'
             },
-            tripsList: {
+            visitsList: {
                 url: '/data/trips-list.json',
                 exp: 6 * 60 * 60 * 1000, // 6h
                 cachingKey: 'trips'
@@ -101,11 +101,6 @@ App global configuration
                 return _.clone(endpoint);
             },
 
-            getPermissionsList: function (userType) {
-//                return etoolsAppConfig.permissions[`${userType}Permissions`];
-                return etoolsAppConfig.permissions[`superPermissions`];
-            },
-
             resetOldUserData: function() {
                 console.log('resetOldUserData()');
 
@@ -120,31 +115,6 @@ App global configuration
                 path = path || '';
                 return this.basePath + path;
             }
-        },
-
-        // permissions
-        permissions: {
-            superPermissions: [
-                'viewPartnersList',
-                'viewPartnersDetails',
-                'addNewPartner',
-                'editPartnerDetails',
-                'viewPartnerAttachments',
-                'downloadPartnerAttachments',
-                'editPartnerAttachments'
-            ], //for testing
-            unicefUserPermissions: [
-                'viewPartnersList',
-                'viewPartnersDetails',
-                'viewPartnerAttachments'
-            ],
-            unicefFpPermissions: [],
-            pmePermissions: [],
-            tpmPermissions: [
-                'viewPartnersDetails',
-                'viewPartnerAttachments',
-                'downloadPartnerAttachments'
-            ]
         }
 
     };

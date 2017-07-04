@@ -46,7 +46,7 @@ Polymer({
         'global-loading': '_handleGlobalLoading',
         'toast': 'queueToast',
         '404': '_pageNotFound',
-        'static-data-loaded': '_initialDataLoaded',
+        'initial-data-loaded': '_initialDataLoaded',
         'user-profile-loaded': '_updateUserData'
     },
 
@@ -119,8 +119,8 @@ Polymer({
     },
 
     _initialDataLoaded: function(e) {
-        if (e && e.type === 'static-data-loaded') { this.staticDataLoaded = true; }
-        if (this.routeData && this.staticDataLoaded) {
+        if (e && e.type === 'initial-data-loaded') { this.initialDataLoaded = true; }
+        if (this.routeData && this.initialDataLoaded) {
             this.page = this.routeData.page || this._configPath();
         }
     },

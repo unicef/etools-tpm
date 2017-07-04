@@ -101,11 +101,16 @@
                 value: []
             }
         },
+
         listeners: {
             'addNewVendor': 'openNewVendorDialog'
         },
+
         openNewVendorDialog: function() { this.newVendorOpened = true; },
-        _showAddButton: function() { return true; }
+
+        _showAddButton: function() {
+            return this.actionAllowed('new_partner', 'addPartner');
+        },
     });
 })();
 

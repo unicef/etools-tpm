@@ -2,7 +2,7 @@
              paper-toast, paper-material, iron-selector, iron-pages, iron-collapse, iron-icons, iron-icons/social-icons,
              etools-loading/etools-loading-behavior, permission-controller, iron-icons/maps-icons]-->
 
-<!--import [etools-app-config, countries-data, side-bar-item, countries-dropdown, static-data, user-controller]-->
+<!--import [etools-app-config, countries-data, side-bar-item, countries-dropdown, initial-data, user-controller]-->
 <!--import [shared-styles, page-layout-styles, app-theme]-->
 
 <dom-module id="app-shell">
@@ -11,7 +11,7 @@
         <!-- inject styles './app-shell.scss'-->
         <style include="page-layout-styles shared-styles"></style>
 
-        <static-data></static-data>
+        <initial-data></initial-data>
 
         <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
 
