@@ -12,10 +12,6 @@ Polymer({
         withoutPagination: {
             type: Boolean,
             value: true
-        },
-        initiation: {
-            type: Number,
-            value: 0
         }
     },
     observers: [
@@ -26,20 +22,21 @@ Polymer({
         if (this.route && !~this.route.prefix.indexOf('/trips')) { return; }
         let view = this.routeData ? this.routeData.view : route.path.split('/')[1];
         if (view === 'list') {
-            let queries = this._configListParams(this.initiation++);
+            let queries = this._configListParams();
             this._setTripsListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
-            this.clearQueries();
+            this.debounce('clearSearchQueries', () => {
+                this.clearQueries();
+            }, 100);
             this.visitId = +view;
         } else {
             this.fire('404');
         }
     },
-    _configListParams: function(noNotify) {
+    _configListParams: function() {
         let queriesUpdates = {},
             queries = this.parseQueries();
-
 
         if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
 
@@ -49,7 +46,9 @@ Polymer({
             this.lastParams = _.clone(queries);
         }
 
-        this.updateQueries(queriesUpdates, null, noNotify);
+        this.debounce('updateSearchQueries', () => {
+            this.updateQueries(queriesUpdates, null);
+        }, 100);
         return this.parseQueries();
     },
     _queryParamsChanged: function() {
@@ -58,7 +57,9 @@ Polymer({
             let queries = this._configListParams();
             this._setTripsListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
-            this.clearQueries();
+            this.debounce('clearSearchQueries', () => {
+                this.clearQueries();
+            }, 100);
         }
     },
     _setTripsListQueries: function(queries) {

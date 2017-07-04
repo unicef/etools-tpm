@@ -16,10 +16,6 @@ Polymer({
         withoutPagination: {
             type: Boolean,
             value: true
-        },
-        initiation: {
-            type: Number,
-            value: 0
         }
     },
     observers: [
@@ -36,22 +32,24 @@ Polymer({
     _routeConfig: function(view) {
         if (!this.route || !~this.route.prefix.indexOf('/partners')) { return; }
         if (view === 'list' && !this.checkUser('Third Party Monitor')) {
-            let queries = this._configListParams(this.initiation++);
+            let queries = this._configListParams();
             this._setPartnersListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
-            this.clearQueries();
+            this.debounce('clearSearchQueries', () => {
+                this.clearQueries();
+            }, 100);
             this.partnerId = +view;
         } else {
             this.fire('404');
         }
     },
-    _configListParams: function(noNotify) {
+
+    _configListParams: function() {
         let queriesUpdates = {},
             queries = this.parseQueries();
 
         if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
-
 
         if (!this.lastParams) {
             this.lastParams = _.clone(queries);
@@ -59,7 +57,9 @@ Polymer({
             this.lastParams = _.clone(queries);
         }
 
-        this.updateQueries(queriesUpdates, null, noNotify);
+        this.debounce('updateSearchQueries', () => {
+            this.updateQueries(queriesUpdates, null);
+        }, 100);
         return this.parseQueries();
     },
     _queryParamsChanged: function() {
@@ -68,7 +68,9 @@ Polymer({
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
-            this.clearQueries();
+            this.debounce('clearSearchQueries', () => {
+                this.clearQueries();
+            }, 100);
         }
     },
     _setPartnersListQueries: function(queries) {
