@@ -4,13 +4,7 @@
     <template>
         <!-- inject styles './partner-actions-tab.scss'-->
 
-        <etools-content-panel title="Actions">
-
-            <div class$="action-message [[showMessage]]">
-                <span class$="message-text success [[success]]">Your changes have been saved</span>
-                <span class$="message-text error [[error]]">Error occurred. Please try again later</span>
-            </div>
-
+        <etools-content-panel panel-title="Actions">
 
             <div class="buttons-section vertical">
                 <paper-button
@@ -20,7 +14,6 @@
                         on-tap="_triggerPartnerSave">
                     Save
                 </paper-button>
-                <etools-loading class="spinner" no-overlay active="[[loading]]" loading-text=""></etools-loading>
             </div>
 
         </etools-content-panel>

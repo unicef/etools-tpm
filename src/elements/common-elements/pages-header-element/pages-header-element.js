@@ -38,7 +38,13 @@ Polymer({
             type: String,
             value: ''
         },
-        exportList: Array
+        exportList: Array,
+        pageData: {
+            type: Object,
+            value: function() {
+                return {};
+            }
+        }
     },
 
     behaviors: [etoolsAppConfig.globals],
@@ -63,9 +69,9 @@ Polymer({
         return !link;
     },
 
-    _setTitle: function(visit, title) {
-        if (!visit || !visit.unique_id) { return title; }
-        return visit.unique_id;
+    _setTitle: function(pageData, title) {
+        if (!pageData || !pageData.unique_id) { return title; }
+        return pageData.unique_id;
     },
 
     exportData: function() {

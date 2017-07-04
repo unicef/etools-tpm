@@ -1,17 +1,12 @@
 <!--import [polymer, etools-content-panel, app-route, paper-tabs, app-layout]-->
-<!--import [module-styles, shared-styles, partner-actions-tab, search-and-filter,
+<!--import [module-styles, main-page-styles, shared-styles, partner-actions-tab, search-and-filter,
             partner-details-tab, partner-staff-members-tab, file-attachments-tab, permission-controller,
             update-partner-details-data]-->
 
 <dom-module id="partner-info-view-main">
     <template>
         <!-- inject styles './partner-info-view-main.scss'-->
-        <style include="shared-styles module-styles">
-            .view-container {
-                display: flex;
-                padding: 15px;
-            }
-        </style>
+        <style include="shared-styles module-styles main-page-styles"></style>
         <app-route
                 route="{{route}}"
                 pattern="/:tab"
@@ -36,7 +31,7 @@
                     <div name="details">
                         <partner-details-tab id="partner-details" partner="[[partner]]" edit-mode="[[_allowEdit()]]"></partner-details-tab>
 
-                        <etools-content-panel title$="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
+                        <etools-content-panel panel-title="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
                             <partner-staff-members-tab id="staff-members"  data-items="{{partner.staff_members}}" edit-mode="[[_allowEdit()]]"></partner-staff-members-tab>
                         </etools-content-panel>
                     </div>

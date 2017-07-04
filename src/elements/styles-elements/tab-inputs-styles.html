@@ -27,11 +27,13 @@
                 width: 30%;
             }
 
-            .input-container:last-child {
+            .input-container:last-of-type {
                 margin-right: 0;
             }
 
             .input-container.input-container-s { width: 30%; }
+
+            .input-container.input-container-40 { width: 35%; }
 
             .input-container.input-container-m { width: 65%; }
 
@@ -45,9 +47,12 @@
             }
 
 
+            paper-dropdown-menu,
+            paper-textarea,
             paper-input {
                 padding: 0 12px;
                 color: var(--gray-mid);
+
 
                 --paper-input-container-input: #{'{
                     font-size: 15px;
@@ -62,9 +67,62 @@
                     margin-right: 10px;
                     color: var(--gray-mid);
                 }'};
+
+                --paper-input-error: #{'{
+                    overflow: hidden;
+                }'};
+            }
+
+            paper-textarea {
+                --paper-input-container-input: #{'{
+                    white-space: normal;
+                }'};
+                --paper-input-container-focus-color: var(--module-primary);
+                --iron-autogrow-textarea-placeholder:#{'{
+                    color: var(--gray-20) !important;
+                }'};
+                --iron-autogrow-textarea:#{'{
+                    padding: 0;
+                }'};
+            }
+
+            etools-searchable-multiselection-menu, paper-input, paper-textarea, paper-dropdown-menu {
+                outline: none!important;
+                --paper-input-container-color: var(--gray-20);
+                --paper-input-container-focus-color: var(--module-primary);
+                --paper-input-container-input: {
+                    color: var(--gray-dark);
+                };
+                --paper-input-container-label: #{'{
+                    color: var(--gray-50) ;
+                }'};
+
+
+                --paper-input-container-invalid-color: var(--module-error);
+
+                --paper-input-container-disabled: {
+                    color: var(--gray-light);
+                    opacity: 1;
+                };
+                --paper-input-char-counter: {
+                    color: var(--gray-light);
+                };
+            }
+
+            etools-currency-amount-input {
+                --etools-currency-container-label: #{'{ color: var(--gray-50); }'};
+                --paper-input-container-color: var(--gray-20);
+                --paper-input-container-focus-color: var(--module-primary);
+            }
+
+            paper-input.readonly, paper-dropdown-menu.readonly, paper-textarea.readonly {
+                --paper-input-container-underline: {
+                    display: none;
+                };
             }
 
             paper-textarea[readonly], paper-textarea[disabled].disabled-as-readonly,
+            paper-dropdown-menu[readonly], paper-dropdown-menu[disabled].disabled-as-readonly,
             paper-input[readonly], paper-input[disabled].disabled-as-readonly {
                 --paper-input-container: #{'{
                     opacity: 1 !important;
@@ -83,37 +141,104 @@
 
             }
 
-            paper-textarea.required,
-            paper-input.required {
-                --paper-input-container-label: #{"{
-                    background: url(/images/required.svg) no-repeat 99% 20%/8px;
-                    width: auto !important;
-                    right: initial;
-                    padding-right: 15px;
+            paper-textarea[disabled].without-border,
+            paper-input[disabled].without-border {
+                --paper-input-container-label: #{'{
+                    color: var(--gray-50) !important;
+                }'};
+                --paper-input-container: #{'{
+                    opacity: 1 !important;
+                }'};
+                --paper-input-container-underline: #{'{
+                    border-bottom: none !important;
+                    display: none !important;
+                }'};
+                --paper-input-container-underline-focus: #{"{
+                    display: none;
+                }"};
+                --paper-input-container-underline-disabled: #{"{
+                    display: none;
                 }"};
             }
 
-            etools-searchable-multiselection-menu, etools-searchable-multiselection-menu.disabled-as-readonly {
-                --esmm-readonly-input-container-underline: #{'{ border-bottom: 1px dashed rgba(0, 0, 0, 0.20); }'};
-                --esmm-readonly-input-container: #{'{ opacity: 1 !important; }'};
-
-            }
-            etools-searchable-multiselection-menu.required {
-                --esmm-input-container-label: #{'{
-                    background: url(/images/required.svg) no-repeat 99% 20%/8px;
+            paper-dropdown-menu.required:not([disabled]),
+            paper-textarea.required:not([disabled]),
+            paper-input.required:not([disabled]) {
+                --paper-input-container-label: #{"{
+                    background: url(/ap/images/required.svg) no-repeat 99% 20%/8px;
                     width: auto !important;
-                    right: initial;
+                    right: auto;
                     padding-right: 15px;
+                    color: var(--gray-50);
+                }"};
+            }
+
+            etools-currency-amount-input.required:not([disabled]) {
+                --etools-currency-container-label: #{'{
+                 background: url(/ap/images/required.svg) no-repeat 99% 20%/8px;
+                    width: auto !important;
+                    right: auto;
+                    padding-right: 15px;
+                    color: var(--gray-50);
+                 } '};
+            }
+
+             etools-searchable-multiselection-menu.disabled-as-readonly {
+                --esmm-readonly-input-container-underline: #{'{ border-bottom: 1px dashed rgba(0, 0, 0, 0.20); }'};
+                --esmm-readonly-input-container: #{'{ opacity: 1 !important;  }'};
+                --esmm-input-container-label: #{'{
+                    color: var(--gray-50);
                  }'};
             }
 
-            /*TODO: Add following commented code to 'etools-searchable-multiselection-menu' element*/
+            etools-searchable-multiselection-menu.readonly {
+                --esmm-readonly-input-container-underline: #{'{ border-bottom: 1px solid var(--gray-50) !important; }'};
+                --esmm-readonly-input-container: #{'{ opacity: 1 !important;  }'};
+                --esmm-input-container-label: #{'{
+                    color: var(--gray-50);
+                 }'};
 
-            /*paper-input#singleSelectionDropdown {*/
-                /*--paper-input-container-label: {*/
-                    /*@apply(--esmm-input-container-label);*/
-                /*};*/
-            /*}*/
+            }
+
+            etools-searchable-multiselection-menu.required:not([disabled]) {
+                --paper-input-container-label: #{'{
+                    background: url(/ap/images/required.svg) no-repeat 99% 20%/8px;
+                    width: auto !important;
+                    right: auto;
+                    padding-right: 15px;
+                    color: var(--gray-50);
+                 }'};
+            }
+
+            paper-input.bold {
+                --paper-input-container-input: #{'{
+                    font-weight: 500;
+                }'};
+
+                --paper-input-container-underline-focus: #{"{
+                    display: none !important;
+                }"};
+                --paper-input-container-underline-disabled: #{"{
+                    display: none !important;
+                }"};
+
+                --paper-input-container-underline: #{'{
+                    display: none !important;
+                }'};
+            }
+
+            paper-input.deleted {
+                --paper-input-container-input: #{'{
+                    color: #b0b0b0;
+                }'};
+            }
+
+            etools-currency-amount-input[disabled].disabled-as-readonly {
+                --etools-currency-container-underline-disabled: #{'{ border-bottom: 1px dashed rgba(0, 0, 0, 0.20) !important;}'};
+                --etools-currency-container-label: #{'{ color: rgba(0, 0, 0, 0.38); }'};
+                --paper-input-container: #{'{ opacity: 1 !important; }'};
+            }
+
 
 
             #bottom-actions {
@@ -139,21 +264,48 @@
 
             .repeatable-item-container {
                 position: relative;
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
-                -ms-flex-direction: row;
-                -webkit-flex-direction: row;
-                flex-direction: row;
+                display: block;
+                min-width: 500px;
                 width: 100%;
+                box-sizing: border-box;
+                padding: 0 8% !important;
+
+                .form-title {
+                    position: relative;
+                    line-height: 40px;
+                    color: var(--module-primary);
+                    font-weight: 600;
+                    box-sizing: border-box;
+                    margin: 0 12px 15px !important;
+                    padding: 0 !important;
+
+                    .text {
+                        background-color: var(--gray-06);
+                        border-radius: 3px;
+                        padding: 9px 24px;
+                        line-height: 22px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+
+                &.whithout-actions { padding: 0  !important; }
+                &[without-line] {
+                    padding: 0 3.5% !important;
+                    .repeatable-item-content {
+                        border-left: none;
+                        margin-left: 0;
+                        padding-left: 0;
+                    }
+                 }
 
                 .repeatable-item-actions {
-                    display: -ms-flexbox;
-                    display: -webkit-flex;
                     display: flex;
-                    -ms-flex-direction: row;
-                    -webkit-flex-direction: row;
-                    flex-direction: row;
+                    position: absolute;
+                    top: 0;
+                    left: 8px;
+                    width: 8%;
+                    height: 100%;
 
                     .actions {
                         display: -ms-flexbox;
@@ -168,12 +320,15 @@
                         -ms-flex-wrap: wrap;
                         -webkit-flex-wrap: wrap;
                         flex-wrap: wrap;
+                        align-items: center;
+                        width: 100%;
 
                         .action {
                             width: 36px;
                             height: 36px;
                             &.delete { color: #ea4022; }
                             &.add { color: var(--module-primary); }
+                             &[disabled] { color: var(--gray-light); }
                         }
                     }
                 }
@@ -182,18 +337,14 @@
                     position: relative;
                     display: -ms-flexbox;
                     display: -webkit-flex;
-                    display: flex;
-                    -ms-flex-direction: column;
-                    -webkit-flex-direction: column;
-                    flex-direction: column;
-                    -ms-flex: 1 1 0.000000001px;
-                    -webkit-flex: 1;
-                    flex: 1;
-                    -webkit-flex-basis: 0.000000001px;
-                    flex-basis: 0.000000001px;
+                    display: inline-block;
+                    vertical-align: top;
                     margin-left: 10px;
-                    padding-left: 25px;
-                    border-left: 1px solid #9D9D9D;
+                    padding-left: 20px;
+                    padding-bottom: 8px;
+                    border-left: 1px solid var(--gray-border);
+                    width: 100%;
+                    box-sizing: border-box;
 
                     .staff-check-box { margin-top: 10px; }
 
@@ -230,6 +381,10 @@
             }
 
 
+            etools-currency-amount-input {
+                padding: 0 12px;
+                box-sizing: border-box;
+            }
 
 
         </style>
