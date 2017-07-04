@@ -4,9 +4,14 @@
 
     <template>
 
-        <etools-ajax endpoint="[[endpoint]]"
-                     on-success="_handleResponse"
+        <etools-ajax endpoint="[[partnerEndpoint]]"
+                     on-success="_handleDataResponse"
                      on-fail="_handleError"></etools-ajax>
+
+        <etools-ajax method="OPTIONS"
+                     url="[[optionsUrl]]"
+                     on-success="_handleOptionsResponse"
+                     on-fail="_handleOptionsResponse"></etools-ajax>
     </template>
 
     <script>
@@ -16,7 +21,8 @@
             is: 'partner-details-data',
 
             behaviors: [
-                etoolsAppConfig.globals
+                etoolsAppConfig.globals,
+                TPMBehaviors.PermissionController
             ],
 
             properties: {
@@ -36,9 +42,30 @@
                 }
             },
 
+            _handleDataResponse: function(data) {
+                this.responseData = data.detail;
+                this.requestsCompleted.data = true;
+                this._finishRequests(this.responseData);
+            },
 
-            _handleResponse: function (data) {
-                this.partnerDetails = data.detail;
+            _handleOptionsResponse: function(data) {
+                let actions = data.detail && data.detail.actions && data.detail.actions;
+                if (actions) {
+                    data.detail.actions.allowed_actions = !_.isEmpty(actions.PUT) ? ['save_partner'].concat(actions.allowed_FSM_transitions) : actions.allowed_FSM_transitions;
+                    this._addToCollection(`partner_${this.partnerId}`, data.detail.actions);
+                } else {
+                    console.error('Can not load permissions for partner');
+                }
+
+                this.requestsCompleted.options = true;
+                this._finishRequests(this.responseData);
+            },
+
+            _finishRequests: function(data) {
+                if (!this.requestsCompleted.data || !this.requestsCompleted.options) { return; }
+
+                if (data) { this.partnerDetails = data; }
+
                 this.fire('global-loading', {type: 'partner-details'});
                 this.view = 'info';
                 this.partnerId = null;
@@ -59,10 +86,19 @@
                     this.partnerId = null;
                     return;
                 }
+
                 this.lastId = id;
                 this.partnerDetails = {};
+                this.requestsCompleted = {};
+
                 this.fire('global-loading', {message: 'Loading partner data...', active: true, type: 'partner-details'});
-                this.endpoint = this.getEndpoint('partnerDetails', {id: id});
+                this.partnerEndpoint = this.getEndpoint('partnerDetails', {id: id});
+
+                if (this.collectionExists(`partner_${id}`)) {
+                    this.requestsCompleted.options = true;
+                } else {
+                    this.optionsUrl = this.partnerEndpoint.url;
+                }
             }
 
         });
