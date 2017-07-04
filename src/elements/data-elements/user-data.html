@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax, lodash, permission-controller, static-data-behavior]-->
+<!--import [polymer, etools-ajax, lodash, permission-controller, user-controller]-->
 
 <dom-module id="user-data">
 
@@ -20,19 +20,8 @@
             behaviors: [
                 etoolsAppConfig.globals,
                 TPMBehaviors.PermissionController,
-                TPMBehaviors.StaticDataController,
+                TPMBehaviors.UserController
             ],
-
-            properties: {
-                user: {
-                    type: Object,
-                    readOnly: true,
-                    notify: true,
-                    value: function() {
-                        return {};
-                    }
-                }
-            },
 
             ready: function () {
                 this.endpoint = this.getEndpoint('userProfile');
@@ -42,7 +31,6 @@
                 let user = data.detail;
                 let previousUserId = JSON.parse(localStorage.getItem('userId'));
 
-                this._setUser(user);
 
                 if (!previousUserId || previousUserId !== user.id) {
                     this.resetOldUserData();
@@ -50,21 +38,14 @@
 
                 localStorage.setItem('userId', user.id);
 
-                this.addGroupsToStorage();
+                this._setUserData(user);
 
                 this.fire('user-profile-loaded');
             },
 
             _handleError: function (rsp, err) {
                 console.error('Can\'t load user data');
-            },
-
-            addGroupsToStorage: function() {
-                if (!this.user || !this.user.groups) { return; }
-                let groups = this.user.groups.map((group) => {
-                    return group.name;
-                });
-                this._setData('userGroups', groups)
+                this.fire('user-profile-loaded');
             }
 
         });

@@ -1,0 +1,49 @@
+<!--import [lodash]-->
+<script>
+    'use strict';
+    (function () {
+        var _user, _groups;
+
+        window.TPMBehaviors = window.TPMBehaviors || {};
+        window.TPMBehaviors.UserController = {
+            _setUserData: function(user) {
+                if (_user) { throw 'User already exists!'; }
+
+                if (!user || !_.isObject(user) || _.isArray(user)) { throw 'User must be an object'; }
+                if (!user.id || !user.groups) { throw 'User must have id and groups fields!'; }
+
+                _user = _.cloneDeep(user);
+                this._setGroups(user);
+            },
+
+            _setGroups: function(user) {
+                if (!user.groups.length) { throw 'Can not find user group!'; }
+                _groups = user.groups.map((group) => {
+                    return group.name;
+                });
+            },
+
+            _setPartnerId: function(id) {
+                if (isNaN(+id)) { throw 'Incorrect id argument!'; }
+                _user.partnerId = +id;
+            },
+
+            getUserData: function() {
+                return _.cloneDeep(_user);
+            },
+
+            getPartnerId: function() {
+                if (!_user) { throw 'User data is missing'; }
+                return _user.partnerId;
+            },
+
+            isTpmUser: function() {
+                if (!_groups) { throw 'User data is missing or incorrect'; }
+                return !!~_groups.indexOf('Third Party Monitor');
+            }
+
+        };
+    })()
+
+
+</script>

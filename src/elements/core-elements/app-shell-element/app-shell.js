@@ -4,7 +4,7 @@ Polymer({
 
     behaviors: [
         etoolsBehaviors.LoadingBehavior,
-        TPMBehaviors.StaticDataController,
+        TPMBehaviors.UserController,
         etoolsAppConfig.globals
     ],
 
@@ -35,12 +35,6 @@ Polymer({
         globalLoadingQueue: {
             type: Array,
             value: function() {return [];}
-        },
-        user: {
-            type: Object,
-            value: function() {
-                return {};
-            }
         }
     },
 
@@ -52,17 +46,21 @@ Polymer({
         'global-loading': '_handleGlobalLoading',
         'toast': 'queueToast',
         '404': '_pageNotFound',
-        'static-data-loaded': '_initialDataLoaded'
+        'static-data-loaded': '_initialDataLoaded',
+        'user-profile-loaded': '_updateUserData'
     },
+
     ready: function() {
         this.baseUrl = this.basePath;
         this.fire('global-loading', {message: 'Loading...', active: true, type: 'initialisation'});
     },
+
     attached: function() {
         if (this.initLoadingComplete && this.route.path === '/tpm/') {
             this._configPath();
         }
     },
+
     queueToast: function(e, detail) {
         if (!this._toast) {
             this._toast = document.createElement('paper-toast');
@@ -77,16 +75,19 @@ Polymer({
             this.push('_toastQueue', detail);
         }
     },
+
     dequeueToast: function() {
         this.shift('_toastQueue');
         if (this._toastQueue.length) {
             this._toast.show(this._toastQueue[0]);
         }
     },
+
     _routePageChanged: function() {
         if (!this.initLoadingComplete || !this.routeData.page) { return; }
         this.page = this.routeData.page || 'partners';
     },
+
     _pageChanged: function(page) {
         if (Polymer.isInstance(this.$[`${page}`])) { return; }
         this.fire('global-loading', {message: 'Loading...', active: true, type: 'initialisation'});
@@ -96,7 +97,7 @@ Polymer({
             resolvedPageUrl = 'elements/pages/not-found-page-view/not-found-page-view.html';
         } else {
             resolvedPageUrl = `elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`;
-            if (page === 'partners' && !~this.userGroups.indexOf('Third Party Monitor')) {
+            if (page === 'partners' && !this.isTpmUser()) {
                 let url = 'elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html';
                 this.importHref(url, null, null, true);
             }
@@ -107,6 +108,7 @@ Polymer({
             if (this.route.path === '/tpm/') { this._configPath(); }
         }, this._pageNotFound, true);
     },
+
     _pageNotFound: function(event) {
         this.page = 'not-found';
         let message = event && event.detail && event.detail.message ?
@@ -115,13 +117,14 @@ Polymer({
 
         this.fire('toast', {text: message});
     },
+
     _initialDataLoaded: function(e) {
         if (e && e.type === 'static-data-loaded') { this.staticDataLoaded = true; }
         if (this.routeData && this.staticDataLoaded) {
-            this.userGroups = this.getData('userGroups');
             this.page = this.routeData.page || this._configPath();
         }
     },
+
     _handleGlobalLoading: function(event) {
         if (!event.detail || !event.detail.type) {
             console.error('Bad details object', JSON.stringify(event.detail));
@@ -142,10 +145,15 @@ Polymer({
             }
         }
     },
+
     _configPath: function() {
-        let path = ~this.userGroups.indexOf('Third Party Monitor') ? `partners/${this.user.partnerId}/details` : 'partners/list';
+        let path = this.isTpmUser() ? `partners/${this.getPartnerId()}/details` : 'partners/list';
         this.set('route.path', `${this.basePath}${path}`);
         return 'partners';
+    },
+
+    _updateUserData: function() {
+        this.user = this.getUserData();
     }
 
 });

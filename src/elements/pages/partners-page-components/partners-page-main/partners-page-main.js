@@ -4,7 +4,7 @@ Polymer({
     is: 'partners-page-main',
     behaviors: [
         TPMBehaviors.QueryParamsController,
-        TPMBehaviors.StaticDataController,
+        TPMBehaviors.UserController,
         TPMBehaviors.PermissionController
     ],
     properties: {
@@ -22,16 +22,9 @@ Polymer({
         '_routeConfig(routeData.view)'
     ],
 
-    checkUser: function(user) {
-        if (!this.userGroups) {
-            this.userGroups = this.getData('userGroups');
-        }
-        return !!~this.userGroups.indexOf(user);
-    },
-
     _routeConfig: function(view) {
         if (!this.route || !~this.route.prefix.indexOf('/partners')) { return; }
-        if (view === 'list' && !this.checkUser('Third Party Monitor')) {
+        if (view === 'list' && !this.isTpmUser()) {
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
             this.view = 'list';

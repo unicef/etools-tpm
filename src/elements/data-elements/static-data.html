@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax, static-data-behavior, permission-controller, user-data]-->
+<!--import [polymer, etools-ajax, static-data-behavior, user-controller, user-data]-->
 
 <dom-module id="static-data">
 
@@ -33,31 +33,22 @@
                 is: 'static-data',
                 behaviors: [
                     etoolsAppConfig.globals,
-                    TPMBehaviors.StaticDataController,
-                    TPMBehaviors.PermissionController
+                    TPMBehaviors.UserController
                 ],
 
-                properties: {
-                    user: {
-                        type: Object,
-                        notify: true
-                    }
-                },
                 listeners: {
-                    'user-profile-loaded': 'loadStaticData',
+                    'user-profile-loaded': 'loadStaticData'
                 },
 
                 loadStaticData: function () {
-                    let groups = this.getData('userGroups');
-                    this.tpmUser = !!~groups.indexOf('Third Party Monitor');
-                    if (this.tpmUser) {
+                    if (this.isTpmUser()) {
                         this.partnersEndpoint = this.getEndpoint('partnerOrganisations');
                     }
                     this._allDataLoaded()
                 },
 
                 _allDataLoaded: function() {
-                    if ((dataLoaded.partners || !this.tpmUser)) {
+                    if ((dataLoaded.partners || !this.isTpmUser())) {
                         this.fire('static-data-loaded');
                     }
                 },
@@ -65,7 +56,7 @@
                 _partnersLoaded: function(data, detail) {
                     //TODO: !format of response detail may be changed later!
                     let partnerId = detail && detail[0] && detail[0].id;
-                    this.user.partnerId = partnerId;
+                    this._setPartnerId(partnerId);
                     if(!partnerId) { console.error('Can not get TPM Partner id!'); }
                     dataLoaded.partners = true;
                     this._allDataLoaded();
