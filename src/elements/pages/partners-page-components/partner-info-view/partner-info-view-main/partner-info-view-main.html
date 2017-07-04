@@ -22,34 +22,36 @@
                 <paper-tab name="attachments" class="attachments-tab"><span class="tab-content">Attachments</span></paper-tab>
             </paper-tabs>
         </div>
-        <div class="view-container">
+        <div class$="view-container [[_setContainerClass(permissionBase)]]">
             <div id="pageContent">
                 <iron-pages id="info-tabs"
                             selected="{{routeData.tab}}"
                             attr-for-selected="name">
 
                     <div name="details">
-                        <partner-details-tab id="partner-details" partner="[[partner]]" edit-mode="[[_allowEdit()]]"></partner-details-tab>
+                        <partner-details-tab id="partner-details"
+                                             base-permission-path="{{permissionBase}}"
+                                             partner="[[partner]]"></partner-details-tab>
 
                         <etools-content-panel panel-title="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
-                            <partner-staff-members-tab id="staff-members"  data-items="{{partner.staff_members}}" edit-mode="[[_allowEdit()]]"></partner-staff-members-tab>
+                            <partner-staff-members-tab id="staff-members"
+                                                       base-permission-path="{{permissionBase}}"
+                                                       data-items="{{partner.staff_members}}"></partner-staff-members-tab>
                         </etools-content-panel>
                     </div>
 
                     <div name="attachments">
                         <file-attachments-tab title="Files"
-                                              allow-download="[[_allowDownload()]]"
                                               allow-delete
                                               file-types="[[fileTypes]]"
-                                              files="{{partner.attachments}}"
-                                              readonly="[[!_allowEdit()]]"></file-attachments-tab>
+                                              files="{{partner.attachments}}"></file-attachments-tab>
                     </div>
 
                 </iron-pages>
 
             </div>
 
-           <template is="dom-if" if="[[_allowEdit()]]" restamp>
+           <template is="dom-if" if="[[!_hideActions(permissionBase)]]" restamp>
                <div id="sidebar">
                    <partner-actions-tab partner-saved="{{partnerSaved}}"
                                         partner-saving-error="{{partnerSavingError}}" loading="{{updatingInProcess}}"></partner-actions-tab>

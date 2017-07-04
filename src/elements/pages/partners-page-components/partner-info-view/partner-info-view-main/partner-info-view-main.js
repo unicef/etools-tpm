@@ -2,7 +2,9 @@
 
 Polymer({
     is: 'partner-info-view-main',
+
     behaviors: [TPMBehaviors.PermissionController],
+
     properties: {
         fileTypes: {
             type: Array,
@@ -25,16 +27,32 @@ Polymer({
             value: false
         }
     },
+
+    observers: ['_setPermissionBase(partner.id)'],
+
     listeners: {
         'save-partner': '_savePartner',
         'partner-updated': '_partnerSaved'
     },
-    _allowEdit: function() {
-        return true;
+
+    _setPermissionBase: function(id) {
+        id = +id;
+        if (!id && id !== 0) {
+            this.permissionBase = null;
+        } else {
+            this.permissionBase = `partner_${id}`;
+        }
     },
-    _allowDownload: function() {
-        return true;
+
+    _hideActions: function(permissionBase) {
+        if (!permissionBase) { return true; }
+        return this.noActionsAllowed(permissionBase);
     },
+
+    _setContainerClass: function(permissionBase) {
+        return this._hideActions(permissionBase) ? 'without-sidebar' : '';
+    },
+
     _savePartner: function() {
         if (!this.$['partner-details'].validate() || !this.$['staff-members'].validate()) {
             this.set('routeData.tab', 'details');
@@ -42,22 +60,11 @@ Polymer({
             return;
         }
         this.updatingInProcess = true;
-        if (this.messageTimeout) {
-            clearTimeout(this.messageTimeout);
-            this.partnerSaved = false;
-            this.partnerSavingError = false;
-        }
+
         this.newPartnerDetails = _.cloneDeep(this.partner);
-
     },
-    _partnerSaved: function(event) {
-        this.partnerSaved = event.detail.success;
-        this.partnerSavingError = !event.detail.success;
-        this.updatingInProcess = false;
 
-        this.messageTimeout = setTimeout(() => {
-            this.partnerSaved = false;
-            this.partnerSavingError = false;
-        }, 8000);
+    _partnerSaved: function() {
+        this.updatingInProcess = false;
     }
 });

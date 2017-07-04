@@ -31,8 +31,6 @@
             assert.isDefined(myEl.partner);
             assert.isDefined(myEl.partnerSaved);
             assert.isDefined(myEl.partnerSavingError);
-            assert.isDefined(myEl._allowEdit);
-            assert.isDefined(myEl._allowDownload);
             assert.isDefined(myEl._savePartner);
             assert.isDefined(myEl._partnerSaved);
         });
@@ -83,13 +81,6 @@
             var spy = sinon.spy(myEl, "_partnerSaved");
             myEl.fire('partner-updated');
             assert.isTrue(spy.calledOnce);
-        });
-
-        it('set properties after partner updating', function () {
-            myEl.fire('partner-updated', {success: true});
-            assert.isTrue(myEl.partnerSaved);
-            assert.isFalse(myEl.partnerSavingError);
-            assert.isFalse(myEl.updatingInProcess);
         });
 
     });

@@ -115,7 +115,16 @@
                 collection = _permissionCollection[collection];
 
                 return !!(collection && collection.allowed_actions && ~collection.allowed_actions.indexOf(action));
+            },
+
+            noActionsAllowed: function(collection) {
+                if (!collection) { return true; }
+                if (typeof collection !== 'string') { throw new Error('collection argument must be a string'); }
+                collection = _permissionCollection[collection];
+
+                return !(collection && collection.allowed_actions && collection.allowed_actions.length);
             }
+
         };
     })()
 
