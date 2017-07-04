@@ -22,7 +22,7 @@ ADD . /code/
 WORKDIR /code
 RUN npm install && bower install --allow-root --config.interactive=false -s
 RUN npm rebuild node-sass
-RUN node_modules/.bin/gulp build
+RUN node_modules/.bin/gulp prodBuild
 
 # Run test
 CMD ./test.sh

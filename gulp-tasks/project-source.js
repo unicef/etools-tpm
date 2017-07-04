@@ -8,7 +8,6 @@ const gulpif = require('gulp-if');
 const uglify = require('gulp-uglify');
 const htmlmin = require('gulp-htmlmin');
 const cssSlam = require('css-slam').gulp;
-const images = require('./images.js');
 const project = require('./project.js');
 const path = require('path');
 const combine = require('stream-combiner2').obj;
@@ -43,7 +42,6 @@ module.exports = function() {
             compileHtmlTags('script', function (tag, data) { return data.pipe(babel({presets: ["es2015-without-strict"]})).pipe(minifyJs()); }),
             minifyHtml()
         )))
-        .pipe(gulpif('**/*.{png,gif,jpg,svg}', images.minify()))
 
         .pipe(through2(function(file, enc, callback) {
             let addToBase = '';
