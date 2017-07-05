@@ -14,29 +14,29 @@
             <div class="row-h group">
                 <div class="input-container" title="[[_getTitleValue(partner.name)]]">
                     <!-- Organization name -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'name')}}"
+                    <paper-input label="{{getLabel('name', basePermissionPath)}}"
                                  value="{{partner.name}}"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'name', 'readonly')}}"
+                                 placeholder="{{getPlaceholderText('name', basePermissionPath, 'readonly')}}"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
                 <div class="input-container" title="[[_getTitleValue(partner.vendor_number)]]">
                     <!-- Vendor number -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'vendor_number')}}"
+                    <paper-input label="{{getLabel('vendor_number', basePermissionPath)}}"
                                  value="{{partner.vendor_number}}"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'vendor_number', 'readonly')}}"
+                                 placeholder="{{getPlaceholderText('vendor_number', basePermissionPath, 'readonly')}}"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
 
                 <div class="input-container" title="{{_getTitleValue(partner.street_address)}}">
                     <!-- Address -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'street_address')}}"
+                    <paper-input label="{{getLabel('street_address', basePermissionPath)}}"
                                  value="{{partner.street_address}}"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'street_address', 'readonly')}}"
+                                 placeholder="{{getPlaceholderText('street_address', basePermissionPath, 'readonly')}}"
                                  class="without-border"
                                  disabled readonly>
-                            <iron-icon hidden="{{!_showPrefix(basePermissionPath, 'street_address', partner.street_address, 'readonly')}}"
+                            <iron-icon hidden="{{!_showPrefix('street_address', basePermissionPath, partner.street_address, 'readonly')}}"
                                        prefix icon="communication:location-on"></iron-icon>
                     </paper-input>
                 </div>
@@ -47,27 +47,27 @@
 
                 <div class="input-container" title="[[_getTitleValue(partner.postal_code)]]">
                     <!-- Partner Postal Code -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'postal_code')}}"
+                    <paper-input label="{{getLabel('postal_code', basePermissionPath)}}"
                                  value="{{partner.postal_code}}"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'postal_code', 'readonly')}}"
+                                 placeholder="{{getPlaceholderText('postal_code', basePermissionPath, 'readonly')}}"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
 
                 <div class="input-container" title="[[_getTitleValue(partner.city)]]">
                     <!-- Partner City -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'city')}}"
+                    <paper-input label="{{getLabel('city', basePermissionPath)}}"
                                  value="{{partner.city}}"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'city', 'readonly')}}"
+                                 placeholder="{{getPlaceholderText('city', basePermissionPath, 'readonly')}}"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
 
                 <div class="input-container" title="[[_getTitleValue(partner.country)]]">
                     <!-- Partner Country -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'country')}}"
+                    <paper-input label="{{getLabel('country', basePermissionPath)}}"
                                  value="{{partner.country}}"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'country', 'readonly')}}"
+                                 placeholder="{{getPlaceholderText('country', basePermissionPath, 'readonly')}}"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
@@ -79,9 +79,9 @@
 
                 <div class="input-container" title="{{_getTitleValue(partner.email)}}">
                     <!-- Email address -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'email')}}"
+                    <paper-input label="{{getLabel('email', basePermissionPath)}}"
                                  value="{{partner.email}}"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'email')}}"
+                                 placeholder="{{getPlaceholderText('email', basePermissionPath)}}"
                                  class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
                                  id="emailInput"
                                  invalid="{{errors.email}}"
@@ -89,17 +89,17 @@
                                  on-focus="_resetFieldError"
                                  required$="[[_setRequired('email', basePermissionPath)]]"
                                  disabled$="[[isReadOnly('email', basePermissionPath)]]"
-                                 maxlength="{{getMaxLength(basePermissionPath, 'email')}}">
-                        <iron-icon  hidden="{{!_showPrefix(basePermissionPath, 'email', partner.email)}}"
+                                 maxlength="{{getMaxLength('email', basePermissionPath)}}">
+                        <iron-icon  hidden="{{!_showPrefix('email', basePermissionPath, partner.email)}}"
                                     prefix icon="communication:email"></iron-icon>
                     </paper-input>
                 </div>
 
                 <div class="input-container" title="{{_getTitleValue(partner.phone_number)}}">
                     <!-- Telephone number -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'phone_number')}}"
+                    <paper-input label="{{getLabel('phone_number', basePermissionPath)}}"
                                  value="{{partner.phone_number}}"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'phone_number')}}"
+                                 placeholder="{{getPlaceholderText('phone_number', basePermissionPath)}}"
                                  class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
                                  invalid="{{errors.phone_number}}"
                                  error-message="{{errors.phone_number}}"
@@ -107,8 +107,8 @@
                                  required$="[[_setRequired('phone_number', basePermissionPath)]]"
                                  disabled$="[[isReadOnly('phone_number', basePermissionPath)]]"
                                  allowed-pattern="[\d\s-+()]"
-                                 maxlength="{{getMaxLength(basePermissionPath, 'phone_number')}}">
-                        <iron-icon  hidden="{{!_showPrefix(basePermissionPath, 'phone_number', partner.phone_number)}}"
+                                 maxlength="{{getMaxLength('phone_number', basePermissionPath)}}">
+                        <iron-icon  hidden="{{!_showPrefix('phone_number', basePermissionPath, partner.phone_number)}}"
                                     prefix icon="communication:phone"></iron-icon>
                     </paper-input>
                 </div>
@@ -116,9 +116,9 @@
                 <template is="dom-if" if="{{!isTpmUser()}}">
                     <div class="input-container" title="[[_setStatus(partner.status)]]">
                         <!-- TPM Status -->
-                        <paper-input label="{{getLabel(basePermissionPath, 'status')}}"
+                        <paper-input label="{{getLabel('status', basePermissionPath)}}"
                                      value="[[_setStatus(partner.status)]]"
-                                     placeholder="{{getPlaceholderText(basePermissionPath, 'status', 'readonly')}}"
+                                     placeholder="{{getPlaceholderText('status', basePermissionPath, 'readonly')}}"
                                      class="without-border"
                                      disabled readonly></paper-input>
                     </div>

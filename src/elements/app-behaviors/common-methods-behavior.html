@@ -66,24 +66,24 @@
             }
         },
 
-        getLabel: function(base, path) {
+        getLabel: function(path, base) {
             if (!base) { return ''; }
             return this.getFieldAttribute(`${base}.${path}`, 'label');
         },
 
-        getMaxLength: function(base, path) {
+        getMaxLength: function(path, base) {
             if (!base) { return ''; }
             return this.getFieldAttribute(`${base}.${path}`, 'max_length');
         },
 
-        getPlaceholderText: function(base, path, readonly) {
+        getPlaceholderText: function(path, base, readonly) {
             if (this.isReadonly(`${base}.${path}`) || readonly) { return 'Empty Field' }
 
-            let label = this.getLabel(base, path);
+            let label = this.getLabel(path, base);
             return `Enter ${label}`;
         },
 
-        _showPrefix: function(base, path, value, readonly) {
+        _showPrefix: function(path, base, value, readonly) {
             return (!this.isReadonly(`${base}.${path}`) && !readonly) || !!value;
         },
 

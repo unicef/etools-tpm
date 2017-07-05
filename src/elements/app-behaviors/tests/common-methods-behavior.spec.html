@@ -226,16 +226,16 @@
 
         describe('method getLabel', function() {
             it('returns empty string if no base argument provided', function() {
-                assert.equal(behaviorObj.getLabel(), '');
-                assert.equal(behaviorObj.getLabel(null), '');
-                assert.equal(behaviorObj.getLabel(false), '');
-                assert.equal(behaviorObj.getLabel(''), '');
+                assert.equal(behaviorObj.getLabel('field'), '');
+                assert.equal(behaviorObj.getLabel('field', null), '');
+                assert.equal(behaviorObj.getLabel('field', false), '');
+                assert.equal(behaviorObj.getLabel('field', ''), '');
             });
 
             it('calls getFieldAttribute method with combined path and label arguments and returns it result', function() {
                 behaviorObj.getFieldAttribute = sinon.stub().returns('test');
 
-                var label = behaviorObj.getLabel('testLabel', 'field');
+                var label = behaviorObj.getLabel('field', 'testLabel');
 
                 assert.equal(label, 'test');
                 assert.isTrue(behaviorObj.getFieldAttribute.calledWith('testLabel.field', 'label'));
@@ -246,7 +246,7 @@
             it('calls isReadonly method with combined path arguments', function() {
                 behaviorObj.isReadonly = sinon.spy();
 
-                behaviorObj.getPlaceholderText('test', 'field');
+                behaviorObj.getPlaceholderText('field', 'test');
                 assert.isTrue(behaviorObj.isReadonly.calledWith('test.field'));
 
                 behaviorObj.getPlaceholderText();
@@ -257,13 +257,13 @@
                 behaviorObj.isReadonly = sinon.stub().returns(true);
 
                 assert.equal(behaviorObj.getPlaceholderText(), 'Empty Field');
-                assert.equal(behaviorObj.getPlaceholderText('test', 'field'), 'Empty Field');
+                assert.equal(behaviorObj.getPlaceholderText('field', 'test'), 'Empty Field');
 
                 behaviorObj.isReadonly.returns(false);
 
                 assert.notEqual(behaviorObj.getPlaceholderText(), 'Empty Field');
-                assert.notEqual(behaviorObj.getPlaceholderText('test', 'field'), 'Empty Field');
-                assert.equal(behaviorObj.getPlaceholderText('test', 'field', true), 'Empty Field');
+                assert.notEqual(behaviorObj.getPlaceholderText('field', 'test'), 'Empty Field');
+                assert.equal(behaviorObj.getPlaceholderText('field', 'test', true), 'Empty Field');
             });
 
             it('calls getLabel method and returns it value with Enter prefix', function() {
@@ -275,16 +275,16 @@
 
         describe('method getMaxLength', function() {
             it('returns empty string if no base argument provided', function() {
-                assert.equal(behaviorObj.getMaxLength(), '');
-                assert.equal(behaviorObj.getMaxLength(null), '');
-                assert.equal(behaviorObj.getMaxLength(false), '');
-                assert.equal(behaviorObj.getMaxLength(''), '');
+                assert.equal(behaviorObj.getMaxLength('field'), '');
+                assert.equal(behaviorObj.getMaxLength('field', null), '');
+                assert.equal(behaviorObj.getMaxLength('field', false), '');
+                assert.equal(behaviorObj.getMaxLength('field', ''), '');
             });
 
             it('calls getFieldAttribute method with combined path and \'max_length\' arguments and returns it result', function() {
                 behaviorObj.getFieldAttribute = sinon.stub().returns(666);
 
-                var label = behaviorObj.getMaxLength('testLabel', 'field');
+                var label = behaviorObj.getMaxLength('field', 'testLabel');
 
                 assert.equal(label, 666);
                 assert.isTrue(behaviorObj.getFieldAttribute.calledWith('testLabel.field', 'max_length'));
@@ -295,7 +295,7 @@
             it('calls isReadonly method with combined path arguments', function() {
                 behaviorObj.isReadonly = sinon.spy();
 
-                behaviorObj._showPrefix('test', 'field');
+                behaviorObj._showPrefix('field', 'test');
                 assert.isTrue(behaviorObj.isReadonly.calledWith('test.field'));
 
                 behaviorObj._showPrefix();
@@ -307,17 +307,17 @@
                 var value = '',
                         readonly = false;
 
-                assert.isFalse(behaviorObj._showPrefix('test', 'field', value, readonly));
+                assert.isFalse(behaviorObj._showPrefix('field', 'test', value, readonly));
 
                 behaviorObj.isReadonly.returns(false);
                 readonly = true;
-                assert.isFalse(behaviorObj._showPrefix('test', 'field', value, readonly));
+                assert.isFalse(behaviorObj._showPrefix('field', 'test', value, readonly));
 
                 readonly = false;
-                assert.isTrue(behaviorObj._showPrefix('test', 'field', value, readonly));
+                assert.isTrue(behaviorObj._showPrefix('field', 'test', value, readonly));
 
                 value = 'test';
-                assert.isTrue(behaviorObj._showPrefix('test', 'field', value, readonly));
+                assert.isTrue(behaviorObj._showPrefix('field', 'test', value, readonly));
             });
 
         });
