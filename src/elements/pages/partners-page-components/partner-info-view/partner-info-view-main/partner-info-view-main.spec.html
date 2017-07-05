@@ -27,14 +27,6 @@
             myEl.set('routeData.tab', 'details');
         });
 
-        it('has several properties and methods', function () {
-            assert.isDefined(myEl.partner);
-            assert.isDefined(myEl.partnerSaved);
-            assert.isDefined(myEl.partnerSavingError);
-            assert.isDefined(myEl._savePartner);
-            assert.isDefined(myEl._partnerSaved);
-        });
-
         it('change tabs', function () {
             var attachmentsTab = Polymer.dom(myEl.root).querySelector('.attachments-tab'),
                     detailsTab = Polymer.dom(myEl.root).querySelector('.details-tab');

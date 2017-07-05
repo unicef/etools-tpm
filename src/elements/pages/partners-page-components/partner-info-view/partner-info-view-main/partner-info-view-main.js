@@ -19,14 +19,6 @@ Polymer({
         partner: {
             type: Object,
             notify: true
-        },
-        partnerSaved: {
-            type: Boolean,
-            value: false
-        },
-        partnerSavingError: {
-            type: Boolean,
-            value: false
         }
     },
 

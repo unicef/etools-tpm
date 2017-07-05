@@ -8,13 +8,6 @@ Polymer({
         TPMBehaviors.UserController
     ],
 
-    properties: {
-        editMode: {
-            type: Boolean,
-            observer: 'updateStyles'
-        }
-    },
-
     observers: [
         'updateStyles(basePermissionPath)',
         '_errorHandler(errorObject)'
