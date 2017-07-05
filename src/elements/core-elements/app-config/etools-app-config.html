@@ -11,7 +11,6 @@ App global configuration
     etoolsCustomDexieDb.version(1).stores({
         collectionsList: '&name, expire',
         partners: 'id',
-        trips: 'id, name, vendor_number, location, focal_point, status'
     });
 
     var etoolsAppConfig = {
@@ -39,9 +38,7 @@ App global configuration
                 url: '/api/tpm/partners/'
             },
             visitsList: {
-                url: '/tpm/data/trips-list.json',
-                exp: 6 * 60 * 60 * 1000, // 6h
-                cachingKey: 'trips'
+                url: '/api/tpm/visits/'
             },
             partnerOrganisations: {
                 url: '/api/v2/partners/',
@@ -71,9 +68,7 @@ App global configuration
                 url: '/data/partners-list.json'
             },
             visitsList: {
-                url: '/data/trips-list.json',
-                exp: 6 * 60 * 60 * 1000, // 6h
-                cachingKey: 'trips'
+                url: '/data/trips-list.json'
             }
         },
 
@@ -104,7 +99,6 @@ App global configuration
 
                 etoolsCustomDexieDb.collectionsList.clear();
                 etoolsCustomDexieDb.partners.clear();
-                etoolsCustomDexieDb.trips.clear();
             },
 
             getAbsolutePath: function(path) {

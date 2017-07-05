@@ -2,7 +2,9 @@
 
 Polymer({
     is: 'trips-page-main',
-    behaviors: [TPMBehaviors.QueryParamsController],
+    behaviors: [
+        TPMBehaviors.QueryParamsController
+    ],
     properties: {
         queryParams: {
             type: Object,
@@ -38,7 +40,7 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
+        if (!queries.ordering) { queriesUpdates.ordering = 'reference_number'; }
 
         if (!this.lastParams) {
             this.lastParams = _.clone(queries);
@@ -63,8 +65,8 @@ Polymer({
         }
     },
     _setTripsListQueries: function(queries) {
-        if (!_.isEmpty(queries) && (!this.lastListDataRequest || !_.isEqual(this.lastListDataRequest, queries))) {
-            this.lastListDataRequest = queries;
+        if (!_.isEmpty(queries) && (!this.visitsListQueries || !_.isEqual(this.visitsListQueries, queries))) {
+            this.visitsListQueries = queries;
         }
     }
 });

@@ -1,12 +1,12 @@
 <!--import [polymer, etools-ajax, query-params-controller, etools-app-config]-->
 
-<dom-module id="partners-list-data">
+<dom-module id="visits-list-data">
 
     <template>
 
         <etools-ajax
                 endpoint="[[endpoint]]"
-                on-success="_partnersLoaded"
+                on-success="_visitsLoaded"
                 on-fail="_responseError">
         </etools-ajax>
 
@@ -16,14 +16,14 @@
 
         Polymer({
 
-            is: 'partners-list-data',
+            is: 'visits-list-data',
             behaviors: [
                 etoolsAppConfig.globals,
                 TPMBehaviors.QueryParamsController
             ],
 
             properties: {
-                partnersList: {
+                visitsList: {
                     type: Array,
                     readOnly: true,
                     notify: true
@@ -37,20 +37,20 @@
             },
 
             observers: [
-                'getPartnersList(requestQueries.*)'
+                'getVisitsList(requestQueries.*)'
             ],
 
-            _partnersLoaded: function(e, detail) {
-                if (!detail) {
+            _visitsLoaded: function(e, detail) {
+                if (!detail || !detail.results) {
                     this._responseError(e, detail);
                     return;
                 }
 
-                this._setPartnersList(detail);
-                this.fire('global-loading', {type: 'partners-list'});
+                this._setVisitsList(detail.results);
+                this.fire('global-loading', {type: 'visits-list'});
             },
 
-            getPartnersList: function() {
+            getVisitsList: function() {
                 let newOrder = this.requestQueries && this.requestQueries.ordering;
                 let reloadRequired = !this.lastOrder || (newOrder !== this.lastOrder);
 
@@ -61,9 +61,9 @@
                     return;
                 }
 
-                this.fire('global-loading', {type: 'partners-list', active: true, message: 'Loading of partners list...'});
+                this.fire('global-loading', {type: 'visits-list', active: true, message: 'Loading of visits list...'});
 
-                let endpoint = this.getEndpoint('partnersList');
+                let endpoint = this.getEndpoint('visitsList');
                 endpoint.url += this.getQueriesString();
                 this.endpoint = endpoint;
             },
@@ -73,7 +73,7 @@
                     detail.request.detail.request && detail.request.detail.request.xhr;
                 let {status, response} = responseData || {};
 
-                this.fire('global-loading', {type: 'partners-list'});
+                this.fire('global-loading', {type: 'visits-list'});
             },
         });
 
