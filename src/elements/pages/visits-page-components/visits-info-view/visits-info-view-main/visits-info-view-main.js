@@ -1,7 +1,7 @@
 'use strict';
 
 Polymer({
-    is: 'trips-info-view-main',
+    is: 'visits-info-view-main',
     properties: {
         fileTypes: {
             type: Array,

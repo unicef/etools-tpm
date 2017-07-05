@@ -124,7 +124,7 @@
             {text: 'travel authorization'.toUpperCase(), style: 'bold', width: '*'},
             {alignment: 'right',
             columns: [
-                {text: 'Trip No. ', style: 'bold', width: 'auto'},
+                {text: 'Visit No. ', style: 'bold', width: 'auto'},
                 {text: data.baseDetails.reference_number}
               ]
             }
@@ -275,7 +275,7 @@
 
         var expensesBlock = {
           stack: [
-              {text: 'Breakdown of expenses costs for the trip', alignment: 'center', style: 'bold'},
+              {text: 'Breakdown of expenses costs for the visit', alignment: 'center', style: 'bold'},
               blackLine(5),
               {layout: 'noBorders',
                 table: {
@@ -297,7 +297,7 @@
               }},
               blackLine(5),
               {columns: [
-                   {text: 'Total Expense cost for the trip', style: 'bold', alignment: 'left'},
+                   {text: 'Total Expense cost for the visit', style: 'bold', alignment: 'left'},
                    {text: printFixed(exp), alignment: 'right'}
                 ]}
           ]
@@ -305,7 +305,7 @@
 
         var costAssignmentsBlock = {
           stack: [
-              {text: 'Trip cost assignment', alignment: 'center', style: 'bold'},
+              {text: 'Visit cost assignment', alignment: 'center', style: 'bold'},
               blackLine(5),
               {layout: 'noBorders',
                 table: {

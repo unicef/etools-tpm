@@ -1,9 +1,9 @@
 <!--import [polymer, iron-pages, app-route, etools-app-config]-->
 
 <!--import [page-layout-styles, shared-styles,  module-styles, visit-info-data,
-            visits-list-view, trips-info-view-main, query-params-controller]-->
+            visits-list-view, visits-info-view-main, query-params-controller]-->
 
-<dom-module id="trips-page-main">
+<dom-module id="visits-page-main">
     <template>
         <style include="page-layout-styles shared-styles module-styles"></style>
 
@@ -32,13 +32,13 @@
                     request-queries="[[visitsListQueries]]">
             </visits-list-view>
 
-            <trips-info-view-main
+            <visits-info-view-main
                     name="visit"
                     route="{{subroute}}">
-            </trips-info-view-main>
+            </visits-info-view-main>
 
         </iron-pages>
     </template>
 
-    <!-- inject scripts './trips-page-main.js'-->
+    <!-- inject scripts './visits-page-main.js'-->
 </dom-module>

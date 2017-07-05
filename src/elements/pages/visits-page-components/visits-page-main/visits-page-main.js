@@ -1,7 +1,7 @@
 'use strict';
 
 Polymer({
-    is: 'trips-page-main',
+    is: 'visits-page-main',
     behaviors: [
         TPMBehaviors.QueryParamsController
     ],
@@ -21,11 +21,11 @@ Polymer({
     ],
 
     _routeConfig: function(route) {
-        if (this.route && !~this.route.prefix.indexOf('/trips')) { return; }
+        if (this.route && !~this.route.prefix.indexOf('/visits')) { return; }
         let view = this.routeData ? this.routeData.view : route.path.split('/')[1];
         if (view === 'list') {
             let queries = this._configListParams();
-            this._setTripsListQueries(queries);
+            this._setVisitsListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
             this.debounce('clearSearchQueries', () => {
@@ -54,17 +54,17 @@ Polymer({
         return this.parseQueries();
     },
     _queryParamsChanged: function() {
-        if (!~this.route.prefix.indexOf('/trips') || !this.routeData) { return; }
+        if (!~this.route.prefix.indexOf('/visits') || !this.routeData) { return; }
         if (this.routeData.view === 'list') {
             let queries = this._configListParams();
-            this._setTripsListQueries(queries);
+            this._setVisitsListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
             this.debounce('clearSearchQueries', () => {
                 this.clearQueries();
             }, 100);
         }
     },
-    _setTripsListQueries: function(queries) {
+    _setVisitsListQueries: function(queries) {
         if (!_.isEmpty(queries) && (!this.visitsListQueries || !_.isEqual(this.visitsListQueries, queries))) {
             this.visitsListQueries = queries;
         }
