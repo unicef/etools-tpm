@@ -25,8 +25,7 @@ Polymer({
     observers: ['_setPermissionBase(partner.id)'],
 
     listeners: {
-        'save-partner': '_savePartner',
-        'partner-updated': '_partnerSaved'
+        'action-activated': '_processAction',
     },
 
     _setPermissionBase: function(id) {
@@ -47,6 +46,24 @@ Polymer({
         return this._hideActions(permissionBase) ? 'without-sidebar' : '';
     },
 
+    _processAction: function(event, details) {
+        if (!details || !details.type) { throw 'Event type is not provided!'; }
+        switch (details.type) {
+            case 'save':
+                this._savePartner();
+                break;
+            case 'activate':
+                console.log('Event \'activate\' fired');
+                break;
+            case 'cancel':
+                console.log('Event \'cancel\' fired');
+                break;
+            default:
+                console.error(`Unknown event type: ${details.type}`);
+        }
+
+    },
+
     _savePartner: function() {
         if (!this.$['partner-details'].validate() || !this.$['staff-members'].validate()) {
             this.set('routeData.tab', 'details');
@@ -56,9 +73,6 @@ Polymer({
         this.updatingInProcess = true;
 
         this.newPartnerDetails = _.cloneDeep(this.partner);
-    },
-
-    _partnerSaved: function() {
-        this.updatingInProcess = false;
     }
+
 });

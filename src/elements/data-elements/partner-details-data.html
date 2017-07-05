@@ -51,7 +51,7 @@
             _handleOptionsResponse: function(data) {
                 let actions = data.detail && data.detail.actions && data.detail.actions;
                 if (actions) {
-                    data.detail.actions.allowed_actions = !_.isEmpty(actions.PUT) ? ['save_partner'].concat(actions.allowed_FSM_transitions) : actions.allowed_FSM_transitions;
+                    data.detail.actions.allowed_actions = !_.isEmpty(actions.PUT) ? ['save'].concat(actions.allowed_FSM_transitions) : actions.allowed_FSM_transitions;
                     this._addToCollection(`partner_${this.partnerId}`, data.detail.actions);
                 } else {
                     console.error('Can not load permissions for partner');

@@ -81,7 +81,7 @@
                     }
 
                     if (this.isValidCollection(actions.POST)) {
-                        actions.allowed_actions = ['addVisit'].concat(actions.allowed_FSM_transitions || []);
+                        actions.allowed_actions = ['save'].concat(actions.allowed_FSM_transitions || []);
                     }
 
                     this._addToCollection('new_visit', actions);
@@ -98,7 +98,7 @@
                     }
 
                     if (this.isValidCollection(actions.POST)) {
-                        actions.allowed_actions = ['addPartner'].concat(actions.allowed_FSM_transitions || []);
+                        actions.allowed_actions = ['save'].concat(actions.allowed_FSM_transitions || []);
                     }
 
                     this._addToCollection('new_partner', actions);

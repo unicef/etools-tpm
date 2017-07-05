@@ -47,3 +47,9 @@
 
     partner-details-tab { margin-bottom: 20px; }
 }
+
+etools-content-panel.actions-tab {
+    --ecp-content: #{'{
+            padding: 26px 20px 30px;
+        }'};
+}

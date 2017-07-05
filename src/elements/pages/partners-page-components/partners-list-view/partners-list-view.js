@@ -66,7 +66,7 @@
         },
 
         _showAddButton: function() {
-            return this.actionAllowed('new_partner', 'addPartner');
+            return this.actionAllowed('new_partner', 'save');
         },
     });
 })();

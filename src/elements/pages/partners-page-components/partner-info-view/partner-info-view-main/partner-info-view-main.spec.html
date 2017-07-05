@@ -69,12 +69,6 @@
             }, false);
         });
 
-        it('call method on \'partner-updated\' event', function () {
-            var spy = sinon.spy(myEl, "_partnerSaved");
-            myEl.fire('partner-updated');
-            assert.isTrue(spy.calledOnce);
-        });
-
     });
 </script>
 
