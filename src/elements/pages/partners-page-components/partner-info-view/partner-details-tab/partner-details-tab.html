@@ -1,5 +1,5 @@
 <!--import [polymer, etools-content-panel, paper-input, iron-icons/communication-icons]-->
-<!--import [tab-inputs-styles, module-styles]-->
+<!--import [tab-inputs-styles, module-styles, permission-controller, common-methods-behavior]-->
 
 <dom-module id="partner-details-tab">
     <template>
@@ -14,59 +14,105 @@
             <div class="row-h group">
                 <div class="input-container" title="[[_getTitleValue(partner.name)]]">
                     <!-- Organization name -->
-                    <paper-input label="Full Name"
+                    <paper-input label="{{getLabel(basePermissionPath, 'name')}}"
                                  value="{{partner.name}}"
-                                 placeholder="&#8212;"
-                                 class="disabled-as-readonly"
-                                 disabled$="[[!editMode]]"></paper-input>
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'name', 'readonly')}}"
+                                 class="without-border"
+                                 disabled readonly></paper-input>
                 </div>
                 <div class="input-container" title="[[_getTitleValue(partner.vendor_number)]]">
-                    <!-- Short name -->
-                    <paper-input label="Vendor Number"
+                    <!-- Vendor number -->
+                    <paper-input label="{{getLabel(basePermissionPath, 'vendor_number')}}"
                                  value="{{partner.vendor_number}}"
-                                 placeholder="&#8212;"
-                                 class="disabled-as-readonly"
-                                 disabled$="[[!editMode]]"></paper-input>
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'vendor_number', 'readonly')}}"
+                                 class="without-border"
+                                 disabled readonly></paper-input>
                 </div>
 
-            </div>
-
-            <div class="row-h group">
-                <div class="input-container" title="{{_getTitleValue(partner.address)}}">
+                <div class="input-container" title="{{_getTitleValue(partner.street_address)}}">
                     <!-- Address -->
-                    <paper-input label="Address"
+                    <paper-input label="{{getLabel(basePermissionPath, 'street_address')}}"
                                  value="{{partner.street_address}}"
-                                 placeholder="&#8212;"
-                                 class="disabled-as-readonly"
-                                 disabled$="[[!editMode]]">
-                        <iron-icon prefix icon="communication:location-on"></iron-icon>
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'street_address', 'readonly')}}"
+                                 class="without-border"
+                                 disabled readonly>
+                            <iron-icon hidden="{{!_showPrefix(basePermissionPath, 'street_address', partner.street_address, 'readonly')}}"
+                                       prefix icon="communication:location-on"></iron-icon>
                     </paper-input>
                 </div>
+
+            </div>
+
+            <div class="row-h group">
+
+                <div class="input-container" title="[[_getTitleValue(partner.postal_code)]]">
+                    <!-- Partner Postal Code -->
+                    <paper-input label="{{getLabel(basePermissionPath, 'postal_code')}}"
+                                 value="{{partner.postal_code}}"
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'postal_code', 'readonly')}}"
+                                 class="without-border"
+                                 disabled readonly></paper-input>
+                </div>
+
+                <div class="input-container" title="[[_getTitleValue(partner.city)]]">
+                    <!-- Partner City -->
+                    <paper-input label="{{getLabel(basePermissionPath, 'city')}}"
+                                 value="{{partner.city}}"
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'city', 'readonly')}}"
+                                 class="without-border"
+                                 disabled readonly></paper-input>
+                </div>
+
+                <div class="input-container" title="[[_getTitleValue(partner.country)]]">
+                    <!-- Partner Country -->
+                    <paper-input label="{{getLabel(basePermissionPath, 'country')}}"
+                                 value="{{partner.country}}"
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'country', 'readonly')}}"
+                                 class="without-border"
+                                 disabled readonly></paper-input>
+                </div>
+
             </div>
 
 
             <div class="row-h group">
-                <div class="input-container" title="{{_getTitleValue(partner.phone_number)}}">
-                    <!-- Telephone number -->
-                    <paper-input label="Phone Number"
-                                 value="{{partner.phone_number}}"
-                                 placeholder="&#8212;"
-                                 class="disabled-as-readonly"
-                                 disabled$="[[!editMode]]">
-                        <iron-icon prefix icon="communication:phone"></iron-icon>
-                    </paper-input>
-                </div>
 
                 <div class="input-container" title="{{_getTitleValue(partner.email)}}">
                     <!-- Email address -->
-                    <paper-input label="E-mail address"
+                    <paper-input label="{{getLabel(basePermissionPath, 'email')}}"
                                  value="{{partner.email}}"
-                                 placeholder="&#8212;"
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'email')}}"
                                  class="disabled-as-readonly"
+                                 maxlength="{{getMaxLength(basePermissionPath, 'email')}}"
                                  disabled$="[[!editMode]]">
-                        <iron-icon prefix icon="communication:email"></iron-icon>
+                        <iron-icon  hidden="{{!_showPrefix(basePermissionPath, 'email', partner.email)}}"
+                                    prefix icon="communication:email"></iron-icon>
                     </paper-input>
                 </div>
+
+                <div class="input-container" title="{{_getTitleValue(partner.phone_number)}}">
+                    <!-- Telephone number -->
+                    <paper-input label="{{getLabel(basePermissionPath, 'phone_number')}}"
+                                 value="{{partner.phone_number}}"
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'phone_number')}}"
+                                 class="disabled-as-readonly"
+                                 allowed-pattern="[\d\s-+()]"
+                                 maxlength="{{getMaxLength(basePermissionPath, 'phone_number')}}"
+                                 disabled$="[[!editMode]]">
+                        <iron-icon  hidden="{{!_showPrefix(basePermissionPath, 'phone_number', partner.phone_number)}}"
+                                    prefix icon="communication:phone"></iron-icon>
+                    </paper-input>
+                </div>
+
+                <div class="input-container" title="[[_setStatus(partner.status)]]">
+                    <!-- TPM Status -->
+                    <paper-input label="{{getLabel(basePermissionPath, 'status')}}"
+                                 value="[[_setStatus(partner.status)]]"
+                                 placeholder="{{getPlaceholderText(basePermissionPath, 'status', 'readonly')}}"
+                                 class="without-border"
+                                 disabled readonly></paper-input>
+                </div>
+
             </div>
 
         </etools-content-panel>

@@ -3,7 +3,9 @@
 Polymer({
     is: 'partner-info-view-main',
 
-    behaviors: [TPMBehaviors.PermissionController],
+    behaviors: [
+        TPMBehaviors.PermissionController
+    ],
 
     properties: {
         fileTypes: {
