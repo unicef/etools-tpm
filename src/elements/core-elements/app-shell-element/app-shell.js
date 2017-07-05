@@ -83,7 +83,7 @@ Polymer({
         } else {
             resolvedPageUrl = `elements/pages/${page}-page-components/${page}-page-main/${page}-page-main.html`;
             if (page === 'partners' && !this.isTpmUser()) {
-                let url = 'elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html';
+                let url = 'elements/pages/partners-page-components/partners-list-view/partners-list-view.html';
                 this.importHref(url, null, null, true);
             }
         }

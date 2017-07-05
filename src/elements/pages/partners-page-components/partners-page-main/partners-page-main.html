@@ -1,6 +1,6 @@
 <!--import [polymer, paper-tabs, paper-input]-->
 
-<!--import [page-layout-styles, shared-styles, pages-header-element, module-styles, user-controller,
+<!--import [page-layout-styles, shared-styles, pages-header-element, module-styles, user-controller, partners-list-view,
              partner-info-view-main, query-params-controller, permission-controller, partner-details-data]-->
 
 <dom-module id="partners-page-main">
@@ -15,24 +15,35 @@
                 route="{{route}}"
                 pattern="/:view"
                 data="{{routeData}}"
-                tail="{{subroute}}"></app-route>
+                tail="{{subroute}}">
+        </app-route>
 
 
-        <partner-details-data partner-details="{{partnerDetails}}" partner-id="{{partnerId}}" view="{{view}}"></partner-details-data>
+        <partner-details-data
+                partner-details="{{partnerDetails}}"
+                partner-id="{{partnerId}}"
+                view="{{view}}">
+        </partner-details-data>
 
-        <iron-pages id="categoryPages"
-                    selected="{{view}}"
-                    attr-for-selected="name"
-                    role="main">
+        <iron-pages
+                id="categoryPages"
+                selected="{{view}}"
+                attr-for-selected="name"
+                role="main">
 
-                <partners-list-view-main without-pagination="[[withoutPagination]]" name="list" query-params="{{queryParams}}" request-queries="[[partnersListQueries]]"></partners-list-view-main>
+                <partners-list-view
+                        name="list"
+                        query-params="{{queryParams}}"
+                        request-queries="[[partnersListQueries]]">
+                </partners-list-view>
 
-                <partner-info-view-main name="info"
-                                        route="{{subroute}}"
-                                        partner="{{partnerDetails}}"></partner-info-view-main>
+                <partner-info-view-main
+                        name="info"
+                        route="{{subroute}}"
+                        partner="{{partnerDetails}}">
+                </partner-info-view-main>
 
         </iron-pages>
-
     </template>
 
     <!-- inject scripts './partners-page-main.js'-->

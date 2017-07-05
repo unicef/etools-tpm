@@ -10,8 +10,7 @@ App global configuration
     var etoolsCustomDexieDb = new Dexie('TPM');
     etoolsCustomDexieDb.version(1).stores({
         collectionsList: '&name, expire',
-        partners: 'id, name, vendor_number, country',
-        trips: 'id, name, vendor_number, location, focal_point, status'
+        partners: 'id',
     });
 
     var etoolsAppConfig = {
@@ -36,14 +35,10 @@ App global configuration
                 cachingKey: 'countries'
             },
             partnersList: {
-                url: '/api/tpm/partners/',
-                exp: 1 * 60 * 1000, // 6h
-                cachingKey: 'partners'
+                url: '/api/tpm/partners/'
             },
             visitsList: {
-                url: '/tpm/data/trips-list.json',
-                exp: 6 * 60 * 60 * 1000, // 6h
-                cachingKey: 'trips'
+                url: '/api/tpm/visits/'
             },
             partnerOrganisations: {
                 url: '/api/v2/partners/',
@@ -70,14 +65,10 @@ App global configuration
                 cachingKey: 'countries'
             },
             partnersList: {
-                url: '/data/partners-list.json',
-                exp: 6 * 60 * 60 * 1000, // 6h
-                cachingKey: 'partners'
+                url: '/data/partners-list.json'
             },
             visitsList: {
-                url: '/data/trips-list.json',
-                exp: 6 * 60 * 60 * 1000, // 6h
-                cachingKey: 'trips'
+                url: '/data/trips-list.json'
             }
         },
 
@@ -108,7 +99,6 @@ App global configuration
 
                 etoolsCustomDexieDb.collectionsList.clear();
                 etoolsCustomDexieDb.partners.clear();
-                etoolsCustomDexieDb.trips.clear();
             },
 
             getAbsolutePath: function(path) {

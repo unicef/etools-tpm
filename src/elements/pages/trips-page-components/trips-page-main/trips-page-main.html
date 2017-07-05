@@ -1,7 +1,7 @@
-<!--import [polymer, iron-pages, app-route]-->
+<!--import [polymer, iron-pages, app-route, etools-app-config]-->
 
 <!--import [page-layout-styles, shared-styles,  module-styles, visit-info-data,
-            trips-list-view-main, trips-info-view-main, query-params-controller]-->
+            visits-list-view, trips-info-view-main, query-params-controller]-->
 
 <dom-module id="trips-page-main">
     <template>
@@ -11,18 +11,31 @@
                 route="{{route}}"
                 pattern="/:view"
                 data="{{routeData}}"
-                tail="{{subroute}}"></app-route>
+                tail="{{subroute}}">
+        </app-route>
 
-        <visit-info-data visit-info="{{visitInfo}}" visit-id="{{visitId}}" view="{{view}}"></visit-info-data>
+        <visit-info-data
+                visit-info="{{visitInfo}}"
+                visit-id="{{visitId}}"
+                view="{{view}}">
+        </visit-info-data>
 
-        <iron-pages id="categoryPages"
-                    selected="{{view}}"
-                    attr-for-selected="name"
-                    role="main">
+        <iron-pages
+                id="categoryPages"
+                selected="{{view}}"
+                attr-for-selected="name"
+                role="main">
 
-            <trips-list-view-main  without-pagination="[[withoutPagination]]" name="list" query-params="{{queryParams}}" request-queries="[[lastListDataRequest]]"></trips-list-view-main>
+            <visits-list-view
+                    name="list"
+                    query-params="{{queryParams}}"
+                    request-queries="[[visitsListQueries]]">
+            </visits-list-view>
 
-            <trips-info-view-main name="visit" route="{{subroute}}"></trips-info-view-main>
+            <trips-info-view-main
+                    name="visit"
+                    route="{{subroute}}">
+            </trips-info-view-main>
 
         </iron-pages>
     </template>

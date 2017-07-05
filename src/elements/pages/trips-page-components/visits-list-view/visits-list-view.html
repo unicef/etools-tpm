@@ -1,0 +1,42 @@
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, list-tab-main, dialog-element,
+            search-and-filter, visits-list-data, pages-header-element, permission-controller]-->
+
+<dom-module id="visits-list-view">
+    <template>
+        <style include="page-layout-styles shared-styles module-styles">
+            :host {
+                position: relative;
+                display: block;
+            }
+
+            pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
+        </style>
+
+        <visits-list-data
+                id="listData"
+                visits-list="{{visitsList}}"
+                request-queries="[[requestQueries]]"
+                without-pagination="[[withoutPagination]]">
+        </visits-list-data>
+
+        <pages-header-element
+                show-export-button
+                export-link="[[_setExportLink()]]"
+                show-add-button="{{_showAddButton()}}"
+                btn-text="Add New Visit"
+                title="List of Visits">
+        </pages-header-element>
+
+        <list-tab-main
+                header-title="Visits"
+                data="[[visitsList]]"
+                headings="[[listHeadings]]"
+                query-params="{{queryParams}}"
+                details="[[listDetails]]"
+                without-pagination
+                has-collapse>
+        </list-tab-main>
+    </template>
+
+    <!-- inject scripts './visits-list-view.js'-->
+</dom-module>

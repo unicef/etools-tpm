@@ -42,7 +42,7 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
-        if (!queries.ordered_by) { queriesUpdates.ordered_by = 'vendor_number.asc'; }
+        if (!queries.ordering) { queriesUpdates.ordering = 'vendor_number'; }
 
         if (!this.lastParams) {
             this.lastParams = _.clone(queries);

@@ -1,0 +1,49 @@
+<!--import [polymer, module-styles, page-layout-styles, shared-styles, list-tab-main, dialog-element,
+            search-and-filter, partners-list-data, pages-header-element, permission-controller]-->
+
+<dom-module id="partners-list-view">
+    <template>
+        <style include="page-layout-styles shared-styles module-styles">
+            :host {
+                position: relative;
+                display: block;
+            }
+
+            paper-input.vendor-number-input {
+                max-width: 45%;
+                margin-top: 6px !important;
+            }
+
+            pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
+        </style>
+
+        <partners-list-data
+                id="listData"
+                partners-list="{{partnersList}}"
+                request-queries="[[requestQueries]]"
+                without-pagination="[[withoutPagination]]">
+        </partners-list-data>
+
+        <pages-header-element
+                show-add-button="{{_showAddButton()}}"
+                btn-text="Add New Vendor"
+                title="Third Party Monitors">
+        </pages-header-element>
+
+        <list-tab-main
+                header-title="Vendors"
+                data="[[partnersList]]"
+                headings="[[listHeadings]]"
+                query-params="{{queryParams}}"
+                details="[[listDetails]]"
+                without-pagination
+                has-collapse>
+        </list-tab-main>
+
+        <dialog-element title="Add Vendor" confirm-btn-text="sync from vision" opened="{{newVendorOpened}}">
+            <paper-input class="vendor-number-input" label="Vendor Number"></paper-input>
+        </dialog-element>
+    </template>
+
+    <!-- inject scripts './partners-list-view.js'-->
+</dom-module>
