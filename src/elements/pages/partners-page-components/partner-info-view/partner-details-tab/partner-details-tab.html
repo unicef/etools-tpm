@@ -82,9 +82,14 @@
                     <paper-input label="{{getLabel(basePermissionPath, 'email')}}"
                                  value="{{partner.email}}"
                                  placeholder="{{getPlaceholderText(basePermissionPath, 'email')}}"
-                                 class="disabled-as-readonly"
-                                 maxlength="{{getMaxLength(basePermissionPath, 'email')}}"
-                                 disabled$="[[!editMode]]">
+                                 class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
+                                 id="emailInput"
+                                 invalid="{{errors.email}}"
+                                 error-message="{{errors.email}}"
+                                 on-focus="_resetFieldError"
+                                 required$="[[_setRequired('email', basePermissionPath)]]"
+                                 disabled$="[[isReadOnly('email', basePermissionPath)]]"
+                                 maxlength="{{getMaxLength(basePermissionPath, 'email')}}">
                         <iron-icon  hidden="{{!_showPrefix(basePermissionPath, 'email', partner.email)}}"
                                     prefix icon="communication:email"></iron-icon>
                     </paper-input>
@@ -95,23 +100,30 @@
                     <paper-input label="{{getLabel(basePermissionPath, 'phone_number')}}"
                                  value="{{partner.phone_number}}"
                                  placeholder="{{getPlaceholderText(basePermissionPath, 'phone_number')}}"
-                                 class="disabled-as-readonly"
+                                 class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
+                                 invalid="{{errors.phone_number}}"
+                                 error-message="{{errors.phone_number}}"
+                                 on-focus="_resetFieldError"
+                                 required$="[[_setRequired('phone_number', basePermissionPath)]]"
+                                 disabled$="[[isReadOnly('phone_number', basePermissionPath)]]"
                                  allowed-pattern="[\d\s-+()]"
-                                 maxlength="{{getMaxLength(basePermissionPath, 'phone_number')}}"
-                                 disabled$="[[!editMode]]">
+                                 maxlength="{{getMaxLength(basePermissionPath, 'phone_number')}}">
                         <iron-icon  hidden="{{!_showPrefix(basePermissionPath, 'phone_number', partner.phone_number)}}"
                                     prefix icon="communication:phone"></iron-icon>
                     </paper-input>
                 </div>
 
-                <div class="input-container" title="[[_setStatus(partner.status)]]">
-                    <!-- TPM Status -->
-                    <paper-input label="{{getLabel(basePermissionPath, 'status')}}"
-                                 value="[[_setStatus(partner.status)]]"
-                                 placeholder="{{getPlaceholderText(basePermissionPath, 'status', 'readonly')}}"
-                                 class="without-border"
-                                 disabled readonly></paper-input>
-                </div>
+                <template is="dom-if" if="{{!isTpmUser()}}">
+                    <div class="input-container" title="[[_setStatus(partner.status)]]">
+                        <!-- TPM Status -->
+                        <paper-input label="{{getLabel(basePermissionPath, 'status')}}"
+                                     value="[[_setStatus(partner.status)]]"
+                                     placeholder="{{getPlaceholderText(basePermissionPath, 'status', 'readonly')}}"
+                                     class="without-border"
+                                     disabled readonly></paper-input>
+                    </div>
+                </template>
+
 
             </div>
 
