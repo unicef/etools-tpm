@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <!--import [not-found-page-view]-->
+</head>
+<body>
+
+<test-fixture id="not-found-page-view-fixture">
+    <template>
+        <not-found-page-view></not-found-page-view>
+    </template>
+</test-fixture>
+
+<script>
+    describe('<not-found-page-view>', () => {
+        let myEl;
+
+        beforeEach(() => {
+            myEl = fixture('not-found-page-view-fixture');
+        });
+
+        describe('method getLink()', () => {
+            it('returns partners details link if isTpmUser() method returns true', () => {
+                let spy = sinon.stub(myEl, 'isTpmUser').returns(true);
+                sinon.stub(myEl, 'getPartnerId').returns(1);
+
+                assert.isFalse(spy.called);
+                assert.equal(myEl.getLink(), 'partners/1/details');
+                assert.isTrue(spy.calledOnce);
+            });
+
+            it('returns partners list link if isTpmUser() method returns false', () => {
+                let spy = sinon.stub(myEl, 'isTpmUser').returns(false);
+                sinon.stub(myEl, 'getPartnerId').returns(1);
+
+                assert.isFalse(spy.called);
+                assert.equal(myEl.getLink(), 'partners/list');
+                assert.isTrue(spy.calledOnce);
+            });
+        });
+
+        describe('method openDrawer()', function () {
+            it('fires "drawer" event', function () {
+                let spy = sinon.spy(myEl, 'fire');
+
+                assert.isFalse(spy.called);
+                myEl.openDrawer();
+                assert.isTrue(spy.calledOnce);
+                assert.isTrue(spy.calledWithExactly('drawer'));
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
