@@ -46,8 +46,7 @@ Polymer({
         'global-loading': '_handleGlobalLoading',
         'toast': 'queueToast',
         '404': '_pageNotFound',
-        'initial-data-loaded': '_initialDataLoaded',
-        'user-profile-loaded': '_updateUserData'
+        'initial-data-loaded': '_initialDataLoaded'
     },
 
     ready: function() {
@@ -106,6 +105,7 @@ Polymer({
     _initialDataLoaded: function(e) {
         if (e && e.type === 'initial-data-loaded') { this.initialDataLoaded = true; }
         if (this.routeData && this.initialDataLoaded) {
+            this.user = this.getUserData();
             this.page = this.routeData.page || this._configPath();
         }
     },
@@ -135,10 +135,6 @@ Polymer({
         let path = this.isTpmUser() ? `partners/${this.getPartnerId()}/details` : 'partners/list';
         this.set('route.path', `${this.basePath}${path}`);
         return 'partners';
-    },
-
-    _updateUserData: function() {
-        this.user = this.getUserData();
     }
 
 });
