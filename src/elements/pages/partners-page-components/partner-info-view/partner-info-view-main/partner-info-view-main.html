@@ -12,7 +12,7 @@
                 pattern="/:tab"
                 data="{{routeData}}"></app-route>
 
-        <update-partner-details-data new-partner-details="{{newPartnerDetails}}"></update-partner-details-data>
+        <update-partner-details-data new-partner-details="{{newPartnerDetails}}" partner="{{partner}}" error-object="{{errorObject}}"></update-partner-details-data>
 
         <pages-header-element show-export-button
                               title="[[partner.name]]"></pages-header-element>
@@ -29,7 +29,8 @@
                             attr-for-selected="name">
 
                     <div name="details">
-                        <partner-details-tab id="partner-details"
+                        <partner-details-tab id="partnerDetails"
+                                             error-object="{{errorObject}}"
                                              base-permission-path="{{permissionBase}}"
                                              partner="[[partner]]"></partner-details-tab>
 
@@ -54,7 +55,7 @@
            <template is="dom-if" if="[[!_hideActions(permissionBase)]]" restamp>
                <div id="sidebar">
                    <etools-content-panel panel-title="Actions" class="actions-tab">
-                       <action-buttons actions="{{getActions(permissionBase)}}"></action-buttons>
+                       <action-buttons actions="[[getActions(permissionBase)]]"></action-buttons>
                    </etools-content-panel>
                </div>
            </template>

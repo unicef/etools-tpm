@@ -4,7 +4,7 @@
 
     <template>
 
-        <etools-ajax method="PATCH"
+        <etools-ajax method="{{method}}"
                      url="{{url}}"
                      body="{{postData}}"
                      on-success="_handleResponse"
@@ -25,24 +25,52 @@
                 newPartnerDetails: {
                     type: Object,
                     observer: '_detailsChanged'
+                },
+                partner: {
+                    type: Object,
+                    notify: true
+                },
+                errorObject: {
+                    type: Object,
+                    notify: true
                 }
             },
 
 
-            _handleResponse: function () {
+            _handleResponse: function (event, details) {
+                if (details) { this.set('partner', details); }
+                this.fire('global-loading', {type: 'update-partner'});
                 this.fire('partner-updated', {success: true});
             },
 
-            _handleError: function () {
+            _handleError: function (event, error) {
+                this.fire('global-loading', {type: 'update-partner'});
                 this.fire('partner-updated');
+
+                let responseData = error && error.request && error.request.detail &&
+                        error.request.detail.request && error.request.detail.request.xhr;
+
+                let {status, response} = responseData || {};
+
+                if (status === 400) {
+                    this.set('errorObject', response);
+                    this.fire('toast', {text: 'Can not save engagement data. Please check all fields and try again later!'});
+                }
+
+                if (status >= 500) {
+                    this.errorObject = {};
+                    this.fire('toast', {text: 'Can not save engagement data. Please try again later!'});
+                }
             },
 
             _detailsChanged: function(details) {
-                if (!details || !details.id) { return; }
+                if (!details || !details.id || !details.method) { return; }
                 let url = this.getEndpoint('updatePartnerDetails', {id: details.id}).url;
 
-                this.postData = details;
-                this.url = url;
+                this.fire('global-loading', {message: details.message || 'Updating partner...', active: true, type: 'update-partner'});
+                this.method = details.method;
+                this.postData = details.data || {};
+                this.url = `${url}${details.link || ''}`;
             }
 
         });

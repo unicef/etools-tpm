@@ -55,20 +55,6 @@
 
         });
 
-        it('start updating process if data is valid', function (done) {
-            assert.isFalse(!!myEl.updatingInProcess);
-            myEl.set('partner.staff_members', []);
-
-            myEl.addEventListener('dom-change', function() {
-                myEl.debounce('done', function() {
-                    myEl._savePartner();
-                    assert.isTrue(myEl.updatingInProcess);
-                    assert.deepEqual(myEl.partner, myEl.newPartnerDetails);
-                    done();
-                }, 0);
-            }, false);
-        });
-
     });
 </script>
 

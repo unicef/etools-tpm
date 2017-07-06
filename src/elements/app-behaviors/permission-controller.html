@@ -126,7 +126,7 @@
             },
 
             getActions: function(collection) {
-                if (!collection) { return true; }
+                if (!collection) { return null; }
                 if (typeof collection !== 'string') { throw new Error('Collection argument must be a string'); }
                 collection = _permissionCollection[collection];
 

@@ -9,8 +9,6 @@
         <!--partners-->
         <etools-ajax
                 endpoint="[[partnersEndpoint]]"
-                caching-storage="custom"
-                dexie-db-collection="partner_organizations"
                 on-success="_partnersLoaded"
                 on-fail="_partnersError"></etools-ajax>
 
@@ -49,7 +47,7 @@
 
                 loadStaticData: function () {
                     if (this.isTpmUser()) {
-                        this.partnersEndpoint = this.getEndpoint('partnerOrganisations');
+                        this.partnersEndpoint = this.getEndpoint('partnersList');
                     } else {
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
                     }

@@ -16,9 +16,12 @@ Polymer({
                 {value: '3', display_name: 'Other'}
             ]
         },
-        partner: {
+        partner: Object,
+        errorObject: {
             type: Object,
-            notify: true
+            value: function() {
+                return {};
+            }
         }
     },
 
@@ -53,10 +56,10 @@ Polymer({
                 this._savePartner();
                 break;
             case 'activate':
-                console.log('Event \'activate\' fired');
+                this._changePartnerStatus('activate/', 'Activating partner...');
                 break;
             case 'cancel':
-                console.log('Event \'cancel\' fired');
+                this._changePartnerStatus('cancel/', 'Canceling partner...');
                 break;
             default:
                 console.error(`Unknown event type: ${details.type}`);
@@ -65,14 +68,34 @@ Polymer({
     },
 
     _savePartner: function() {
-        if (!this.$['partner-details'].validate() || !this.$['staff-members'].validate()) {
+        if (!this.$.partnerDetails.validate() || !this.$['staff-members'].validate()) {
             this.set('routeData.tab', 'details');
             this.fire('toast', {text: 'Fix invalid fields before saving'});
             return;
         }
-        this.updatingInProcess = true;
 
-        this.newPartnerDetails = _.cloneDeep(this.partner);
+        this.newPartnerDetails = {
+            method: 'PATCH',
+            id: this.partner.id,
+            data: this.getPartnerData(),
+            message: 'Saving partner...'
+        };
+    },
+
+    _changePartnerStatus: function(action, message) {
+        this.newPartnerDetails = {
+            method: 'POST',
+            id: this.partner.id,
+            data: {},
+            link: action,
+            message: message
+        };
+    },
+
+    getPartnerData: function() {
+        let data = this.$.partnerDetails.getDetailsData();
+
+        return data || {};
     }
 
 });
