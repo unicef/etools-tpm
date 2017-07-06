@@ -65,8 +65,7 @@
                 },
 
                 _partnersLoaded: function(data, detail) {
-                    //TODO: !format of response detail may be changed later!
-                    let partnerId = detail && detail[0] && detail[0].id;
+                    let partnerId = detail && detail.results && detail.results[0] && detail.results[0].id;
                     this._setPartnerId(partnerId);
                     if(!partnerId) { console.error('Can not get TPM Partner id!'); }
                     dataLoaded.partners = true;

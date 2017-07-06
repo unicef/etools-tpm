@@ -46,7 +46,7 @@
                     return;
                 }
 
-                this._setPartnersList(detail);
+                this._setPartnersList(detail.results);
                 this.fire('global-loading', {type: 'partners-list'});
             },
 
