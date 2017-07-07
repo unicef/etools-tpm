@@ -57,6 +57,9 @@
                 if (this.isValidCollection(collection.PUT)) {
                     actions.push('save');
                 }
+                if (this.isValidCollection(collection.POST)) {
+                    actions.push('create');
+                }
 
                 collection.allowed_actions = actions.concat(collection.allowed_FSM_transitions || []);
                 return true;

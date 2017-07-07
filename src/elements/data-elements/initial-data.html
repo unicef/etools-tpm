@@ -77,10 +77,6 @@
                         return;
                     }
 
-                    if (this.isValidCollection(actions.POST)) {
-                        actions.allowed_actions = ['save'].concat(actions.allowed_FSM_transitions || []);
-                    }
-
                     this._addToCollection('new_visit', actions);
 
                     dataLoaded.visitsOptions = true;
@@ -92,10 +88,6 @@
                     if (!this.isValidCollection(actions)) {
                         this._responseError('partners options');
                         return;
-                    }
-
-                    if (this.isValidCollection(actions.POST)) {
-                        actions.allowed_actions = ['save'].concat(actions.allowed_FSM_transitions || []);
                     }
 
                     this._addToCollection('new_partner', actions);
