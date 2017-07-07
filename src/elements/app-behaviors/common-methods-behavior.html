@@ -68,7 +68,7 @@
 
         getLabel: function(path, base) {
             if (!base) { return ''; }
-            return this.getFieldAttribute(`${base}.${path}`, 'label');
+            return this.getFieldAttribute(`${base}.${path}`, 'label', 'GET');
         },
 
         getMaxLength: function(path, base) {

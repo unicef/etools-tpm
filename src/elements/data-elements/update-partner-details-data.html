@@ -9,6 +9,11 @@
                      body="{{postData}}"
                      on-success="_handleResponse"
                      on-fail="_handleError"></etools-ajax>
+
+        <etools-ajax method="OPTIONS"
+                     url="[[optionsUrl]]"
+                     on-success="_handleOptionsResponse"
+                     on-fail="_handleOptionsResponse"></etools-ajax>
     </template>
 
     <script>
@@ -18,7 +23,8 @@
             is: 'update-partner-details-data',
 
             behaviors: [
-                etoolsAppConfig.globals
+                etoolsAppConfig.globals,
+                TPMBehaviors.PermissionController
             ],
 
             properties: {
@@ -33,18 +39,64 @@
                 errorObject: {
                     type: Object,
                     notify: true
+                },
+                basePermissionPath: {
+                    type: String,
+                    notify: true
                 }
             },
 
-
             _handleResponse: function (event, details) {
-                if (details) { this.set('partner', details); }
-                this.fire('global-loading', {type: 'update-partner'});
+                if (this.method === 'POST') {
+                    this.lastData = details;
+                    this._finishPostResponse(this.postRequest);
+                    return;
+                } else if (this.postRequest) {
+                    this._detailsChanged(this.postRequest);
+                    return;
+                }
+                this.finishResponse(details);
+                this.fire('global-loading', {type: 'save-partner'});
+            },
+
+            _finishPostResponse: function(details) {
+                this.fire('global-loading', {type: 'update-permissions', active: true, message: 'Updating data...'});
+                this.fire('global-loading', {type: `${details.action}-partner`});
+
+                this.optionsUrl = this.getEndpoint('partnerDetails', {id: details.id}).url;
+                this.postRequest = null;
+            },
+
+            _handleOptionsResponse: function(event, details) {
+                if (this.lastData && details && details.actions) {
+                    let collectionName = `partner_${this.lastData.id}`;
+
+                    this._updateCollection(collectionName, details.actions);
+                    this.basePermissionPath = '';
+                    this.basePermissionPath = collectionName;
+                } else {
+                    this.basePermissionPath = 'not_found';
+                    this.fire('toast', {text: 'Can not update permissions data. Please reload the page!'});
+                    console.error('Can not load permissions');
+                }
+                this.fire('global-loading', {type: 'update-permissions'});
+                this.optionsUrl = '';
+                this.finishResponse(this.lastData);
+            },
+
+            finishResponse: function(details) {
+                if (details) {
+                    this.set('partner', details);
+                } else {
+                    console.error('Can not update partner. Data is missing');
+                }
                 this.fire('partner-updated', {success: true});
+                this.fire('toast', {text: `Partner has been updated!`});
             },
 
             _handleError: function (event, error) {
-                this.fire('global-loading', {type: 'update-partner'});
+                let action = this.postRequest && this.postRequest.action || 'save';
+                this.fire('global-loading', {type: `${action}-partner`});
                 this.fire('partner-updated');
 
                 let responseData = error && error.request && error.request.detail &&
@@ -54,23 +106,36 @@
 
                 if (status === 400) {
                     this.set('errorObject', response);
-                    this.fire('toast', {text: 'Can not save engagement data. Please check all fields and try again later!'});
-                }
-
-                if (status >= 500) {
+                    this.fire('toast', {text: 'Can not save partner data. Please check all fields and try again later!'});
+                } else {
                     this.errorObject = {};
-                    this.fire('toast', {text: 'Can not save engagement data. Please try again later!'});
+                    this.fire('toast', {text: 'Can not update partner. Please try again later!'});
                 }
             },
 
             _detailsChanged: function(details) {
                 if (!details || !details.id || !details.method) { return; }
-                let url = this.getEndpoint('updatePartnerDetails', {id: details.id}).url;
+                let url = this.getEndpoint('partnerDetails', {id: details.id}).url;
 
-                this.fire('global-loading', {message: details.message || 'Updating partner...', active: true, type: 'update-partner'});
-                this.method = details.method;
-                this.postData = details.data || {};
-                this.url = `${url}${details.link || ''}`;
+                if (details.method === 'POST' && (this.postRequest || _.isEmpty(details.data))) {
+                    this.fire('global-loading', {message: details.message, active: true, type: `${details.action}-partner`});
+                    this.fire('global-loading', {type: 'save-partner'});
+                    this.method = 'POST';
+                    this.url = `${url}${details.action}/`;
+                    this.postData = {};
+                    this.postRequest = details;
+                    return;
+                } else if (details.method === 'POST' && !this.postRequest) {
+                    this.postRequest = details;
+                }
+                this._startPatchRequest(url, details.data);
+            },
+
+            _startPatchRequest: function(url, data) {
+                this.fire('global-loading', {message: 'Saving partner...', active: true, type: 'save-partner'});
+                this.method = 'PATCH';
+                this.postData = data || {};
+                this.url = url;
             }
 
         });

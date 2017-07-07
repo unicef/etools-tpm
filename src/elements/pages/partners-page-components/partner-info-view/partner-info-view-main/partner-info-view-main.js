@@ -51,45 +51,45 @@ Polymer({
 
     _processAction: function(event, details) {
         if (!details || !details.type) { throw 'Event type is not provided!'; }
+        let message, method;
         switch (details.type) {
             case 'save':
-                this._savePartner();
+                method = 'PATCH';
                 break;
             case 'activate':
-                this._changePartnerStatus('activate/', 'Activating partner...');
+                method = 'POST';
+                message = 'Activating partner...';
                 break;
             case 'cancel':
-                this._changePartnerStatus('cancel/', 'Canceling partner...');
+                method = 'POST';
+                message = 'Canceling partner...';
                 break;
             default:
-                console.error(`Unknown event type: ${details.type}`);
+                throw `Unknown event type: ${details.type}`;
         }
 
-    },
-
-    _savePartner: function() {
-        if (!this.$.partnerDetails.validate() || !this.$['staff-members'].validate()) {
-            this.set('routeData.tab', 'details');
-            this.fire('toast', {text: 'Fix invalid fields before saving'});
-            return;
-        }
+        if (!this.validatePartner()) { return; }
 
         this.newPartnerDetails = {
-            method: 'PATCH',
+            method: method,
             id: this.partner.id,
             data: this.getPartnerData(),
-            message: 'Saving partner...'
+            message: message,
+            action: details.type
         };
     },
 
-    _changePartnerStatus: function(action, message) {
-        this.newPartnerDetails = {
-            method: 'POST',
-            id: this.partner.id,
-            data: {},
-            link: action,
-            message: message
-        };
+    validatePartner: function() {
+        let detailsValid = this.$.partnerDetails.validate(),
+            staffMembersValid = this.$.staffMembers.validate();
+
+        if (!detailsValid || !staffMembersValid) {
+            this.set('routeData.tab', 'details');
+            this.fire('toast', {text: 'Fix invalid fields before saving'});
+            return false;
+        }
+
+        return true;
     },
 
     getPartnerData: function() {

@@ -122,8 +122,9 @@ Polymer({
         } else if (event.detail.active && typeof event.detail.message === 'string' && event.detail.message !== '') {
             loadingElement.loadingText = event.detail.message;
             loadingElement.active = true;
+            loadingElement.type = event.detail.type;
         } else {
-            loadingElement.active = false;
+            if (loadingElement.type === event.detail.type) { loadingElement.active = false; }
             this.globalLoadingQueue = this.globalLoadingQueue.filter((element) => {return element.detail.type !== event.detail.type;});
             if (this.globalLoadingQueue.length) {
                 this._handleGlobalLoading(this.globalLoadingQueue.shift());

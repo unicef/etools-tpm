@@ -330,8 +330,8 @@
         });
 
         it('check allowed actions with actionAllowed method', function() {
-            assert.isTrue(behaviorObj.actionAllowed('test', 'saveEngagement'));
-            assert.isTrue(behaviorObj.actionAllowed('test', 'createEngagement'));
+            assert.isTrue(behaviorObj.actionAllowed('test', 'save'));
+            assert.isTrue(behaviorObj.actionAllowed('test', 'save'));
             assert.isFalse(behaviorObj.actionAllowed('test', 'submit'));
             assert.isFalse(behaviorObj.actionAllowed('test2', 'submit'));
             assert.isFalse(behaviorObj.actionAllowed('test3', 'submit'));

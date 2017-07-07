@@ -26,6 +26,7 @@
                 if (_permissionCollection[collectionName]) { return false; }
 
                 _permissionCollection[collectionName] = data;
+                this._manageActions(collectionName);
 
                 return true;
             },
@@ -41,6 +42,23 @@
                 }
 
                 _permissionCollection[collectionName] = data;
+                this._manageActions(collectionName);
+                return true;
+            },
+
+            _manageActions: function(collectionName) {
+                let collection = _permissionCollection[collectionName];
+                if (!collection) {
+                    console.warn(`Collection ${collectionName} does not exist!`);
+                    return false;
+                }
+
+                let actions = [];
+                if (this.isValidCollection(collection.PUT)) {
+                    actions.push('save');
+                }
+
+                collection.allowed_actions = actions.concat(collection.allowed_FSM_transitions || []);
                 return true;
             },
 

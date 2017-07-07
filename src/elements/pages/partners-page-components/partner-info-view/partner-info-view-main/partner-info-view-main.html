@@ -12,7 +12,8 @@
                 pattern="/:tab"
                 data="{{routeData}}"></app-route>
 
-        <update-partner-details-data new-partner-details="{{newPartnerDetails}}" partner="{{partner}}" error-object="{{errorObject}}"></update-partner-details-data>
+        <update-partner-details-data new-partner-details="{{newPartnerDetails}}" partner="{{partner}}"
+                                     error-object="{{errorObject}}" base-permission-path="{{permissionBase}}"></update-partner-details-data>
 
         <pages-header-element show-export-button
                               title="[[partner.name]]"></pages-header-element>
@@ -35,7 +36,7 @@
                                              partner="[[partner]]"></partner-details-tab>
 
                         <etools-content-panel panel-title="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
-                            <partner-staff-members-tab id="staff-members"
+                            <partner-staff-members-tab id="staffMembers"
                                                        base-permission-path="{{permissionBase}}"
                                                        data-items="{{partner.staff_members}}"></partner-staff-members-tab>
                         </etools-content-panel>

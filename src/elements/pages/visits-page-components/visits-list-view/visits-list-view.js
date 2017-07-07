@@ -26,6 +26,7 @@
                     'size': 30,
                     'label': 'Vendor Name',
                     'name': 'name',
+                    'path': 'tpm_partner.name',
                     'ordered': false
                 }, {
                     'size': 30,
