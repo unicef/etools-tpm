@@ -1,6 +1,6 @@
 <!--import [polymer, app-layout/app-toolbar/app-toolbar, paper-icon-button, iron-flex-layout, etools-page-refresh]-->
 
-<!--import [etools-app-config, etools-app-selector, countries-dropdown, user-dropdown, shared-styles]-->
+<!--import [etools-app-config, etools-app-selector, countries-dropdown, user-dropdown, shared-styles, app-icons]-->
 
 <dom-module id="app-main-header">
 
@@ -105,25 +105,26 @@
                   url: 'pmp'
                 },
                 {
-                  title: 'Visit Management',
+                  title: 'Trip Management',
                   icon: 'app-selector-icons:tripsIcon',
                   url: 't2f'
+                },
+                {
+                  title: 'Third Party Management',
+                  icon: 'app-icons:tpm',
+                  url: 'tpm'
+                },
+                {
+                  title: 'Auditor Portal',
+                  icon: 'app-icons:auditor',
+                  url: 'ap'
                 },
                 {
                   title: 'Admin (Permission Required)',
                   icon: 'app-selector-icons:adminIcon',
                   url: 'admin'
-                },
-                {
-                  title: 'Third Party Management',
-                  icon: 'account-box',
-                  url: 'tpm'
-                },
-                {
-                  title: 'Auditor Portal',
-                  icon: 'social:group',
-                  url: 'ap'
                 }
+
               ];
             }
           }
