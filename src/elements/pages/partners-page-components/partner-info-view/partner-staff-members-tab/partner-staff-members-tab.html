@@ -1,132 +1,221 @@
-<!--import [polymer, paper-fab, paper-icon-button, paper-input, etools-checkable-input, iron-icons/communication-icons]-->
-<!--import [tab-inputs-styles, repeatable-data-sets-behavior, custom-validator, permission-controller]-->
+<!--import [polymer, paper-icon-button, paper-input, etools-checkable-input, paper-icon-button, etools-content-panel, iron-icon,
+            iron-icons, iron-icons/communication-icons, etools-loading]-->
+
+<!--import [tab-inputs-styles, permission-controller, list-header, list-element, list-pagination,
+            dialog-element, lodash, table-elements-behavior, error-handler-behavior, update-staff-members, get-staff-members-list,
+            check-user-existence, common-methods-behavior]-->
 
 <dom-module id="partner-staff-members-tab">
     <template>
+
+        <style include="tab-inputs-styles module-styles"></style>
         <!-- inject styles './partner-staff-members-tab.scss'-->
-        <style include="tab-inputs-styles"></style>
 
-        <div hidden$="[[_emptyList(dataItems.length)]]">
-            <template is="dom-repeat" items="{{dataItems}}">
+        <!--requests-->
+        <get-staff-members-list vendor-number="{{vendorNumber}}"
+                                staffs-base="{{staffsBase}}"
+                                datalength="{{datalength}}"
+                                queries="{{listQueries}}"
+                                data-items="{{dataItems}}"
+                                list-loading="{{listLoading}}"></get-staff-members-list>
+
+        <update-staff-members vendor-number="[[vendorNumber]]" staff-data="{{newData}}"></update-staff-members>
+
+        <check-user-existence email="{{newEmail}}" email-checking="{{emailChecking}}" errors="{{errors}}" vendor-number="[[vendorNumber]]"></check-user-existence>
+
+        <!--end requests-->
+
+        <paper-icon-button title="Add"
+                           on-tap="openAddDialog"
+                           class="add-button"
+                           icon="add"></paper-icon-button>
+
+        <div class="search-input-container">
+            <paper-input class$="search-input [[_getSearchInputClass(searchString)]]"
+                         id="searchInput"
+                         value="{{searchString}}"
+                         hidden$="[[!_showPagination(datalength)]]"
+                         on-blur="searchBlur"
+                         on-input="_searchChanged"
+                         placeholder="Search">
+                <iron-icon prefix icon="search"></iron-icon>
+            </paper-input>
+        </div>
 
 
-                <div class="row-h repeatable-item-container">
-                    <div class="repeatable-item-actions">
-                        <div class="row-v actions">
-                            <paper-icon-button class="action delete"
-                                               on-tap="_openDeleteConfirmation"
-                                               data-args$="[[index]]"
-                                               disabled="[[!_canBeRemoved(index)]]"
-                                               hidden$="[[!_canBeRemoved(index)]]"
-                                               icon="cancel"></paper-icon-button>
+        <etools-content-panel panel-title="Audit Team Members ([[_staffLength(datalength, dataItems.length, searchQuery)]])" show-expand-btn>
+
+            <div class="panel-content group">
+                <etools-loading active="[[listLoading]]"  loading-text="Loading list data..." class="loading"></etools-loading>
+                <list-header no-additional no-ordered data="[[columns]]"></list-header>
+
+                <template is="dom-repeat" items="[[dataItems]]" filter="_showItems">
+                    <list-element
+                            class="list-element"
+                            data="[[item]]"
+                            no-additional
+                            headings="[[columns]]"
+                            no-animation>
+                        <div slot="hover" class="edit-icon-slot" hidden$="[[!_canBeChanged(basePermissionPath)]]">
+                            <paper-icon-button icon="icons:create" class="edit-icon" on-tap="openEditDialog"></paper-icon-button>
+                            <paper-icon-button icon="icons:delete" class="edit-icon" on-tap="openDeleteDialog"></paper-icon-button>
+                        </div>
+                        <div slot="checkbox" class="checkbox">
+                            <paper-checkbox checked="{{item.isActive}}"
+                                            label=""></paper-checkbox>
+                        </div>
+                        <div slot="checkbox" class="checkbox">
+                            <paper-checkbox checked="{{item.isNotify}}"
+                                            label=""></paper-checkbox>
+                        </div>
+                    </list-element>
+                </template>
+
+                <template is="dom-if" if="[[!dataItems.length]]">
+                    <list-element
+                            class="list-element"
+                            data="[[emptyObj]]"
+                            no-additional
+                            headings="[[columns]]"
+                            no-animation></list-element>
+                </template>
+
+                <list-pagination page-size="{{listSize}}"
+                                 page-number="{{listPage}}"
+                                 datalength="{{_staffLength(datalength, dataItems.length, searchQuery)}}"
+                                 without-queries
+                                 hidden$="[[!_showPagination(datalength)]]"
+                                 showing-results="{{showingResults}}"></list-pagination>
+
+            </div>
+
+        </etools-content-panel>
+
+        <dialog-element opened="{{dialogOpened}}"
+                        delete-dialog="[[deleteDialog]]"
+                        dialog-title="[[dialogTitle]]"
+                        confirm-btn-text="[[confirmBtnText]]"
+                        request-in-process="{{requestInProcess}}">
+
+            <div class="row-h repeatable-item-container" without-line>
+
+                <div class="repeatable-item-content">
+                    <div class="row-h group">
+                        <div class="input-container" title="{{_getTitleValue(editedItem.user.email)}}">
+                            <!-- Email address -->
+                            <paper-input label="E-mail address"
+                                         value="{{editedItem.user.email}}"
+                                         placeholder="Enter E-mail"
+                                         maxlength="45"
+                                         class$="validate-input {{_setRequired('user.email', staffsBase)}} email"
+                                         required="{{_setRequired('user.email', staffsBase)}}"
+                                         disabled="{{_emailDisabled(requestInProcess, addDialog, emailChecking)}}"
+                                         readonly$="{{_emailDisabled(requestInProcess, addDialog, emailChecking)}}"
+                                         on-focus="_resetFieldError"
+                                         on-blur="_checkEmail"
+                                         id="emailInput"
+                                         invalid="{{errors.user.email}}"
+                                         error-message="{{errors.user.email}}">
+                                <iron-icon prefix icon="communication:email"></iron-icon>
+                            </paper-input>
+                            <etools-loading active="{{emailChecking}}" no-overlay loading-text="" class="email-loading"></etools-loading>
+                        </div>
+
+                        <div class="input-container" title="{{_getTitleValue(editedItem.user.first_name)}}">
+                            <!-- First Name -->
+                            <paper-input label="First Name"
+                                         value="{{editedItem.user.first_name}}"
+                                         placeholder="Enter First Name"
+                                         class$="validate-input {{_setRequired('user.first_name', staffsBase)}}"
+                                         maxlength="30"
+                                         required="{{_setRequired('user.first_name', staffsBase)}}"
+                                         invalid="{{errors.user.first_name}}"
+                                         error-message="{{errors.user.first_name}}"
+                                         disabled="{{requestInProcess}}"
+                                         readonly$="{{requestInProcess}}"
+                                         on-focus="_resetFieldError">
+                            </paper-input>
+                        </div>
+                        <div class="input-container" title="{{_getTitleValue(editedItem.user.last_name)}}">
+                            <!-- Last Name -->
+                            <paper-input label="Last Name"
+                                         value="{{editedItem.user.last_name}}"
+                                         placeholder="Enter Last Name"
+                                         maxlength="30"
+                                         class$="validate-input {{_setRequired('user.last_name', staffsBase)}}"
+                                         required="{{_setRequired('user.last_name', staffsBase)}}"
+                                         invalid="{{errors.user.last_name}}"
+                                         error-message="{{errors.user.last_name}}"
+                                         disabled="{{requestInProcess}}"
+                                         readonly$="{{requestInProcess}}"
+                                         on-focus="_resetFieldError">
+                            </paper-input>
                         </div>
                     </div>
-                    <div class="repeatable-item-content">
-                        <div class="row-h group">
-                            <div class="input-container" title="{{_getTitleValue(item.user.profile.job_title)}}">
-                                <!-- Position -->
-                                <paper-input label="Position"
-                                             value="{{item.user.profile.job_title}}"
-                                             placeholder="&#8212;"
-                                             disabled$="[[isReadOnly('user.profile.job_title', basePermissionPath)]]"
-                                             class$="disabled-as-readonly {{_setRequired('user.profile.job_title', basePermissionPath)}}"
-                                             required="{{_setRequired('user.profile.job_title', basePermissionPath)}}">
-                                </paper-input>
-                            </div>
-                            <div class="input-container" title="{{_getTitleValue(item.user.first_name)}}">
-                                <!-- First Name -->
-                                <paper-input label="First Name"
-                                             value="{{item.user.first_name}}"
-                                             placeholder="&#8212;"
-                                             disabled$="[[isReadOnly('user.first_name', basePermissionPath)]]"
-                                             class$="disabled-as-readonly validate-input {{_setRequired('user.first_name', basePermissionPath)}}"
-                                             required="{{_setRequired('user.first_name', basePermissionPath)}}"
-                                             on-focus="_resetFieldError"
-                                             error-message="First name is required">
-                                </paper-input>
-                            </div>
-                            <div class="input-container" title="{{_getTitleValue(item.user.last_name)}}">
-                                <!-- Last Name -->
-                                <paper-input label="Last Name"
-                                             value="{{item.user.last_name}}"
-                                             placeholder="&#8212;"
-                                             disabled$="[[isReadOnly('user.last_name', basePermissionPath)]]"
-                                             class$="disabled-as-readonly validate-input {{_setRequired('user.last_name', basePermissionPath)}}"
-                                             required="{{_setRequired('user.last_name', basePermissionPath)}}"
-                                             on-focus="_resetFieldError"
-                                             error-message="Last name is required">
-                                </paper-input>
-                            </div>
-                        </div>
-                        <div class="row-h group">
-                            <div class="input-container" title="{{_getTitleValue(item.user.profile.phone_number)}}">
-                                <!-- Phone number -->
-                                <paper-input label="Phone number"
-                                             value="{{item.user.profile.phone_number}}"
-                                             allowed-pattern="[\d]"
-                                             placeholder="&#8212;"
-                                             disabled$="[[isReadOnly('user.profile.phone_number', basePermissionPath)]]"
-                                             class$="disabled-as-readonly {{_setRequired('user.profile.phone_number', basePermissionPath)}}"
-                                             required="{{_setRequired('user.profile.phone_number', basePermissionPath)}}">
-                                    <iron-icon prefix icon="communication:phone"></iron-icon>
-                                </paper-input>
-                            </div>
-                            <div class="input-container" title="{{_getTitleValue(item.user.email)}}">
-                                <!-- Email address -->
-                                <paper-input label="E-mail address"
-                                             value="{{item.user.email}}"
-                                             placeholder="&#8212;"
-                                             disabled$="[[isReadOnly('user.email', basePermissionPath)]]"
-                                             class$="disabled-as-readonly validate-input {{_setRequired('user.email', basePermissionPath)}}"
-                                             validator="emailValidator"
-                                             required="{{_setRequired('user.email', basePermissionPath)}}"
-                                             on-focus="_resetFieldError"
-                                             error-message="A valid email address is required">
-                                    <iron-icon prefix icon="communication:email"></iron-icon>
-                                </paper-input>
-                            </div>
-
+                    <div class="input-container" title="{{_getTitleValue(editedItem.user.profile.job_title)}}">
+                        <!-- Position -->
+                        <paper-input label="Position"
+                                     value="{{editedItem.user.profile.job_title}}"
+                                     placeholder="Enter Position"
+                                     maxlength="45"
+                                     on-focus="_resetFieldError"
+                                     class$="validate-input {{_setRequired('user.profile.job_title', staffsBase)}}"
+                                     disabled="{{requestInProcess}}"
+                                     readonly$="{{requestInProcess}}"
+                                     required="{{_setRequired('user.profile.job_title', staffsBase)}}"
+                                     invalid="{{errors.profile.job_title}}"
+                                     error-message="{{errors.profile.job_title}}">
+                        </paper-input>
+                    </div>
+                    <div class="row-h group">
+                        <div class="input-container" title="{{_getTitleValue(editedItem.user.profile.phone_number)}}">
+                            <!-- Phone number -->
+                            <paper-input label="Phone number"
+                                         value="{{editedItem.user.profile.phone_number}}"
+                                         allowed-pattern="[\d\s-]"
+                                         placeholder="Enter Phone"
+                                         maxlength="20"
+                                         class$="validate-input {{_setRequired('user.profile.phone_number', staffsBase)}}"
+                                         disabled="{{requestInProcess}}"
+                                         readonly$="{{requestInProcess}}"
+                                         invalid="{{errors.user.profile.phone_number}}"
+                                         error-message="{{errors.user.profile.phone_number}}"
+                                         required="{{_setRequired('user.profile.phone_number', staffsBase)}}">
+                                <iron-icon prefix icon="communication:phone"></iron-icon>
+                            </paper-input>
                         </div>
 
-                        <div class="row-h group">
-                            <!-- Active? -->
-                            <div class="staff-check-box active-box input-container">
-                                <etools-checkable-input checked="{{item.user.is_active}}"
-                                                        label="Active staff member?"
-                                                        type="checkbox"
-                                                        label-alignment="right"
-                                                        readonly$="[[isReadOnly('user.is_active', basePermissionPath)]]">
-                                </etools-checkable-input>
-                            </div>
-                            <!--receive notification-->
-                            <div class="staff-check-box notify-box input-container input-container-ms">
-                                <etools-checkable-input checked="{{item.receive_audit_notifications}}"
-                                                        label="Receive notification on TPM tasks?"
-                                                        type="checkbox"
-                                                        label-alignment="right"
-                                                        readonly$="[[isReadOnly('receive_audit_notifications', basePermissionPath)]]">
-                                </etools-checkable-input>
-                            </div>
-                        </div>
 
                     </div>
+
+                    <div class="row-h group">
+                        <!--receive notification-->
+                        <div class="staff-check-box notify-box input-container input-container-l">
+                            <etools-checkable-input checked="{{editedItem.isActive}}"
+                                                    label="Is active"
+                                                    disabled="{{requestInProcess}}"
+                                                    readonly$="{{requestInProcess}}"
+                                                    type="checkbox"
+                                                    label-alignment="right">
+                            </etools-checkable-input>
+                        </div>
+                        <div class="staff-check-box notify-box input-container input-container-l">
+                            <etools-checkable-input checked="{{editedItem.isNotify}}"
+                                                    label="Is notify"
+                                                    disabled="{{requestInProcess}}"
+                                                    readonly$="{{requestInProcess}}"
+                                                    type="checkbox"
+                                                    label-alignment="right">
+                            </etools-checkable-input>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
+        </dialog-element>
 
-            </template>
-        </div>
-
-        <custom-validator id="email-validator" validator-name="emailValidator"></custom-validator>
-
-        <div class="row-h" hidden$="[[!_emptyList(dataItems.length)]]">
-            <p>There are no assessments added.</p>
-        </div>
-
-        <div id="bottom-actions" class="row-h" hidden$="[[!_canBeRemoved()]]">
-            <paper-fab icon="add"
-                       on-tap="_addNewStaffMember"
-                       title="Add"></paper-fab>
-        </div>
 
     </template>
+
     <!-- inject scripts './partner-staff-members-tab.js'-->
 </dom-module>

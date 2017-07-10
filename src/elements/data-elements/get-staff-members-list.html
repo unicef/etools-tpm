@@ -1,0 +1,132 @@
+<!--import [polymer, etools-ajax, lodash, etools-app-config, permission-controller]-->
+
+<dom-module id="get-staff-members-list">
+
+    <template>
+
+        <etools-ajax method="GET"
+                     url="{{url}}"
+                     on-success="_handleDataResponse"
+                     on-fail="_handleError"></etools-ajax>
+
+        <etools-ajax method="OPTIONS"
+                     url="[[optionsUrl]]"
+                     on-success="_handleOptionsResponse"
+                     on-fail="_handleOptionsResponse"></etools-ajax>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'get-staff-members-list',
+
+            behaviors: [
+                etoolsAppConfig.globals,
+                TPMBehaviors.PermissionController
+            ],
+
+            properties: {
+                vendorNumber: {
+                    type: Number,
+                    notify: true
+                },
+                queries: {
+                    type: Object,
+                    notify: true
+                },
+                dataItems: {
+                    type: Object,
+                    notify: true
+                },
+                listLoading: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                datalength: {
+                    type: Number,
+                    notify: true
+                },
+                requestsCompleted: {
+                    type: Object,
+                    value: {}
+                },
+                staffsBase: {
+                    type: String,
+                    notify: true,
+                    value: ''
+                }
+            },
+
+            observers: ['_startRequest(vendorNumber, queries)'],
+
+            _startRequest: function(vendorNumber, listQueries) {
+                if (!vendorNumber || !listQueries) { return; }
+
+                this.listLoading = true;
+                let queriesString = this._prepareQueries(listQueries);
+                this.requestsCompleted = {};
+                this.url = this.getEndpoint('partnerDetails', {id: vendorNumber}).url + queriesString;
+                if (this.collectionExists(`staff_members_${vendorNumber}`)) {
+                    this.requestsCompleted.options = true;
+                } else {
+                    this.optionsUrl = this.url;
+                }
+            },
+
+            _prepareQueries: function(listQueries) {
+                let queries = [];
+                _.each(listQueries, (value, key) => {
+                    if (key !== 'search' || !!value) {
+                        queries.push(`${key}=${value}`);
+                    }
+
+                });
+                return `?ordering=-id&${queries.join('&')}`;
+            },
+
+            _handleDataResponse: function(data) {
+                this.responseData = data.detail;
+                this.requestsCompleted.data = true;
+                this._handleResponse(this.responseData.staff_members);
+            },
+
+            _handleOptionsResponse: function(data) {
+                let actions = data.detail && data.detail.actions;
+                if (actions) {
+                    this._addToCollection(`staff_members_${this.vendorNumber}`, data.detail.actions);
+                } else {
+                    console.error('Can not load permissions for engagement');
+                }
+
+                this.requestsCompleted.options = true;
+                this._handleResponse(this.responseData.staff_members);
+            },
+
+            _handleResponse: function(data) {
+                if (!this.requestsCompleted.data || !this.requestsCompleted.options) { return; }
+
+                this.dataItems = data.results;
+                if (this.queries && !this.queries.search) {
+                    this.datalength = data.count;
+                }
+                this.listLoading = false;
+                this.url = null;
+                this.staffsBase = `staff_members_${this.vendorNumber}`;
+            },
+
+            _handleError: function(event, error) {
+                let responseData = error && error.request && error.request.detail &&
+                        error.request.detail.request && error.request.detail.request.xhr;
+                console.error(responseData);
+                this.listLoading = false;
+                this.url = null;
+            }
+
+        });
+
+    </script>
+
+</dom-module>

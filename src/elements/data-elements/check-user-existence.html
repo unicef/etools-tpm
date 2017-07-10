@@ -1,0 +1,72 @@
+<!--import [polymer, etools-ajax, etools-app-config]-->
+
+<dom-module id="check-user-existence">
+
+    <template>
+
+        <etools-ajax method="GET"
+                     url="{{url}}"
+                     on-success="_handleResponse"
+                     on-fail="_handleError"></etools-ajax>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'check-user-existence',
+
+            behaviors: [
+                etoolsAppConfig.globals
+            ],
+
+            properties: {
+                email: {
+                    type: String,
+                    notify: true,
+                    observer: '_emailChanged'
+                },
+                emailChecking: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                errors: {
+                    type: String,
+                    notify: true
+                }
+            },
+
+            _emailChanged: function(email) {
+                if (!email) { return; }
+                if (isNaN(+this.vendorNumber)) { return; }
+
+                this.emailChecking = true;
+                this.url = this.getEndpoint('userExistence', {email: email, id: this.vendorNumber}).url;
+                this.email = null;
+            },
+
+            _handleResponse: function(event, detail) {
+                if (!detail || !detail.results || !detail.results.length) {
+                    this._handleError();
+                    return;
+                }
+
+                if (!this.errors) { this.set('errors', {}); }
+                if (!this.errors.user) { this.set('errors.user', {}); }
+                if (!this.errors.user.email) { this.set('errors.user.email', 'This field must be unique.'); }
+                this.emailChecking = false;
+                this.url = null;
+            },
+
+            _handleError: function() {
+                this.emailChecking = false;
+                this.url = null;
+            }
+
+        });
+
+    </script>
+
+</dom-module>

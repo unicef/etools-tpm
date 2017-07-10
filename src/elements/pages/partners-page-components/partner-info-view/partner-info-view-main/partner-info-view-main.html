@@ -34,11 +34,11 @@
                                              base-permission-path="{{permissionBase}}"
                                              partner="[[partner]]"></partner-details-tab>
 
-                        <etools-content-panel panel-title="Staff Members ([[partner.staff_members.length]])" show-expand-btn>
-                            <partner-staff-members-tab id="staffMembers"
-                                                       base-permission-path="{{permissionBase}}"
-                                                       data-items="{{partner.staff_members}}"></partner-staff-members-tab>
-                        </etools-content-panel>
+
+                        <partner-staff-members-tab id="staffMembers"
+                                                   base-permission-path="{{permissionBase}}"
+                                                   vendor-number="{{partner.vendor_number}}"
+                                                   data-items="{{partner.staff_members}}"></partner-staff-members-tab>
                     </div>
 
                     <div name="attachments">
