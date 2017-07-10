@@ -3,7 +3,10 @@
 Polymer({
     is: 'visit-status',
 
-    behaviors: [TPMBehaviors.StaticDataController],
+    behaviors: [
+        TPMBehaviors.PermissionController,
+        TPMBehaviors.StaticDataController
+    ],
 
     properties: {},
 
