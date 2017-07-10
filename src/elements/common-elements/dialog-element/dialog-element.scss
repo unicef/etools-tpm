@@ -1,0 +1,88 @@
+paper-dialog {
+    background-color: #ffffff;
+    border-radius: 4px;
+    width: 96%;
+    max-width: 700px !important;
+}
+
+//@media screen and (max-width: 767px) {
+//    paper-dialog {
+//        width: calc(100vw - 30px);
+//    }
+//}
+//
+//@media screen and (max-width: 480px) {
+//    paper-dialog {
+//        width: calc(100vw - 30px);
+//    }
+//}
+
+#buttons {
+    display: block;
+    margin-top: 25px;
+    padding: 10px 8px 10px 24px;
+    overflow: hidden;
+    border-top: 1px solid var(--gray-lighter);
+
+    paper-button { height: 37px; }
+}
+
+.right { float: right; }
+.left { float: left; }
+
+.btn-cancel {
+    color: var(--gray-mid);
+    font-weight: 500;
+    &:not([dialog-dismiss]) { color: var(--gray-mid); }
+    z-index: 5;
+}
+
+.btn-confirm {
+    min-width: 90px;
+    color: #ffffff;
+    background-color: var(--module-primary);
+    font-weight: 500;
+    z-index: 5;
+    margin-right: 9px;
+    &[delete-btn] {
+        background-color: var(--module-error);
+    }
+}
+
+.dialog-title {
+    padding: 16px 24px 10px 36px !important;
+    min-height: 26px;
+    margin-top: 0 !important;
+}
+
+.close-btn {
+    position: absolute;
+    right: -5px;
+    top: 4px;
+    margin-top: 14px !important;
+    color: var(--gray-mid-dark);
+    cursor: pointer;
+    transition: 0.15s;
+    z-index: 5;
+}
+.close-btn:hover { color: #000;}
+
+.loading {
+    margin-top: 3px;
+    vertical-align: top;
+    margin-left: 15px;
+}
+
+.loading:not([active]) {
+    display: none !important;
+}
+
+paper-button.btn-cancel[disabled] {
+    background-color: transparent;
+    color: var(--gray-mid)
+}
+
+paper-button[disabled]:not(.btn-cancel) {
+     background-color:  var(--gray-lighter) !important;
+     color: var(--gray-mid) !important;
+ }
