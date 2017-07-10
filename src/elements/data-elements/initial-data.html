@@ -79,6 +79,10 @@
 
                     this._addToCollection('new_visit', actions);
 
+                    let statusesData = this.getChoices('new_visit.status');
+                    if (!statusesData) { console.error('Can not load visit statuses data'); }
+                    this._setData('statuses', statusesData);
+
                     dataLoaded.visitsOptions = true;
                     this._allDataLoaded();
                 },

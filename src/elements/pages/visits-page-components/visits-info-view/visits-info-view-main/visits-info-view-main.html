@@ -1,20 +1,9 @@
 <!--import [polymer, app-route, app-layout, paper-tabs, iron-pages]-->
-<!--import [shared-styles, module-styles, pages-header-element, file-attachments-tab,
-            visit-status, visit-details-tab, visit-locations-tab, visit-report-tab]-->
+<!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status]-->
 
 <dom-module id="visits-info-view-main">
     <template>
-        <!-- inject styles './visits-info-view-main.scss'-->
-        <style include="shared-styles module-styles">
-            .view-container {
-                display: flex;
-                padding: 15px;
-            }
-
-            file-attachments-tab {
-                margin-bottom: 30px;
-            }
-        </style>
+        <style include="shared-styles module-styles main-page-styles"></style>
         <app-route
                 route="{{route}}"
                 pattern="/:tab"
@@ -37,28 +26,15 @@
                             attr-for-selected="name">
 
                     <div name="details">
-                        <visit-details-tab></visit-details-tab>
-                        <visit-locations-tab></visit-locations-tab>
+                        Visit details
                     </div>
 
                     <div name="report">
-                        <visit-report-tab></visit-report-tab>
+                        Visit Report tab
                     </div>
 
                     <div name="attachments">
-                        <file-attachments-tab title="Related Documents"
-                                              readonly
-                                              allow-download
-                                              file-types="[[fileTypes]]"
-                                              files="[[files]]"
-                                              file-checkbox-visible
-                                              file-checkbox-title="Access to TPM"></file-attachments-tab>
-
-                        <file-attachments-tab title="Upload New"
-                                              allow-download
-                                              allow-delete
-                                              file-types="[[fileTypes]]"
-                                              files="[[files]]"></file-attachments-tab>
+                        Visit Attachments
                     </div>
 
                 </iron-pages>
@@ -67,7 +43,7 @@
             </div>
 
             <div id="sidebar">
-                <visit-status></visit-status>
+                <visit-status visit="[[visit]]"></visit-status>
             </div>
         </div>
 

@@ -1,109 +1,38 @@
 <!--import [polymer, iron-icons, iron-icons/av-icons, iron-flex-layout, paper-button,
-            etools-content-panel, paper-button, paper-menu-button, paper-icon-button, paper-menu, paper-item]-->
+            etools-content-panel, static-data-behavior]-->
 
 <dom-module id="visit-status">
     <template>
         <!-- inject styles './visit-status.scss'-->
         <style include="module-styles"></style>
 
-        <etools-content-panel title="Status">
+        <etools-content-panel panel-title="Status">
 
-            <div class="status-list">
-                <div class$="status-container [[_getStatusContainerClass(status, 1)]]">
-                    <div class="status-icon">
-                    <span class="icon-wrapper">
-                        <span class="status-nr">1</span>
-                        <iron-icon icon="check"></iron-icon>
-                    </span>
-                    </div>
-                    <div class="status">
-                        <span>Draft</span>
-                    </div>
-                </div>
+            <div class="status-list" id="statusList">
 
-                <div class="divider"><div class="status-divider"></div></div>
+                <template is="dom-repeat" items="{{statuses}}" as="status">
 
-                <div class$="status-container [[_getStatusContainerClass(status, 2)]]">
-                    <div class="status-icon">
-                    <span class="icon-wrapper">
-                        <span class="status-nr">2</span>
-                        <iron-icon icon="check"></iron-icon>
-                    </span>
-                    </div>
-                    <div class="status">
-                        <span>Submitted</span>
-                    </div>
-                </div>
-
-                <div class="divider"><div class="status-divider"></div></div>
-
-                <div class$="status-container [[_getStatusContainerClass(status, 3)]]">
-                    <div class="status-icon">
-                    <span class="icon-wrapper">
-                        <span class="status-nr">3</span>
-                        <iron-icon icon="check"></iron-icon>
-                    </span>
-                    </div>
-                    <div class="status">
-                        <span>TPM Accepted</span>
-                    </div>
-                </div>
-
-                <div class="divider"><div class="status-divider"></div></div>
-
-                <div class$="status-container [[_getStatusContainerClass(status, 4)]]">
-                    <div class="status-icon">
-                    <span class="icon-wrapper">
-                        <span class="status-nr">4</span>
-                        <iron-icon icon="check"></iron-icon>
-                    </span>
-                    </div>
-                    <div class="status">
-                        <span>Confirmed</span>
-                    </div>
-                </div>
-
-                <div class="divider"><div class="status-divider"></div></div>
-
-                <div class$="status-container [[_getStatusContainerClass(status, 5)]]">
-                    <div class="status-icon">
-                    <span class="icon-wrapper">
-                        <span class="status-nr">5</span>
-                        <iron-icon icon="check"></iron-icon>
-                    </span>
-                    </div>
-                    <div class="status">
-                        <span>TPM Reported</span>
-                    </div>
-                </div>
-
-                <div class="divider"><div class="status-divider"></div></div>
-
-                <div class$="status-container [[_getStatusContainerClass(status, 6)]]">
-                    <div class="status-icon">
-                    <span class="icon-wrapper">
-                        <span class="status-nr">6</span>
-                        <iron-icon icon="check"></iron-icon>
-                    </span>
-                    </div>
-                    <div class="status">
-                        <span>Approved</span>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="status-buttons">
-                <paper-button raised>
-                    <span>Save</span>
-                    <paper-menu-button horizontal-align="right" opened="{{statusBtnMenuOpened}}">
-                        <paper-icon-button icon="expand-more" class="dropdown-trigger"></paper-icon-button>
-                        <div class="dropdown-content">
-                            <div class="other-title">Other Actions</div>
-                            <div class="other-options" on-click="closeMenu">Draft</div>
+                    <div hidden$="[[hideStatus(visit.status, status.value)]]">
+                        <div class$="status-container [[_getStatusClass(visit.status, status.value, statuses)]]">
+                            <div class="status-icon">
+                            <span class="icon-wrapper">
+                                <span class="status-nr">[[setIndex(status.value, statuses)]]</span>
+                                <iron-icon icon="check"></iron-icon>
+                                <iron-icon icon="warning"></iron-icon>
+                            </span>
+                            </div>
+                            <div class="status">
+                                <span class="status-header">[[status.display_name]]</span>
+                                <span class="status-date">
+                                <!--{{_getFormattedDate('partner_contacted_at', engagementData.partner_contacted_at)}}-->
+                            </span>
+                            </div>
                         </div>
-                    </paper-menu-button>
-                </paper-button>
+
+                        <div class="divider" hidden$="[[hideDivider(status.value, statuses)]]"><div class="status-divider"></div></div>
+                    </div>
+
+                </template>
             </div>
 
         </etools-content-panel>

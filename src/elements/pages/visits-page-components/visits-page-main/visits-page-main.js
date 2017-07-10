@@ -14,6 +14,14 @@ Polymer({
         withoutPagination: {
             type: Boolean,
             value: true
+        },
+        visitInfo: {
+            type: Object,
+            value: function() {
+                return {
+                    status: 'draft'
+                };
+            }
         }
     },
     observers: [
