@@ -1,21 +1,38 @@
-<!--import [polymer, module-styles, page-layout-styles, shared-styles, list-tab-main, dialog-element,
-            search-and-filter, partners-list-data, pages-header-element, permission-controller]-->
+<!--import [polymer, module-styles, page-layout-styles, tab-inputs-styles, shared-styles, list-tab-main, dialog-element,
+            search-and-filter, partners-list-data, pages-header-element, permission-controller, app-route/app-location,
+            static-data-behavior, common-methods-behavior, get-vendor-data, update-vendor-data, etools-app-config]-->
 
 <dom-module id="partners-list-view">
     <template>
-        <style include="page-layout-styles shared-styles module-styles">
+        <style include="page-layout-styles tab-inputs-styles shared-styles module-styles">
             :host {
                 position: relative;
                 display: block;
             }
 
-            paper-input.vendor-number-input {
-                max-width: 45%;
-                margin-top: 6px !important;
+            pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
+
+            .po-loading {
+                position: absolute;
+                right: -32px;
+                top: 25px;
+                left: auto;
             }
 
-            pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
+            .po-loading:not([active]) {
+                display: none !important;
+            }
         </style>
+
+        <app-location path="{{path}}"></app-location>
+
+        <get-vendor-data vendor="{{data}}" original-data="{{originalData}}" vendor-number="{{vendorNumber}}"></get-vendor-data>
+        <update-vendor-data
+                vendor="{{data}}"
+                update-data="{{updateData}}"
+                vendor-updating="{{vendorUpdating}}"
+                errors="{{errors}}">
+        </update-vendor-data>
 
         <partners-list-data
                 id="listData"
@@ -40,8 +57,128 @@
                 has-collapse>
         </list-tab-main>
 
-        <dialog-element title="Add Vendor" confirm-btn-text="sync from vision" opened="{{newVendorOpened}}">
-            <paper-input class="vendor-number-input" label="Vendor Number"></paper-input>
+        <dialog-element opened="{{newVendorOpened}}" dialog-title="Add New Vendor" confirm-btn-text="Add" request-in-process="[[requestInProcess]]">
+            <div class="row-h repeatable-item-container" without-line>
+                <div class="repeatable-item-content">
+                    <div class="row-h group">
+                        <div class="input-container input-container-45">
+                            <!-- Vendor Number -->
+                            <paper-input label="[[getLabel('vendor_number', basePermissionPath)]]"
+                                         id="vendorNumber"
+                                         field="vendor_number"
+                                         maxlength="30"
+                                         class$="disabled-as-readonly [[_setRequired('vendor_number', basePermissionPath)]]"
+                                         value="{{data.vendor_number}}"
+                                         allowed-pattern="[\d]"
+                                         placeholder="[[getPlaceholderText('vendor_number', basePermissionPath)]]"
+                                         invalid$="{{_checkInvalid(errors.vendor_number)}}"
+                                         error-message="{{errors.vendor_number}}"
+                                         required$="[[_setRequired('vendor_number', basePermissionPath)]]"
+                                         disabled="[[requestInProcess]]"
+                                         readonly="[[requestInProcess]]"
+                                         on-focus="_resetFieldError"
+                                         on-blur="_requestVendor">
+                            </paper-input>
+                            <etools-loading active="{{requestInProcess}}" no-overlay loading-text="" class="po-loading"></etools-loading>
+                        </div>
+
+                        <div class="input-container input-container-45">
+                            <!-- TPM Partner -->
+                            <paper-input label="[[getLabel('name', basePermissionPath)]]"
+                                         class="without-border"
+                                         disabled readonly
+                                         value="[[data.name]]"
+                                         placeholder="[[getPlaceholderText('name', basePermissionPath)]]">
+                            </paper-input>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-45">
+                            <!-- Partner Address -->
+                            <paper-input label="[[getLabel('street_address', basePermissionPath)]]"
+                                         class="without-border"
+                                         disabled readonly
+                                         value="[[data.street_address]]"
+                                         placeholder="[[getPlaceholderText('street_address', basePermissionPath)]]">
+                            </paper-input>
+                        </div>
+
+                        <div class="input-container input-container-45">
+                            <!-- Partner Postal Code -->
+                            <paper-input label="[[getLabel('postal_code', basePermissionPath)]]"
+                                         class="without-border"
+                                         disabled readonly
+                                         value="[[data.postal_code]]"
+                                         placeholder="[[getPlaceholderText('postal_code', basePermissionPath)]]">
+                            </paper-input>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-45">
+                            <!-- Partner City -->
+                            <paper-input label="[[getLabel('city', basePermissionPath)]]"
+                                         class="without-border"
+                                         disabled readonly
+                                         value="[[data.city]]"
+                                         placeholder="[[getPlaceholderText('city', basePermissionPath)]]">
+                            </paper-input>
+                        </div>
+
+                        <div class="input-container input-container-45">
+                            <!-- Partner Country -->
+                            <paper-input label="[[getLabel('country', basePermissionPath)]]"
+                                         class="without-border"
+                                         disabled readonly
+                                         value="[[data.country]]"
+                                         placeholder="[[getPlaceholderText('country', basePermissionPath)]]">
+                            </paper-input>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-45">
+                            <!-- Phone Number -->
+                            <paper-input
+                                    label="[[getLabel('phone_number', basePermissionPath)]]"
+                                    class$="validate-field disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
+                                    field="phone_number"
+                                    allowed-pattern="[\d\s-]"
+                                    maxlength="20"
+                                    required$="[[_setRequired('phone_number', basePermissionPath, requestInProcess)]]"
+                                    disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
+                                    readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
+                                    value="{{data.phone_number}}"
+                                    on-focus="_resetFieldError"
+                                    invalid$="{{errors.phone_number}}"
+                                    error-message="{{errors.phone_number}}"
+                                    placeholder="[[getPlaceholderText('phone_number', basePermissionPath)]]">
+                                <iron-icon prefix icon="communication:phone"></iron-icon>
+                            </paper-input>
+                        </div>
+
+                        <div class="input-container input-container-45">
+                            <!-- E-mail address -->
+                            <paper-input
+                                    id="emailInput"
+                                    label$="[[getLabel('email', basePermissionPath)]]"
+                                    class$="validate-field disabled-as-readonly [[_setRequired('email', basePermissionPath)]]"
+                                    field="email"
+                                    required$="[[_setRequired('email', basePermissionPath, requestInProcess)]]"
+                                    disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
+                                    readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
+                                    value="{{data.email}}"
+                                    on-focus="_resetFieldError"
+                                    invalid$="{{errors.email}}"
+                                    error-message="{{errors.email}}"
+                                    placeholder="[[getPlaceholderText('email', basePermissionPath)]]">
+                                <iron-icon prefix icon="communication:email"></iron-icon>
+                            </paper-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </dialog-element>
     </template>
 

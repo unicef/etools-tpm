@@ -44,7 +44,13 @@ App global configuration
             },
             changeCountry: {
                 url: '/users/api/changecountry/'
-            }
+            },
+            vendorData: {
+                template: '/api/tpm/partners/sync/<%=id%>/'
+            },
+            vendorNumber: {
+                template: '/api/tpm/partners/<%=id%>/'
+            },
         },
         localEndpoints: {
             partnerDetails: {

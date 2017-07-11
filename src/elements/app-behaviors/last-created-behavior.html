@@ -1,0 +1,24 @@
+<script>
+    'use strict';
+    (function () {
+        var _data = {};
+
+        window.TPMBehaviors = window.TPMBehaviors || {};
+        window.TPMBehaviors.LastCreatedController = {
+            _setLastData: function(data, key) {
+                if (!data || !key || !data.id) { return false; }
+                _data[key] = data;
+                return true;
+            },
+
+            getLastData: function(id, key) {
+                if (!_data[key]) { return null; }
+                let data = _data[key];
+                return +data.id === +id ? data : null;
+            },
+
+        };
+    })()
+
+
+</script>

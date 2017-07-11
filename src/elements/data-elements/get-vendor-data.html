@@ -1,0 +1,68 @@
+<!--import [polymer, etools-ajax, lodash, etools-app-config, permission-controller, last-created-behavior]-->
+
+<dom-module id="get-vendor-data">
+
+    <template>
+
+        <etools-ajax url="[[url]]"
+                     on-success="_handleResponse"
+                     on-fail="_handleError"></etools-ajax>
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'get-vendor-data',
+
+            behaviors: [
+                etoolsAppConfig.globals,
+                TPMBehaviors.PermissionController,
+                TPMBehaviors.LastCreatedController,
+            ],
+
+            properties: {
+                vendorNumber: {
+                    type: Number,
+                    notify: true,
+                    observer: '_vendorNumberChanged'
+                },
+                vendor: {
+                    type: Object,
+                    notify: true
+                },
+                originalData: {
+                    type: Object,
+                    notify: true
+                }
+            },
+
+            _handleResponse: function (data, detail) {
+                this.finishRequest(detail || {});
+                this.url = null;
+            },
+
+            finishRequest: function(data) {
+                let partnerId = data && data.id;
+                this._setLastData(data, `partner_${partnerId}`);
+
+                this.originalData = _.cloneDeep(data);
+                this.vendor = data;
+                this.fire('vendor-loaded', {success: true});
+            },
+
+            _handleError: function () {
+                this.originalData = {};
+                this.fire('vendor-loaded');
+            },
+
+            _vendorNumberChanged: function(vendorNumber , oldNumber) {
+                if (!vendorNumber || vendorNumber === oldNumber) { return; }
+                this.url = this.getEndpoint('vendorData', {id: vendorNumber}).url;
+            }
+
+        });
+
+    </script>
+
+</dom-module>
