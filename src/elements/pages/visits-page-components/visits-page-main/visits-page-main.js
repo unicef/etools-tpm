@@ -15,7 +15,7 @@ Polymer({
             type: Boolean,
             value: true
         },
-        visitInfo: Object
+        visitDetails: Object
     },
     observers: [
         '_routeConfig(route)'

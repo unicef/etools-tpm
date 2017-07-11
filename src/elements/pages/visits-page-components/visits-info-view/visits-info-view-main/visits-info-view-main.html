@@ -1,13 +1,19 @@
-<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages]-->
-<!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status]-->
+<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea]-->
+<!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data,
+            permission-controller, textarea-max-rows-behavior, tab-inputs-styles]-->
 
 <dom-module id="visits-info-view-main">
     <template>
-        <style include="shared-styles module-styles main-page-styles"></style>
+        <style include="shared-styles module-styles main-page-styles tab-inputs-styles"></style>
         <app-route
                 route="{{route}}"
                 pattern="/:tab"
                 data="{{routeData}}"></app-route>
+
+        <update-visit-details-data visit="{{visit}}"
+                                   new-visit-details="[[newVisitDetails]]"
+                                   error-object="{{errorObject}}"
+                                   base-permission-path="{{permissionBase}}"></update-visit-details-data>
 
         <pages-header-element show-export-button
                               title="Assign TPM visit"></pages-header-element>
@@ -26,6 +32,22 @@
                             attr-for-selected="name">
 
                     <div name="details">
+
+                        <template is="dom-if" if="{{_showRejectionReason(visit)}}">
+                            <etools-content-panel class="reject-tab" panel-title="Rejection Reason">
+                                <div class="row-h group">
+                                    <div class="input-container input-container-l">
+                                        <!-- Comments -->
+                                        <paper-textarea label="Comments"
+                                                        value="{{visit.reject_comment}}"
+                                                        class="without-border"
+                                                        disabled readonly>
+                                        </paper-textarea>
+                                    </div>
+                                </div>
+                            </etools-content-panel>
+                        </template>
+
                         Visit details
                     </div>
 
@@ -46,6 +68,20 @@
                 <visit-status visit="[[visit]]" permission-base="[[permissionBase]]"></visit-status>
             </div>
         </div>
+
+        <dialog-element opened="{{dialogOpened}}"
+                        dialog-title="Reject Visit"
+                        confirm-btn-text="Continue">
+            <paper-textarea label="Reject Reason"
+                            max-rows="4"
+                            required
+                            error-message="This field is required."
+                            id="rejectionReasonInput"
+                            class="required"
+                            on-focus="_resetFieldError"
+                            placeholder="Enter reason of reject">
+            </paper-textarea>
+        </dialog-element>
 
     </template>
 
