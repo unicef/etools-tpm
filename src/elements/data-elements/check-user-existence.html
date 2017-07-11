@@ -40,10 +40,10 @@
 
             _emailChanged: function(email) {
                 if (!email) { return; }
-                if (isNaN(+this.vendorNumber)) { return; }
+                if (isNaN(+this.partnerId)) { return; }
 
                 this.emailChecking = true;
-                this.url = this.getEndpoint('userExistence', {email: email, id: this.vendorNumber}).url;
+                this.url = this.getEndpoint('userExistence', {email: email, id: this.partnerId}).url;
                 this.email = null;
             },
 

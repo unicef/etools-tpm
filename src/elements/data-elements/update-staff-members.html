@@ -23,7 +23,7 @@
             ],
 
             properties: {
-                vendorNumber: String,
+                partnerId: String,
                 staffData: {
                     type: Object,
                     notify: true,
@@ -33,14 +33,14 @@
 
             _dataChanged: function(data) {
                 if (!data) { return; }
-                if (!this.vendorNumber) { throw 'Vendor number is not provided!'; }
+                if (!this.partnerId) { throw 'Vendor number is not provided!'; }
                 if (!data.method || !data.data) { throw 'Method or data are missing!'}
 
                 this.lastRequestData = _.cloneDeep(data);
 
                 this.method = data.method;
-                this.url = this.getEndpoint('partnerDetails', {id: this.vendorNumber}).url + data.id;
-                this.postData = data;
+                this.url = this.getEndpoint('staffMembers', {id: this.partnerId}).url + data.id;
+                this.postData = data.data;
                 this.set('staffData', null);
             },
 

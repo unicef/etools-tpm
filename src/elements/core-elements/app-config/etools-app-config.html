@@ -37,6 +37,9 @@ App global configuration
             staffMembers: {
                 template: '/api/tpm/partners/<%=id%>/staff-members/'
             },
+            userExistence: {
+                template: '/api/tpm/partners/<%=id%>/staff-members/?search=<%=email%>'
+            },
             visitsList: {
                 url: '/api/tpm/visits/'
             },

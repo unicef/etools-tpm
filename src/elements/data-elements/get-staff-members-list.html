@@ -28,7 +28,7 @@
             ],
 
             properties: {
-                vendorNumber: {
+                partnerId: {
                     type: Number,
                     notify: true
                 },
@@ -60,16 +60,16 @@
                 }
             },
 
-            observers: ['_startRequest(vendorNumber, queries)'],
+            observers: ['_startRequest(partnerId, queries)'],
 
-            _startRequest: function(vendorNumber, listQueries) {
-                if (!vendorNumber || !listQueries) { return; }
+            _startRequest: function(partnerId, listQueries) {
+                if (!partnerId || !listQueries) { return; }
 
                 this.listLoading = true;
                 let queriesString = this._prepareQueries(listQueries);
                 this.requestsCompleted = {};
-                this.url = this.getEndpoint('partnerDetails', {id: vendorNumber}).url + queriesString;
-                if (this.collectionExists(`staff_members_${vendorNumber}`)) {
+                this.url = this.getEndpoint('staffMembers', {id: partnerId}).url + queriesString;
+                if (this.collectionExists(`staff_members_${partnerId}`)) {
                     this.requestsCompleted.options = true;
                 } else {
                     this.optionsUrl = this.url;
@@ -90,19 +90,19 @@
             _handleDataResponse: function(data) {
                 this.responseData = data.detail;
                 this.requestsCompleted.data = true;
-                this._handleResponse(this.responseData.staff_members);
+                this._handleResponse(this.responseData);
             },
 
             _handleOptionsResponse: function(data) {
                 let actions = data.detail && data.detail.actions;
                 if (actions) {
-                    this._addToCollection(`staff_members_${this.vendorNumber}`, data.detail.actions);
+                    this._addToCollection(`staff_members_${this.partnerId}`, data.detail.actions);
                 } else {
                     console.error('Can not load permissions for engagement');
                 }
 
                 this.requestsCompleted.options = true;
-                this._handleResponse(this.responseData.staff_members);
+                this._handleResponse(this.responseData);
             },
 
             _handleResponse: function(data) {
@@ -114,7 +114,7 @@
                 }
                 this.listLoading = false;
                 this.url = null;
-                this.staffsBase = `staff_members_${this.vendorNumber}`;
+                this.staffsBase = `staff_members_${this.partnerId}`;
             },
 
             _handleError: function(event, error) {

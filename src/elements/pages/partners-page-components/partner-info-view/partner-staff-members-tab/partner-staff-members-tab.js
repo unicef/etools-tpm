@@ -12,9 +12,9 @@ Polymer({
             type: String,
             value: 'staff_members'
         },
-        vendorNumber: {
+        partnerId: {
             type: String,
-            observer: '_changeVendorNumber'
+            observer: '_changePartnerId'
         },
         dataItems: {
             type: Array,
@@ -34,9 +34,7 @@ Polymer({
                             job_title: '',
                             phone_number: ''
                         },
-                        isActive: true,
-                        isNotify: true
-                    }
+                    },
                 };
             }
         },
@@ -45,36 +43,32 @@ Polymer({
             value: function() {
                 return [
                     {
-                        'size': 18,
+                        'size': 16,
                         'label': 'Position',
                         'name': 'user.profile.job_title'
                     }, {
-                        'size': 18,
+                        'size': 16,
                         'label': 'First Name',
                         'name': 'user.first_name'
                     }, {
-                        'size': 18,
+                        'size': 16,
                         'label': 'Last Name',
                         'name': 'user.last_name'
                     }, {
-                        'size': 18,
+                        'size': 16,
                         'label': 'Phone Number',
                         'name': 'user.profile.phone_number'
                     }, {
-                        'size': 18,
+                        'size': 16,
                         'label': 'E-mail Address',
                         'name': 'user.email'
                     }, {
-                        'size': 18,
-                        'label': 'Active',
-                        'name': 'user.is_active'
-                    },{
-                        'size': 10,
+                        'size': 5,
                         'label': 'Active',
                         'name': 'user.is_active'
                     },
                     {
-                        'size': 10,
+                        'size': 5,
                         'label': 'Notify',
                         'name': 'receive_tpm_notifications'
                     }
@@ -143,7 +137,7 @@ Polymer({
         this.listPage = 1;
     },
 
-    _changeVendorNumber: function(id) {
+    _changePartnerId: function(id) {
         if (!this._canBeChanged() || !this.basePermissionPath) { return; }
         if (!id) { this.resetList(); }
     },

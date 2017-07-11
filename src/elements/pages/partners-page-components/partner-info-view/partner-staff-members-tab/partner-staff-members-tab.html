@@ -12,16 +12,16 @@
         <!-- inject styles './partner-staff-members-tab.scss'-->
 
         <!--requests-->
-        <get-staff-members-list vendor-number="{{vendorNumber}}"
+        <get-staff-members-list partnerId="{{partnerId}}"
                                 staffs-base="{{staffsBase}}"
                                 datalength="{{datalength}}"
                                 queries="{{listQueries}}"
                                 data-items="{{dataItems}}"
                                 list-loading="{{listLoading}}"></get-staff-members-list>
 
-        <update-staff-members vendor-number="[[vendorNumber]]" staff-data="{{newData}}"></update-staff-members>
+        <update-staff-members partner-id="[[partnerId]]" staff-data="{{newData}}"></update-staff-members>
 
-        <check-user-existence email="{{newEmail}}" email-checking="{{emailChecking}}" errors="{{errors}}" vendor-number="[[vendorNumber]]"></check-user-existence>
+        <check-user-existence email="{{newEmail}}" email-checking="{{emailChecking}}" errors="{{errors}}" partner-id="[[partnerId]]"></check-user-existence>
 
         <!--end requests-->
 
@@ -43,7 +43,7 @@
         </div>
 
 
-        <etools-content-panel panel-title="Audit Team Members ([[_staffLength(datalength, dataItems.length, searchQuery)]])" show-expand-btn>
+        <etools-content-panel panel-title="TPM Staff Members ([[_staffLength(datalength, dataItems.length, searchQuery)]])" show-expand-btn>
 
             <div class="panel-content group">
                 <etools-loading active="[[listLoading]]"  loading-text="Loading list data..." class="loading"></etools-loading>
@@ -61,12 +61,10 @@
                             <paper-icon-button icon="icons:delete" class="edit-icon" on-tap="openDeleteDialog"></paper-icon-button>
                         </div>
                         <div slot="checkbox" class="checkbox">
-                            <paper-checkbox checked="{{item.isActive}}"
-                                            label=""></paper-checkbox>
+                            <paper-checkbox checked="{{item.user.is_active}}" label=""></paper-checkbox>
                         </div>
                         <div slot="checkbox" class="checkbox">
-                            <paper-checkbox checked="{{item.isNotify}}"
-                                            label=""></paper-checkbox>
+                            <paper-checkbox checked="{{item.receive_tpm_notifications}}" label=""></paper-checkbox>
                         </div>
                     </list-element>
                 </template>
@@ -190,18 +188,18 @@
 
                     <div class="row-h group">
                         <!--receive notification-->
-                        <div class="staff-check-box notify-box input-container input-container-l">
-                            <etools-checkable-input checked="{{editedItem.isActive}}"
-                                                    label="Is active"
+                        <div class="input-container">
+                            <etools-checkable-input checked="{{editedItem.user.is_active}}"
+                                                    label="Active"
                                                     disabled="{{requestInProcess}}"
                                                     readonly$="{{requestInProcess}}"
                                                     type="checkbox"
                                                     label-alignment="right">
                             </etools-checkable-input>
                         </div>
-                        <div class="staff-check-box notify-box input-container input-container-l">
-                            <etools-checkable-input checked="{{editedItem.isNotify}}"
-                                                    label="Is notify"
+                        <div class="input-container">
+                            <etools-checkable-input checked="{{editedItem.receive_tpm_notifications}}"
+                                                    label="Notify"
                                                     disabled="{{requestInProcess}}"
                                                     readonly$="{{requestInProcess}}"
                                                     type="checkbox"
