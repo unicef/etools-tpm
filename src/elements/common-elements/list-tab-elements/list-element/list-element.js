@@ -60,6 +60,18 @@ Polymer({
         hover: {
             type: Boolean,
             reflectToAttribute: true
+        },
+        noAdditional: {
+            type: Boolean,
+            value: false
+        },
+        paddingValue: {
+            type: Number,
+            value: 72
+        },
+        level: {
+            type: Number,
+            value: 1
         }
     },
     listeners: {
@@ -67,8 +79,19 @@ Polymer({
         'mouseleave': '_resetHover',
     },
     observers: [
-        '_setRightPadding(headings.*)'
+        '_setRightPadding(headings.*)',
+        '_setLeftPadding(noAdditional, paddingValue, level)'
     ],
+    _setLeftPadding: function(noAdditional, paddingValue, level) {
+        let padding = 0;
+        if (noAdditional) {
+            padding = 15;
+        } else {
+            padding = (paddingValue || 0) * (level || 1);
+        }
+
+        this.paddingLeft = `${padding}px`;
+    },
     _setHover: function() {
         this.hover = true;
     },
