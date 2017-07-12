@@ -31,7 +31,7 @@
                     notify: true,
                     observer: '_idChanged'
                 },
-                visitInfo: {
+                visitDetails: {
                     type: Object,
                     notify: true
                 },
@@ -64,7 +64,7 @@
             _finishRequests: function(data) {
                 if (!this.requestsCompleted.data || !this.requestsCompleted.options) { return; }
 
-                if (data) { this.visitInfo = data; }
+                if (data) { this.visitDetails = data; }
 
                 this.fire('global-loading', {type: 'visit-info'});
                 this.view = 'visit';
@@ -88,11 +88,11 @@
                 }
 
                 this.lastId = +id;
-                this.visitInfo = {};
+                this.visitDetails = {};
                 this.requestsCompleted = {};
 
                 this.fire('global-loading', {message: 'Loading visit data...', active: true, type: 'visit-info'});
-                this.visitEndpoint = this.getEndpoint('visitInfo', {id: id});
+                this.visitEndpoint = this.getEndpoint('visitDetails', {id: id});
 
                 if (this.collectionExists(`visit_${id}`)) {
                     this.requestsCompleted.options = true;

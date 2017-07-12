@@ -20,7 +20,7 @@
                     <!-- Organization name -->
                     <paper-input label="{{getLabel('name', basePermissionPath)}}"
                                  value="{{partner.name}}"
-                                 placeholder="{{getPlaceholderText('name', basePermissionPath, 'readonly')}}"
+                                 placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
@@ -28,7 +28,7 @@
                     <!-- Vendor number -->
                     <paper-input label="{{getLabel('vendor_number', basePermissionPath)}}"
                                  value="{{partner.vendor_number}}"
-                                 placeholder="{{getPlaceholderText('vendor_number', basePermissionPath, 'readonly')}}"
+                                 placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
@@ -37,7 +37,7 @@
                     <!-- Address -->
                     <paper-input label="{{getLabel('street_address', basePermissionPath)}}"
                                  value="{{partner.street_address}}"
-                                 placeholder="{{getPlaceholderText('street_address', basePermissionPath, 'readonly')}}"
+                                 placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly>
                             <iron-icon hidden="{{!_showPrefix('street_address', basePermissionPath, partner.street_address, 'readonly')}}"
@@ -53,7 +53,7 @@
                     <!-- Partner Postal Code -->
                     <paper-input label="{{getLabel('postal_code', basePermissionPath)}}"
                                  value="{{partner.postal_code}}"
-                                 placeholder="{{getPlaceholderText('postal_code', basePermissionPath, 'readonly')}}"
+                                 placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
@@ -62,7 +62,7 @@
                     <!-- Partner City -->
                     <paper-input label="{{getLabel('city', basePermissionPath)}}"
                                  value="{{partner.city}}"
-                                 placeholder="{{getPlaceholderText('city', basePermissionPath, 'readonly')}}"
+                                 placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
@@ -71,7 +71,7 @@
                     <!-- Partner Country -->
                     <paper-input label="{{getLabel('country', basePermissionPath)}}"
                                  value="{{partner.country}}"
-                                 placeholder="{{getPlaceholderText('country', basePermissionPath, 'readonly')}}"
+                                 placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
@@ -122,7 +122,7 @@
                         <!-- TPM Status -->
                         <paper-input label="{{getLabel('status', basePermissionPath)}}"
                                      value="[[_setStatus(partner.status)]]"
-                                     placeholder="{{getPlaceholderText('status', basePermissionPath, 'readonly')}}"
+                                     placeholder="Empty Field"
                                      class="without-border"
                                      disabled readonly></paper-input>
                     </div>

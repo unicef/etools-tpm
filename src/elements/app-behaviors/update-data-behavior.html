@@ -1,0 +1,106 @@
+<!--import [lodash]-->
+<script>
+    'use strict';
+
+    window.TPMBehaviors = window.TPMBehaviors || {};
+    window.TPMBehaviors.UpdateDataBehavior = {
+        _handleResponse: function (event, details) {
+            if (this.method === 'POST') {
+                this.lastData = details;
+                this._finishPostResponse(this.postRequest);
+                return;
+            } else if (this.postRequest) {
+                this._detailsChanged(this.postRequest);
+                return;
+            }
+            this.finishResponse(details);
+            this.fire('global-loading', {type: `save-${this.postfix}`});
+        },
+
+        _finishPostResponse: function(details) {
+            this.fire('global-loading', {type: 'update-permissions', active: true, message: 'Updating data...'});
+            this.fire('global-loading', {type: `${details.action}-${this.postfix}`});
+
+            this.optionsUrl = this.getEndpoint(`${this.postfix}Details`, {id: details.id}).url;
+            this.postRequest = null;
+        },
+
+        _handleOptionsResponse: function(event, details) {
+            if (this.lastData && details && details.actions) {
+                let collectionName = `${this.postfix}_${this.lastData.id}`;
+
+                this._updateCollection(collectionName, details.actions);
+                this.basePermissionPath = '';
+                this.basePermissionPath = collectionName;
+            } else {
+                this.basePermissionPath = 'not_found';
+                this.fire('toast', {text: 'Can not update permissions data. Please reload the page!'});
+                console.error('Can not load permissions');
+            }
+            this.fire('global-loading', {type: 'update-permissions'});
+            this.optionsUrl = '';
+            this.finishResponse(this.lastData);
+        },
+
+        finishResponse: function(details) {
+            if (details) {
+                this.set(`${this.postfix}`, details);
+            } else {
+                console.error(`Can not update ${this.postfix}. Data is missing`);
+            }
+            this.fire(`${this.postfix}-updated`, {success: true});
+            this.fire('toast', {text: `${this.postfix[0].toUpperCase()}${this.postfix.slice(1)} has been updated!`});
+        },
+
+        _handleError: function (event, error) {
+            let action = this.postRequest && this.postRequest.action || 'save';
+            this.fire('global-loading', {type: `${action}-${this.postfix}`});
+            this.fire(`${this.postfix}-updated`);
+
+            let responseData = error && error.request && error.request.detail &&
+                    error.request.detail.request && error.request.detail.request.xhr;
+
+            let {status, response} = responseData || {};
+
+            if (status === 400) {
+                this.set('errorObject', response);
+                this.fire('toast', {text: `Can not save ${this.postfix} data. Please check all fields and try again later!`});
+            } else {
+                this.errorObject = {};
+                this.fire('toast', {text: `Can not update ${this.postfix}. Please try again later!`});
+            }
+        },
+
+        _detailsChanged: function(details) {
+            if (!details || !details.id || !details.method) { return; }
+            let url = this.getEndpoint(`${this.postfix}Details`, {id: details.id}).url;
+
+            if (details.method === 'POST' &&
+                    (this.postRequest ||
+                    _.isEmpty(details.data) ||
+                    !this.actionAllowed(`${this.postfix}_${details.id}`, 'save') ||
+                    details.ignorePatch)) {
+                this.fire('global-loading', {message: details.message, active: true, type: `${details.action}-${this.postfix}`});
+                this.fire('global-loading', {type: `save-${this.postfix}`});
+                this.method = 'POST';
+                this.url = `${url}${details.action}/`;
+                this.postData = details.data || {};
+                this.postRequest = details;
+                return;
+            } else if (details.method === 'POST' && !this.postRequest) {
+                this.postRequest = _.clone(details);
+                this.postRequest.data = {};
+            }
+            this._startPatchRequest(url, details.data);
+        },
+
+        _startPatchRequest: function(url, data) {
+            this.fire('global-loading', {message: `Saving ${this.postfix}...`, active: true, type: `save-${this.postfix}`});
+            this.method = 'PATCH';
+            this.postData = data || {};
+            this.url = url;
+        }
+    };
+
+
+</script>
