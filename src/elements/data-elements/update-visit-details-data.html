@@ -1,6 +1,6 @@
 <!--import [polymer, etools-ajax, lodash, permission-controller, etools-app-config, update-data-behavior]-->
 
-<dom-module id="update-partner-details-data">
+<dom-module id="update-visit-details-data">
 
     <template>
 
@@ -20,7 +20,7 @@
 
         Polymer({
 
-            is: 'update-partner-details-data',
+            is: 'update-visit-details-data',
 
             behaviors: [
                 etoolsAppConfig.globals,
@@ -29,11 +29,11 @@
             ],
 
             properties: {
-                newPartnerDetails: {
+                newVisitDetails: {
                     type: Object,
                     observer: '_detailsChanged'
                 },
-                partner: {
+                visit: {
                     type: Object,
                     notify: true
                 },
@@ -47,7 +47,7 @@
                 },
                 postfix: {
                     type: String,
-                    value: 'partner'
+                    value: 'visit'
                 }
             }
 

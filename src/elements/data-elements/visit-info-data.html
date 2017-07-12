@@ -1,12 +1,17 @@
-<!--import [polymer, etools-ajax, lodash]-->
+<!--import [polymer, etools-ajax, lodash, permission-controller]-->
 
 <dom-module id="visit-info-data">
 
     <template>
 
-        <etools-ajax endpoint="[[endpoint]]"
-                     on-success="_handleResponse"
+        <etools-ajax endpoint="[[visitEndpoint]]"
+                     on-success="_handleDataResponse"
                      on-fail="_handleError"></etools-ajax>
+
+        <etools-ajax method="OPTIONS"
+                     url="[[optionsUrl]]"
+                     on-success="_handleOptionsResponse"
+                     on-fail="_handleOptionsResponse"></etools-ajax>
     </template>
 
     <script>
@@ -16,7 +21,8 @@
             is: 'visit-info-data',
 
             behaviors: [
-                etoolsAppConfig.globals
+                etoolsAppConfig.globals,
+                TPMBehaviors.PermissionController
             ],
 
             properties: {
@@ -25,7 +31,7 @@
                     notify: true,
                     observer: '_idChanged'
                 },
-                visitInfo: {
+                visitDetails: {
                     type: Object,
                     notify: true
                 },
@@ -36,17 +42,37 @@
                 }
             },
 
+            _handleDataResponse: function(data) {
+                this.responseData = data.detail;
+                this.requestsCompleted.data = true;
+                this._finishRequests(this.responseData);
+            },
 
-            _handleResponse: function (data) {
-                this.visitInfo = data.detail;
-                this.set('endpoint', {});
+            _handleOptionsResponse: function(data) {
+                let actions = data.detail && data.detail.actions && data.detail.actions;
+                if (actions) {
+                    data.detail.actions.allowed_actions = !_.isEmpty(actions.PUT) ? ['save'].concat(actions.allowed_FSM_transitions) : actions.allowed_FSM_transitions;
+                    this._addToCollection(`visit_${this.visitId}`, data.detail.actions);
+                } else {
+                    console.error('Can not load permissions for visit');
+                }
+
+                this.requestsCompleted.options = true;
+                this._finishRequests(this.responseData);
+            },
+
+            _finishRequests: function(data) {
+                if (!this.requestsCompleted.data || !this.requestsCompleted.options) { return; }
+
+                if (data) { this.visitDetails = data; }
+
                 this.fire('global-loading', {type: 'visit-info'});
                 this.view = 'visit';
                 this.visitId = null;
                 this.lastError = false;
             },
 
-            _handleError: function (rsp, err) {
+            _handleError: function () {
                 this.fire('global-loading', {type: 'visit-info'});
                 this.fire('404', {message: 'Visit not found!'});
                 this.visitId = null;
@@ -60,10 +86,19 @@
                     this.visitId = null;
                     return;
                 }
+
                 this.lastId = +id;
-                this.visitInfo = {};
+                this.visitDetails = {};
+                this.requestsCompleted = {};
+
                 this.fire('global-loading', {message: 'Loading visit data...', active: true, type: 'visit-info'});
-                this.endpoint = this.getEndpoint('visitInfo', {id: id});
+                this.visitEndpoint = this.getEndpoint('visitDetails', {id: id});
+
+                if (this.collectionExists(`visit_${id}`)) {
+                    this.requestsCompleted.options = true;
+                } else {
+                    this.optionsUrl = this.visitEndpoint.url;
+                }
             }
 
         });

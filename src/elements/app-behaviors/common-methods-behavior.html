@@ -73,19 +73,28 @@
 
         getMaxLength: function(path, base) {
             if (!base) { return ''; }
-            return this.getFieldAttribute(`${base}.${path}`, 'max_length');
+            return this.getFieldAttribute(`${base}.${path}`, 'max_length', 'GET');
         },
 
-        getPlaceholderText: function(path, base, readonly) {
-            if (this.isReadonly(`${base}.${path}`) || readonly) { return 'Empty Field' }
+        getPlaceholderText: function(path, base, special) {
+            if (this.isReadonly(`${base}.${path}`)) { return 'Empty Field' }
 
-            let label = this.getLabel(path, base);
-            return `Enter ${label}`;
+            let label = this.getLabel(path, base),
+                    prefix = special ? 'Select' : 'Enter';
+            return `${prefix} ${label}`;
+        },
+
+        getReadonlyPlaceholder: function(data) {
+            return !!(data && data.id) ? 'Empty Field' : '-';
+        },
+
+        _setReadonlyFieldClass: function(data) {
+            return !data || !data.id ? 'no-data-fetched' : '';
         },
 
         _showPrefix: function(path, base, value, readonly) {
             return (!this.isReadonly(`${base}.${path}`) && !readonly) || !!value;
-        },
+        }
 
     };
 

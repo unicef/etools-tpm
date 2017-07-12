@@ -20,7 +20,8 @@ Polymer({
                     'submit': 'assignment-turned-in',
                     'finalize': 'assignment-turned-in',
                     'activate': 'check',
-                    'confirm': 'check'
+                    'confirm': 'check',
+                    'assign': 'check'
                 };
             }
         }

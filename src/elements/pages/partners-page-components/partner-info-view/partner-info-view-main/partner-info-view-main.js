@@ -8,14 +8,6 @@ Polymer({
     ],
 
     properties: {
-        fileTypes: {
-            type: Array,
-            value: [
-                {value: '1', display_name: 'Training materials'},
-                {value: '2', display_name: 'ToRs'},
-                {value: '3', display_name: 'Other'}
-            ]
-        },
         partner: Object,
         errorObject: {
             type: Object,

@@ -1,5 +1,5 @@
 <!--import [polymer, iron-icons, iron-icons/av-icons, iron-flex-layout, paper-button,
-            etools-content-panel, static-data-behavior]-->
+            etools-content-panel, static-data-behavior, action-buttons]-->
 
 <dom-module id="visit-status">
     <template>
@@ -34,6 +34,11 @@
 
                 </template>
             </div>
+
+            <div class="actions" hidden$="[[noActionsAllowed(permissionBase)]]">
+                <action-buttons actions="[[getActions(permissionBase)]]"></action-buttons>
+            </div>
+
 
         </etools-content-panel>
 

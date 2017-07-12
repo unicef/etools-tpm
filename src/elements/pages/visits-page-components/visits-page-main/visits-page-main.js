@@ -15,14 +15,7 @@ Polymer({
             type: Boolean,
             value: true
         },
-        visitInfo: {
-            type: Object,
-            value: function() {
-                return {
-                    status: 'draft'
-                };
-            }
-        }
+        visitDetails: Object
     },
     observers: [
         '_routeConfig(route)'

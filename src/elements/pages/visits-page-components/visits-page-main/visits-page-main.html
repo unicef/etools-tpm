@@ -14,29 +14,22 @@
                 tail="{{subroute}}">
         </app-route>
 
-        <visit-info-data
-                visit-info="{{visitInfo}}"
-                visit-id="{{visitId}}"
-                view="{{view}}">
-        </visit-info-data>
+        <visit-info-data visit-details="{{visitDetails}}"
+                         visit-id="{{visitId}}"
+                         view="{{view}}"></visit-info-data>
 
-        <iron-pages
-                id="categoryPages"
-                selected="{{view}}"
-                attr-for-selected="name"
-                role="main">
+        <iron-pages id="categoryPages"
+                    selected="{{view}}"
+                    attr-for-selected="name"
+                    role="main">
 
-            <visits-list-view
-                    name="list"
-                    query-params="{{queryParams}}"
-                    request-queries="[[visitsListQueries]]">
-            </visits-list-view>
+            <visits-list-view name="list"
+                              query-params="{{queryParams}}"
+                              request-queries="[[visitsListQueries]]"></visits-list-view>
 
-            <visits-info-view-main
-                    name="visit"
-                    visit="{{visitInfo}}"
-                    route="{{subroute}}">
-            </visits-info-view-main>
+            <visits-info-view-main name="visit"
+                                   visit="{{visitDetails}}"
+                                   route="{{subroute}}"></visits-info-view-main>
 
         </iron-pages>
     </template>
