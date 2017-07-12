@@ -234,8 +234,6 @@
         });
 
         describe('method _validateEmailAddress(emailInput)', function () {
-            let emailInput = {value: 'email address'};
-
             beforeEach(function () {
                 myEl.errors = {};
             });
@@ -249,7 +247,7 @@
             });
 
             it('returns false and sets error when value is defined but doesn\'t pass regexp', function () {
-                sinon.stub(RegExp.prototype, 'test').returns(false);
+                let emailInput = {value: 'bad email address'};
 
                 assert.isUndefined(myEl.errors.email);
                 assert.isFalse(myEl._validateEmailAddress(emailInput));
@@ -257,7 +255,7 @@
             });
 
             it('returns true when input value is valid', function () {
-                sinon.stub(RegExp.prototype, 'test').returns(true);
+                let emailInput = {value: 'goodemail@email.email'};
 
                 assert.isUndefined(myEl.errors.email);
                 assert.isTrue(myEl._validateEmailAddress(emailInput));
@@ -506,12 +504,24 @@
             });
 
             it('calls isReadOnly() method with correct arguments', function () {
-                let spy = sinon.spy(myEl, 'isReadOnly');
-
-                assert.isFalse(spy.called);
+                assert.isFalse(myEl.isReadOnly.called);
                 myEl._showPhoneAndEmail(1, 'basePermissionPath', true, false);
-                assert.isTrue(spy.calledOnce);
-                assert.isTrue(spy.calledWithExactly('phone_number', 'basePermissionPath', true));
+                assert.isTrue(myEl.isReadOnly.calledOnce);
+                assert.isTrue(myEl.isReadOnly.calledWithExactly('phone_number', 'basePermissionPath', true));
+            });
+        });
+
+        describe('method _disableVendorNumberInput(requestInProcess, vendorRequestInProcess)', function () {
+            it('returns true when requestInProcess is true', function () {
+                assert.isTrue(myEl._disableVendorNumberInput(true, false));
+            });
+
+            it('returns true when vendorRequestInProcess is true', function () {
+                assert.isTrue(myEl._disableVendorNumberInput(false, true));
+            });
+
+            it('returns false when requestInProcess and vendorRequestInProcess are false', function () {
+                assert.isFalse(myEl._disableVendorNumberInput(false, false));
             });
         });
     });

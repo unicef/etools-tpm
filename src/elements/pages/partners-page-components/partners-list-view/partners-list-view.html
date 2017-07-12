@@ -74,8 +74,8 @@
                                          invalid$="{{_checkInvalid(errors.vendor_number)}}"
                                          error-message="{{errors.vendor_number}}"
                                          required$="[[_setRequired('vendor_number', basePermissionPath)]]"
-                                         disabled="[[vendorRequestInProcess]]"
-                                         readonly="[[vendorRequestInProcess]]"
+                                         disabled$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
+                                         readonly$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
                                          on-focus="_resetFieldError"
                                          on-blur="_requestVendor">
                             </paper-input>

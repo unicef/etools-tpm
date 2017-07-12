@@ -219,8 +219,12 @@
         },
 
         _showPhoneAndEmail: function(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess) {
-            let vendorNumberInvalid = !vendorNumber && this.errors.vendor_number;
+            let vendorNumberInvalid = !vendorNumber || !!this.errors.vendor_number;
             return this.isReadOnly('phone_number', basePermissionPath, requestInProcess) || vendorRequestInProcess || vendorNumberInvalid;
+        },
+
+        _disableVendorNumberInput: function(requestInProcess, vendorRequestInProcess) {
+            return requestInProcess || vendorRequestInProcess;
         },
     });
 })();
