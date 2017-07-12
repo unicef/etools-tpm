@@ -64,7 +64,7 @@
                 this.fire('global-loading', {type: 'partners-list', active: true, message: 'Loading of partners list...'});
 
                 let endpoint = this.getEndpoint('partnersList');
-                endpoint.url += this.getQueriesString();
+                endpoint.url += this.getQueriesString().replace('?', '&');
                 this.endpoint = endpoint;
             },
 
