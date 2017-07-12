@@ -22,7 +22,8 @@
 
             behaviors: [
                 etoolsAppConfig.globals,
-                TPMBehaviors.PermissionController
+                TPMBehaviors.PermissionController,
+                TPMBehaviors.LastCreatedController,
             ],
 
             properties: {
@@ -45,7 +46,7 @@
             _handleDataResponse: function(data) {
                 this.responseData = data.detail;
                 this.requestsCompleted.data = true;
-                this._finishRequests(this.responseData);
+                this._finishRequests(this.responseData || {});
             },
 
             _handleOptionsResponse: function(data) {
@@ -58,13 +59,17 @@
                 }
 
                 this.requestsCompleted.options = true;
-                this._finishRequests(this.responseData);
+                this._finishRequests(this.responseData || {});
             },
 
             _finishRequests: function(data) {
                 if (!this.requestsCompleted.data || !this.requestsCompleted.options) { return; }
 
-                if (data) { this.partnerDetails = data; }
+                if (data) {
+                    let partnerId = data && data.id;
+                    this.partnerDetails = data;
+                    this._setLastData(data, `partner_${partnerId}`);
+                }
 
                 this.fire('global-loading', {type: 'partner-details'});
                 this.view = 'info';
@@ -72,7 +77,7 @@
                 this.lastError = false;
             },
 
-            _handleError: function (rsp, err) {
+            _handleError: function () {
                 this.fire('global-loading', {type: 'partner-details'});
                 this.fire('404', {message: 'Partner not found!'});
                 this.partnerId = null;
@@ -80,25 +85,33 @@
             },
 
             _idChanged: function(id) {
-                if (!id || isNaN(id)) return;
-                if (+id === this.lastId) {
+                if (!id || isNaN(id)) { return; }
+
+                let lastId = this.lastId;
+                this.lastId = id;
+                this.partnerDetails = {};
+                this.requestsCompleted = {};
+
+                if (this.collectionExists(`partner_${id}`)) {
+                    this.requestsCompleted.options = true;
+                } else {
+                    this.optionsUrl = this.getEndpoint('partnerDetails', {id: id}).url;
+                }
+
+                let lastCreated = this.getLastData(id, `partner_${id}`);
+                if (lastCreated) {
+                    this._handleDataResponse({detail: lastCreated});
+                    return;
+                }
+
+                if (+id === lastId) {
                     this.lastError ? this._handleError() : this.view = 'info';
                     this.partnerId = null;
                     return;
                 }
 
-                this.lastId = id;
-                this.partnerDetails = {};
-                this.requestsCompleted = {};
-
                 this.fire('global-loading', {message: 'Loading partner data...', active: true, type: 'partner-details'});
                 this.partnerEndpoint = this.getEndpoint('partnerDetails', {id: id});
-
-                if (this.collectionExists(`partner_${id}`)) {
-                    this.requestsCompleted.options = true;
-                } else {
-                    this.optionsUrl = this.partnerEndpoint.url;
-                }
             }
 
         });
