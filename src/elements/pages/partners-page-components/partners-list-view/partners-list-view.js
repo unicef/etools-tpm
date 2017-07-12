@@ -25,8 +25,7 @@
                 value: {}
             },
             updateData: {
-                type: Boolean,
-                value: false
+                type: Object,
             },
             errors: {
                 type: Object,
@@ -99,30 +98,24 @@
 
         validate: function() {
             let vendorNumberValid = this.$.vendorNumber.validate();
+            let phoneInputValid = this.$.phoneInput.validate();
+            let emailInputValid = this.$.emailInput.validate();
 
-            let elements = Polymer.dom(this.root).querySelectorAll('.validate-field');
-            let valid = true;
-            _.each(elements, element => {
-                if (!element.validate()) {
-                    valid = false;
-                }
-            });
-
-            return vendorNumberValid && valid;
+            return vendorNumberValid && phoneInputValid && emailInputValid;
         },
 
         _requestVendor: function(event) {
-            if (this.requestInProcess) { return; }
+            if (this.requestInProcess) { return false; }
 
-            let input = event && event.target,
-                value = input && input.value;
+            let value = event && event.target && event.target.value;
 
-            if (+value && value === this.vendorNumber) { return; }
+            if (+value && value === this.vendorNumber) { return false; }
+
             this.resetVendor();
 
             if (!value) {
                 this.vendorNumber = null;
-                return;
+                return false;
             }
 
             this.requestInProcess = true;
@@ -177,31 +170,31 @@
         },
 
         updateVendor: function() {
-            if (!this.validate()) { return; }
+            if (!this.validate()) { return false; }
             let updateData = {};
 
             if (this.originalData.phone_number !== this.data.phone_number) { updateData.phone_number = this.data.phone_number || null; }
             if (this.originalData.email !== this.data.email) { updateData.email = this.data.email || null; }
             if (this.originalData.hidden === false) { updateData.hidden = true; }
 
-            if (!_.isEqual(updateData, {})) {
+            if (_.isEqual(updateData, {})) {
+                this.vendorUpdated();
+            } else {
                 this.requestInProcess = true;
                 this.updateData = updateData;
-            } else {
-                this.vendorUpdated();
             }
         },
 
         vendorUpdated: function(event, detail) {
             if (this.requestInProcess) { this.requestInProcess = false; }
 
-            if (detail && !detail.success) { return; }
+            if (detail && !detail.success) { return false; }
 
             this.newVendorOpened = false;
-            this.openVendorOverview();
+            this.openVendorDetails();
         },
 
-        openVendorOverview: function() {
+        openVendorDetails: function() {
             //redirect
             let partnerId = this.data && this.data.id;
             let path = `partners/${partnerId}/details`;
@@ -211,11 +204,13 @@
         openNewVendorDialog: function() {
             this.originalData = {};
             this.data = {};
-            this.vendorNumber = null;
             this.updateData = null;
+
+            this.vendorNumber = null;
             this.requestInProcess = false;
-            this.set('errors', {});
             this.newVendorOpened = true;
+
+            this.set('errors', {});
         },
 
         _showAddButton: function() {

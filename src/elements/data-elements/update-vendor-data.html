@@ -46,7 +46,7 @@
                 if (!vendor || !this.vendor || !this.vendor.id) { return; }
 
                 this.vendorUpdating = true;
-                this.url = this.getEndpoint('vendorNumber', {id: this.vendor.id}).url;
+                this.url = this.getEndpoint('partnerDetails', {id: this.vendor.id}).url;
                 this.postData = vendor;
             },
             

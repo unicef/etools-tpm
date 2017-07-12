@@ -141,8 +141,9 @@
                         <div class="input-container input-container-45">
                             <!-- Phone Number -->
                             <paper-input
+                                    id="phoneInput"
                                     label="[[getLabel('phone_number', basePermissionPath)]]"
-                                    class$="validate-field disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
+                                    class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
                                     field="phone_number"
                                     allowed-pattern="[\d\s-]"
                                     maxlength="20"
@@ -163,7 +164,7 @@
                             <paper-input
                                     id="emailInput"
                                     label$="[[getLabel('email', basePermissionPath)]]"
-                                    class$="validate-field disabled-as-readonly [[_setRequired('email', basePermissionPath)]]"
+                                    class$="disabled-as-readonly [[_setRequired('email', basePermissionPath)]]"
                                     field="email"
                                     required$="[[_setRequired('email', basePermissionPath, requestInProcess)]]"
                                     disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
