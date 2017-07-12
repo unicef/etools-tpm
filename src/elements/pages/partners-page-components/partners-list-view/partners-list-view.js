@@ -88,7 +88,7 @@
 
         observers: [
             '_errorHandler(errorObject)',
-            'updateStyles(vendorUpdating, requestInProcess, vendorNumber)',
+            'updateStyles(vendorUpdating, requestInProcess, vendorRequestInProcess, vendorNumber)',
         ],
 
         ready: function() {
@@ -105,7 +105,7 @@
         },
 
         _requestVendor: function(event) {
-            if (this.requestInProcess) { return false; }
+            if (this.vendorRequestInProcess) { return false; }
 
             let value = event && event.target && event.target.value;
 
@@ -118,14 +118,14 @@
                 return false;
             }
 
-            this.requestInProcess = true;
+            this.vendorRequestInProcess = true;
             this.vendorNumber = value;
             return true;
         },
 
         _vendorLoaded: function() {
-            this.requestInProcess = false;
             this.$.vendorNumber.validate();
+            this.vendorRequestInProcess = false;
         },
 
         resetVendor: function() {
@@ -175,7 +175,7 @@
 
             if (this.originalData.phone_number !== this.data.phone_number) { updateData.phone_number = this.data.phone_number || null; }
             if (this.originalData.email !== this.data.email) { updateData.email = this.data.email || null; }
-            if (this.originalData.hidden === false) { updateData.hidden = true; }
+            if (this.originalData.hidden === true) { updateData.hidden = false; }
 
             if (_.isEqual(updateData, {})) {
                 this.vendorUpdated();
@@ -208,6 +208,7 @@
 
             this.vendorNumber = null;
             this.requestInProcess = false;
+            this.vendorRequestInProcess = false;
             this.newVendorOpened = true;
 
             this.set('errors', {});
@@ -217,9 +218,9 @@
             return this.actionAllowed('new_partner', 'create');
         },
 
-        _showPhoneAndEmail: function(vendorNumber, basePermissionPath, requestInProcess) {
-            let vendorNumberValid = vendorNumber && this.$.vendorNumber.validate();
-            return this.isReadOnly('phone_number', basePermissionPath, requestInProcess) || !vendorNumberValid;
+        _showPhoneAndEmail: function(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess) {
+            let vendorNumberInvalid = !vendorNumber && this.errors.vendor_number;
+            return this.isReadOnly('phone_number', basePermissionPath, requestInProcess) || vendorRequestInProcess || vendorNumberInvalid;
         },
     });
 })();

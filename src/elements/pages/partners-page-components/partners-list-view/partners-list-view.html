@@ -74,12 +74,12 @@
                                          invalid$="{{_checkInvalid(errors.vendor_number)}}"
                                          error-message="{{errors.vendor_number}}"
                                          required$="[[_setRequired('vendor_number', basePermissionPath)]]"
-                                         disabled="[[requestInProcess]]"
-                                         readonly="[[requestInProcess]]"
+                                         disabled="[[vendorRequestInProcess]]"
+                                         readonly="[[vendorRequestInProcess]]"
                                          on-focus="_resetFieldError"
                                          on-blur="_requestVendor">
                             </paper-input>
-                            <etools-loading active="{{requestInProcess}}" no-overlay loading-text="" class="po-loading"></etools-loading>
+                            <etools-loading active="{{vendorRequestInProcess}}" no-overlay loading-text="" class="po-loading"></etools-loading>
                         </div>
 
                         <div class="input-container input-container-45">
@@ -148,8 +148,8 @@
                                     allowed-pattern="[\d\s-]"
                                     maxlength="20"
                                     required$="[[_setRequired('phone_number', basePermissionPath, requestInProcess)]]"
-                                    disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
-                                    readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
+                                    disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
+                                    readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
                                     value="{{data.phone_number}}"
                                     on-focus="_resetFieldError"
                                     invalid$="{{errors.phone_number}}"
@@ -167,8 +167,8 @@
                                     class$="disabled-as-readonly [[_setRequired('email', basePermissionPath)]]"
                                     field="email"
                                     required$="[[_setRequired('email', basePermissionPath, requestInProcess)]]"
-                                    disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
-                                    readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess)]]"
+                                    disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
+                                    readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
                                     value="{{data.email}}"
                                     on-focus="_resetFieldError"
                                     invalid$="{{errors.email}}"
