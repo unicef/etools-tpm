@@ -14,10 +14,12 @@
             }
             list-header {
                 box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.13);
-                border-top: solid 1px rgba(0, 0, 0, 0.15);
             }
             list-element {
                 border-bottom: none;
+                --list-element-wrapper: #{'{
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+                }'}
             }
         </style>
 
@@ -27,7 +29,7 @@
                       slotted-details>
             <div slot="detailSlot">
                 <list-header no-ordered data="[[sectorsColumns]]" level="3">
-                    <div slot="headerButton"><paper-button class="add-btn">Add PP/SSFA Output</paper-button></div>
+                    <div slot="headerButton"><paper-button class="add-btn" on-tap="addNewOutput">Add PP/SSFA Output</paper-button></div>
                 </list-header>
 
                 <template is="dom-repeat" items="[[sector.tpm_low_results]]" as="output">

@@ -101,6 +101,26 @@
                        placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
            </div>
         </dialog-element>
+
+        <!--Add new output-->
+        <dialog-element opened="{{outputDialogOpened}}"
+                        dialog-title="Add PP/SSFA Output"
+                        confirm-btn-text="Add"
+                        request-in-process="{{requestInProcess}}">
+            <div class="dialog-content">
+                <!-- PP/SSFA Output -->
+                <etools-searchable-multiselection-menu
+                        id="outputInput"
+                        options="[[outputOptions]]"
+                        class="disabled-as-readonly validate-input"
+                        value="{{newItem.output}}"
+                        label="PP/SSFA Output"
+                        custom-object-options
+                        option-value="resultId"
+                        option-label="name"
+                        placeholder="Select PP/SSFA Output"></etools-searchable-multiselection-menu>
+            </div>
+        </dialog-element>
     </template>
 
     <!-- inject scripts './visit-activity-tab.js'-->

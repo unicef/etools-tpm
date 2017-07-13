@@ -49,6 +49,22 @@ Polymer({
                 }]
             };
         }
-        return null;
+
+        let sectors = Polymer.dom(this.root).querySelectorAll('activity-sector-element'),
+            data = [];
+
+        _.each(sectors, (sector) => {
+            let sectorData = sector.getSectorData();
+            if (sectorData) { data.push(sectorData); }
+        });
+
+        if (!_.isEmpty(data)) {
+            return {
+                id: this.activity.id,
+                tpm_sectors: data
+            };
+        } else {
+            return null;
+        }
     }
 });

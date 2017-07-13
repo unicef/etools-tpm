@@ -33,20 +33,22 @@ Polymer({
     listeners: {
         'add-sector': 'addSector',
         'dialog-confirmed': 'addItem',
-        'partner-loaded': '_partnerLoaded'
+        'partner-loaded': '_partnerLoaded',
+        'add-output': 'addOutput'
     },
 
-    observers: ['resetNewItem(sectorDialogOpened, activityDialogOpened)'],
+    observers: ['resetNewItem(sectorDialogOpened, activityDialogOpened, outputDialogOpened)'],
 
     ready: function() {
         this.partnerOrganisations = this.getData('partnerOrganisations');
+        this.outputsList = this.getData('ppSsfaOutputs');
     },
 
     addSector: function(event, details) {
         if (!details || !details.id || !details.item) { throw 'Details object is not provided or incorrect!'; }
 
         let activity = this.activities.filter((activity) => { return activity.id === details.id; })[0];
-        if (!activity) { throw `Can not find partnership with id ${details.id}`; }
+        if (!activity) { throw `Can not find activity with id ${details.id}`; }
 
         let options = activity.partnership.sector_locations.map((sectorLocation) => { return sectorLocation.sector; });
         this.set('sectorOptions', options);
@@ -55,13 +57,35 @@ Polymer({
         this.sectorDialogOpened = true;
     },
 
+    addOutput: function(event, details) {
+        if (!details || !details.id || !details.item) { throw 'Details object is not provided or incorrect!'; }
+
+        let activity = this.activities.filter((activity) => { return activity.id === details.id; })[0];
+        if (!activity) { throw `Can not find activity with id ${details.id}`; }
+
+        let resultLinks = {};
+        _.each(activity.partnership.resultLinks, (result) => {
+            resultLinks[result.cp_output] = result.id;
+        });
+        let options = this.outputsList.filter((output) => {
+            let exists = resultLinks[output.id];
+            if (exists) { output.resultId = exists; }
+            return exists;
+        });
+        this.set('outputOptions', options);
+        this.set('newItem', details.item);
+
+        this.outputDialogOpened = true;
+    },
+
     addActivity: function() {
         this.set('newItem', {});
         this.activityDialogOpened = true;
     },
 
     addItem: function() {
-        // this.fire('action-activated', {type: save});
+        this.requestInProcess = true;
+        this.fire('action-activated', {type: 'save', quietUpdate: true});
     },
 
     getActivitiesData: function() {
@@ -107,5 +131,14 @@ Polymer({
 
     _partnerLoaded: function() {
         this.pOrgRequestInProcess = false;
+    },
+
+    visitUpdated: function(success) {
+        this.requestInProcess = false;
+        if (success) {
+            this.activityDialogOpened = false;
+            this.sectorDialogOpened = false;
+            this.outputDialogOpened = false;
+        }
     }
 });

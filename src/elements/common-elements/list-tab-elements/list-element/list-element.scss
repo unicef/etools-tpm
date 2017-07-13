@@ -111,6 +111,7 @@ paper-material {
     background-color: var(--primary-background-color, #FFFFFF);
     padding: 0 15px 0 72px;
     box-sizing: border-box;
+    @apply(--list-element-wrapper);
 }
 
 :host([no-additional]) {

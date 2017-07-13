@@ -19,7 +19,8 @@ Polymer({
 
     listeners: {
         'action-activated': '_processAction',
-        'dialog-confirmed': 'rejectVisit'
+        'dialog-confirmed': 'rejectVisit',
+        'visit-updated': 'visitUpdated'
     },
 
     _setPermissionBase: function(id) {
@@ -64,7 +65,8 @@ Polymer({
             id: this.visit.id,
             data: this.getVisitData(),
             message: message,
-            action: details.type
+            action: details.type,
+            quietUpdate: details.quietUpdate
         };
     },
 
@@ -73,7 +75,12 @@ Polymer({
     },
 
     getVisitData: function() {
-        return {};
+        let data = {};
+        let visitActivityData = this.$.visitActivity && this.$.visitActivity.getActivitiesData();
+        if (visitActivityData) {
+            data.tpm_activities = visitActivityData;
+        }
+        return data;
     },
 
     rejectVisit: function() {
@@ -102,6 +109,11 @@ Polymer({
 
     _showRejectionReason: function(visit) {
         return visit.status === 'tpm_rejected';
+    },
+
+    visitUpdated: function() {
+        let visitActivity = this.$.visitActivity;
+        if (visitActivity) { visitActivity.visitUpdated('success'); }
     }
 
 });
