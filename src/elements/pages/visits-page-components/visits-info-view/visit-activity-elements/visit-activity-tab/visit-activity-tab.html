@@ -1,5 +1,6 @@
-<!--import [polymer, etools-content-panel, lodash]-->
-<!--import [module-styles, tab-inputs-styles, list-header, activity-partnership-element, dialog-element]-->
+<!--import [polymer, etools-content-panel, lodash, paper-icon-button, iron-icons]-->
+<!--import [module-styles, tab-inputs-styles, list-header, activity-partnership-element, dialog-element, static-data-behavior,
+            get-partner-organisation-data]-->
 
 <dom-module id="visit-activity-tab">
     <template>
@@ -13,7 +14,23 @@
                 position: relative;
                 width: 100%;
             }
+
+            .add-button {
+                position: absolute;
+                right: 15px;
+                top: 4px;
+                width: 40px;
+                height: 40px;
+                color: #ffffff;
+                z-index: 10;
+            }
         </style>
+        <get-partner-organisation-data partner="{{partnerOrg}}" partner-id="{{partnerOrgId}}"></get-partner-organisation-data>
+
+        <paper-icon-button title="Add"
+                           on-tap="addActivity"
+                           class="add-button"
+                           icon="add"></paper-icon-button>
 
         <etools-content-panel panel-title="Visit Activity">
 
@@ -21,6 +38,11 @@
 
             <template is="dom-repeat" items="[[activities]]" as="activity">
                 <activity-partnership-element activity="[[activity]]"></activity-partnership-element>
+            </template>
+
+            <template is="dom-if" if="[[!activities.length]]">
+                <list-element data="[[emptyObject]]"
+                              headings="[[columns]]"></list-element>
             </template>
 
         </etools-content-panel>
@@ -34,25 +56,28 @@
                 <!-- Implementing Partner -->
                 <etools-searchable-multiselection-menu
                         id="partnerInput"
-                        options="[[sectorOptions]]"
+                        options="[[partnerOrganisations]]"
                         class="disabled-as-readonly validate-input"
-                        value="{{newItem.sector}}"
-                        label="Sector Cover"
+                        value="{{newItem.partnerOrganisation}}"
+                        label="Implementing Partner"
                         custom-object-options
                         option-value="id"
                         option-label="name"
+                        on-value-change="_requestPartner"
                         placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
 
-                <!-- Implementing Partner -->
+                <!-- Partnership -->
                 <etools-searchable-multiselection-menu
                         id="partnershipInput"
-                        options="[[sectorOptions]]"
+                        options="[[partnerOrg.interventions]]"
+                        disabled="[[!partnerOrg.id]]"
                         class="disabled-as-readonly validate-input"
-                        value="{{newItem.sector}}"
-                        label="Sector Cover"
+                        value="{{newItem.intervention}}"
+                        label="Partnership"
                         custom-object-options
                         option-value="id"
-                        option-label="name"
+                        option-label="number"
+                        hide-search
                         placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
             </div>
         </dialog-element>

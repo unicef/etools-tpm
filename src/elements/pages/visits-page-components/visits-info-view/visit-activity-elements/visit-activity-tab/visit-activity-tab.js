@@ -3,6 +3,8 @@
 Polymer({
     is: 'visit-activity-tab',
 
+    behaviors: [TPMBehaviors.StaticDataController],
+
     properties: {
         columns: {
             type: Array,
@@ -13,15 +15,32 @@ Polymer({
                 'size': 40,
                 'label': 'Partnership'
             }]
+        },
+        partnerOrg: {
+            type: Object,
+            value: function() {
+                return {};
+            }
+        },
+        emptyObject: {
+            type: Object,
+            value: function() {
+                return {};
+            }
         }
     },
 
     listeners: {
         'add-sector': 'addSector',
-        'dialog-confirmed': 'addItem'
+        'dialog-confirmed': 'addItem',
+        'partner-loaded': '_partnerLoaded'
     },
 
-    observers: ['resetNewItem(sectorDialogOpened)'],
+    observers: ['resetNewItem(sectorDialogOpened, activityDialogOpened)'],
+
+    ready: function() {
+        this.partnerOrganisations = this.getData('partnerOrganisations');
+    },
 
     addSector: function(event, details) {
         if (!details || !details.id || !details.item) { throw 'Details object is not provided or incorrect!'; }
@@ -36,13 +55,24 @@ Polymer({
         this.sectorDialogOpened = true;
     },
 
+    addActivity: function() {
+        this.set('newItem', {});
+        this.activityDialogOpened = true;
+    },
+
     addItem: function() {
         // this.fire('action-activated', {type: save});
     },
 
     getActivitiesData: function() {
         //add new partnership check
-
+        if (this.newItem && this.newItem.partnerOrganisation && this.newItem.intervention) {
+            let id = this.newItem.intervention.id;
+            return [{
+                partnership: id,
+                tpm_sectors: []
+            }];
+        }
         //get partnerships data
         let partnerships = Polymer.dom(this.root).querySelectorAll('activity-partnership-element'),
             data = [];
@@ -59,5 +89,23 @@ Polymer({
         _.each(this.newItem, (value, key) => {
             delete this.newItem[key];
         });
+    },
+
+    _requestPartner: function(event, id) {
+        if (this.pOrgRequestInProcess) { return; }
+
+        this.set('newItem.intervention', null);
+
+        let partnerId = (event && event.detail && event.detail.selectedValues && event.detail.selectedValues.id) || id;
+
+        if (!partnerId) { return; }
+
+        this.pOrgRequestInProcess = true;
+        this.partnerOrgId = partnerId;
+        return true;
+    },
+
+    _partnerLoaded: function() {
+        this.pOrgRequestInProcess = false;
     }
 });
