@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <!--import [last-created-behavior]-->
+</head>
+<body>
+
+<script>
+
+    describe('Last created data behavior element', function () {
+        var behaviorObj;
+
+        beforeEach(function () {
+            behaviorObj = TPMBehaviors.LastCreatedController;
+        });
+
+        it('has several properties and methods', function () {
+            assert.isDefined(behaviorObj._setLastData);
+            assert.isDefined(behaviorObj.getLastData);
+        });
+
+        describe('method _setLastData(data, key)', function () {
+            it('sets data to object only if key, data and data.id provided', function () {
+                assert.isFalse(behaviorObj._setLastData());
+                assert.isFalse(behaviorObj._setLastData({}));
+                assert.isFalse(behaviorObj._setLastData({id: 90}));
+                assert.isFalse(behaviorObj._setLastData(undefined, 'key'));
+
+                assert.isTrue(behaviorObj._setLastData({id: 90}, 'key'));
+                assert.deepEqual(behaviorObj.getLastData(90, 'key'), {id: 90});
+            });
+        });
+
+        describe('method getLastData(id, key)', function () {
+            let data = {id: 90, value: 'string'};
+
+            beforeEach(function () {
+                behaviorObj._setLastData(data, 'key');
+            });
+
+            it('returns null if no value stored with such key', function () {
+                assert.isNull(behaviorObj.getLastData(data.id, 'no_such_key'));
+            });
+
+            it('returns null if data.id not equal to id', function () {
+                assert.isNull(behaviorObj.getLastData(999, 'key'));
+            });
+
+            it('returns data stored if id and key are correct', function () {
+                assert.deepEqual(behaviorObj.getLastData(data.id, 'key'), data);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

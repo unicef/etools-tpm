@@ -32,7 +32,7 @@ App global configuration
                 cachingKey: 'countries'
             },
             partnersList: {
-                url: '/api/tpm/partners/'
+                url: '/api/tpm/partners/?hidden=false'
             },
             staffMembers: {
                 template: '/api/tpm/partners/<%=id%>/staff-members/'
@@ -50,7 +50,10 @@ App global configuration
             },
             changeCountry: {
                 url: '/users/api/changecountry/'
-            }
+            },
+            syncVendorData: {
+                template: '/api/tpm/partners/sync/<%=id%>/'
+            },
         },
         localEndpoints: {
             partnerDetails: {
