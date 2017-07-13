@@ -1,0 +1,52 @@
+<!--import [polymer]-->
+<!--import [module-styles, list-header, list-element]-->
+
+<dom-module id="activity-output-element">
+    <template>
+        <!-- inject styles './activity-output-element.scss'-->
+        <style include="module-styles">
+            .add-btn {
+                height: 46px;
+                top: 5px;
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--module-primary);
+            }
+            list-header {
+                box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.13);
+                border-top: solid 1px rgba(0, 0, 0, 0.15);
+            }
+            list-element {
+                border-bottom: none;
+            }
+        </style>
+
+        <list-element data="[[output]]"
+                      headings="[[headings]]"
+                      level="3"
+                      slotted-details>
+            <div slot="detailSlot">
+                <list-header no-ordered data="[[locationsColumns]]" level="4">
+                    <div slot="headerButton"><paper-button class="add-btn">Add Location</paper-button></div>
+                </list-header>
+
+                <template is="dom-repeat" items="[[output.tpm_locations]]" as="location">
+                    <list-element data="[[location]]"
+                                  headings="[[locationsColumns]]"
+                                  level="4"></list-element>
+                </template>
+
+                <template is="dom-if" if="[[!output.tpm_locations.length]]">
+                    <list-element level="4"
+                                  data="[[emptyObject]]"
+                                  headings="[[locationsColumns]]"></list-element>
+                </template>
+            </div>
+        </list-element>
+
+
+
+    </template>
+
+    <!-- inject scripts './activity-output-element.js'-->
+</dom-module>

@@ -43,7 +43,7 @@ Polymer({
         },
         showCollapse: {
             type: Boolean,
-            computed: '_computeShowCollapse(details, hasCollapse)'
+            computed: '_computeShowCollapse(details, hasCollapse, slottedDetails)'
         },
         data: {
             type: Object,
@@ -72,6 +72,10 @@ Polymer({
         level: {
             type: Number,
             value: 1
+        },
+        slottedDetails: {
+            type: Boolean,
+            value: false
         }
     },
     listeners: {
@@ -112,8 +116,8 @@ Polymer({
 
         this.paddingRight = `${rightPadding}px`;
     },
-    _computeShowCollapse: function(details, hasCollapse) {
-        return details.length > 0 && hasCollapse;
+    _computeShowCollapse: function(details, hasCollapse, slottedDetails) {
+        return slottedDetails || (details.length > 0 && hasCollapse);
     },
     _toggleRowDetails: function() {
         Polymer.dom(this.root).querySelector('#details').toggle();

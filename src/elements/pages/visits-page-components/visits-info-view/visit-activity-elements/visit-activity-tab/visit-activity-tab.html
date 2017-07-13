@@ -1,0 +1,26 @@
+<!--import [polymer, etools-content-panel]-->
+<!--import [module-styles, list-header, activity-partnership-element]-->
+
+<dom-module id="visit-activity-tab">
+    <template>
+        <!-- inject styles './visit-activity-tab.scss'-->
+        <style include="module-styles">
+            list-header {
+                box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.13);
+            }
+        </style>
+
+        <etools-content-panel panel-title="Visit Activity">
+
+            <list-header class="header" no-ordered data="[[columns]]"></list-header>
+
+            <template is="dom-repeat" items="[[activities]]" as="activity">
+                <activity-partnership-element activity="[[activity]]"></activity-partnership-element>
+            </template>
+
+        </etools-content-panel>
+
+    </template>
+
+    <!-- inject scripts './visit-activity-tab.js'-->
+</dom-module>

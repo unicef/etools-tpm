@@ -1,0 +1,49 @@
+<!--import [polymer]-->
+<!--import [module-styles, list-header, list-element, activity-output-element]-->
+
+<dom-module id="activity-sector-element">
+    <template>
+        <!-- inject styles './activity-sector-element.scss'-->
+        <style include="module-styles">
+            .add-btn {
+                height: 46px;
+                top: 5px;
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--module-primary);
+            }
+            list-header {
+                box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.13);
+                border-top: solid 1px rgba(0, 0, 0, 0.15);
+            }
+            list-element {
+                border-bottom: none;
+            }
+        </style>
+
+        <list-element data="[[sector]]"
+                      headings="[[headings]]"
+                      level="2"
+                      slotted-details>
+            <div slot="detailSlot">
+                <list-header no-ordered data="[[sectorsColumns]]" level="3">
+                    <div slot="headerButton"><paper-button class="add-btn">Add PP/SSFA Output</paper-button></div>
+                </list-header>
+
+                <template is="dom-repeat" items="[[sector.tpm_low_results]]" as="output">
+                    <activity-output-element output="[[output]]"></activity-output-element>
+                </template>
+
+                <template is="dom-if" if="[[!sector.tpm_low_results.length]]">
+                    <list-element level="3"
+                                  data="[[emptyObject]]"
+                                  headings="[[sectorsColumns]]"></list-element>
+                </template>
+            </div>
+        </list-element>
+
+
+    </template>
+
+    <!-- inject scripts './activity-sector-element.js'-->
+</dom-module>
