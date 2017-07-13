@@ -197,13 +197,13 @@
             let vendorNumberInput = {value: 'value'};
 
             beforeEach(function () {
-                myEl.requestInProcess = false;
+                myEl.vendorRequestInProcess = false;
                 myEl.data = {id: 1};
                 myEl.errors = {};
             });
 
-            it('returns false and sets error when requestInProcess is true', function () {
-                myEl.requestInProcess = true;
+            it('returns false and sets error when vendorRequestInProcess is true', function () {
+                myEl.vendorRequestInProcess = true;
 
                 assert.isUndefined(myEl.errors.vendor_number);
                 assert.isFalse(myEl._validateVendorNumber(vendorNumberInput));
@@ -366,6 +366,15 @@
                 assert.isTrue(spy.calledOnce);
             });
 
+            it('calls reloadPartnersList() method when vendor is updated successfully', function () {
+                let spy = sinon.spy(myEl, 'reloadPartnersList');
+                let detail = {success: true};
+
+                assert.isFalse(spy.called);
+                myEl.vendorUpdated(undefined, detail);
+                assert.isTrue(spy.calledOnce);
+            });
+
             it('calls openVendorDetails() method when vendor is updated successfully', function () {
                 let spy = sinon.spy(myEl, 'openVendorDetails');
                 let detail = {success: true};
@@ -373,6 +382,24 @@
                 assert.isFalse(spy.called);
                 myEl.vendorUpdated(undefined, detail);
                 assert.isTrue(spy.calledOnce);
+            });
+        });
+
+        describe('method reloadPartnersList()', function () {
+            it('sets requestQueries.reload to true if updateData is defined', function () {
+                myEl.requestQueries = {};
+                myEl.updateData = {};
+                assert.isUndefined(myEl.requestQueries.reload);
+                myEl.reloadPartnersList();
+                assert.isTrue(myEl.requestQueries.reload);
+            });
+
+            it('not sets requestQueries.reload if updateData is null', function () {
+                myEl.requestQueries = {};
+                myEl.updateData = null;
+                assert.isUndefined(myEl.requestQueries.reload);
+                myEl.reloadPartnersList();
+                assert.isUndefined(myEl.requestQueries.reload);
             });
         });
 
@@ -478,7 +505,7 @@
         describe('method _showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)', function () {
             beforeEach(function () {
                 myEl.isReadOnly = sinon.stub().returns(false);
-                myEl.errors = {vendor_number: false};
+                myEl.data = {id: 1};
             });
 
             it('returns true when method isReadOnly() returns true', function () {
@@ -490,8 +517,8 @@
                 assert.isTrue(myEl._showPhoneAndEmail(null));
             });
 
-            it('returns true when errors.vendor_number is truthy', function () {
-                myEl.errors = {vendor_number: 'Error message'};
+            it('returns true when data.id has bad value', function () {
+                myEl.data = {id: null};
                 assert.isTrue(myEl._showPhoneAndEmail(1));
             });
 

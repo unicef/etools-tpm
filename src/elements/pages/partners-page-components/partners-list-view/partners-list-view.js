@@ -124,8 +124,8 @@
         },
 
         _vendorLoaded: function() {
-            this.$.vendorNumber.validate();
             this.vendorRequestInProcess = false;
+            this.$.vendorNumber.validate();
         },
 
         resetVendor: function() {
@@ -134,7 +134,7 @@
         },
 
         _validateVendorNumber: function(vendorNumberInput) {
-            if (this.requestInProcess) {
+            if (this.vendorRequestInProcess) {
                 this.set('errors.vendor_number', 'Please, wait until Vendor Number loaded');
                 return false;
             }
@@ -191,7 +191,14 @@
             if (detail && !detail.success) { return false; }
 
             this.newVendorOpened = false;
+            this.reloadPartnersList();
             this.openVendorDetails();
+        },
+
+        reloadPartnersList: function() {
+            if (this.updateData) {
+                this.set('requestQueries.reload', true);
+            }
         },
 
         openVendorDetails: function() {
@@ -219,7 +226,7 @@
         },
 
         _showPhoneAndEmail: function(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess) {
-            let vendorNumberInvalid = !vendorNumber || !!this.errors.vendor_number;
+            let vendorNumberInvalid = !vendorNumber || !this.data.id;
             return this.isReadOnly('phone_number', basePermissionPath, requestInProcess) || vendorRequestInProcess || vendorNumberInvalid;
         },
 

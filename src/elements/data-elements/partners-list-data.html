@@ -47,12 +47,13 @@
                 }
 
                 this._setPartnersList(detail.results);
+                this.requestQueries.reload = false;
                 this.fire('global-loading', {type: 'partners-list'});
             },
 
             getPartnersList: function() {
                 let newOrder = this.requestQueries && this.requestQueries.ordering;
-                let reloadRequired = !this.lastOrder || (newOrder !== this.lastOrder);
+                let reloadRequired = !this.lastOrder || (newOrder !== this.lastOrder) || this.requestQueries.reload;
 
                 this.lastOrder = newOrder;
 
@@ -65,6 +66,7 @@
 
                 let endpoint = this.getEndpoint('partnersList');
                 endpoint.url += this.getQueriesString();
+                if (this.requestQueries.reload) { endpoint.url += `reload=${new Date().getTime()}`; }
                 this.endpoint = endpoint;
             },
 
@@ -73,6 +75,7 @@
                     detail.request.detail.request && detail.request.detail.request.xhr;
                 let {status, response} = responseData || {};
 
+                this.requestQueries.reload = false;
                 this.fire('global-loading', {type: 'partners-list'});
             },
         });
