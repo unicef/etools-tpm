@@ -25,19 +25,442 @@
             myEl = fixture('partners-list-view-fixture');
         });
 
-        describe('method openNewVendorDialog()', function () {
-            it('sets newVendorOpened property to true', function () {
-                assert.isFalse(myEl.newVendorOpened);
-                myEl.openNewVendorDialog();
-                assert.isTrue(myEl.newVendorOpened);
-            });
-
-            it('called when fired "add-new-tap" event', function () {
+        describe('listeners', function () {
+            it('"add-new-tap" event calls openNewVendorDialog() method', function () {
                 let spy = sinon.spy(myEl, 'openNewVendorDialog');
 
                 assert.isFalse(spy.called);
                 myEl.fire('add-new-tap');
                 assert.isTrue(spy.calledOnce);
+            });
+
+            it('"vendor-loaded" event calls _vendorLoaded() method', function () {
+                let spy = sinon.spy(myEl, '_vendorLoaded');
+
+                assert.isFalse(spy.called);
+                myEl.fire('vendor-loaded');
+                assert.isTrue(spy.calledOnce);
+            });
+
+            it('"dialog-confirmed" event calls updateVendor() method', function () {
+                let spy = sinon.spy(myEl, 'updateVendor');
+
+                assert.isFalse(spy.called);
+                myEl.fire('dialog-confirmed');
+                assert.isTrue(spy.calledOnce);
+            });
+
+            it('"vendor-updated" event calls vendorUpdated() method', function () {
+                let spy = sinon.spy(myEl, 'vendorUpdated');
+
+                assert.isFalse(spy.called);
+                myEl.fire('vendor-updated');
+                assert.isTrue(spy.calledOnce);
+            });
+        });
+
+        describe('method ready()', function () {
+            it('sets validate method of #vendorNumber element', function () {
+                myEl.$.vendorNumber.validate = undefined;
+
+                assert.isUndefined(myEl.$.vendorNumber.validate);
+                myEl.ready();
+                assert.isDefined(myEl.$.vendorNumber.validate);
+            });
+
+            it('sets validate method of #emailInput element', function () {
+                myEl.$.emailInput.validate = undefined;
+
+                assert.isUndefined(myEl.$.emailInput.validate);
+                myEl.ready();
+                assert.isDefined(myEl.$.emailInput.validate);
+            });
+        });
+
+        describe('method validate()', function () {
+            beforeEach(function () {
+                myEl.$.vendorNumber.validate = sinon.stub().returns(true);
+                myEl.$.phoneInput.validate = sinon.stub().returns(true);
+                myEl.$.emailInput.validate = sinon.stub().returns(true);
+            });
+
+            it('returns false when #vendorNumber element is invalid', function () {
+                myEl.$.vendorNumber.validate = sinon.stub().returns(false);
+                assert.isFalse(myEl.validate());
+            });
+
+            it('returns false when #phoneInput element is invalid', function () {
+                myEl.$.phoneInput.validate = sinon.stub().returns(false);
+                assert.isFalse(myEl.validate());
+            });
+
+            it('returns false when #emailInput element is invalid', function () {
+                myEl.$.emailInput.validate = sinon.stub().returns(false);
+                assert.isFalse(myEl.validate());
+            });
+
+            it('returns true when all elements are valid', function () {
+                assert.isTrue(myEl.validate());
+            });
+        });
+
+        describe('method _requestVendor(event)', function () {
+            let event = {target: {value: '2'}};
+
+            beforeEach(function () {
+                myEl.vendorRequestInProcess = false;
+            });
+
+            it('returns false if vendorRequestInProcess is true', function () {
+                myEl.vendorRequestInProcess = true;
+                assert.isFalse(myEl._requestVendor(event));
+            });
+
+            it('returns false if input value is number that equal to vendorNumber', function () {
+                myEl.vendorNumber = event.target.value;
+                assert.isFalse(myEl._requestVendor(event));
+            });
+
+            it('calls resetVendor() method', function () {
+                let spy = sinon.spy(myEl, 'resetVendor');
+
+                assert.isFalse(spy.called);
+                myEl._requestVendor(event);
+                assert.isTrue(spy.calledOnce);
+            });
+
+            it('returns false and resets vendorNumber when input has bad value', function () {
+                let event = {target: {value: null}};
+                myEl.vendorNumber = '1';
+
+                assert.equal(myEl.vendorNumber, '1');
+                assert.isFalse(myEl._requestVendor(event));
+                assert.isNull(myEl.vendorNumber);
+            });
+
+            it('returns true and sets vendorRequestInProcess vendorNumber to true', function () {
+                myEl.vendorNumber = '1';
+
+                assert.isFalse(myEl.vendorRequestInProcess);
+                assert.isTrue(myEl._requestVendor(event));
+                assert.isTrue(myEl.vendorRequestInProcess);
+            });
+
+            it('returns true and sets vendorNumber property equal to input value', function () {
+                myEl.vendorNumber = '1';
+
+                assert.equal(myEl.vendorNumber, '1');
+                assert.isTrue(myEl._requestVendor(event));
+                assert.equal(myEl.vendorNumber, event.target.value);
+            });
+        });
+
+        describe('method _vendorLoaded()', function () {
+            it('sets vendorRequestInProcess property to false', function () {
+                myEl.vendorRequestInProcess = true;
+
+                assert.isTrue(myEl.vendorRequestInProcess);
+                myEl._vendorLoaded();
+                assert.isFalse(myEl.vendorRequestInProcess);
+            });
+
+            it('calls validate() method of #vendorNumber element', function () {
+                let spy = sinon.spy(myEl.$.vendorNumber, 'validate');
+
+                assert.isFalse(spy.called);
+                myEl._vendorLoaded();
+                assert.isTrue(spy.calledOnce);
+            });
+        });
+
+        describe('method resetVendor()', function () {
+            it('resets data property', function () {
+                let data = {vendor_number: 1, key: 'value'};
+                let dataAfterReset = {vendor_number: 1};
+                myEl.data = _.cloneDeep(data);
+
+                assert.deepEqual(myEl.data, data);
+                myEl.resetVendor();
+                assert.deepEqual(myEl.data, dataAfterReset);
+            });
+
+            it('resets vendorNumber property', function () {
+                myEl.vendorNumber = 1;
+
+                assert.isNotNull(myEl.vendorNumber);
+                myEl.resetVendor();
+                assert.isNull(myEl.vendorNumber);
+            });
+        });
+
+        describe('method _validateVendorNumber(vendorNumberInput)', function () {
+            let vendorNumberInput = {value: 'value'};
+
+            beforeEach(function () {
+                myEl.requestInProcess = false;
+                myEl.data = {id: 1};
+                myEl.errors = {};
+            });
+
+            it('returns false and sets error when requestInProcess is true', function () {
+                myEl.requestInProcess = true;
+
+                assert.isUndefined(myEl.errors.vendor_number);
+                assert.isFalse(myEl._validateVendorNumber(vendorNumberInput));
+                assert.equal(myEl.errors.vendor_number, 'Please, wait until Vendor Number loaded');
+            });
+
+            it('returns false and sets error when vendorNumberInput value is required but not defined', function () {
+                let vendorNumberInput = {value: null, required: true};
+
+                assert.isUndefined(myEl.errors.vendor_number);
+                assert.isFalse(myEl._validateVendorNumber(vendorNumberInput));
+                assert.equal(myEl.errors.vendor_number, 'Vendor Number is required');
+            });
+
+            it('returns false and sets error when data.id has bad value', function () {
+                myEl.data.id = null;
+
+                assert.isUndefined(myEl.errors.vendor_number);
+                assert.isFalse(myEl._validateVendorNumber(vendorNumberInput));
+                assert.equal(myEl.errors.vendor_number, 'Vendor Number not found');
+            });
+
+            it('returns true and resets error when input is valid', function () {
+                assert.isUndefined(myEl.errors.vendor_number);
+                assert.isTrue(myEl._validateVendorNumber(vendorNumberInput));
+                assert.equal(myEl.errors.vendor_number, false);
+            });
+        });
+
+        describe('method _validateEmailAddress(emailInput)', function () {
+            beforeEach(function () {
+                myEl.errors = {};
+            });
+
+            it('returns false and sets error when value is required but not defined', function () {
+                let emailInput = {value: null, required: true};
+
+                assert.isUndefined(myEl.errors.email);
+                assert.isFalse(myEl._validateEmailAddress(emailInput));
+                assert.equal(myEl.errors.email, 'Email is required');
+            });
+
+            it('returns false and sets error when value is defined but doesn\'t pass regexp', function () {
+                let emailInput = {value: 'bad email address'};
+
+                assert.isUndefined(myEl.errors.email);
+                assert.isFalse(myEl._validateEmailAddress(emailInput));
+                assert.equal(myEl.errors.email, 'Email is incorrect');
+            });
+
+            it('returns true when input value is valid', function () {
+                let emailInput = {value: 'goodemail@email.email'};
+
+                assert.isUndefined(myEl.errors.email);
+                assert.isTrue(myEl._validateEmailAddress(emailInput));
+                assert.isUndefined(myEl.errors.email);
+            });
+        });
+
+        describe('method updateVendor()', function () {
+            beforeEach(function () {
+                let data = {
+                    phone_number: 'initial_phone',
+                    email: 'initial_email',
+                };
+                myEl.originalData = _.cloneDeep(data);
+                myEl.data = _.cloneDeep(data);
+
+                myEl.validate = sinon.stub();
+                myEl.validate.returns(true);
+            });
+
+            it('returns false when method validate() returns false', function () {
+                myEl.validate.returns(false);
+                assert.isFalse(myEl.updateVendor());
+            });
+
+            it('sets updateData.phone_number property if it was changed', function () {
+                myEl.data.phone_number = 'new_phone';
+
+                assert.isUndefined(myEl.updateData);
+                myEl.updateVendor();
+                assert.deepEqual(myEl.updateData, {phone_number: 'new_phone'});
+            });
+
+            it('sets updateData.email property if it was changed', function () {
+                myEl.data.email = 'new_email';
+
+                assert.isUndefined(myEl.updateData);
+                myEl.updateVendor();
+                assert.deepEqual(myEl.updateData, {email: 'new_email'});
+            });
+
+            it('sets updateData.hidden property to false if it was true in originalData', function () {
+                myEl.originalData.hidden = true;
+
+                assert.isUndefined(myEl.updateData);
+                myEl.updateVendor();
+                assert.deepEqual(myEl.updateData, {hidden: false});
+            });
+
+            it('calls vendorUpdated() method if data wasn\'t changed', function () {
+                let spy = sinon.spy(myEl, 'vendorUpdated');
+
+                assert.isUndefined(myEl.updateData);
+                assert.isFalse(spy.called);
+
+                myEl.updateVendor();
+
+                assert.isUndefined(myEl.updateData);
+                assert.isTrue(spy.calledOnce);
+            });
+
+            it('sets requestInProcess property to true if data was changed', function () {
+                myEl.data.email = 'new_email';
+                myEl.requestInProcess = false;
+
+                assert.isFalse(myEl.requestInProcess);
+                myEl.updateVendor();
+                assert.isTrue(myEl.requestInProcess);
+            });
+        });
+
+        describe('method vendorUpdated(event, detail)', function () {
+            it('sets requestInProcess to false if it was true', function () {
+                myEl.requestInProcess = true;
+
+                assert.isTrue(myEl.requestInProcess);
+                myEl.vendorUpdated();
+                assert.isFalse(myEl.requestInProcess);
+            });
+
+            it('returns false if detail.success is false', function () {
+                let detail = {success: false};
+                assert.isFalse(myEl.vendorUpdated(undefined, detail));
+            });
+
+            it('sets newVendorOpened property to false when vendor is not changed', function () {
+                myEl.newVendorOpened = true;
+
+                assert.isTrue(myEl.newVendorOpened);
+                myEl.vendorUpdated(undefined, undefined);
+                assert.isFalse(myEl.newVendorOpened);
+            });
+
+            it('sets newVendorOpened property to false when vendor is updated successfully', function () {
+                let detail = {success: true};
+                myEl.newVendorOpened = true;
+
+                assert.isTrue(myEl.newVendorOpened);
+                myEl.vendorUpdated(undefined, detail);
+                assert.isFalse(myEl.newVendorOpened);
+            });
+
+            it('calls openVendorDetails() method when vendor is not changed', function () {
+                let spy = sinon.spy(myEl, 'openVendorDetails');
+
+                assert.isFalse(spy.called);
+                myEl.vendorUpdated(undefined, undefined);
+                assert.isTrue(spy.calledOnce);
+            });
+
+            it('calls openVendorDetails() method when vendor is updated successfully', function () {
+                let spy = sinon.spy(myEl, 'openVendorDetails');
+                let detail = {success: true};
+
+                assert.isFalse(spy.called);
+                myEl.vendorUpdated(undefined, detail);
+                assert.isTrue(spy.calledOnce);
+            });
+        });
+
+        describe('method openVendorDetails()', function () {
+            it('redirects to the Vendor Details page', function () {
+                let id = 1;
+                let path = `partners/${id}/details`;
+                let absolutePath = `/tpm/partners/${id}/details`;
+                let spy = sinon.stub(myEl, 'getAbsolutePath').withArgs(path).returns(absolutePath);
+                myEl.data = {id: id};
+                myEl.path = '/path';
+
+                assert.equal(myEl.path, '/path');
+                assert.isFalse(spy.called);
+
+                myEl.openVendorDetails();
+
+                assert.equal(myEl.path, absolutePath);
+                assert.isTrue(spy.calledOnce);
+                assert.isTrue(spy.calledWithExactly(path));
+            });
+        });
+
+        describe('method openNewVendorDialog()', function () {
+            let testObject = {key: 'value'};
+
+            it('resets originalData property', function () {
+                myEl.originalData = _.cloneDeep(testObject);
+
+                assert.deepEqual(myEl.originalData, testObject);
+                myEl.openNewVendorDialog();
+                assert.deepEqual(myEl.originalData, {});
+            });
+
+            it('resets data property', function () {
+                myEl.data = _.cloneDeep(testObject);
+
+                assert.deepEqual(myEl.data, testObject);
+                myEl.openNewVendorDialog();
+                assert.deepEqual(myEl.data, {});
+            });
+
+            it('resets updateData property', function () {
+                myEl.updateData = _.cloneDeep(testObject);
+
+                assert.deepEqual(myEl.updateData, testObject);
+                myEl.openNewVendorDialog();
+                assert.isNull(myEl.updateData);
+            });
+
+            it('resets vendorNumber property', function () {
+                myEl.vendorNumber = _.cloneDeep(testObject);
+
+                assert.deepEqual(myEl.vendorNumber, testObject);
+                myEl.openNewVendorDialog();
+                assert.isNull(myEl.vendorNumber);
+            });
+
+            it('sets requestInProcess property to false', function () {
+                myEl.requestInProcess = true;
+
+                assert.isTrue(myEl.requestInProcess);
+                myEl.openNewVendorDialog();
+                assert.isFalse(myEl.requestInProcess);
+            });
+
+            it('sets vendorRequestInProcess property to false', function () {
+                myEl.vendorRequestInProcess = true;
+
+                assert.isTrue(myEl.vendorRequestInProcess);
+                myEl.openNewVendorDialog();
+                assert.isFalse(myEl.vendorRequestInProcess);
+            });
+
+            it('sets newVendorOpened property to true', function () {
+                myEl.newVendorOpened = false;
+
+                assert.isFalse(myEl.newVendorOpened);
+                myEl.openNewVendorDialog();
+                assert.isTrue(myEl.newVendorOpened);
+            });
+
+            it('resets errors property', function () {
+                myEl.errors = _.cloneDeep(testObject);
+
+                assert.deepEqual(myEl.errors, testObject);
+                myEl.openNewVendorDialog();
+                assert.deepEqual(myEl.errors, {});
             });
         });
 
@@ -49,6 +472,56 @@
                 assert.equal(myEl._showAddButton(), 'returned_value');
                 assert.isTrue(spy.calledOnce);
                 assert.isTrue(spy.calledWithExactly('new_partner', 'create'));
+            });
+        });
+
+        describe('method _showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)', function () {
+            beforeEach(function () {
+                myEl.isReadOnly = sinon.stub().returns(false);
+                myEl.errors = {vendor_number: false};
+            });
+
+            it('returns true when method isReadOnly() returns true', function () {
+                myEl.isReadOnly = sinon.stub().returns(true);
+                assert.isTrue(myEl._showPhoneAndEmail(1));
+            });
+
+            it('returns true when argument vendorNumber has bad value', function () {
+                assert.isTrue(myEl._showPhoneAndEmail(null));
+            });
+
+            it('returns true when errors.vendor_number is truthy', function () {
+                myEl.errors = {vendor_number: 'Error message'};
+                assert.isTrue(myEl._showPhoneAndEmail(1));
+            });
+
+            it('returns true when argument vendorRequestInProcess is true', function () {
+                assert.isTrue(myEl._showPhoneAndEmail(1, 'path', false, true));
+            });
+
+            it('returns false when method isReadOnly() returns false, vendorNumber is defined and valid, vendorRequestInProcess is false', function () {
+                assert.isFalse(myEl._showPhoneAndEmail(1));
+            });
+
+            it('calls isReadOnly() method with correct arguments', function () {
+                assert.isFalse(myEl.isReadOnly.called);
+                myEl._showPhoneAndEmail(1, 'basePermissionPath', true, false);
+                assert.isTrue(myEl.isReadOnly.calledOnce);
+                assert.isTrue(myEl.isReadOnly.calledWithExactly('phone_number', 'basePermissionPath', true));
+            });
+        });
+
+        describe('method _disableVendorNumberInput(requestInProcess, vendorRequestInProcess)', function () {
+            it('returns true when requestInProcess is true', function () {
+                assert.isTrue(myEl._disableVendorNumberInput(true, false));
+            });
+
+            it('returns true when vendorRequestInProcess is true', function () {
+                assert.isTrue(myEl._disableVendorNumberInput(false, true));
+            });
+
+            it('returns false when requestInProcess and vendorRequestInProcess are false', function () {
+                assert.isFalse(myEl._disableVendorNumberInput(false, false));
             });
         });
     });

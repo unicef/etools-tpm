@@ -1,0 +1,76 @@
+<!--import [polymer, etools-ajax, etools-app-config, lodash, last-created-behavior]-->
+
+<dom-module id="update-vendor-data">
+
+    <template>
+
+        <etools-ajax method="PATCH"
+                     url="{{url}}"
+                     body="{{postData}}"
+                     on-success="_handleResponse"
+                     on-fail="_handleError"></etools-ajax>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'update-vendor-data',
+
+            behaviors: [
+                etoolsAppConfig.globals,
+                TPMBehaviors.LastCreatedController,
+            ],
+
+            properties: {
+                updateData: {
+                    type: Object,
+                    observer: '_vendorChanged'
+                },
+                vendor: {
+                    type: Object,
+                },
+                vendorUpdating: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                errors: {
+                    type: Object,
+                    notify: true
+                }
+            },
+
+            _vendorChanged: function(vendor) {
+                if (!vendor || !this.vendor || !this.vendor.id) { return; }
+
+                this.vendorUpdating = true;
+                this.url = this.getEndpoint('partnerDetails', {id: this.vendor.id}).url;
+                this.postData = vendor;
+            },
+            
+            _handleResponse: function(event, detail) {
+                let partnerId = detail && detail.id;
+                this._setLastData(detail, `partner_${partnerId}`);
+
+                this.vendorUpdating = false;
+                this.fire('vendor-updated', {success: true});
+            },
+
+            _handleError: function(event, error) {
+                this.vendorUpdating = false;
+                let responseData = error && error.request && error.request.detail &&
+                        error.request.detail.request && error.request.detail.request.xhr;
+
+                let {status, response} = responseData || {};
+
+                this.set('errors', response);
+                this.fire('vendor-updated', {success: false});
+            }
+
+        });
+
+    </script>
+
+</dom-module>
