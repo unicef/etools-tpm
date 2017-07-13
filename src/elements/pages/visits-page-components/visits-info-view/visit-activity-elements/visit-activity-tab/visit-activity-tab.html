@@ -1,12 +1,17 @@
-<!--import [polymer, etools-content-panel]-->
-<!--import [module-styles, list-header, activity-partnership-element]-->
+<!--import [polymer, etools-content-panel, lodash]-->
+<!--import [module-styles, tab-inputs-styles, list-header, activity-partnership-element, dialog-element]-->
 
 <dom-module id="visit-activity-tab">
     <template>
         <!-- inject styles './visit-activity-tab.scss'-->
-        <style include="module-styles">
+        <style include="module-styles tab-inputs-styles">
             list-header {
                 box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.13);
+            }
+            .dialog-content {
+                box-sizing: border-box;
+                position: relative;
+                width: 100%;
             }
         </style>
 
@@ -20,6 +25,57 @@
 
         </etools-content-panel>
 
+        <!--Add new Activity dialog-->
+        <dialog-element opened="{{activityDialogOpened}}"
+                        dialog-title="Add Activity"
+                        confirm-btn-text="Add"
+                        request-in-process="{{requestInProcess}}">
+            <div class="dialog-content">
+                <!-- Implementing Partner -->
+                <etools-searchable-multiselection-menu
+                        id="partnerInput"
+                        options="[[sectorOptions]]"
+                        class="disabled-as-readonly validate-input"
+                        value="{{newItem.sector}}"
+                        label="Sector Cover"
+                        custom-object-options
+                        option-value="id"
+                        option-label="name"
+                        placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
+
+                <!-- Implementing Partner -->
+                <etools-searchable-multiselection-menu
+                        id="partnershipInput"
+                        options="[[sectorOptions]]"
+                        class="disabled-as-readonly validate-input"
+                        value="{{newItem.sector}}"
+                        label="Sector Cover"
+                        custom-object-options
+                        option-value="id"
+                        option-label="name"
+                        placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
+            </div>
+        </dialog-element>
+
+        <!--Add new Sector dialog-->
+        <dialog-element opened="{{sectorDialogOpened}}"
+                        dialog-title="Add Sector Cover"
+                        confirm-btn-text="Add"
+                        request-in-process="{{requestInProcess}}">
+           <div class="dialog-content">
+               <!-- Sector Cover -->
+               <etools-searchable-multiselection-menu
+                       id="sectorInput"
+                       options="[[sectorOptions]]"
+                       class="disabled-as-readonly validate-input"
+                       value="{{newItem.sector}}"
+                       label="Sector Cover"
+                       custom-object-options
+                       option-value="id"
+                       option-label="name"
+                       placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
+           </div>
+        </dialog-element>
     </template>
 
     <!-- inject scripts './visit-activity-tab.js'-->

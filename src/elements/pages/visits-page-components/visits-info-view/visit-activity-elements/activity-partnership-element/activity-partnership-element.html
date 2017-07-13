@@ -1,4 +1,4 @@
-<!--import [polymer]-->
+<!--import [polymer, lodash]-->
 <!--import [module-styles, list-header, list-element, activity-sector-element]-->
 
 <dom-module id="activity-partnership-element">
@@ -26,7 +26,7 @@
                       slotted-details>
             <div slot="detailSlot">
                 <list-header no-ordered data="[[sectorsColumns]]" level="2">
-                    <div slot="headerButton"><paper-button class="add-btn">Add sector cover</paper-button></div>
+                    <div slot="headerButton"><paper-button class="add-btn" on-tap="addNewSector">Add sector cover</paper-button></div>
                 </list-header>
 
                 <template is="dom-repeat" items="[[activity.tpm_sectors]]" as="sector">
