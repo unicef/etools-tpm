@@ -7,77 +7,23 @@
     <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../bower_components/web-component-tester/browser.js"></script>
 
-    <!--import [engagement-staff-members-tab]-->
+    <!--import [partner-staff-members-tab]-->
 </head>
 <body>
 
 <test-fixture id="element-fixture">
     <template>
-        <engagement-staff-members-tab id="element"></engagement-staff-members-tab>
+        <partner-staff-members-tab id="element"></partner-staff-members-tab>
     </template>
 </test-fixture>
 
 
 <script>
-    describe('<engagement-staff-members-tab>', function () {
+    describe('<partner-staff-members-tab>', function () {
         var myEl;
 
         beforeEach(function () {
             myEl = fixture('element-fixture');
-        });
-
-        describe('method _organizationChanged', function() {
-            it('calls _canBeChanged method', function() {
-                sinon.spy(myEl, '_canBeChanged');
-                myEl._organizationChanged();
-                assert.isTrue(myEl._canBeChanged.called);
-                myEl._canBeChanged.restore();
-            });
-
-            it('returns if _canBeChanged method returns false or basePermissionPath is undefined', function() {
-                sinon.spy(myEl, 'resetList');
-                sinon.stub(myEl, '_canBeChanged').returns(true);
-                myEl.basePermissionPath = false;
-
-                myEl._organizationChanged();
-
-                myEl._canBeChanged.returns(false);
-                myEl.basePermissionPath = true;
-                myEl._organizationChanged();
-
-                assert.isFalse(myEl.resetList.called);
-
-                myEl._canBeChanged.restore();
-                myEl.resetList.restore();
-            });
-
-            it('calls resetList method if no id argument provided', function() {
-                sinon.spy(myEl, 'resetList');
-                sinon.stub(myEl, '_canBeChanged').returns(true);
-                myEl.basePermissionPath = true;
-
-                myEl._organizationChanged();
-                assert.isTrue(myEl.resetList.called);
-                myEl.resetList.reset();
-
-                myEl._organizationChanged('test');
-                assert.isFalse(myEl.resetList.called);
-
-                myEl._canBeChanged.restore();
-                myEl.resetList.restore();
-            });
-
-            it('sets organisationId as a number if id argument is provided', function() {
-                sinon.spy(myEl, 'resetList');
-                sinon.stub(myEl, '_canBeChanged').returns(true);
-                myEl.basePermissionPath = true;
-
-                myEl._organizationChanged('test');
-                assert.isTrue(isNaN(myEl.organisationId));
-
-                myEl._organizationChanged('666');
-                assert.equal(myEl.organisationId, 666);
-            });
         });
 
         describe('method _queriesChanged', function() {
@@ -102,58 +48,6 @@
             myEl.searchBlur();
             assert.isTrue(myEl.updateStyles.called);
             myEl.updateStyles.restore();
-        });
-
-        it('method resetList calls set 6 times and  updateStyles method', function() {
-            sinon.spy(myEl, 'updateStyles');
-            sinon.spy(myEl, 'set');
-            myEl.resetList();
-            assert.equal(myEl.set.callCount, 6);
-            assert.isTrue(myEl.updateStyles.called);
-            myEl.set.restore();
-            myEl.updateStyles.restore();
-        });
-
-        describe('method manageEngagementStaff', function() {
-            it('add staff to engagementStaffs if it hasAccess property is true', function() {
-                assert.isObject(myEl.engagementStaffs);
-                var staff = {
-                    user: {email: 'test_staff'},
-                    id: 111,
-                    hasAccess: true
-                };
-                var staff2 = {
-                    user: {email: 'test_staff2'},
-                    id: 222,
-                    hasAccess: false
-                };
-
-                assert.isUndefined(myEl.engagementStaffs[staff.user.email]);
-                assert.isUndefined(myEl.engagementStaffs[staff2.user.email]);
-
-                myEl.manageEngagementStaff(staff);
-                myEl.manageEngagementStaff(staff2);
-
-                assert.isDefined(myEl.engagementStaffs[staff.user.email]);
-                assert.isUndefined(myEl.engagementStaffs[staff2.user.email]);
-            });
-
-            it('remove staff from engagementStaffs if it hasAccess property is false', function() {
-                myEl.engagementStaffs = {};
-                var staff = {
-                    user: {email: 'test_staff'},
-                    id: 111,
-                    hasAccess: true
-                };
-                assert.isUndefined(myEl.engagementStaffs[staff.user.email]);
-
-                myEl.manageEngagementStaff(staff);
-                assert.isDefined(myEl.engagementStaffs[staff.user.email]);
-
-                staff.hasAccess = false;
-                myEl.manageEngagementStaff(staff);
-                assert.isUndefined(myEl.engagementStaffs[staff.user.email]);
-            });
         });
 
         it('method removeStaff sets requestInProcess to true and calls set method', function() {
@@ -194,27 +88,6 @@
             assert.isTrue(myEl._showPagination(11));
         });
 
-        it('method _showAddButton returns true if agreement.auditor_firm.id is true, loading is false and _canBeChanged returns true', function() {
-            var agreement = {auditor_firm: {id: 666}},
-                    loading = false;
-            sinon.stub(myEl, '_canBeChanged').returns(true);
-
-            assert.isTrue(myEl._showAddButton('', agreement, loading));
-
-            loading = true;
-            assert.isFalse(myEl._showAddButton('', agreement, loading));
-
-            loading = false;
-            agreement.auditor_firm.id = false;
-            assert.isFalse(myEl._showAddButton('', agreement, loading));
-
-            agreement.auditor_firm.id = 666;
-            myEl._canBeChanged.returns(false);
-            assert.isFalse(myEl._showAddButton('', agreement, loading));
-
-            myEl._canBeChanged.restore();
-        });
-
         describe('method _checkEmail', function() {
             it('returns if emailChecking is true', function() {
                 myEl.emailChecking = true;
@@ -252,55 +125,6 @@
             assert.isTrue(myEl._emailDisabled(null, null, null));
             assert.isTrue(myEl._emailDisabled('test', 'test', null));
             assert.isTrue(myEl._emailDisabled(null, 'test', 'test'));
-        });
-
-        describe('method _isActive', function() {
-            it('throw an error if event.model.item is not defined', function() {
-                sinon.stub(myEl, 'manageEngagementStaff');
-                var foo = myEl._isActive.bind(myEl);
-                assert.throws(foo);
-
-                var event = {model: {item: 'test'}};
-                var bar = myEl._isActive.bind(myEl, event);
-                assert.doesNotThrow(bar);
-
-                myEl.manageEngagementStaff.restore();
-            });
-
-            it('calls manageEngagementStaff method', function() {
-                sinon.stub(myEl, 'manageEngagementStaff');
-                var event = {model: {item: 'test'}};
-
-                myEl._isActive(event);
-                assert.isTrue(myEl.manageEngagementStaff.called);
-
-                myEl.manageEngagementStaff.restore();
-            })
-        });
-
-        describe('method getTabData', function() {
-            it('returns null if _canBeChanged method returns false', function() {
-                sinon.stub(myEl, '_canBeChanged').returns(false);
-                assert.isNull(myEl.getTabData());
-                myEl._canBeChanged.restore();
-            });
-
-            it('returns staffs ids if staff_members changed or null', function() {
-                myEl.engagementStaffs = {
-                    'test1': 1,
-                    'test2': 2,
-                    'test3': 3
-                };
-                myEl.engagement = {staff_members: [{id: 1}, {id: 2}, {id: 3}]};
-                sinon.stub(myEl, '_canBeChanged').returns(true);
-
-                assert.isNull(myEl.getTabData());
-                myEl.engagementStaffs.test4 = 4;
-
-                assert.isTrue(_.isEqual(myEl.getTabData(), [1, 2, 3, 4]));
-
-                myEl._canBeChanged.restore();
-            });
         });
 
         it('method _getSearchInputClass returns filled if first argument is true or empty', function() {
@@ -371,7 +195,6 @@
             it('runs methods depending on details.action', function() {
                 sinon.stub(myEl, 'set');
                 sinon.stub(myEl, 'splice');
-                sinon.stub(myEl, 'manageEngagementStaff');
                 sinon.stub(myEl, 'resetDialog');
 
                 myEl._staffUpdated({}, {action: 'patch', data: {}});
@@ -382,20 +205,17 @@
                 assert.isTrue(myEl.set.calledTwice);
 
                 myEl._staffUpdated({}, {action: 'delete', data: {}});
-                assert.isTrue(myEl.manageEngagementStaff.calledThrice);
                 assert.isTrue(myEl.splice.calledOnce);
                 assert.isTrue(myEl.set.calledThrice);
                 assert.isTrue(myEl.resetDialog.calledThrice);
 
                 myEl.set.restore();
                 myEl.splice.restore();
-                myEl.manageEngagementStaff.restore();
                 myEl.resetDialog.restore();
             });
 
             it('sets requestInProcess and dialogOpened to false', function() {
                 sinon.stub(myEl, 'splice');
-                sinon.stub(myEl, 'manageEngagementStaff');
                 sinon.stub(myEl, 'resetDialog');
 
                 myEl.requestInProcess = true;
@@ -406,7 +226,6 @@
                 assert.isFalse(myEl.requestInProcess);
 
                 myEl.splice.restore();
-                myEl.manageEngagementStaff.restore();
                 myEl.resetDialog.restore();
             });
         });

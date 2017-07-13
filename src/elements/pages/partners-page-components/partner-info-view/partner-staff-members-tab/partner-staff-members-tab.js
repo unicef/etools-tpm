@@ -64,11 +64,13 @@ Polymer({
                     }, {
                         'size': 5,
                         'label': 'Active',
+                        'icon': true,
                         'name': 'user.is_active'
                     },
                     {
                         'size': 5,
                         'label': 'Notify',
+                        'icon': true,
                         'name': 'receive_tpm_notifications'
                     }
                 ];
