@@ -66,7 +66,7 @@
 
                 let endpoint = this.getEndpoint('partnersList');
                 endpoint.url += this.getQueriesString();
-                if (this.requestQueries.reload) { endpoint.url += `reload=${new Date().getTime()}`; }
+                if (this.requestQueries.reload) { endpoint.url += `&reload=${new Date().getTime()}`; }
                 this.endpoint = endpoint;
             },
 
