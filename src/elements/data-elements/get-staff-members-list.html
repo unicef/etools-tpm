@@ -53,7 +53,7 @@
                     type: Object,
                     value: {}
                 },
-                staffsBase: {
+                staffBase: {
                     type: String,
                     notify: true,
                     value: ''
@@ -69,7 +69,7 @@
                 let queriesString = this._prepareQueries(listQueries);
                 this.requestsCompleted = {};
                 this.url = this.getEndpoint('staffMembers', {id: partnerId}).url + queriesString;
-                if (this.collectionExists(`staff_members_${partnerId}`)) {
+                if (this.collectionExists(`staff_members_${this.partnerId}`)) {
                     this.requestsCompleted.options = true;
                 } else {
                     this.optionsUrl = this.url;
@@ -100,7 +100,6 @@
                 } else {
                     console.error('Can not load permissions for engagement');
                 }
-
                 this.requestsCompleted.options = true;
                 this._handleResponse(this.responseData);
             },
@@ -114,7 +113,7 @@
                 }
                 this.listLoading = false;
                 this.url = null;
-                this.staffsBase = `staff_members_${this.partnerId}`;
+                this.staffBase = `staff_members_${this.partnerId}`;
             },
 
             _handleError: function(event, error) {

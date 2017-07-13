@@ -13,8 +13,7 @@ Polymer({
             value: 'staff_members'
         },
         partnerId: {
-            type: String,
-            observer: '_changePartnerId'
+            type: String
         },
         dataItems: {
             type: Array,
@@ -43,23 +42,23 @@ Polymer({
             value: function() {
                 return [
                     {
-                        'size': 16,
+                        'size': 18,
                         'label': 'Position',
                         'name': 'user.profile.job_title'
                     }, {
-                        'size': 16,
+                        'size': 18,
                         'label': 'First Name',
                         'name': 'user.first_name'
                     }, {
-                        'size': 16,
+                        'size': 18,
                         'label': 'Last Name',
                         'name': 'user.last_name'
                     }, {
-                        'size': 16,
+                        'size': 18,
                         'label': 'Phone Number',
                         'name': 'user.profile.phone_number'
                     }, {
-                        'size': 16,
+                        'size': 18,
                         'label': 'E-mail Address',
                         'name': 'user.email'
                     }, {
@@ -128,18 +127,13 @@ Polymer({
         'resetDialog(dialogOpened)',
         '_handleUpdateError(errorObject.staff_members)',
         '_queriesChanged(listSize, listPage, searchQuery)',
-        'updateStyles(emailChecking, staffsBase, addDialog)'
+        'updateStyles(emailChecking, staffBase, addDialog)'
     ],
 
     attached: function() {
         this.$.emailInput.validate = this._validEmailAddress.bind(this, this.$.emailInput);
         this.listSize = 10;
         this.listPage = 1;
-    },
-
-    _changePartnerId: function(id) {
-        if (!this._canBeChanged() || !this.basePermissionPath) { return; }
-        if (!id) { this.resetList(); }
     },
 
     _queriesChanged: function(listSize, listPage, searchQuery) {
@@ -319,15 +313,6 @@ Polymer({
         if (nonField) {
             this.fire('toast', {text: `Staff Members: ${nonField}`});
         }
-    },
-
-    resetList: function() {
-        this.set('dataItems', []);
-        this.set('listPage', 1);
-        this.set('searchQuery', '');
-        this.set('searchString', '');
-        this.set('datalength', 0);
-        this.updateStyles();
     },
 
     _getSearchInputClass: function(searchString) {
