@@ -33,7 +33,9 @@ Polymer({
                             job_title: '',
                             phone_number: ''
                         },
+                        is_active: false
                     },
+                    receive_tpm_notifications: false
                 };
             }
         },
