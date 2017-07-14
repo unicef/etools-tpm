@@ -1,0 +1,49 @@
+<!--import [polymer, lodash]-->
+<!--import [module-styles, list-header, list-element, activity-sector-element]-->
+
+<dom-module id="activity-partnership-element">
+    <template>
+        <!-- inject styles './activity-partnership-element.scss'-->
+        <style include="module-styles">
+            .add-btn {
+                height: 46px;
+                top: 5px;
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--module-primary);
+            }
+            list-header {
+                box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.13);
+            }
+            list-element {
+                border-bottom: none;
+                --list-element-wrapper: #{'{
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+                }'}
+            }
+        </style>
+
+        <list-element data="[[activity]]"
+                      headings="[[headings]]"
+                      slotted-details>
+            <div slot="detailSlot">
+                <list-header no-ordered data="[[sectorsColumns]]" level="2">
+                    <div slot="headerButton"><paper-button class="add-btn" on-tap="addNewSector">Add sector cover</paper-button></div>
+                </list-header>
+
+                <template is="dom-repeat" items="[[activity.tpm_sectors]]" as="sector">
+                    <activity-sector-element sector="[[sector]]" activity-id="[[activity.id]]"></activity-sector-element>
+                </template>
+
+                <template is="dom-if" if="[[!activity.tpm_sectors.length]]">
+                    <list-element level="2"
+                                  data="[[emptyObject]]"
+                                  headings="[[sectorsColumns]]"></list-element>
+                </template>
+            </div>
+        </list-element>
+
+    </template>
+
+    <!-- inject scripts './activity-partnership-element.js'-->
+</dom-module>

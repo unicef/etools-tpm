@@ -6,11 +6,10 @@
 
         <user-data user="{{user}}"></user-data>
 
-        <!--partners-->
-        <etools-ajax
-                endpoint="[[partnersEndpoint]]"
-                on-success="_partnersLoaded"
-                on-fail="_partnersError"></etools-ajax>
+        <!--tpm partners-->
+        <etools-ajax endpoint="[[partnersEndpoint]]"
+                     on-success="_partnersLoaded"
+                     on-fail="_partnersError"></etools-ajax>
 
         <etools-ajax method="OPTIONS"
                      url="[[partnersOptionsUrl]]"
@@ -22,6 +21,15 @@
                      on-success="_handleVisitsOptions"
                      on-fail="_handleVisitsOptions"></etools-ajax>
 
+        <!--partner organisations-->
+        <etools-ajax endpoint="[[organisationsEndpoint]]"
+                     on-success="_organisationsLoaded"
+                     on-fail="_organisationsError"></etools-ajax>
+
+        <!--pp/sfa Outputs-->
+        <etools-ajax url="[[outputsEndpoint]]"
+                     on-success="_outputsLoaded"
+                     on-fail="_outputsError"></etools-ajax>
     </template>
 
     <script>
@@ -49,7 +57,9 @@
                     if (this.isTpmUser()) {
                         this.partnersEndpoint = this.getEndpoint('partnersList');
                     } else {
+                        this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
+                        this.outputsEndpoint = this.getEndpoint('ppSsfaOutputs').url;
                     }
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this._allDataLoaded();
@@ -57,7 +67,9 @@
 
                 _allDataLoaded: function() {
                     let tpmUser = this.isTpmUser();
-                    if ((dataLoaded.partners || !tpmUser) && dataLoaded.visitsOptions && (dataLoaded.partnersOptions || tpmUser)) {
+                    if (((dataLoaded.organizations && dataLoaded.partners && dataLoaded.outputs) || !tpmUser) &&
+                            dataLoaded.visitsOptions &&
+                            (dataLoaded.partnersOptions || tpmUser)) {
                         this.fire('initial-data-loaded');
                     }
                 },
@@ -67,6 +79,24 @@
                     this._setPartnerId(partnerId);
                     if(!partnerId) { console.error('Can not get TPM Partner id!'); }
                     dataLoaded.partners = true;
+                    this._allDataLoaded();
+                },
+
+                _organisationsLoaded: function(data, detail) {
+                    if (!detail) {
+                        this._organisationsError();
+                    }
+                    this._setData('partnerOrganisations', detail);
+                    dataLoaded.organizations = true;
+                    this._allDataLoaded();
+                },
+
+                _outputsLoaded: function(data, detail) {
+                    if (!detail) {
+                        this._outputsError();
+                    }
+                    this._setData('ppSsfaOutputs', detail);
+                    dataLoaded.outputs = true;
                     this._allDataLoaded();
                 },
 
@@ -98,6 +128,14 @@
 
                     dataLoaded.partnersOptions = true;
                     this._allDataLoaded();
+                },
+
+                _organisationsError: function() {
+                    this._responseError('partner organisations');
+                },
+
+                _outputsError: function() {
+                    this._responseError('ppSsfaOutputs');
                 },
 
                 _responseError: function(request) {

@@ -49,7 +49,11 @@
                 console.error(`Can not update ${this.postfix}. Data is missing`);
             }
             this.fire(`${this.postfix}-updated`, {success: true});
-            this.fire('toast', {text: `${this.postfix[0].toUpperCase()}${this.postfix.slice(1)} has been updated!`});
+            if (!this.quietUpdate) {
+                this.fire('toast', {text: `${this.postfix[0].toUpperCase()}${this.postfix.slice(1)} has been updated!`});
+            } else {
+                this.quietUpdate = false;
+            }
         },
 
         _handleError: function (event, error) {
@@ -91,11 +95,14 @@
                 this.postRequest = _.clone(details);
                 this.postRequest.data = {};
             }
+            this.quietUpdate = details.quietUpdate;
             this._startPatchRequest(url, details.data);
         },
 
         _startPatchRequest: function(url, data) {
-            this.fire('global-loading', {message: `Saving ${this.postfix}...`, active: true, type: `save-${this.postfix}`});
+            if (!this.quietUpdate) {
+                this.fire('global-loading', {message: `Saving ${this.postfix}...`, active: true, type: `save-${this.postfix}`});
+            }
             this.method = 'PATCH';
             this.postData = data || {};
             this.url = url;

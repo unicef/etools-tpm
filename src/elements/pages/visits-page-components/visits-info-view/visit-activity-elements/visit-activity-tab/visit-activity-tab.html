@@ -1,0 +1,127 @@
+<!--import [polymer, etools-content-panel, lodash, paper-icon-button, iron-icons]-->
+<!--import [module-styles, tab-inputs-styles, list-header, activity-partnership-element, dialog-element, static-data-behavior,
+            get-partner-organisation-data]-->
+
+<dom-module id="visit-activity-tab">
+    <template>
+        <!-- inject styles './visit-activity-tab.scss'-->
+        <style include="module-styles tab-inputs-styles">
+            list-header {
+                box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.13);
+            }
+            .dialog-content {
+                box-sizing: border-box;
+                position: relative;
+                width: 100%;
+            }
+
+            .add-button {
+                position: absolute;
+                right: 15px;
+                top: 4px;
+                width: 40px;
+                height: 40px;
+                color: #ffffff;
+                z-index: 10;
+            }
+        </style>
+        <get-partner-organisation-data partner="{{partnerOrg}}" partner-id="{{partnerOrgId}}"></get-partner-organisation-data>
+
+        <paper-icon-button title="Add"
+                           on-tap="addActivity"
+                           class="add-button"
+                           icon="add"></paper-icon-button>
+
+        <etools-content-panel panel-title="Visit Activity">
+
+            <list-header class="header" no-ordered data="[[columns]]"></list-header>
+
+            <template is="dom-repeat" items="[[activities]]" as="activity">
+                <activity-partnership-element activity="[[activity]]"></activity-partnership-element>
+            </template>
+
+            <template is="dom-if" if="[[!activities.length]]">
+                <list-element data="[[emptyObject]]"
+                              headings="[[columns]]"></list-element>
+            </template>
+
+        </etools-content-panel>
+
+        <!--Add new Activity dialog-->
+        <dialog-element opened="{{activityDialogOpened}}"
+                        dialog-title="Add Activity"
+                        confirm-btn-text="Add"
+                        request-in-process="{{requestInProcess}}">
+            <div class="dialog-content">
+                <!-- Implementing Partner -->
+                <etools-searchable-multiselection-menu
+                        id="partnerInput"
+                        options="[[partnerOrganisations]]"
+                        class="disabled-as-readonly validate-input"
+                        value="{{newItem.partnerOrganisation}}"
+                        label="Implementing Partner"
+                        custom-object-options
+                        option-value="id"
+                        option-label="name"
+                        on-value-change="_requestPartner"
+                        placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
+
+                <!-- Partnership -->
+                <etools-searchable-multiselection-menu
+                        id="partnershipInput"
+                        options="[[partnerOrg.interventions]]"
+                        disabled="[[!partnerOrg.id]]"
+                        class="disabled-as-readonly validate-input"
+                        value="{{newItem.intervention}}"
+                        label="Partnership"
+                        custom-object-options
+                        option-value="id"
+                        option-label="number"
+                        hide-search
+                        placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
+            </div>
+        </dialog-element>
+
+        <!--Add new Sector dialog-->
+        <dialog-element opened="{{sectorDialogOpened}}"
+                        dialog-title="Add Sector Cover"
+                        confirm-btn-text="Add"
+                        request-in-process="{{requestInProcess}}">
+           <div class="dialog-content">
+               <!-- Sector Cover -->
+               <etools-searchable-multiselection-menu
+                       id="sectorInput"
+                       options="[[sectorOptions]]"
+                       class="disabled-as-readonly validate-input"
+                       value="{{newItem.sector}}"
+                       label="Sector Cover"
+                       custom-object-options
+                       option-value="id"
+                       option-label="name"
+                       placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
+           </div>
+        </dialog-element>
+
+        <!--Add new output-->
+        <dialog-element opened="{{outputDialogOpened}}"
+                        dialog-title="Add PP/SSFA Output"
+                        confirm-btn-text="Add"
+                        request-in-process="{{requestInProcess}}">
+            <div class="dialog-content">
+                <!-- PP/SSFA Output -->
+                <etools-searchable-multiselection-menu
+                        id="outputInput"
+                        options="[[outputOptions]]"
+                        class="disabled-as-readonly validate-input"
+                        value="{{newItem.output}}"
+                        label="PP/SSFA Output"
+                        custom-object-options
+                        option-value="resultId"
+                        option-label="name"
+                        placeholder="Select PP/SSFA Output"></etools-searchable-multiselection-menu>
+            </div>
+        </dialog-element>
+    </template>
+
+    <!-- inject scripts './visit-activity-tab.js'-->
+</dom-module>

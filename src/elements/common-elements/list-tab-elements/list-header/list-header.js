@@ -8,11 +8,33 @@ Polymer({
             notify: true
         },
         noOrdered: Boolean,
-        noAdditional: Boolean
+        noAdditional: {
+            type: Boolean,
+            value: false
+        },
+        paddingValue: {
+            type: Number,
+            value: 72
+        },
+        level: {
+            type: Number,
+            value: 1
+        }
     },
     observers: [
-        '_setRightPadding(data.*)'
+        '_setRightPadding(data.*)',
+        '_setLeftPadding(noAdditional, paddingValue, level)'
     ],
+    _setLeftPadding: function(noAdditional, paddingValue, level) {
+        let padding = 0;
+        if (noAdditional) {
+            padding = 15;
+        } else {
+            padding = (paddingValue || 0) * (level || 1);
+        }
+
+        this.style.paddingLeft = `${padding}px`;
+    },
     _setRightPadding: function() {
         if (!this.data) { return; }
         let rightPadding = 0;

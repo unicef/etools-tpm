@@ -109,13 +109,14 @@ paper-material {
     font-size: 13px;
     color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
     background-color: var(--primary-background-color, #FFFFFF);
-    padding: 0 15px 0 72px !important;
+    padding: 0 15px 0 72px;
     box-sizing: border-box;
+    @apply(--list-element-wrapper);
 }
 
 :host([no-additional]) {
     paper-material {
-        padding: 0 15px !important;
+        padding: 0 15px;
     }
 }
 
@@ -159,6 +160,5 @@ iron-icon {
 #collapse-wrapper {
     padding: 15px 15px 5px;
     background-color: #EEEEEE;
-    /* TODO: replace with app-theme var */
     border-top: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
 }

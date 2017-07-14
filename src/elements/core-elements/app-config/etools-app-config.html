@@ -44,9 +44,12 @@ App global configuration
                 url: '/api/tpm/visits/'
             },
             partnerOrganisations: {
-                url: '/api/v2/partners/',
-                exp: 24 * 60 * 60 * 1000, // 24h
+                url: '/api/v2/partners/?hidden=false',
+                exp: 2 * 60 * 60 * 1000, // 2h
                 cachingKey: 'partners'
+            },
+            partnerOrganisationDetails: {
+                template: '/api/v2/partners/<%=id%>/'
             },
             changeCountry: {
                 url: '/users/api/changecountry/'
@@ -54,6 +57,9 @@ App global configuration
             syncVendorData: {
                 template: '/api/tpm/partners/sync/<%=id%>/'
             },
+            ppSsfaOutputs: {
+                url: '/api/v2/reports/results/'
+            }
         },
         localEndpoints: {
             partnerDetails: {
