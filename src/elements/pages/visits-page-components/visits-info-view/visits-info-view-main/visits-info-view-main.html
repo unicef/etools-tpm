@@ -1,6 +1,6 @@
 <!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea]-->
 <!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data,
-            permission-controller, textarea-max-rows-behavior, tab-inputs-styles]-->
+            permission-controller, textarea-max-rows-behavior, tab-inputs-styles, file-attachments-tab, static-data-behavior]-->
 
 <dom-module id="visits-info-view-main">
     <template>
@@ -56,7 +56,33 @@
                     </div>
 
                     <div name="attachments">
-                        Visit Attachments
+                        <file-attachments-tab
+                                title="Related Documents"
+                                id="attachments"
+                                base-permission-path="{{permissionBase}}"
+                                main-property="attachments"
+                                error-object="{{errorObject}}"
+                                allow-download allow-edit file-type-required multiple
+                                data-items="[[visit.attachments]]"
+                                file-types="[[visitFileTypes]]"
+                                save-with-button
+                                readonly="[[_attachmentsReadonly(permissionBase, 'attachments')]]">
+                        </file-attachments-tab>
+
+                        <template is="dom-if" if="{{_showReportTabs(permissionBase, visit)}}" restamp>
+                            <file-attachments-tab
+                                    title="Upload New"
+                                    id="report"
+                                    base-permission-path="{{permissionBase}}"
+                                    main-property="report"
+                                    error-object="{{errorObject}}"
+                                    allow-download allow-edit file-type-required multiple
+                                    data-items="[[visit.report]]"
+                                    file-types="[[reportFileTypes]]"
+                                    save-with-button
+                                    readonly="[[_attachmentsReadonly(permissionBase, 'report')]]">
+                            </file-attachments-tab>
+                        </template>
                     </div>
 
                 </iron-pages>

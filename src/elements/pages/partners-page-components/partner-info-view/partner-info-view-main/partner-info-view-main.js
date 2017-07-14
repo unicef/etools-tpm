@@ -54,7 +54,6 @@ Polymer({
 
     _processAction: function(event, details) {
         if (!details || !details.type) { throw 'Event type is not provided!'; }
-        let attachmentsTab = Polymer.dom(this.root).querySelector('#attachments');
         let message, method;
         switch (details.type) {
             case 'save':
@@ -74,6 +73,7 @@ Polymer({
 
         if (!this.validatePartner()) { return; }
 
+        let attachmentsTab = Polymer.dom(this.root).querySelector('#attachments');
         let data = this.getPartnerData();
         let promises = [];
         if (attachmentsTab) { promises[0] = attachmentsTab.getFiles(); }
