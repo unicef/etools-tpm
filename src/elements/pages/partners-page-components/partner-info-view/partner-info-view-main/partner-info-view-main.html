@@ -42,7 +42,18 @@
                     </div>
 
                     <div name="attachments">
-                       Attachments
+                        <file-attachments-tab
+                                title="Files"
+                                id="attachments"
+                                base-permission-path="{{permissionBase}}"
+                                main-property="attachments"
+                                error-object="{{errorObject}}"
+                                allow-download allow-edit file-type-required multiple
+                                data-items="[[partner.attachments]]"
+                                file-types="[[partnerFileTypes]]"
+                                save-with-button
+                                readonly="[[_attachmentsReadonly(permissionBase, 'attachments')]]">
+                        </file-attachments-tab>
                     </div>
 
                 </iron-pages>
