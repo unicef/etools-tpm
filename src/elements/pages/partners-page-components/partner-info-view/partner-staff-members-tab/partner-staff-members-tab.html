@@ -61,12 +61,6 @@
                             <paper-icon-button icon="icons:create" class="edit-icon" on-tap="openEditDialog"></paper-icon-button>
                             <paper-icon-button icon="icons:delete" class="edit-icon" on-tap="openDeleteDialog"></paper-icon-button>
                         </div>
-                        <div slot="icon">
-                            <template is="dom-if" if="{{item.user.is_active}}">
-                                <iron-icon icon="icons:check"></iron-icon>
-                            </template>
-                        </div>
-                        
                     </list-element>
                 </template>
 

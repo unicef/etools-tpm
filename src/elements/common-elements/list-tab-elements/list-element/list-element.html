@@ -64,13 +64,12 @@
 
                     <template is="dom-if" if="[[_isOneOfType(item, 'icon')]]">
                         <span class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate">
-                            <template is="dom-if" if="{{_emtyObj(data)}}">
-                                <slot name="icon">
-
-                                </slot>
+                            <template is="dom-if" if="[[_getValue(item, data, 'bool')]]">
+                                <iron-icon icon="{{item.icon}}"></iron-icon>
                             </template>
-                            <template is="dom-if" if="{{!_emtyObj(data)}}">
-                                <span class="">--</span>
+
+                            <template is="dom-if" if="[[!_getValue(item, data, 'bool')]]">
+                                <iron-icon icon="remove"></iron-icon>
                             </template>
                         </span>
                     </template>
