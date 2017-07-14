@@ -38,6 +38,8 @@
             },
 
             _handleResponse: function (data, detail) {
+                if (!this.url) { return; }
+
                 this.finishRequest(detail || {});
                 this.url = null;
             },
@@ -57,7 +59,10 @@
             },
 
             _vendorNumberChanged: function(vendorNumber , oldNumber) {
-                if (!vendorNumber || vendorNumber === oldNumber) { return; }
+                if (!vendorNumber || vendorNumber === oldNumber) {
+                    this.url = null;
+                    return;
+                }
                 this.url = this.getEndpoint('syncVendorData', {id: vendorNumber}).url;
             }
 
