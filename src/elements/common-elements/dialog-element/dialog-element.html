@@ -22,6 +22,8 @@
                 <paper-button autofocus class="btn-confirm right"
                               delete-btn$="[[deleteDialog]]"
                               on-tap="confirmDialog"
+                              raised
+                              autofocus$="[[autofocus]]"
                               disabled="{{requestInProcess}}">[[confirmBtnText]]</paper-button>
 
                 <!--Cancel button-->
@@ -69,6 +71,11 @@
                 },
                 dialogName: String,
                 deleteDialog: {
+                    type: Boolean,
+                    value: false,
+                    reflectToAttribute: true
+                },
+                autofocus: {
                     type: Boolean,
                     value: false
                 }
