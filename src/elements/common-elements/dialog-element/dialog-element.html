@@ -1,4 +1,4 @@
-<!--import [polymer, iron-icon, paper-dialog, tab-inputs-styles, module-styles, neon-animation]-->
+<!--import [polymer, iron-icon, paper-dialog, tab-inputs-styles, module-styles, neon-animation, paper-toolbar]-->
 
 <dom-module id="dialog-element">
     <template>
@@ -9,8 +9,8 @@
                       modal="{{requestInProcess}}"
                       with-backdrop
                       ok-btn-text="sync from vision">
-            <iron-icon icon="icons:close" class="close-btn" dialog-dismiss$="{{_setDialogDismiss(requestInProcess, confirmDialogOpened)}}"></iron-icon>
             <h2 class="dialog-title">[[dialogTitle]]<etools-loading active="{{requestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading></h2>
+            <iron-icon icon="icons:close" class="close-btn" dialog-dismiss$="{{_setDialogDismiss(requestInProcess, confirmDialogOpened)}}"></iron-icon>
 
             <template is="dom-if" if="{{!deleteDialog}}" restamp>
                 <slot></slot>
