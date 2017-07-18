@@ -14,25 +14,16 @@
                 position: relative;
                 width: 100%;
             }
-
-            .add-button {
-                position: absolute;
-                right: 15px;
-                top: 4px;
-                width: 40px;
-                height: 40px;
-                color: #ffffff;
-                z-index: 10;
-            }
         </style>
         <get-partner-organisation-data partner="{{partnerOrg}}" partner-id="{{partnerOrgId}}"></get-partner-organisation-data>
 
-        <paper-icon-button title="Add"
-                           on-tap="addActivity"
-                           class="add-button"
-                           icon="add-box"></paper-icon-button>
-
         <etools-content-panel panel-title="Visit Activity">
+            <div slot="panel-btns">
+                <paper-icon-button title="Add"
+                                   on-tap="addActivity"
+                                   icon="add-box"></paper-icon-button>
+
+            </div>
 
             <list-header class="header" no-ordered data="[[columns]]"></list-header>
 
