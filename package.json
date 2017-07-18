@@ -45,6 +45,7 @@
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2015-without-strict": "0.0.4",
+    "express": "^4.15.3",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-babel": "^6.1.2",
     "gulp-compile-html-tags": "^1.0.1",
@@ -53,9 +54,9 @@
     "gulp-imagemin": "^3.0.1",
     "gulp-jscs": "^4.0.0",
     "gulp-jshint": "^2.0.1",
-    "gulp-uglify": "^2.0.0",
     "gulp-nodemon": "^2.2.1",
     "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^2.0.0",
     "gulp-useref": "^3.1.2",
     "jshint": "^2.9.3",
     "mime": "^1.3.4",
