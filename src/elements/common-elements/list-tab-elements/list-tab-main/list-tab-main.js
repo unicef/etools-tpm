@@ -2,7 +2,11 @@
 
 Polymer({
     is: 'list-tab-main',
-    behaviors: [TPMBehaviors.QueryParamsController],
+
+    behaviors: [
+        TPMBehaviors.QueryParamsController
+    ],
+
     properties: {
         queryParams: {
             type: Object,
@@ -15,8 +19,7 @@ Polymer({
         },
         orderBy: {
             type: String,
-            value: '',
-            observer: '_orderChanged'
+            value: ''
         },
         listLength: Number,
         data: {
@@ -37,6 +40,10 @@ Polymer({
             type: Boolean,
             value: false
         },
+        headings: {
+            type: Array,
+            value: []
+        },
         details: {
             type: Array,
             value: function() {
@@ -48,6 +55,11 @@ Polymer({
             value: false
         }
     },
+
+    observers: [
+        '_orderChanged(orderBy, headings)'
+    ],
+
     _orderChanged: function(newOrder) {
         if (!newOrder || !(this.headings instanceof Array)) { return false; }
 
@@ -69,9 +81,11 @@ Polymer({
 
         if (this.queryParams.ordering !== this.orderBy) { this.set('queryParams.ordering', this.orderBy); }
     },
+
     _paramsChanged: function(newParams) {
         if (this.orderBy !== newParams.ordering) { this.orderBy = newParams.ordering; }
     },
+
     _computeResultsToShow: function(lengthAmount, size) {
         let page = (this.queryParams.page || 1) - 1;
         size = +size || 10;
@@ -82,6 +96,7 @@ Polymer({
 
         return `${first} - ${last} of ${lengthAmount}`;
     },
+
     _listDataChanged: function() {
         let rows = Polymer.dom(this.root).querySelectorAll('.list-element');
 
