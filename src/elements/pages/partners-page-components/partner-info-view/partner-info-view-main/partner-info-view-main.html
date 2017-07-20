@@ -1,7 +1,7 @@
 <!--import [polymer, etools-content-panel, app-route, paper-tabs, app-layout, lodash]-->
 <!--import [module-styles, main-page-styles, shared-styles, partner-actions-tab, search-and-filter,
             partner-details-tab, partner-staff-members-tab, file-attachments-tab, permission-controller,
-            update-partner-details-data, action-buttons]-->
+            update-partner-details-data, action-buttons, static-data-behavior]-->
 
 <dom-module id="partner-info-view-main">
     <template>
@@ -42,7 +42,18 @@
                     </div>
 
                     <div name="attachments">
-                       Attachments
+                        <file-attachments-tab
+                                title="Files"
+                                id="attachments"
+                                base-permission-path="{{permissionBase}}"
+                                main-property="attachments"
+                                error-object="{{errorObject}}"
+                                allow-download allow-edit file-type-required multiple
+                                data-items="[[partner.attachments]]"
+                                file-types="[[partnerFileTypes]]"
+                                save-with-button
+                                readonly="[[_attachmentsReadonly(permissionBase, 'attachments')]]">
+                        </file-attachments-tab>
                     </div>
 
                 </iron-pages>

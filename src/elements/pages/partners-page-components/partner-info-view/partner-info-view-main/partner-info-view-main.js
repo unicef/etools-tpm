@@ -4,6 +4,7 @@ Polymer({
     is: 'partner-info-view-main',
 
     behaviors: [
+        TPMBehaviors.StaticDataController,
         TPMBehaviors.PermissionController
     ],
 
@@ -32,6 +33,9 @@ Polymer({
         'action-activated': '_processAction',
     },
 
+    ready: function() {
+        this.partnerFileTypes = this.getData('partner_attachments_types');
+    },
     _routeConfig: function(route) {
         if (!this.route || !~this.route.prefix.indexOf('/partners')) {
             return;
@@ -62,6 +66,12 @@ Polymer({
         return this._hideActions(permissionBase) ? 'without-sidebar' : '';
     },
 
+    _attachmentsReadonly: function(base, type) {
+        let readOnly = this.isReadonly(`${base}.${type}`);
+        if (readOnly === null) { readOnly = true; }
+        return readOnly;
+    },
+
     _processAction: function(event, details) {
         if (!details || !details.type) { throw 'Event type is not provided!'; }
         let message, method;
@@ -83,13 +93,22 @@ Polymer({
 
         if (!this.validatePartner()) { return; }
 
-        this.newPartnerDetails = {
-            method: method,
-            id: this.partner.id,
-            data: this.getPartnerData(),
-            message: message,
-            action: details.type
-        };
+        let attachmentsTab = Polymer.dom(this.root).querySelector('#attachments');
+        let data = this.getPartnerData();
+        let promises = [];
+        if (attachmentsTab) { promises[0] = attachmentsTab.getFiles(); }
+
+        Promise.all(promises)
+            .then((uploadedFiles) => {
+                if (uploadedFiles && uploadedFiles[0]) {data.attachments = uploadedFiles[0]; }
+                this.newPartnerDetails = {
+                    method: method,
+                    id: this.partner.id,
+                    data: data,
+                    message: message,
+                    action: details.type
+                };
+            });
     },
 
     validatePartner: function() {
@@ -107,7 +126,6 @@ Polymer({
 
     getPartnerData: function() {
         let data = this.$.partnerDetails.getDetailsData();
-
         return data || {};
     }
 
