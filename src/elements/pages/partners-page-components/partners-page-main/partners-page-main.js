@@ -28,12 +28,14 @@ Polymer({
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
             this.view = 'list';
+        } else if (view === '' || _.isUndefined(view)) {
+            this.set('route.path', '/list');
         } else if (!isNaN(+view)) {
             this.debounce('clearSearchQueries', () => {
                 this.clearQueries();
             }, 100);
             this.partnerId = +view;
-        } else {
+        }  else {
             this.fire('404');
         }
     },

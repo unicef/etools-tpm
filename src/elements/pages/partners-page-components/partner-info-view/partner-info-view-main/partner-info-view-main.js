@@ -14,13 +14,34 @@ Polymer({
             value: function() {
                 return {};
             }
-        }
+        },
+        tabsList: {
+            type: Array,
+            value: function() {
+                return ['details', 'attachments'];
+            }
+        },
     },
 
-    observers: ['_setPermissionBase(partner.id)'],
+    observers: [
+        '_setPermissionBase(partner.id)',
+        '_routeConfig(route)'
+    ],
 
     listeners: {
         'action-activated': '_processAction',
+    },
+
+    _routeConfig: function(route) {
+        if (!this.route || !~this.route.prefix.indexOf('/partners')) {
+            return;
+        }
+        let tab = this.routeData ? this.routeData.tab : route.path.split('/')[1];
+        if (tab === '' || _.isUndefined(tab)) {
+            this.set('route.path', '/details');
+        } else if (!_.includes(this.tabsList, tab)) {
+            this.fire('404');
+        }
     },
 
     _setPermissionBase: function(id) {
