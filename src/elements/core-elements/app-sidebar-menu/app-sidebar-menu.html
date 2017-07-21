@@ -15,15 +15,15 @@
         <div class="nav-menu">
 
             <iron-selector selected="[[page]]"
-                           attr-for-selected="name"
+                           attr-for-selected="view"
                            selectable="side-bar-item"
                            role="navigation">
 
                 <template is="dom-if" if="{{user.id}}">
-                    <side-bar-item name="partners" icon="social:{{setPartnersIcon(user)}}" side-bar-link="{{setPartnersLink(user)}}"></side-bar-item>
+                    <side-bar-item view="partners" name="Third Party Monitors" icon="social:{{setPartnersIcon(user)}}" side-bar-link="{{setPartnersLink(user)}}"></side-bar-item>
                 </template>
 
-                <side-bar-item name="visits" icon="maps:transfer-within-a-station"
+                <side-bar-item view="visits" name="List of Visits" icon="maps:transfer-within-a-station"
                                side-bar-link="visits/list"></side-bar-item>
 
             </iron-selector>
