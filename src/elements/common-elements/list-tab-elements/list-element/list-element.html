@@ -1,4 +1,5 @@
-<!--import [polymer, iron-flex-layout, shared-styles, tab-inputs-styles, module-styles, moment-element/moment-import, paper-checkbox, insert-html]-->
+<!--import [polymer, iron-flex-layout, shared-styles, tab-inputs-styles, module-styles, moment-element/moment-import,
+            paper-checkbox, insert-html, paper-tooltip]-->
 
 <dom-module id="list-element">
     <template>
@@ -21,10 +22,10 @@
 
                     <template is="dom-if" if="[[_isOneOfType(item, 'link')]]">
                         <a class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate"
-                           href$="[[_getLink(item.link, data)]]"
-                           title="[[_getValue(item, data)]]">
+                           href$="[[_getLink(item.link, data)]]">
                             [[_getValue(item, data)]]
                         </a>
+                        <paper-tooltip offset="0">[[_getValue(item, data)]]</paper-tooltip>
                     </template>
 
                     <template is="dom-if" if="[[!_isOneOfType(item, 'link', 'checkbox', 'icon', 'custom', 'html')]]" restamp>

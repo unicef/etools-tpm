@@ -15,7 +15,7 @@
                                      error-object="{{errorObject}}" base-permission-path="{{permissionBase}}"></update-partner-details-data>
 
         <pages-header-element show-export-button
-                              title="[[partner.name]]"></pages-header-element>
+                              page-title="[[partner.name]]"></pages-header-element>
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                 <paper-tab name="details" class="details-tab"><span class="tab-content">Partner details</span></paper-tab>
@@ -43,7 +43,7 @@
 
                     <div name="attachments">
                         <file-attachments-tab
-                                title="Files"
+                                tab-title="Files"
                                 id="attachments"
                                 base-permission-path="{{permissionBase}}"
                                 main-property="attachments"

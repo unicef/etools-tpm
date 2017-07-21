@@ -16,7 +16,7 @@
                                    base-permission-path="{{permissionBase}}"></update-visit-details-data>
 
         <pages-header-element show-export-button
-                              title="Assign TPM visit"></pages-header-element>
+                              page-title="Assign TPM visit"></pages-header-element>
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                 <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
@@ -57,7 +57,7 @@
 
                     <div name="attachments">
                         <file-attachments-tab
-                                title="Related Documents"
+                                tab-title="Related Documents"
                                 id="attachments"
                                 base-permission-path="{{permissionBase}}"
                                 main-property="attachments"
@@ -71,7 +71,7 @@
 
                         <template is="dom-if" if="{{_showReportTabs(permissionBase, visit)}}" restamp>
                             <file-attachments-tab
-                                    title="Upload New"
+                                    tab-title="Upload New"
                                     id="report"
                                     base-permission-path="{{permissionBase}}"
                                     main-property="report"

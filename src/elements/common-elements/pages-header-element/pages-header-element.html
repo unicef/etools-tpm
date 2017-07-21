@@ -1,4 +1,4 @@
-<!--import [polymer, iron-flex-layout/iron-flex-layout-classes, paper-button, paper-menu-button, paper-menu, etools-ajax, paper-dialog]-->
+<!--import [polymer, iron-flex-layout/iron-flex-layout-classes, paper-button, paper-menu-button, paper-menu, etools-ajax, paper-dialog, paper-tooltip]-->
 <!--import [etools-app-config, shared-styles, module-styles]-->
 
 <dom-module id="pages-header-element">
@@ -11,7 +11,7 @@
         <div class="header-wrapper">
             <div class="side-heading horizontal layout center">
 
-                <span class="flex title" title="[[title]]">[[_setTitle(pageData, title)]]</span>
+                <span class="flex title">[[_setTitle(pageData, pageTitle)]]</span>
 
                 <div class="side-heading-button-holder">
                     <paper-menu-button hidden$="[[!showExportButton]]" on-tap="exportData">
