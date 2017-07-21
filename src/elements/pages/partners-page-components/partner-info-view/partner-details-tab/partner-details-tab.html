@@ -1,4 +1,4 @@
-<!--import [polymer, etools-content-panel, paper-input, iron-icons/communication-icons]-->
+<!--import [polymer, etools-content-panel, paper-input, iron-icons/communication-icons, paper-tooltip]-->
 <!--import [tab-inputs-styles, module-styles, permission-controller, common-methods-behavior]-->
 
 <dom-module id="partner-details-tab">
@@ -24,13 +24,16 @@
                                  class="without-border"
                                  disabled readonly></paper-input>
                 </div>
-                <div class="input-container" title="[[_getTitleValue(partner.vendor_number)]]">
+                <div class="input-container">
                     <!-- Vendor number -->
-                    <paper-input label="{{getLabel('vendor_number', basePermissionPath)}}"
-                                 value="{{partner.vendor_number}}"
-                                 placeholder="Empty Field"
-                                 class="without-border"
-                                 disabled readonly></paper-input>
+                    <div style="display:inline-block">
+                        <paper-input label="{{getLabel('vendor_number', basePermissionPath)}}"
+                                     value="{{partner.vendor_number}}"
+                                     placeholder="Empty Field"
+                                     class="without-border"
+                                     disabled readonly></paper-input>
+                        <paper-tooltip>[[_getTitleValue(partner.vendor_number)]]</paper-tooltip>
+                    </div>
                 </div>
 
                 <div class="input-container" title="{{_getTitleValue(partner.street_address)}}">
