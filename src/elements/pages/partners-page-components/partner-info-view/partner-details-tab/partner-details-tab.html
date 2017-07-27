@@ -1,16 +1,12 @@
 <!--import [polymer, etools-content-panel, paper-input, iron-icons/communication-icons, paper-tooltip]-->
-<!--import [tab-inputs-styles, module-styles, permission-controller, common-methods-behavior]-->
+<!--import [tab-inputs-styles, tab-layout-styles, module-styles, permission-controller, common-methods-behavior]-->
 
 <dom-module id="partner-details-tab">
     <template>
-        <style include="tab-inputs-styles module-styles">
+        <style include="tab-inputs-styles tab-layout-styles module-styles">
             :host {
                 position: relative;
                 display: block;
-            }
-
-            etools-content-panel {
-                margin-bottom: 20px;
             }
         </style>
 
@@ -27,13 +23,12 @@
                 </div>
                 <div class="input-container">
                     <!-- Vendor number -->
-                    <div>
-                        <paper-input label="{{getLabel('vendor_number', basePermissionPath)}}"
-                                     value="{{partner.vendor_number}}"
-                                     placeholder="Empty Field"
-                                     class="without-border"
-                                     disabled readonly></paper-input>
-                    </div>
+                    <paper-input label="{{getLabel('vendor_number', basePermissionPath)}}"
+                                 value="{{partner.vendor_number}}"
+                                 placeholder="Empty Field"
+                                 class="without-border"
+                                 disabled readonly></paper-input>
+                    <paper-tooltip offset="0">[[_getTitleValue(partner.vendor_number)]]</paper-tooltip>
                 </div>
 
                 <div class="input-container">

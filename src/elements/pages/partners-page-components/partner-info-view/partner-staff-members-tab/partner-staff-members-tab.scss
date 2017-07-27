@@ -4,9 +4,10 @@
 
     .email-loading {
         position: absolute;
-        right: -32px;
         top: 25px;
         left: auto;
+        background-color: #fff;
+
         &:not([active]) {
             display: none !important;
         }

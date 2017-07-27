@@ -1,6 +1,7 @@
 <!--import [polymer, module-styles, page-layout-styles, tab-inputs-styles, shared-styles, list-tab-main, dialog-element,
             search-and-filter, partners-list-data, pages-header-element, permission-controller, app-route/app-location,
-            static-data-behavior, common-methods-behavior, get-vendor-data, update-vendor-data, etools-app-config]-->
+            static-data-behavior, common-methods-behavior, get-vendor-data, update-vendor-data, etools-app-config,
+            paper-tooltip]-->
 
 <dom-module id="partners-list-view">
     <template>
@@ -14,9 +15,9 @@
 
             .po-loading {
                 position: absolute;
-                right: -32px;
                 top: 25px;
                 left: auto;
+                background-color: #fff;
             }
 
             .po-loading:not([active]) {
@@ -79,6 +80,7 @@
                                          on-focus="_resetFieldError"
                                          on-blur="_requestVendor">
                             </paper-input>
+                            <paper-tooltip offset="0">[[data.vendor_number]]</paper-tooltip>
                             <etools-loading active="{{vendorRequestInProcess}}" no-overlay loading-text="" class="po-loading"></etools-loading>
                         </div>
 
@@ -90,6 +92,7 @@
                                          value="[[data.name]]"
                                          placeholder="[[getReadonlyPlaceholder(data)]]">
                             </paper-input>
+                            <paper-tooltip offset="0">[[data.name]]</paper-tooltip>
                         </div>
                     </div>
 
@@ -102,6 +105,7 @@
                                          value="[[data.street_address]]"
                                          placeholder="[[getReadonlyPlaceholder(data)]]">
                             </paper-input>
+                            <paper-tooltip offset="0">[[data.street_address]]</paper-tooltip>
                         </div>
 
                         <div class="input-container input-container-45">
@@ -112,6 +116,7 @@
                                          value="[[data.postal_code]]"
                                          placeholder="[[getReadonlyPlaceholder(data)]]">
                             </paper-input>
+                            <paper-tooltip offset="0">[[data.postal_code]]</paper-tooltip>
                         </div>
                     </div>
 
@@ -124,6 +129,7 @@
                                          value="[[data.city]]"
                                          placeholder="[[getReadonlyPlaceholder(data)]]">
                             </paper-input>
+                            <paper-tooltip offset="0">[[data.city]]</paper-tooltip>
                         </div>
 
                         <div class="input-container input-container-45">
@@ -134,6 +140,7 @@
                                          value="[[data.country]]"
                                          placeholder="[[getReadonlyPlaceholder(data)]]">
                             </paper-input>
+                            <paper-tooltip offset="0">[[data.country]]</paper-tooltip>
                         </div>
                     </div>
 
@@ -157,6 +164,7 @@
                                     placeholder="[[getPlaceholderText('phone_number', basePermissionPath)]]">
                                 <iron-icon prefix icon="communication:phone"></iron-icon>
                             </paper-input>
+                            <paper-tooltip offset="0">[[data.phone_number]]</paper-tooltip>
                         </div>
 
                         <div class="input-container input-container-45">
@@ -176,6 +184,7 @@
                                     placeholder="[[getPlaceholderText('email', basePermissionPath)]]">
                                 <iron-icon prefix icon="communication:email"></iron-icon>
                             </paper-input>
+                            <paper-tooltip offset="0">[[data.email]]</paper-tooltip>
                         </div>
                     </div>
                 </div>

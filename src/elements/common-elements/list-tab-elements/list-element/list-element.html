@@ -23,9 +23,11 @@
                     <template is="dom-if" if="[[_isOneOfType(item, 'link')]]">
                         <a class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate"
                            href$="[[_getLink(item.link, data)]]">
-                            [[_getValue(item, data)]]
+                            <span class="truncate">
+                                [[_getValue(item, data)]]
+                                <paper-tooltip offset="0">[[_getValue(item, data)]]</paper-tooltip>
+                            </span>
                         </a>
-                        <paper-tooltip offset="0">[[_getValue(item, data)]]</paper-tooltip>
                     </template>
 
                     <template is="dom-if" if="[[!_isOneOfType(item, 'link', 'checkbox', 'icon', 'custom', 'html')]]" restamp>
