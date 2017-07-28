@@ -1,6 +1,16 @@
 :host([delete-dialog]) {
     .dialog-title {
         font-size: 17px;
+        color: var(--gray-dark);
+        background-color: transparent;
+    }
+
+    .close-btn {
+        color: inherit;
+    }
+
+    #buttons {
+        border-top: none;
     }
 }
 
@@ -82,4 +92,11 @@ paper-button.btn-cancel[disabled] {
 
 paper-button[disabled]:not(.btn-cancel) {
     opacity: 0.7;
+}
+
+#scrollbarContainer {
+    position: relative;
+    max-height: calc(90vh - 147px);
+    margin: 0;
+    padding: 0;
 }

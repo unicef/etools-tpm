@@ -89,7 +89,7 @@ Polymer({
     _setLeftPadding: function(noAdditional, paddingValue, level) {
         let padding = 0;
         if (noAdditional) {
-            padding = 15;
+            padding = 24;
         } else {
             padding = (paddingValue || 0) * (level || 1);
         }

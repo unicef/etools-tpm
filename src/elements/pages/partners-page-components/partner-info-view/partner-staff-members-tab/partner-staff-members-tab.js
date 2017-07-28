@@ -60,19 +60,21 @@ Polymer({
                         'label': 'Phone Number',
                         'name': 'user.profile.phone_number'
                     }, {
-                        'size': 16,
+                        'size': 18,
                         'label': 'E-mail Address',
                         'name': 'user.email'
                     }, {
                         'size': 5,
                         'label': 'Active',
                         'icon': 'check',
+                        'align': 'center',
                         'name': 'user.is_active'
                     },
                     {
                         'size': 5,
                         'label': 'Notify',
                         'icon': 'check',
+                        'align': 'center',
                         'name': 'receive_tpm_notifications'
                     }
                 ];

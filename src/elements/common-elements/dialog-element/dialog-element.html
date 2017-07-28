@@ -1,8 +1,9 @@
-<!--import [polymer, iron-icon, paper-dialog, tab-inputs-styles, module-styles, neon-animation, paper-toolbar]-->
+<!--import [polymer, iron-icon, paper-dialog, neon-animation]-->
+<!--import [tab-inputs-styles, module-styles, perfect-scrollbar-behavior, ps-styles]-->
 
 <dom-module id="dialog-element">
     <template>
-        <style include="module-styles tab-inputs-styles"></style>
+        <style include="module-styles tab-inputs-styles ps-styles"></style>
         <!-- inject styles './dialog-element.scss'-->
 
         <paper-dialog opened="{{opened}}"
@@ -12,9 +13,11 @@
             <h2 class="dialog-title">[[dialogTitle]]<etools-loading active="{{requestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading></h2>
             <iron-icon icon="icons:close" class="close-btn" dialog-dismiss$="{{_setDialogDismiss(requestInProcess, confirmDialogOpened)}}"></iron-icon>
 
-            <template is="dom-if" if="{{!deleteDialog}}" restamp>
-                <slot></slot>
-            </template>
+            <div id="scrollbarContainer">
+                <template is="dom-if" if="{{!deleteDialog}}" restamp>
+                    <slot></slot>
+                </template>
+            </div>
 
             <div class="buttons group" id="buttons">
 

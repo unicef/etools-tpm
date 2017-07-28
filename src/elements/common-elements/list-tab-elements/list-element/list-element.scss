@@ -46,7 +46,7 @@
             &.center { text-align: center; }
         }
         a.col-data {
-            color: #40c4ff;
+            color: var(--module-primary);
 
             &[href="#"] {
                 color: initial;
@@ -58,8 +58,11 @@
             position: absolute;
             top: 0;
             right: 0;
+            height: 48px;
+            line-height: 48px;
             opacity: 0;
             background-color: #eeeeee;
+            z-index: 2;
         }
 
         &:hover .hover-icons-block{ opacity: 1; }
@@ -96,6 +99,7 @@
 
 :host([hover]) {
     paper-material {
+        position: relative;
         background-color: #EEEEEE;
     }
 }
@@ -116,7 +120,7 @@ paper-material {
 
 :host([no-additional]) {
     paper-material {
-        padding: 0 15px;
+        padding: 0 24px;
     }
 }
 
