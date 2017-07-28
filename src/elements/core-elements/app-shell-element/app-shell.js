@@ -4,6 +4,7 @@ Polymer({
 
     behaviors: [
         etoolsBehaviors.LoadingBehavior,
+        Polymer.IronScrollTargetBehavior,
         TPMBehaviors.UserController,
         etoolsAppConfig.globals
     ],
@@ -70,6 +71,7 @@ Polymer({
     _routePageChanged: function() {
         if (!this.initLoadingComplete || !this.routeData.page) { return; }
         this.page = this.routeData.page || 'partners';
+        this.scroll(0, 0);
     },
 
     _pageChanged: function(page) {
