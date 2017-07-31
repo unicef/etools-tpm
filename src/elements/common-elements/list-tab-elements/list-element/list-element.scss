@@ -75,7 +75,8 @@
 
         .row-details-content {
             float: left;
-            padding-right: 25px;
+            box-sizing: border-box;
+            padding-right: 0;
             padding-bottom: 20px;
             vertical-align: top;
             overflow: hidden;
@@ -120,7 +121,7 @@ paper-material {
 
 :host([no-additional]) {
     paper-material {
-        padding: 0 24px;
+        padding: 0 14px 0 24px;
     }
 }
 
@@ -162,7 +163,7 @@ iron-icon {
 }
 
 #collapse-wrapper {
-    padding: 15px 15px 5px;
+    padding: 14px 24px 4px 24px;
     background-color: #EEEEEE;
     border-top: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
 }
