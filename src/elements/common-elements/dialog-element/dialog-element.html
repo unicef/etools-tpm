@@ -10,7 +10,7 @@
                       modal="{{requestInProcess}}"
                       with-backdrop
                       ok-btn-text="sync from vision">
-            <h2 class="dialog-title">[[dialogTitle]]<etools-loading active="{{requestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading></h2>
+            <h2 class="dialog-title">[[dialogTitle]]</h2>
             <iron-icon icon="icons:close" class="close-btn" dialog-dismiss$="{{_setDialogDismiss(requestInProcess, confirmDialogOpened)}}"></iron-icon>
 
             <div id="scrollbarContainer">
@@ -20,6 +20,12 @@
             </div>
 
             <div class="buttons group" id="buttons">
+                <etools-loading
+                        active="{{requestInProcess}}"
+                        no-overlay
+                        loading-text=""
+                        class="loading">
+                </etools-loading>
 
                 <!--Confirm button-->
                 <paper-button autofocus class="btn-confirm right"

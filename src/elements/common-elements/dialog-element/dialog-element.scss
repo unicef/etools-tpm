@@ -17,14 +17,19 @@
 paper-dialog {
     background-color: #ffffff;
     border-radius: 4px;
+    max-height: 90vh;
     width: 96%;
     max-width: 700px !important;
-    margin-top: 0 !important;
+}
+
+paper-dialog-scrollable {
+    --paper-dialog-scrollable: #{'{
+        padding: 0;
+    }'};
 }
 
 #buttons {
     display: block;
-    margin-top: 25px;
     padding: 10px 8px 10px 24px;
     overflow: hidden;
     border-top: 1px solid var(--gray-lighter);
@@ -55,9 +60,10 @@ paper-dialog {
 }
 
 .dialog-title {
-    padding: 16px 24px 10px 36px !important;
+    padding: 16px 24px 10px !important;
     min-height: 26px;
     margin-top: 0 !important;
+    margin-bottom: 10px !important;
     color: white;
     background-color: var(--module-primary);
 }
@@ -76,7 +82,7 @@ paper-dialog {
 .close-btn:hover { opacity: 1; }
 
 .loading {
-    margin-top: 3px;
+    margin-top: 8px;
     vertical-align: top;
     margin-left: 15px;
 }
