@@ -65,22 +65,22 @@ Polymer({
         switch (details.type) {
             case 'save':
                 method = 'PATCH';
-                break;
+            break;
             case 'assign':
                 method = 'POST';
                 message = 'Assign visit...';
-                break;
+            break;
             case 'reject':
                 this.dialogOpened = true;
                 return;
             case 'accept':
                 method = 'POST';
                 message = 'Accepting visit...';
-                break;
+            break;
             case 'send_report':
                 method = 'POST';
                 message = 'Sending report...';
-                break;
+            break;
             default:
                 throw `Unknown event type: ${details.type}`;
         }

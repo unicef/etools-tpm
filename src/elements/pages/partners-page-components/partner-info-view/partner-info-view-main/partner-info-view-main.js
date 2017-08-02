@@ -73,20 +73,22 @@ Polymer({
     },
 
     _processAction: function(event, details) {
-        if (!details || !details.type) { throw 'Event type is not provided!'; }
+        if (!details || !details.type) {
+            throw 'Event type is not provided!';
+        }
         let message, method;
         switch (details.type) {
             case 'save':
                 method = 'PATCH';
-                break;
+            break;
             case 'activate':
                 method = 'POST';
                 message = 'Activating partner...';
-                break;
+            break;
             case 'cancel':
                 method = 'POST';
                 message = 'Canceling partner...';
-                break;
+            break;
             default:
                 throw `Unknown event type: ${details.type}`;
         }
