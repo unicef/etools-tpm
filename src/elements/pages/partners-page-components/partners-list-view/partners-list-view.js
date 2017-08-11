@@ -42,36 +42,32 @@
             listHeadings: {
                 type: Array,
                 value: [{
-                    'size': 25,
+                    'size': 15,
                     'label': 'Vendor #',
                     'name': 'vendor_number',
                     'link': 'partners/*data_id*/details',
                     'ordered': false
                 }, {
-                    'size': 45,
+                    'size': 40,
                     'label': 'Vendor Name',
                     'name': 'name',
                     'ordered': false
                 }, {
-                    'size': 30,
+                    'size': 10,
                     'label': 'Country',
                     'name': 'country',
                     'ordered': false
+                }, {
+                    'size': 15,
+                    'label': 'Phone #',
+                    'name': 'phone_number',
+                    'ordered': false
+                }, {
+                    'size': 20,
+                    'label': 'Email',
+                    'name': 'email',
+                    'ordered': false
                 }]
-            },
-            listDetails: {
-                type: Array,
-                value: function() {
-                    return [{
-                        'size': 20,
-                        'label': 'Email',
-                        'name': 'email'
-                    }, {
-                        'size': 20,
-                        'label': 'Phone #',
-                        'name': 'phone_number'
-                    }];
-                }
             },
             partnersList: {
                 type: Array,

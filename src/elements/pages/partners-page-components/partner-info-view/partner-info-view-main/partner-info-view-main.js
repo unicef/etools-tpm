@@ -35,6 +35,7 @@ Polymer({
 
     ready: function() {
         this.partnerFileTypes = this.getData('partner_attachments_types');
+        this.statuses = this.getData('partner_statuses');
     },
     _routeConfig: function(route) {
         if (!this.route || !~this.route.prefix.indexOf('/partners')) {
@@ -129,6 +130,24 @@ Polymer({
     getPartnerData: function() {
         let data = this.$.partnerDetails.getDetailsData();
         return data || {};
+    },
+
+    _setStatusName(status, statuses) {
+        if (!status || !statuses) { return; }
+
+        let currentStatus = statuses.find((statusObj) => {
+            return statusObj.value === status;
+        });
+
+        return currentStatus.display_name;
+    },
+
+    _getFormattedDate: function(statusDate) {
+        if (!statusDate) { return; }
+        let date = new Date(statusDate),
+            format = 'on DD MMMM, YYYY';
+
+        return moment.utc(date).format(format);
     }
 
 });

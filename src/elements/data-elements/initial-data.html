@@ -135,6 +135,11 @@
                     if (!partnerAttachmentsTypes) { this._responseError('Can not load attachments types'); }
                     this._setData('partner_attachments_types', partnerAttachmentsTypes);
 
+                    let partnerStatuses = this.getChoices('new_partner.status');
+                    if (!partnerStatuses) { this._responseError('Can not load partner statuses'); }
+                    this._setData('partner_statuses', partnerStatuses);
+
+
                     dataLoaded.partnersOptions = true;
                     this._allDataLoaded();
                 },
