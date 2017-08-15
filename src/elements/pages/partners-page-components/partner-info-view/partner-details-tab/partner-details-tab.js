@@ -78,6 +78,11 @@
             });
 
             return _.isEmpty(data) ? null : data;
+        },
+
+        getFullAddress: function(country, city, postalCode, streetAddress) {
+            let addressItems = [country, city, postalCode, streetAddress];
+            return addressItems.join(', ');
         }
 
     });

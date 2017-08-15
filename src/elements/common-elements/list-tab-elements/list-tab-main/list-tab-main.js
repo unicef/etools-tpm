@@ -32,6 +32,10 @@ Polymer({
                 return {empty: true};
             }
         },
+        noTableTitle: {
+            type: Boolean,
+            value: false
+        },
         withoutPagination: {
             type: Boolean,
             value: false
@@ -111,5 +115,10 @@ Polymer({
 
             this.noAnimation = false;
         }
+    },
+
+    _isTableTitle: function(noTableTitle, withoutPagination) {
+        if (noTableTitle) { return false; }
+        return withoutPagination;
     }
 });

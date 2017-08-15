@@ -7,11 +7,11 @@
 
 
         <paper-card class="data-table">
-
-            <template is="dom-if" if="[[!withoutPagination]]" restamp>
-                <span class="textprim data-card-heading">{{showingResults}} {{headerTitle}}</span>
+            <template is="dom-if" if="[[!_isTableTitle(noTableTitle, withoutPagination)]]" restamp>
+                <span class="textprim data-card-heading">{{tableTitle}} {{showingResults}} {{headerTitle}}</span>
             </template>
-            <template is="dom-if" if="[[withoutPagination]]" restamp>
+
+            <template is="dom-if" if="[[_isTableTitle(noTableTitle, withoutPagination)]]" restamp>
                 <span class="textprim data-card-heading table-title">{{headerTitle}}</span>
             </template>
 
