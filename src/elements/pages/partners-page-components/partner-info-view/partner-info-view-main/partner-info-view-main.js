@@ -109,7 +109,8 @@ Polymer({
                     id: this.partner.id,
                     data: data,
                     message: message,
-                    action: details.type
+                    action: details.type,
+                    quietUpdate: details.quietUpdate
                 };
             });
     },
