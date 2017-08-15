@@ -50,7 +50,10 @@
 
         Polymer({
             is: 'dialog-element',
-            behaviors: [Polymer.NeonAnimationRunnerBehavior],
+            behaviors: [
+                Polymer.NeonAnimationRunnerBehavior,
+                TPMBehaviors.PerfectScrollbarBehavior
+            ],
             properties: {
                 dialogTitle: {
                     type: String,
