@@ -82,7 +82,7 @@
 
         getFullAddress: function(country, city, postalCode, streetAddress) {
             let addressItems = [country, city, postalCode, streetAddress];
-            return addressItems.join(', ');
+            return addressItems.filter((val) => {return val;}).join(', ');
         }
 
     });
