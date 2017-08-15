@@ -2,7 +2,16 @@
 
 Polymer({
     is: 'list-element',
+
+    behaviors: [
+        TPMBehaviors.LocalizationBehavior,
+    ],
+
     properties: {
+        basePermissionPath: {
+            type: String,
+            value: ''
+        },
         itemValues: {
             type: Object,
             value: function() {

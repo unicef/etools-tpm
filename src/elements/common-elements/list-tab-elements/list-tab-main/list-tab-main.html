@@ -19,7 +19,8 @@
                     id="list-header"
                     data="[[headings]]"
                     no-additional$="[[_setHeaderNoAdditional(noAdditional, data.length)]]"
-                    order-by="{{orderBy}}">
+                    order-by="{{orderBy}}"
+                    base-permission-path="[[basePermissionPath]]">
             </list-header>
 
             <template id="list-elements" is="dom-repeat" items="[[data]]" initial-count="10"  on-dom-change="_listDataChanged">
@@ -30,7 +31,8 @@
                         details="[[details]]"
                         no-additional="[[noAdditional]]"
                         has-collapse="[[hasCollapse]]"
-                        no-animation="[[noAnimation]]">
+                        no-animation="[[noAnimation]]"
+                        base-permission-path="[[basePermissionPath]]">
                 </list-element>
             </template>
 

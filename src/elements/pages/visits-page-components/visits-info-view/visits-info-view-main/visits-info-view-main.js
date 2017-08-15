@@ -6,7 +6,8 @@ Polymer({
     behaviors: [
         TPMBehaviors.StaticDataController,
         TPMBehaviors.PermissionController,
-        TPMBehaviors.TextareaMaxRowsBehavior
+        TPMBehaviors.TextareaMaxRowsBehavior,
+        TPMBehaviors.CommonMethodsBehavior,
     ],
 
     properties: {
