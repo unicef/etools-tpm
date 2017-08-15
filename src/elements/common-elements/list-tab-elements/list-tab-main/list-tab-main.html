@@ -8,17 +8,18 @@
 
         <paper-card class="data-table">
             <template is="dom-if" if="[[!_isTableTitle(noTableTitle, withoutPagination)]]" restamp>
-                <span class="textprim data-card-heading">{{tableTitle}} {{showingResults}} {{headerTitle}}</span>
+                <span class$="textprim data-card-heading [[_setTitleNoAdditionalClass(noAdditional, data.length)]]">{{tableTitle}} {{showingResults}} {{headerTitle}}</span>
             </template>
 
             <template is="dom-if" if="[[_isTableTitle(noTableTitle, withoutPagination)]]" restamp>
                 <span class="textprim data-card-heading table-title">{{headerTitle}}</span>
             </template>
 
-            <list-header id="list-header"
-                         data="[[headings]]"
-                         no-additional$="[[noAdditional]]"
-                         order-by="{{orderBy}}">
+            <list-header
+                    id="list-header"
+                    data="[[headings]]"
+                    no-additional$="[[_setHeaderNoAdditional(noAdditional, data.length)]]"
+                    order-by="{{orderBy}}">
             </list-header>
 
             <template id="list-elements" is="dom-repeat" items="[[data]]" initial-count="10"  on-dom-change="_listDataChanged">
@@ -36,8 +37,7 @@
             <template is="dom-if" if="[[!data.length]]">
                 <list-element
                         class="list-element"
-                        no-additional="[[noAdditional]]"
-                        has-collapse="[[hasCollapse]]"
+                        no-additional
                         data="[[emptyObj]]"
                         headings="[[headings]]">
                 </list-element>

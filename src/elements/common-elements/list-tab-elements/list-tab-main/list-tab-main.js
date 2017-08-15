@@ -64,6 +64,14 @@ Polymer({
         '_orderChanged(orderBy, headings)'
     ],
 
+    _setHeaderNoAdditional: function(noAdditional, dataLength) {
+        return noAdditional || !dataLength;
+    },
+
+    _setTitleNoAdditionalClass: function(noAdditional, dataLength) {
+        return (noAdditional || !dataLength) ? 'no-additional' : '';
+    },
+
     _orderChanged: function(newOrder) {
         if (!newOrder || !(this.headings instanceof Array)) { return false; }
 
