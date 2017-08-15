@@ -80,8 +80,8 @@
             return _.isEmpty(data) ? null : data;
         },
 
-        getFullAddress: function(country, city, postalCode, streetAddress) {
-            let addressItems = [country, city, postalCode, streetAddress];
+        getFullAddress: function(partner) {
+            let addressItems = [partner.country, partner.city, partner.postal_code, partner.street_address];
             return addressItems.filter((val) => {return val;}).join(', ');
         }
 
