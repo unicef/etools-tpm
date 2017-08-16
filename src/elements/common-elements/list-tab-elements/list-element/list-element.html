@@ -1,27 +1,34 @@
-<!--import [polymer, iron-flex-layout, shared-styles, tab-inputs-styles, module-styles, moment-element/moment-import,
-            paper-checkbox, insert-html, paper-tooltip]-->
+<!--import [polymer, iron-flex-layout, moment-element/moment-import, paper-checkbox, paper-tooltip]-->
+<!--import [shared-styles, tab-inputs-styles, module-styles, insert-html]-->
 
 <dom-module id="list-element">
     <template>
         <!-- inject styles './list-element.scss'-->
         <style include="shared-styles module-styles iron-flex tab-inputs-styles"></style>
 
-
-        <paper-material id="wrapper" elevation="0" style$="padding-left: [[paddingLeft]];">
+        <paper-material id="wrapper" elevation="0">
             <template is="dom-if" if="[[showCollapse]]">
                 <div id="iconWrapper">
-                    <iron-icon id="more" icon="expand-more" hidden$="[[detailsOpened]]"
-                               on-tap="_toggleRowDetails"></iron-icon>
-                    <iron-icon id="less" icon="expand-less" hidden$="[[!detailsOpened]]"
-                               on-tap="_toggleRowDetails"></iron-icon>
+                    <iron-icon
+                            id="more"
+                            icon="expand-more"
+                            hidden$="[[detailsOpened]]"
+                            on-tap="_toggleRowDetails">
+                    </iron-icon>
+
+                    <iron-icon
+                            id="less"
+                            icon="expand-less"
+                            hidden$="[[!detailsOpened]]"
+                            on-tap="_toggleRowDetails">
+                    </iron-icon>
                 </div>
             </template>
 
             <div class="partner-data" style$="padding-right: [[paddingRight]];">
                 <template is="dom-repeat" items="[[headings]]">
-
                     <template is="dom-if" if="[[_isOneOfType(item, 'link')]]">
-                        <a class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate"
+                        <a class$="col-data w[[item.size]] [[item.align]] [[item.class]]"
                            href$="[[_getLink(item.link, data)]]">
                             <span class="truncate">
                                 [[_getValue(item, data)]]
@@ -34,7 +41,6 @@
                         <span class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate">
                             <span class="truncate">
                                 [[_getValue(item, data)]]
-
                                 <paper-tooltip offset="0">[[_getValue(item, data)]]</paper-tooltip>
 
                                 <template is="dom-if" if="[[item.additional]]">
@@ -56,11 +62,13 @@
                         <span class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate">
                             <template is="dom-if" if="{{_emtyObj(data)}}">
                                  <slot name="checkbox">
-                                    <paper-checkbox checked="{{_getValue(item, data, 'bool')}}"
-                                                    label=""></paper-checkbox>
+                                    <paper-checkbox
+                                            checked="{{_getValue(item, data, 'bool')}}"
+                                            label="">
+                                    </paper-checkbox>
                                 </slot>
-
                             </template>
+
                             <template is="dom-if" if="{{!_emtyObj(data)}}">
                                 <span class="">–</span>
                             </template>
@@ -85,26 +93,24 @@
                                 <slot name="custom">
 
                                 </slot>
-                                 </template>
+                            </template>
+
                             <template is="dom-if" if="{{!_hasProperty(data, item.property, item.doNotHide)}}">
                                 <span class="">—</span>
                             </template>
                         </span>
                     </template>
 
-
                     <span class="hover-icons-block">
                         <slot name="hover"></slot>
                     </span>
-
                 </template>
             </div>
         </paper-material>
 
         <template is="dom-if" if="[[showCollapse]]">
             <iron-collapse id="details" opened="{{detailsOpened}}" no-animation="[[noAnimation]]">
-               <slot name="detailSlot">
-                   <div id="collapse-wrapper" style$="padding-left: [[paddingLeft]];">
+                   <div id="collapse-wrapper">
                        <div class="partners-data-details group">
                            <template is="dom-repeat" items="[[details]]">
 
@@ -116,11 +122,8 @@
                            </template>
                        </div>
                    </div>
-               </slot>
             </iron-collapse>
         </template>
-
-
     </template>
 
     <!-- inject scripts './list-element.js'-->

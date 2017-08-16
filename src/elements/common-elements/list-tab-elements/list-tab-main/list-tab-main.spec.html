@@ -25,6 +25,40 @@
             myEl = fixture('list-tab-main-fixture');
         });
 
+        describe('method _setHeaderNoAdditional(noAdditional, dataLength)', function () {
+            it('should return true if noAdditional is true', function () {
+                let returnedValue = myEl._setHeaderNoAdditional(true, 1);
+                assert.isTrue(returnedValue);
+            });
+
+            it('should return true if dataLength equal to 0', function () {
+                let returnedValue = myEl._setHeaderNoAdditional(false, 0);
+                assert.isTrue(returnedValue);
+            });
+
+            it('should return false if noAdditional is false and dataLength is not equal to 0', function () {
+                let returnedValue = myEl._setHeaderNoAdditional(false, 1);
+                assert.isFalse(returnedValue);
+            });
+        });
+
+        describe('method _setTitleNoAdditionalClass(noAdditional, dataLength)', function () {
+            it('should return "no-additional" string if noAdditional is true', function () {
+                let returnedValue = myEl._setTitleNoAdditionalClass(true, 1);
+                assert.equal(returnedValue, 'no-additional');
+            });
+
+            it('should return "no-additional" string if dataLength equal to 0', function () {
+                let returnedValue = myEl._setTitleNoAdditionalClass(false, 0);
+                assert.equal(returnedValue, 'no-additional');
+            });
+
+            it('should return empt string if noAdditional is false and dataLength is not equal to 0', function () {
+                let returnedValue = myEl._setTitleNoAdditionalClass(false, 1);
+                assert.equal(returnedValue, '');
+            });
+        });
+
         describe('method _orderChanged(newOrder)', function () {
             beforeEach(function () {
                 myEl.headings = [{

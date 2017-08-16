@@ -250,7 +250,7 @@
             });
 
             it('returns number with percent symbol', function () {
-                assert.equal(myEl._refactorPercents(88.8), '88.8 %');
+                assert.equal(myEl._refactorPercents(88.88), '88.88%');
             });
         });
 
@@ -327,12 +327,6 @@
             it('replaces occurrences of *data_id* in pattern with data.id value', function () {
                 myEl.data = {id: 123};
                 assert.equal(myEl._getLink('path/*data_id*/path'), 'path/123/path');
-            });
-
-            it('replaces occurrences of *engagement_type* in pattern with refactored data.type value', function () {
-                myEl.data = {type: 'audit'};
-                sinon.stub(myEl, '_refactorValue').withArgs('link_type', myEl.data.type).returns('refactored_audit');
-                assert.equal(myEl._getLink('path/*engagement_type*/path'), 'path/refactored_audit/path');
             });
         });
 
