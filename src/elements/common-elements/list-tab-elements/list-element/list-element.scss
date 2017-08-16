@@ -66,6 +66,7 @@
             line-height: 48px;
             opacity: 0;
             background-color: #eeeeee;
+            z-index: 1;
         }
 
         &:hover .hover-icons-block{ opacity: 1; }
@@ -125,12 +126,11 @@ paper-material {
     background-color: var(--primary-background-color, #FFFFFF);
     padding: 0 15px 0 72px !important;
     box-sizing: border-box;
-    @apply(--list-element-wrapper);
 }
 
 :host([no-additional]) {
     paper-material {
-        padding: 0 14px 0 24px !important;
+        padding: 0 14px 0 24px !important
     }
 }
 
