@@ -2,31 +2,26 @@
 
 Polymer({
     is: 'list-element',
+
     properties: {
+        basePermissionPath: {
+            type: String,
+            value: ''
+        },
         itemValues: {
             type: Object,
             value: function() {
                 return {
-                    type: {
-                        ma: 'Micro Assessment',
-                        audit: 'Audit',
-                        sc: 'Spot Check'
-                    },
-                    link_type: {
-                        ma: 'micro-assessments',
-                        audit: 'audits',
-                        sc: 'spot-checks'
-                    },
                     status: {
-                        partner_contacted: 'Partner was Contacted',
-                        field_visit: 'Field Visit',
-                        draft_issued_to_unicef: 'Draft Report Issued To IP',
-                        comments_received_by_partner: 'Comments Received By IP',
-                        draft_issued_to_partner: 'Draft Report Issued To UNICEF',
-                        comments_received_by_unicef: 'Comments Received By UNICEF',
+                        draft: 'Draft',
+                        assigned: 'Assigned',
+                        tpm_accepted: 'TPM Accepted',
+                        tpm_rejected: 'TPM Rejected',
+                        tpm_reported: 'TPM Reported',
+                        unicef_approved: 'UNICEF Approved',
                         report_submitted: 'Report Submitted',
-                        final: 'Final Report',
-                        canceled: 'Canceled'
+                        active: 'Active',
+                        cancelled: 'Cancelled'
                     }
                 };
             }
@@ -43,11 +38,14 @@ Polymer({
         },
         showCollapse: {
             type: Boolean,
-            computed: '_computeShowCollapse(details, hasCollapse, slottedDetails)'
+            computed: '_computeShowCollapse(details, hasCollapse)'
         },
         data: {
             type: Object,
             notify: true
+        },
+        itemIndex: {
+            type: Number
         },
         multiline: {
             type: Boolean,
@@ -63,45 +61,28 @@ Polymer({
         },
         noAdditional: {
             type: Boolean,
-            value: false
-        },
-        paddingValue: {
-            type: Number,
-            value: 72
-        },
-        level: {
-            type: Number,
-            value: 1
-        },
-        slottedDetails: {
-            type: Boolean,
-            value: false
+            value: false,
+            reflectToAttribute: true
         }
     },
+
     listeners: {
         'mouseover': '_setHover',
         'mouseleave': '_resetHover',
     },
-    observers: [
-        '_setRightPadding(headings.*)',
-        '_setLeftPadding(noAdditional, paddingValue, level)'
-    ],
-    _setLeftPadding: function(noAdditional, paddingValue, level) {
-        let padding = 0;
-        if (noAdditional) {
-            padding = 24;
-        } else {
-            padding = (paddingValue || 0) * (level || 1);
-        }
 
-        this.paddingLeft = `${padding}px`;
-    },
+    observers: [
+        '_setRightPadding(headings.*)'
+    ],
+
     _setHover: function() {
         this.hover = true;
     },
+
     _resetHover: function() {
         this.hover = false;
     },
+
     _setRightPadding: function() {
         if (!this.headings) { return; }
         let rightPadding = 0;
@@ -116,12 +97,15 @@ Polymer({
 
         this.paddingRight = `${rightPadding}px`;
     },
-    _computeShowCollapse: function(details, hasCollapse, slottedDetails) {
-        return slottedDetails || (details.length > 0 && hasCollapse);
+
+    _computeShowCollapse: function(details, hasCollapse) {
+        return details.length > 0 && hasCollapse;
     },
+
     _toggleRowDetails: function() {
         Polymer.dom(this.root).querySelector('#details').toggle();
     },
+
     _isOneOfType: function(item) {
         if (!item) { return false; }
 
@@ -131,6 +115,7 @@ Polymer({
             return !!item[type];
         });
     },
+
     _getValue: function(item, data, bool) {
         let value;
 
@@ -152,16 +137,18 @@ Polymer({
 
         if (bool) {
             value = !!value;
-        } else if (!value) {
+        } else if (!value && value !== 0) {
             value = '--';
         }
 
         return value;
     },
+
     _refactorValue: function(type, value) {
         let values = this.itemValues[type];
         if (values) { return values[value]; }
     },
+
     _refactorTime: function(value, format = 'DD MMM YYYY') {
         if (!value) { return; }
 
@@ -170,13 +157,17 @@ Polymer({
             return moment.utc(date).format(format);
         }
     },
+
     _refactorCurrency: function(value) {
-        value = +value || 0;
-        return value.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        if ((!value || isNaN(+value)) && value !== 0) { return; }
+        return (+value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     },
+
     _refactorPercents: function(value) {
-        return (typeof value === 'number' && !isNaN(value)) ? `${value} %` : null;
+        let regexp = /[\d]+.[\d]{2}/;
+        return regexp.test(value) ? `${value}%` : null;
     },
+
     _getAdditionalValue: function(item) {
         if (!item.additional) { return; }
 
@@ -190,21 +181,24 @@ Polymer({
 
         return value || '--';
     },
+
     _getStatus: function(synced) {
         if (synced) { return 'Synced from VISION'; }
     },
+
     _getLink: function(pattern) {
         if (typeof pattern !== 'string') { return '#'; }
 
         let link = pattern
-            .replace('*data_id*', this.data.id)
-            .replace('*engagement_type*', this._refactorValue('link_type', this.data.type));
+            .replace('*data_id*', this.data.id);
 
         return link.indexOf('undefined') === -1 ? link : '#';
     },
+
     _emtyObj: function(data) {
         return data && !data.empty;
     },
+
     _hasProperty: function(data, property, doNotHide) {
         return data && (doNotHide || property && this.get('data.' + property));
     }

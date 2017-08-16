@@ -3,6 +3,10 @@
 Polymer({
     is: 'list-header',
     properties: {
+        basePermissionPath: {
+            type: String,
+            value: ''
+        },
         orderBy: {
             type: String,
             notify: true
@@ -11,30 +15,11 @@ Polymer({
         noAdditional: {
             type: Boolean,
             value: false
-        },
-        paddingValue: {
-            type: Number,
-            value: 72
-        },
-        level: {
-            type: Number,
-            value: 1
         }
     },
     observers: [
-        '_setRightPadding(data.*)',
-        '_setLeftPadding(noAdditional, paddingValue, level)'
+        '_setRightPadding(data.*)'
     ],
-    _setLeftPadding: function(noAdditional, paddingValue, level) {
-        let padding = 0;
-        if (noAdditional) {
-            padding = 24;
-        } else {
-            padding = (paddingValue || 0) * (level || 1);
-        }
-
-        this.style.paddingLeft = `${padding}px`;
-    },
     _setRightPadding: function() {
         if (!this.data) { return; }
         let rightPadding = 0;
