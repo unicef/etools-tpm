@@ -47,8 +47,12 @@
         }
         a.col-data {
             color: var(--module-primary);
+            font-weight: 500;
+            cursor: pointer;
 
             &[href="#"] {
+                cursor: default;
+                font-weight: 400;
                 color: initial;
                 pointer-events: none;
             }
@@ -62,7 +66,6 @@
             line-height: 48px;
             opacity: 0;
             background-color: #eeeeee;
-            z-index: 2;
         }
 
         &:hover .hover-icons-block{ opacity: 1; }
@@ -100,7 +103,6 @@
 
 :host([hover]) {
     paper-material {
-        position: relative;
         background-color: #EEEEEE;
     }
 }
@@ -114,14 +116,14 @@ paper-material {
     font-size: 13px;
     color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
     background-color: var(--primary-background-color, #FFFFFF);
-    padding: 0 15px 0 72px;
+    padding: 0 15px 0 72px !important;
     box-sizing: border-box;
     @apply(--list-element-wrapper);
 }
 
 :host([no-additional]) {
     paper-material {
-        padding: 0 14px 0 24px;
+        padding: 0 14px 0 24px !important;
     }
 }
 
@@ -165,5 +167,6 @@ iron-icon {
 #collapse-wrapper {
     padding: 14px 24px 4px 24px;
     background-color: #EEEEEE;
+    /* TODO: replace with app-theme var */
     border-top: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
 }
