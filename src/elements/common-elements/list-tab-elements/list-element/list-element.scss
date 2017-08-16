@@ -96,6 +96,13 @@
             }
         }
     }
+
+
+}
+
+.custom-icon {
+    --iron-icon-height: 16px;
+    --iron-icon-width: 16px;
 }
 
 :host([hover]) {

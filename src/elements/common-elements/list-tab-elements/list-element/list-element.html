@@ -62,7 +62,7 @@
 
                             </template>
                             <template is="dom-if" if="{{!_emtyObj(data)}}">
-                                <span class="">--</span>
+                                <span class="">–</span>
                             </template>
                         </span>
                     </template>
@@ -70,11 +70,11 @@
                     <template is="dom-if" if="[[_isOneOfType(item, 'icon')]]">
                         <span class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate">
                             <template is="dom-if" if="[[_getValue(item, data, 'bool')]]">
-                                <iron-icon icon="{{item.icon}}"></iron-icon>
+                                <iron-icon class="custom-icon" icon="{{item.icon}}"></iron-icon>
                             </template>
 
                             <template is="dom-if" if="[[!_getValue(item, data, 'bool')]]">
-                                <iron-icon icon="remove"></iron-icon>
+                                <span class="">–</span>
                             </template>
                         </span>
                     </template>
@@ -87,7 +87,7 @@
                                 </slot>
                                  </template>
                             <template is="dom-if" if="{{!_hasProperty(data, item.property, item.doNotHide)}}">
-                                <span class="">--</span>
+                                <span class="">—</span>
                             </template>
                         </span>
                     </template>
