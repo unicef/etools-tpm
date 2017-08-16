@@ -67,7 +67,7 @@
 
                 _allDataLoaded: function() {
                     let tpmUser = this.isTpmUser();
-                    if (((dataLoaded.organizations && dataLoaded.partners && dataLoaded.outputs) || !tpmUser) &&
+                    if (((dataLoaded.organizations && dataLoaded.partners && dataLoaded.outputs) || tpmUser) &&
                             dataLoaded.visitsOptions &&
                             (dataLoaded.partnersOptions || tpmUser)) {
                         this.fire('initial-data-loaded');
