@@ -179,7 +179,7 @@ Polymer({
             value = this._refactorTime(value);
         }
 
-        return value || '--';
+        return value || '–';
     },
 
     _getStatus: function(synced) {
