@@ -283,10 +283,10 @@
                 assert.isTrue(spy.calledWithExactly(item.additional));
             });
 
-            it('returns "--" if value is falsy', function () {
+            it('returns "–" if value is false', function () {
                 let item = {additional: {path: 'path'}};
                 myEl.data = {path: null};
-                assert.isFalse(myEl._getAdditionalValue(item))
+                assert.equal(myEl._getAdditionalValue(item), '–')
             });
 
             it('calls _refactorTime() method when item.additional.type="date"', function () {
