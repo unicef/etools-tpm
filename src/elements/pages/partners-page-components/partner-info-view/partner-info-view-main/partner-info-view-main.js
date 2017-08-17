@@ -5,7 +5,8 @@ Polymer({
 
     behaviors: [
         TPMBehaviors.StaticDataController,
-        TPMBehaviors.PermissionController
+        TPMBehaviors.PermissionController,
+        TPMBehaviors.CommonMethodsBehavior,
     ],
 
     properties: {

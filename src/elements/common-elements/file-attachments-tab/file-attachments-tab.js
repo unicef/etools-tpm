@@ -3,9 +3,11 @@
 (function() {
     Polymer({
         is: 'file-attachments-tab',
+
         behaviors: [
             TPMBehaviors.TableElementsBehavior
         ],
+
         properties: {
             mainProperty: {
                 type: String
@@ -50,7 +52,7 @@
             },
             uploadLabel: {
                 type: String,
-                value: 'File Attachment'
+                value: 'Upload File'
             },
             readonly: {
                 type: Boolean,
@@ -79,15 +81,18 @@
                 value: 'Are you sure that you want to delete this attachment?'
             }
         },
+
         listeners: {
             'dialog-confirmed': '_addItemFromDialog',
             'delete-confirmed': 'removeItem',
         },
+
         observers: [
             '_filesChange(dataItems.*, fileTypes.*)',
-            '_updateHeadings(fileTypeRequired)',
+            '_updateHeadings(fileTypeRequired, mainProperty)',
             'resetDialog(dialogOpened)',
             '_errorHandler(errorObject)',
+            'updateStyles(requestInProcess, editedItem)',
         ],
 
         _getFileType: function(fileType) {
@@ -112,24 +117,32 @@
             return true;
         },
 
+        _setRequiredClass: function(required) {
+            return required ? 'required' : '';
+        },
+
         _updateHeadings: function(fileTypeRequired) {
+            let mainProperty = this.mainProperty;
             let headings = [{
                 'size': '100px',
                 'name': 'date',
                 'label': 'Date Uploaded',
+                'labelPath': `${mainProperty}.created`,
                 'path': 'created'
             }, {
                 'size': 65,
                 'label': 'File Attachment',
+                'labelPath': `${mainProperty}.file`,
                 'property': 'file_name',
                 'custom': true,
-                'doNotHide': true
+                'doNotHide': false
             }];
 
             if (fileTypeRequired) {
                 headings.splice(1, 0, {
                     'size': 35,
                     'label': 'Document Type',
+                    'labelPath': `${mainProperty}.file_type`,
                     'path': 'display_name'
                 });
             }
@@ -143,6 +156,7 @@
                 let evt = document.createEvent('MouseEvents');
                 evt.initEvent('click', true, false);
                 elem.dispatchEvent(evt);
+                this.set('errors.file', '');
             }
         },
 
@@ -152,16 +166,16 @@
             let files = e.target.files || {};
             let file = files[0];
 
-            if (this._checkAlreadySelected()) {
-                return false;
-            }
-
             if (file && file instanceof File) {
+                let blob = new Blob([file]);
+                let url  = URL.createObjectURL(blob);
+
                 this.set('editedItem.file_name', file.name);
                 this.editedItem.raw = file;
+                this.editedItem.file = url;
                 this.editedItem.created = new Date().toISOString();
 
-                return true;
+                return !this._fileAlreadySelected();
             }
         },
 
@@ -273,7 +287,7 @@
             });
         },
 
-        _checkAlreadySelected: function() {
+        _fileAlreadySelected: function() {
             if (!this.dataItems) {return false;}
 
             let alreadySelectedIndex = this.dataItems.findIndex((file) => {
@@ -306,7 +320,7 @@
                 valid = false;
             }
 
-            if (this.addDialog && this._checkAlreadySelected()) {
+            if (this.addDialog && this._fileAlreadySelected()) {
                 valid = false;
             }
 

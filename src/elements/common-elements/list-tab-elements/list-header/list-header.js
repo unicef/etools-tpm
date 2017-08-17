@@ -2,6 +2,11 @@
 
 Polymer({
     is: 'list-header',
+
+    behaviors: [
+        TPMBehaviors.LocalizationBehavior,
+    ],
+
     properties: {
         basePermissionPath: {
             type: String,

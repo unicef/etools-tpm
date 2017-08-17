@@ -3,6 +3,10 @@
 Polymer({
     is: 'list-element',
 
+    behaviors: [
+        TPMBehaviors.LocalizationBehavior,
+    ],
+
     properties: {
         basePermissionPath: {
             type: String,
