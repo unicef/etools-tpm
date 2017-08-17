@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax, lodash, permission-controller]-->
+<!--import [polymer, etools-ajax, lodash, permission-controller, last-created-behavior]-->
 
 <dom-module id="visit-info-data">
 
@@ -22,7 +22,8 @@
 
             behaviors: [
                 etoolsAppConfig.globals,
-                TPMBehaviors.PermissionController
+                TPMBehaviors.PermissionController,
+                TPMBehaviors.LastCreatedController
             ],
 
             properties: {
@@ -64,7 +65,10 @@
             _finishRequests: function(data) {
                 if (!this.requestsCompleted.data || !this.requestsCompleted.options) { return; }
 
-                if (data) { this.visitDetails = data; }
+                if (data) {
+                    this.visitDetails = data;
+                    this._setLastData(data, `visit_${data.id}`);
+                }
 
                 this.fire('global-loading', {type: 'visit-info'});
                 this.view = 'visit';
@@ -91,14 +95,21 @@
                 this.visitDetails = {};
                 this.requestsCompleted = {};
 
+                let endpoint = this.getEndpoint('visitDetails', {id: id});
                 this.fire('global-loading', {message: 'Loading visit data...', active: true, type: 'visit-info'});
-                this.visitEndpoint = this.getEndpoint('visitDetails', {id: id});
-
                 if (this.collectionExists(`visit_${id}`)) {
                     this.requestsCompleted.options = true;
                 } else {
-                    this.optionsUrl = this.visitEndpoint.url;
+                    this.optionsUrl = endpoint.url;
                 }
+
+                let lastCreated = this.getLastData(id, `visit_${id}`);
+                if (lastCreated) {
+                    this._handleDataResponse({detail: lastCreated});
+                    return;
+                }
+
+                this.visitEndpoint = endpoint;
             }
 
         });

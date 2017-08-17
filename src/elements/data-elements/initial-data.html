@@ -54,13 +54,12 @@
                 },
 
                 loadStaticData: function () {
-                    if (this.isTpmUser()) {
-                        this.partnersEndpoint = this.getEndpoint('partnersList');
-                    } else {
+                    if (!this.isTpmUser()) {
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
                         this.outputsEndpoint = this.getEndpoint('ppSsfaOutputs').url;
                     }
+                    this.partnersEndpoint = this.getEndpoint('partnersList');
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this._allDataLoaded();
                 },
@@ -75,9 +74,22 @@
                 },
 
                 _partnersLoaded: function(data, detail) {
-                    let partnerId = detail && detail.results && detail.results[0] && detail.results[0].id;
-                    this._setPartnerId(partnerId);
-                    if(!partnerId) { console.error('Can not get TPM Partner id!'); }
+                    let partners = detail && detail.results,
+                        partnerId = partners && partners[0] && partners[0].id,
+                            tpmUser = this.isTpmUser();
+
+                    if (tpmUser && !partnerId) {
+                        console.error('Can not get TPM Partner id!');
+                    } else if(!partners) {
+                        this._partnersError()
+                    }
+
+                    if (tpmUser) {
+                        this._setPartnerId(partnerId);
+                    } else {
+                        this._setData('tpmPartners', partners);
+                    }
+
                     dataLoaded.partners = true;
                     this._allDataLoaded();
                 },
@@ -142,6 +154,10 @@
 
                     dataLoaded.partnersOptions = true;
                     this._allDataLoaded();
+                },
+
+                _partnersError: function() {
+                    this._responseError('TPM partners');
                 },
 
                 _organisationsError: function() {

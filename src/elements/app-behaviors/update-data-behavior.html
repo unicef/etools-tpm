@@ -3,7 +3,7 @@
     'use strict';
 
     window.TPMBehaviors = window.TPMBehaviors || {};
-    window.TPMBehaviors.UpdateDataBehavior = {
+    window.TPMBehaviors.UpdateDataBehaviorImpl = {
         _handleResponse: function (event, details) {
             if (this.method === 'POST') {
                 this.lastData = details;
@@ -45,6 +45,7 @@
         finishResponse: function(details) {
             if (details) {
                 this.set(`${this.postfix}`, details);
+                this._setLastData(details, `${this.postfix}_${details.id}`);
             } else {
                 console.error(`Can not update ${this.postfix}. Data is missing`);
             }
@@ -108,6 +109,8 @@
             this.url = url;
         }
     };
+
+    window.TPMBehaviors.UpdateDataBehavior = [TPMBehaviors.LastCreatedController, TPMBehaviors.UpdateDataBehaviorImpl]
 
 
 </script>

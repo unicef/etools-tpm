@@ -1,10 +1,10 @@
-<!--import [polymer, etools-ajax, lodash, permission-controller]-->
+<!--import [polymer, etools-ajax, lodash, permission-controller, last-created-behavior]-->
 
 <dom-module id="partner-details-data">
 
     <template>
 
-        <etools-ajax endpoint="[[partnerEndpoint]]"
+        <etools-ajax url="[[url]]"
                      on-success="_handleDataResponse"
                      on-fail="_handleError"></etools-ajax>
 
@@ -23,7 +23,7 @@
             behaviors: [
                 etoolsAppConfig.globals,
                 TPMBehaviors.PermissionController,
-                TPMBehaviors.LastCreatedController,
+                TPMBehaviors.LastCreatedController
             ],
 
             properties: {
@@ -75,6 +75,7 @@
                 this.view = 'info';
                 this.partnerId = null;
                 this.lastError = false;
+                this.url = '';
             },
 
             _handleError: function () {
@@ -104,14 +105,14 @@
                     return;
                 }
 
-                if (+id === lastId) {
+                if (+id === lastId && this.lastError) {
                     this.lastError ? this._handleError() : this.view = 'info';
                     this.partnerId = null;
                     return;
                 }
 
                 this.fire('global-loading', {message: 'Loading partner data...', active: true, type: 'partner-details'});
-                this.partnerEndpoint = this.getEndpoint('partnerDetails', {id: id});
+                this.url = this.getEndpoint('partnerDetails', {id: id}).url;
             }
 
         });
