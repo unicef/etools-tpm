@@ -1,4 +1,4 @@
-<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea]-->
+<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea, iron-icons]-->
 <!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data,
             permission-controller, textarea-max-rows-behavior, tab-inputs-styles, visit-activity-tab, file-attachments-tab,
             static-data-behavior, common-methods-behavior]-->
@@ -35,17 +35,13 @@
                     <div name="details">
 
                         <template is="dom-if" if="{{_showRejectionReason(visit)}}">
-                            <etools-content-panel class="reject-tab" panel-title="Rejection Reason">
-                                <div class="row-h group">
-                                    <div class="input-container input-container-l">
-                                        <!-- Comments -->
-                                        <paper-textarea label="Comments"
-                                                        value="{{visit.reject_comment}}"
-                                                        class="without-border"
-                                                        disabled readonly>
-                                        </paper-textarea>
-                                    </div>
+                            <etools-content-panel class="cancellation-tab" panel-title="">
+                                <div slot="panel-btns" class="bookmark">
+                                    <iron-icon icon="bookmark"></iron-icon>
                                 </div>
+
+                                <div class="cancellation-title">Rejection Reason</div>
+                                <div class="cancellation-text">[[visit.reject_comment]]</div>
                             </etools-content-panel>
                         </template>
 
@@ -105,7 +101,8 @@
         </div>
 
         <dialog-element opened="{{dialogOpened}}"
-                        dialog-title="Reject Visit"
+                        dialog-title="{{dialogTitle}}"
+                        delete-dialog="{{isDeleteDialog}}"
                         confirm-btn-text="Continue">
             <paper-textarea label="Reject Reason"
                             max-rows="4"

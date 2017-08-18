@@ -22,6 +22,7 @@ Polymer({
     listeners: {
         'action-activated': '_processAction',
         'dialog-confirmed': 'rejectVisit',
+        'delete-confirmed': 'cancelVisit',
         'visit-updated': 'visitUpdated'
     },
 
@@ -72,6 +73,8 @@ Polymer({
                 message = 'Assign visit...';
             break;
             case 'reject':
+            case 'cancel':
+                this.manageCancellationDialog(details.type);
                 this.dialogOpened = true;
                 return;
             case 'accept':
@@ -142,6 +145,21 @@ Polymer({
         this.dialogOpened = false;
     },
 
+    cancelVisit: function() {
+        if (!this.dialogOpened) { return; }
+
+        this.newVisitDetails = {
+            method: 'POST',
+            id: this.visit.id,
+            data: {},
+            message: 'Cancel visit...',
+            action: 'cancel',
+            ignorePatch: true
+        };
+
+        this.dialogOpened = false;
+    },
+
     _resetFieldError: function(event) {
         if (!event || !event.target) { return false; }
         event.target.invalid = false;
@@ -154,6 +172,16 @@ Polymer({
     visitUpdated: function() {
         let visitActivity = this.$.visitActivity;
         if (visitActivity) { visitActivity.visitUpdated('success'); }
+    },
+
+    manageCancellationDialog: function(type) {
+        if (type === 'reject') {
+            this.dialogTitle = 'Reject Visit';
+            this.isDeleteDialog = false;
+        } else if (type === 'cancel') {
+            this.dialogTitle = 'Do you want to cancel this visit?';
+            this.isDeleteDialog = true;
+        }
     }
 
 });

@@ -153,7 +153,8 @@
                     --iron-icon-height: 100%;
                     --iron-icon-width: 100%;
                 }
-                iron-icon[icon="warning"] { display: none; }
+                iron-icon[icon="warning"],
+                iron-icon[icon="cancel"] { display: none; }
                 .status-nr { display: none; }
             }
             .status {
@@ -163,7 +164,7 @@
         }
         &.pending iron-icon { display: none !important; }
 
-        &.canceled {
+        &.rejected {
             .status-icon .icon-wrapper {
                 background: transparent;
                 .status-nr { display: none; }
@@ -173,6 +174,26 @@
                     width: 25px;
                     height: 25px;
                     color: var(--module-error);
+                }
+            }
+            .status {
+                color: inherit;
+                font-weight: bold;
+            }
+        }
+
+        &.cancelled {
+            .status-icon .icon-wrapper {
+                background: transparent;
+                .status-nr { display: none; }
+                iron-icon[icon="check"] ,
+                iron-icon[icon="warning"] { display: none; }
+                iron-icon[icon="cancel"] {
+                    display: inline-block;
+                    width: 25px;
+                    height: 25px;
+                    color: var(--gray-darkest);
+
                 }
             }
             .status {
