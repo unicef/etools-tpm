@@ -1,0 +1,64 @@
+<!--import [polymer, etools-ajax]-->
+
+<dom-module id="create-visit">
+    <template>
+        <etools-ajax
+                method="POST"
+                url="{{url}}"
+                body="{{postData}}"
+                on-success="_handleResponse"
+                on-fail="_handleError">
+        </etools-ajax>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'create-visit',
+
+            behaviors: [
+                etoolsAppConfig.globals
+            ],
+
+            properties: {
+                partnerId: {
+                    type: Object,
+                    observer: '_partnerIdChanged'
+                },
+                errorObject: {
+                    type: Object,
+                    notify: true,
+                    value: function() {
+                        return {};
+                    }
+                }
+            },
+
+            _handleResponse: function (data) {
+                this.fire('visit-created', {success: true, data: data.detail});
+                this.fire('global-loading', {type: 'create-visit'});
+                this.partnerId = null;
+            },
+
+            _handleError: function (event, error) {
+                let responseData = error && error.request && error.request.detail &&
+                        error.request.detail.request && error.request.detail.request.xhr;
+
+                let {status, response} = responseData || {};
+
+                if (status === 400) { this.set('errorObject', response); }
+
+                this.fire('engagement-created');
+            },
+
+            _partnerIdChanged: function(partnerId) {
+                if (!+partnerId) { return; }
+                let url = this.getEndpoint('visitsList').url;
+
+                this.postData = {
+                    "tpm_partner": +partnerId
+                };
+                this.url = url;
+            }
+        });
+    </script>
+</dom-module>

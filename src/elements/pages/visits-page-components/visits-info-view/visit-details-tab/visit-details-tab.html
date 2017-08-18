@@ -1,4 +1,4 @@
-<!--import [polymer, etools-content-panel, lodash, paper-input, etools-searchable-multiselection-menu]-->
+<!--import [polymer, etools-content-panel, lodash, paper-input, etools-searchable-multiselection-menu, date-behavior]-->
 <!--import [module-styles, tab-layout-styles, tab-inputs-styles, permission-controller, static-data-behavior,
             common-methods-behavior]-->
 
@@ -38,6 +38,31 @@
                 </div>
                 <div class="input-container">
                     <!-- Start End Date -->
+
+                    <div class="input-container input-container-ms">
+                    <paper-input
+                            class$="disabled-as-readonly"
+                            value="[[prettyDate(visit.start_date)]]"
+                            label="[[getLabel('start_date', permissionBase)]]"
+                            placeholder="[[getReadonlyPlaceholder(visit.start_date)]]"
+                            disabled
+                            readonly>
+                        <iron-icon
+                                prefix
+                                icon="date-range">
+                        </iron-icon>
+                    </paper-input>
+                    </div>
+                    <div class="input-container input-container-ms">
+                    <paper-input
+                            class$="disabled-as-readonly"
+                            value="[[prettyDate(visit.end_date)]]"
+                            label="[[getLabel('end_date', permissionBase)]]"
+                            placeholder="[[getReadonlyPlaceholder(visit.end_date)]]"
+                            disabled
+                            readonly>
+                    </paper-input>
+                    </div>
                 </div>
             </div>
             <div class="row-h group">

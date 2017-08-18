@@ -5,6 +5,7 @@ Polymer({
 
     behaviors: [
         etoolsAppConfig.globals,
+        TPMBehaviors.DateBehavior,
         TPMBehaviors.StaticDataController,
         TPMBehaviors.PermissionController,
         TPMBehaviors.CommonMethodsBehavior

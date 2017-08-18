@@ -69,9 +69,7 @@
                 },
 
                 loadStaticData: function () {
-                    if (this.isTpmUser()) {
-                        this.partnersEndpoint = this.getEndpoint('partnersList');
-                    } else {
+                    if (!this.isTpmUser()) {
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
                         this.outputsEndpoint = this.getEndpoint('ppSsfaOutputs').url;
@@ -79,6 +77,7 @@
                     this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
                     this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
                     this.officesEndpoint = this.getEndpoint('offices').url;
+                    this.partnersEndpoint = this.getEndpoint('partnersList');
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this._allDataLoaded();
                 },
@@ -94,9 +93,22 @@
                 },
 
                 _partnersLoaded: function(data, detail) {
-                    let partnerId = detail && detail.results && detail.results[0] && detail.results[0].id;
-                    this._setPartnerId(partnerId);
-                    if(!partnerId) { console.error('Can not get TPM Partner id!'); }
+                    let partners = detail && detail.results,
+                        partnerId = partners && partners[0] && partners[0].id,
+                            tpmUser = this.isTpmUser();
+
+                    if (tpmUser && !partnerId) {
+                        console.error('Can not get TPM Partner id!');
+                    } else if(!partners) {
+                        this._partnersError()
+                    }
+
+                    if (tpmUser) {
+                        this._setPartnerId(partnerId);
+                    } else {
+                        this._setData('tpmPartners', partners);
+                    }
+
                     dataLoaded.partners = true;
                     this._allDataLoaded();
                 },
@@ -130,12 +142,15 @@
 
                     let statusesData = this.getChoices('new_visit.status');
                     let visitAttachmentsTypes = this.getChoices('new_visit.attachments.file_type');
+                    let reportAttachmentsTypes = this.getChoices('new_visit.report.file_type');
 
                     if (!statusesData) { console.error('Can not load visit statuses data'); }
-                    if (!visitAttachmentsTypes) { this._responseError('Can not load attachments types'); }
+                    if (!visitAttachmentsTypes) { this._responseError('Can not load visit attachments types'); }
+                    if (!reportAttachmentsTypes) { this._responseError('Can not load report attachments types'); }
 
                     this._setData('statuses', statusesData);
                     this._setData('visit_attachments_types', visitAttachmentsTypes);
+                    this._setData('report_attachments_types', reportAttachmentsTypes);
 
                     dataLoaded.visitsOptions = true;
                     this._allDataLoaded();
@@ -161,6 +176,10 @@
 
                     dataLoaded.partnersOptions = true;
                     this._allDataLoaded();
+                },
+
+                _partnersError: function() {
+                    this._responseError('TPM partners');
                 },
 
                 _sectionsLoaded: function(data, detail) {
