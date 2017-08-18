@@ -17,11 +17,14 @@ Polymer({
         }
     },
 
-    observers: ['_setPermissionBase(visit.id)'],
+    observers: [
+        '_setPermissionBase(visit.id)',
+        'resetDialog(dialogOpened)'
+    ],
 
     listeners: {
         'action-activated': '_processAction',
-        'dialog-confirmed': 'rejectVisit',
+        'dialog-confirmed': 'rejectAction',
         'delete-confirmed': 'cancelVisit',
         'visit-updated': 'visitUpdated'
     },
@@ -52,16 +55,8 @@ Polymer({
         if (readOnly === null) { readOnly = true; }
         return readOnly;
     },
-
-    _showReportTabs: function(permissionBase, visit) {
-        if (!permissionBase || !visit) { return false; }
-
-        return this.actionAllowed(permissionBase, 'submit') ||
-            visit.status === 'report_submitted' ||
-            visit.status === 'final';
-    },
-
-    _processAction: function(event, details) {
+    /* jshint ignore:start */
+    _processAction: async function(event, details) {
         if (!details || !details.type) { throw 'Event type is not provided!'; }
         let message, method;
         switch (details.type) {
@@ -74,6 +69,7 @@ Polymer({
             break;
             case 'reject':
             case 'cancel':
+            case 'reject_report':
                 this.manageCancellationDialog(details.type);
                 this.dialogOpened = true;
                 return;
@@ -85,6 +81,10 @@ Polymer({
                 method = 'POST';
                 message = 'Sending report...';
             break;
+            case 'approve':
+                method = 'POST';
+                message = 'Approving report...';
+            break;
             default:
                 throw `Unknown event type: ${details.type}`;
         }
@@ -94,25 +94,23 @@ Polymer({
         let attachmentsTab = Polymer.dom(this.root).querySelector('#attachments');
         let reportTab = Polymer.dom(this.root).querySelector('#report');
         let data = this.getVisitData();
-        let promises = [];
-        if (attachmentsTab) { promises[0] = attachmentsTab.getFiles(); }
-        if (reportTab) { promises[1] = reportTab.getFiles(); }
 
-        Promise.all(promises)
-            .then((uploadedFiles) => {
-                if (uploadedFiles && uploadedFiles[0]) {data.attachments = uploadedFiles[0]; }
-                if (uploadedFiles && uploadedFiles[0]) {data.report = uploadedFiles[1]; }
-                this.newVisitDetails = {
-                    method: method,
-                    id: this.visit.id,
-                    data: data,
-                    message: message,
-                    action: details.type,
-                    quietUpdate: details.quietUpdate
-                };
-            });
+        let visitAttachments = attachmentsTab && await attachmentsTab.getFiles(),
+            reportAttachments = reportTab && await reportTab.getFiles();
+
+        if (visitAttachments) { data.attachments = visitAttachments; }
+        if (reportAttachments) { data.report = reportAttachments; }
+
+        this.newVisitDetails = {
+            method: method,
+            id: this.visit.id,
+            data: data,
+            message: message,
+            action: details.type,
+            quietUpdate: details.quietUpdate
+        };
     },
-
+    /* jshint ignore:end */
     validateVisit: function() {
         return true;
     },
@@ -126,19 +124,21 @@ Polymer({
         return data;
     },
 
-    rejectVisit: function() {
+    rejectAction: function() {
         if (!this.dialogOpened) { return; }
         let input = this.$.rejectionReasonInput;
 
         if (!input) { throw 'Can not find input!'; }
         if (!input.validate()) { return; }
 
+        let isReport = this.visit.status === 'tpm_reported';
+
         this.newVisitDetails = {
             method: 'POST',
             id: this.visit.id,
             data: {reject_comment: input.value},
-            message: 'Reject visit...',
-            action: 'reject',
+            message: `Reject ${isReport ? 'report' : 'visit'}...`,
+            action: `reject${isReport ? '_report' : ''}`,
             ignorePatch: true
         };
 
@@ -160,6 +160,10 @@ Polymer({
         this.dialogOpened = false;
     },
 
+    resetDialog: function() {
+        this.$.rejectionReasonInput.value = '';
+    },
+
     _resetFieldError: function(event) {
         if (!event || !event.target) { return false; }
         event.target.invalid = false;
@@ -178,9 +182,13 @@ Polymer({
         if (type === 'reject') {
             this.dialogTitle = 'Reject Visit';
             this.isDeleteDialog = false;
+            this.rejectLabel = 'Reject Reason';
         } else if (type === 'cancel') {
             this.dialogTitle = 'Do you want to cancel this visit?';
             this.isDeleteDialog = true;
+        } else if (type === 'reject_report') {
+            this.dialogTitle = 'Reject Report';
+            this.isDeleteDialog = false;
         }
     }
 

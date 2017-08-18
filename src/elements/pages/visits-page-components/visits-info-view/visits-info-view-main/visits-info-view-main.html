@@ -49,7 +49,22 @@
                     </div>
 
                     <div name="report">
-                        Visit Report tab
+                       <file-attachments-tab
+                            id="report"
+                            tab-title="[[getLabel('report', permissionBase)]]"
+                            base-permission-path="{{permissionBase}}"
+                            main-property="report"
+                            error-object="{{errorObject}}"
+                            data-items="[[visit.report]]"
+                            file-types="[[reportFileTypes]]"
+                            file-types-label="[[getLabel('report.file_type', permissionBase)]]"
+                            readonly="[[_attachmentsReadonly(permissionBase, 'report')]]"
+                            save-with-button
+                            file-type-required
+                            allow-download
+                            allow-edit
+                            multiple>
+                    </file-attachments-tab>
                     </div>
 
                     <div name="attachments">
@@ -69,25 +84,6 @@
                                 allow-edit
                                 multiple>
                         </file-attachments-tab>
-
-                        <template is="dom-if" if="{{_showReportTabs(permissionBase, visit)}}" restamp>
-                            <file-attachments-tab
-                                    id="report"
-                                    tab-title="[[getLabel('report', permissionBase)]]"
-                                    base-permission-path="{{permissionBase}}"
-                                    main-property="report"
-                                    error-object="{{errorObject}}"
-                                    data-items="[[visit.report]]"
-                                    file-types="[[reportFileTypes]]"
-                                    file-types-label="[[getLabel('report.file_type', permissionBase)]]"
-                                    readonly="[[_attachmentsReadonly(permissionBase, 'report')]]"
-                                    save-with-button
-                                    file-type-required
-                                    allow-download
-                                    allow-edit
-                                    multiple>
-                            </file-attachments-tab>
-                        </template>
                     </div>
 
                 </iron-pages>
@@ -104,15 +100,19 @@
                         dialog-title="{{dialogTitle}}"
                         delete-dialog="{{isDeleteDialog}}"
                         confirm-btn-text="Continue">
-            <paper-textarea label="Reject Reason"
-                            max-rows="4"
-                            required
-                            error-message="This field is required."
-                            id="rejectionReasonInput"
-                            class="required"
-                            on-focus="_resetFieldError"
-                            placeholder="Enter reason of reject">
-            </paper-textarea>
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
+                            <paper-textarea label="Reject Reason"
+                                            max-rows="4"
+                                            required
+                                            error-message="This field is required."
+                                            id="rejectionReasonInput"
+                                            class="required"
+                                            on-focus="_resetFieldError"
+                                            placeholder="Enter reason of reject">
+                            </paper-textarea>
+                        </div>
+                    </div>
         </dialog-element>
 
     </template>

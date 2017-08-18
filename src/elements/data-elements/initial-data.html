@@ -123,12 +123,15 @@
 
                     let statusesData = this.getChoices('new_visit.status');
                     let visitAttachmentsTypes = this.getChoices('new_visit.attachments.file_type');
+                    let reportAttachmentsTypes = this.getChoices('new_visit.report.file_type');
 
                     if (!statusesData) { console.error('Can not load visit statuses data'); }
-                    if (!visitAttachmentsTypes) { this._responseError('Can not load attachments types'); }
+                    if (!visitAttachmentsTypes) { this._responseError('Can not load visit attachments types'); }
+                    if (!reportAttachmentsTypes) { this._responseError('Can not load report attachments types'); }
 
                     this._setData('statuses', statusesData);
                     this._setData('visit_attachments_types', visitAttachmentsTypes);
+                    this._setData('report_attachments_types', reportAttachmentsTypes);
 
                     dataLoaded.visitsOptions = true;
                     this._allDataLoaded();
