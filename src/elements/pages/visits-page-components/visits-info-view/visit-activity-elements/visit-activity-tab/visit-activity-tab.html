@@ -1,114 +1,215 @@
-<!--import [polymer, etools-content-panel, lodash, paper-icon-button, iron-icons]-->
-<!--import [module-styles, tab-inputs-styles, list-header, activity-partnership-element, dialog-element, static-data-behavior,
-            get-partner-organisation-data]-->
+<!--import [polymer, etools-content-panel, lodash, paper-icon-button, paper-input, iron-icons,
+            etools-searchable-multiselection-menu, etools-datepicker, lodash]-->
+<!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, list-element, activity-partnership-element,
+            dialog-element, date-behavior, static-data-behavior, common-methods-behavior, table-elements-behavior,
+            get-partner-organisation-data, get-partnership-data]-->
 
 <dom-module id="visit-activity-tab">
     <template>
         <!-- inject styles './visit-activity-tab.scss'-->
-        <style include="module-styles tab-inputs-styles">
-            list-header {
-                box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.13);
-            }
-            .dialog-content {
-                box-sizing: border-box;
-                position: relative;
-                width: 100%;
-            }
-        </style>
-        <get-partner-organisation-data partner="{{partnerOrg}}" partner-id="{{partnerOrgId}}"></get-partner-organisation-data>
+        <style include="module-styles tab-layout-styles tab-inputs-styles"></style>
 
-        <etools-content-panel list panel-title="Visit Activity">
+        <get-partner-organisation-data
+                partner="{{partner}}"
+                partner-id="{{partnerId}}">
+        </get-partner-organisation-data>
+
+        <get-partnership-data
+                partnership="{{partnership}}"
+                partnership-id="{{partnershipId}}">
+        </get-partnership-data>
+
+        <etools-content-panel
+                list
+                class="content-section clearfix"
+                panel-title="Visit Activities ([[_getActivitiesLength(dataItems.length)]])">
             <div slot="panel-btns">
-                <paper-icon-button class="panel-button"
-                                   on-tap="addActivity"
-                                   icon="add-box"></paper-icon-button>
+                <div>
+                    <paper-icon-button
+                            class="panel-button"
+                            hidden$="[[!_canBeChanged(basePermissionPath)]]"
+                            on-tap="openAddDialog"
+                            icon="add-box">
+                    </paper-icon-button>
+                    <paper-tooltip offset="0">Add</paper-tooltip>
+                </div>
             </div>
 
-            <list-header class="header" no-ordered data="[[columns]]"></list-header>
+            <list-header
+                    id="list-header"
+                    no-ordered
+                    data="[[columns]]"
+                    base-permission-path="[[basePermissionPath]]">
+            </list-header>
 
-            <template is="dom-repeat" items="[[activities]]" as="activity">
-                <activity-partnership-element activity="[[activity]]"></activity-partnership-element>
+            <template is="dom-repeat" items="[[dataItems]]" filter="_showItems">
+                <list-element
+                        class="list-element"
+                        data="[[item]]"
+                        base-permission-path="[[basePermissionPath]]"
+                        headings="[[columns]]"
+                        details="[[details]]"
+                        has-collapse
+                        multiline
+                        no-animation>
+                    <div slot="hover" class="edit-icon-slot" hidden$="[[!_canBeChanged(basePermissionPath)]]">
+                        <paper-icon-button icon="icons:create" class="edit-icon" on-tap="openEditDialog"></paper-icon-button>
+                        <paper-icon-button icon="icons:delete" class="edit-icon" on-tap="openDeleteDialog"></paper-icon-button>
+                    </div>
+                </list-element>
             </template>
 
-            <template is="dom-if" if="[[!activities.length]]">
-                <list-element data="[[emptyObject]]"
-                              headings="[[columns]]"></list-element>
+            <template is="dom-if" if="[[!dataItems.length]]">
+                <list-element
+                        class="list-element"
+                        data="[[emptyObj]]"
+                        headings="[[columns]]"
+                        no-animation>
+                </list-element>
             </template>
-
         </etools-content-panel>
 
-        <!--Add new Activity dialog-->
-        <dialog-element opened="{{activityDialogOpened}}"
-                        dialog-title="Add Activity"
-                        confirm-btn-text="Add"
-                        request-in-process="{{requestInProcess}}">
-            <div class="dialog-content">
-                <!-- Implementing Partner -->
-                <etools-searchable-multiselection-menu
-                        id="partnerInput"
-                        options="[[partnerOrganisations]]"
-                        class="disabled-as-readonly validate-input"
-                        value="{{newItem.partnerOrganisation}}"
-                        label="Implementing Partner"
-                        custom-object-options
-                        option-value="id"
-                        option-label="name"
-                        on-value-change="_requestPartner"
-                        placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
+        <dialog-element
+                opened="{{dialogOpened}}"
+                delete-dialog="[[deleteDialog]]"
+                dialog-title="[[dialogTitle]]"
+                confirm-btn-text="[[confirmBtnText]]"
+                request-in-process="{{requestInProcess}}">
+            <div class="row-h repeatable-item-container" without-line>
+                <div class="repeatable-item-content">
+                    <div class="row-h group">
+                        <div class="input-container input-container-ms">
+                            <!-- Implementing Partner -->
+                            <etools-searchable-multiselection-menu
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partnership.partner', basePermissionPath)]]"
+                                    label="[[getLabel('tpm_activities.partnership.partner', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.partnership.partner', basePermissionPath)]]"
+                                    options="[[partners]]"
+                                    custom-object-options
+                                    option-label="name"
+                                    option-value="id"
+                                    selected="{{editedItem.partnerId}}"
+                                    update-selected
+                                    required$="[[_setRequired('tpm_activities.partnership.partner', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
+                                    invalid="{{errors.partnership.partner}}"
+                                    error-message="{{errors.partnership.partner}}"
+                                    on-focus="_resetFieldError"
+                                    dynamic-align>
+                            </etools-searchable-multiselection-menu>
+                        </div>
 
-                <!-- Partnership -->
-                <etools-searchable-multiselection-menu
-                        id="partnershipInput"
-                        options="[[partnerOrg.interventions]]"
-                        disabled="[[!partnerOrg.id]]"
-                        class="disabled-as-readonly validate-input"
-                        value="{{newItem.intervention}}"
-                        label="Partnership"
-                        custom-object-options
-                        option-value="id"
-                        option-label="number"
-                        hide-search
-                        placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
-            </div>
-        </dialog-element>
+                        <div class="input-container input-container-ms">
+                            <!-- Partnership-->
+                            <etools-searchable-multiselection-menu
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partnership.title', basePermissionPath)]]"
+                                    label="[[getLabel('tpm_activities.partnership.title', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.partnership.title', basePermissionPath)]]"
+                                    options="[[partner.interventions]]"
+                                    custom-object-options
+                                    option-label="title"
+                                    option-value="id"
+                                    selected="{{editedItem.partnershipId}}"
+                                    update-selected
+                                    required$="[[_setRequired('tpm_activities.partnership.title', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly(editedItem.partnerId, 'true', someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly(editedItem.partnerId, 'true', someRequestInProcess)]]"
+                                    invalid="{{errors.partnership.title}}"
+                                    error-message="{{errors.partnership.title}}"
+                                    on-focus="_resetFieldError"
+                                    dynamic-align
+                                    hide-search>
+                            </etools-searchable-multiselection-menu>
+                        </div>
+                    </div>
 
-        <!--Add new Sector dialog-->
-        <dialog-element opened="{{sectorDialogOpened}}"
-                        dialog-title="Add Sector Cover"
-                        confirm-btn-text="Add"
-                        request-in-process="{{requestInProcess}}">
-           <div class="dialog-content">
-               <!-- Sector Cover -->
-               <etools-searchable-multiselection-menu
-                       id="sectorInput"
-                       options="[[sectorOptions]]"
-                       class="disabled-as-readonly validate-input"
-                       value="{{newItem.sector}}"
-                       label="Sector Cover"
-                       custom-object-options
-                       option-value="id"
-                       option-label="name"
-                       placeholder="Select Sector Cover"></etools-searchable-multiselection-menu>
-           </div>
-        </dialog-element>
+                    <div class="row-h group">
+                        <div class="input-container input-container-ms">
+                            <!-- CP Output -->
+                            <etools-searchable-multiselection-menu
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.cp_output.name', basePermissionPath)]]"
+                                    label="[[getLabel('tpm_activities.cp_output.name', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.cp_output.name', basePermissionPath)]]"
+                                    options="[[cpOutputs]]"
+                                    custom-object-options
+                                    option-label="display_name"
+                                    option-value="value"
+                                    selected="{{editedItem.cpOutput}}"
+                                    update-selected
+                                    required$="[[_setRequired('tpm_activities.cp_output.name', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly(editedItem.partnerId, editedItem.partnershipId, someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly(editedItem.partnerId, editedItem.partnershipId, someRequestInProcess)]]"
+                                    invalid="{{errors.cp_output.name}}"
+                                    error-message="{{errors.cp_output.name}}"
+                                    on-focus="_resetFieldError"
+                                    dynamic-align
+                                    hide-search>
+                            </etools-searchable-multiselection-menu>
+                        </div>
 
-        <!--Add new output-->
-        <dialog-element opened="{{outputDialogOpened}}"
-                        dialog-title="Add PP/SSFA Output"
-                        confirm-btn-text="Add"
-                        request-in-process="{{requestInProcess}}">
-            <div class="dialog-content">
-                <!-- PP/SSFA Output -->
-                <etools-searchable-multiselection-menu
-                        id="outputInput"
-                        options="[[outputOptions]]"
-                        class="disabled-as-readonly validate-input"
-                        value="{{newItem.output}}"
-                        label="PP/SSFA Output"
-                        custom-object-options
-                        option-value="resultId"
-                        option-label="name"
-                        placeholder="Select PP/SSFA Output"></etools-searchable-multiselection-menu>
+                        <div class="input-container input-container-ms">
+                            <!-- Date of visit-->
+                            <paper-input
+                                    id="dateOfVisitInput"
+                                    class$="disabled-as-readonly [[_setRequired('tpm_activities.cp_output.from_date', basePermissionPath)]]"
+                                    value="[[prettyDate(editedItem.from_date)]]"
+                                    label="[[getLabel('tpm_activities.cp_output.from_date', basePermissionPath)]]"
+                                    placeholder="&#8212;"
+                                    data-selector="dateOfVisit"
+                                    required="[[_setRequired('tpm_activities.cp_output.from_date', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
+                                    invalid$="{{errors.cp_output.from_date}}"
+                                    error-message="{{errors.cp_output.from_date}}"
+                                    on-focus="_resetFieldError"
+                                    on-down="openDatePicker">
+                                <etools-datepicker
+                                        id="dateOfVisit"
+                                        modal="[[datepickerModal]]"
+                                        prefix
+                                        format="YYYY-MM-DD"
+                                        date="[[prepareDate(editedItem.from_date)]]"
+                                        pretty-date="{{editedItem.from_date}}"
+                                        no-init
+                                        show-clear-btn>
+                                </etools-datepicker>
+                            </paper-input>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
+                            <!-- Locations -->
+                            <etools-searchable-multiselection-menu
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.locations', basePermissionPath)]]"
+                                    label="[[getLabel('tpm_activities.locations', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.locations', basePermissionPath)]]"
+                                    options="[[locations]]"
+                                    custom-object-options
+                                    option-label="display_name"
+                                    option-value="value"
+                                    selected-values="{{editedItem.selectedLocations}}"
+                                    update-selected
+                                    required$="[[_setRequired('tpm_activities.locations', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly(editedItem.partnerId, editedItem.partnershipId, someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly(editedItem.partnerId, editedItem.partnershipId, someRequestInProcess)]]"
+                                    invalid="{{errors.locations}}"
+                                    error-message="{{errors.locations}}"
+                                    on-focus="_resetFieldError"
+                                    dynamic-align
+                                    multi
+                                    hide-search>
+                            </etools-searchable-multiselection-menu>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
+                            <!-- TODO: File Upload -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </dialog-element>
     </template>

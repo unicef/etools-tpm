@@ -49,7 +49,12 @@
                             </etools-content-panel>
                         </template>
 
-                       <visit-activity-tab id="visitActivity" activities="[[visit.tpm_activities]]" permission-base="[[permissionBase]]"></visit-activity-tab>
+                        <visit-activity-tab
+                                id="visitActivity"
+                                error-object="{{errorObject}}"
+                                data-items="[[visit.tpm_activities]]"
+                                base-permission-path="[[permissionBase]]">
+                        </visit-activity-tab>
                     </div>
 
                     <div name="report">
