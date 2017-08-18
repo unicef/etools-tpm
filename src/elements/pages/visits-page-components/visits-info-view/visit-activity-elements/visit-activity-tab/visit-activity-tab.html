@@ -2,7 +2,7 @@
             etools-searchable-multiselection-menu, etools-datepicker, lodash]-->
 <!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, list-element, activity-partnership-element,
             dialog-element, date-behavior, static-data-behavior, common-methods-behavior, table-elements-behavior,
-            get-partner-organisation-data, get-partnership-data]-->
+            get-partner-organisation-data, get-partnership-data, get-cp-outputs-data]-->
 
 <dom-module id="visit-activity-tab">
     <template>
@@ -18,6 +18,11 @@
                 partnership="{{partnership}}"
                 partnership-id="{{partnershipId}}">
         </get-partnership-data>
+
+        <get-cp-outputs-data
+                cp-outputs="{{cpOutputs}}"
+                cp-ids="{{cpIds}}">
+        </get-cp-outputs-data>
 
         <etools-content-panel
                 list
@@ -81,46 +86,50 @@
                         <div class="input-container input-container-ms">
                             <!-- Implementing Partner -->
                             <etools-searchable-multiselection-menu
-                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partnership.partner', basePermissionPath)]]"
-                                    label="[[getLabel('tpm_activities.partnership.partner', basePermissionPath)]]"
-                                    placeholder="[[getPlaceholderText('tpm_activities.partnership.partner', basePermissionPath)]]"
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.implementing_partner', basePermissionPath)]]"
+                                    label="[[getLabel('tpm_activities.implementing_partner', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.implementing_partner', basePermissionPath)]]"
                                     options="[[partners]]"
                                     custom-object-options
                                     option-label="name"
                                     option-value="id"
-                                    selected="{{editedItem.partnerId}}"
+                                    selected="{{editedItem.implementing_partner}}"
                                     update-selected
-                                    required$="[[_setRequired('tpm_activities.partnership.partner', basePermissionPath)]]"
+                                    required$="[[_setRequired('tpm_activities.implementing_partner', basePermissionPath)]]"
                                     disabled$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
                                     readonly$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
-                                    invalid="{{errors.partnership.partner}}"
-                                    error-message="{{errors.partnership.partner}}"
+                                    invalid="{{errors.implementing_partner}}"
+                                    error-message="{{errors.implementing_partner}}"
                                     on-focus="_resetFieldError"
                                     dynamic-align>
                             </etools-searchable-multiselection-menu>
+
+                            <etools-loading active="{{partnerRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
 
                         <div class="input-container input-container-ms">
                             <!-- Partnership-->
                             <etools-searchable-multiselection-menu
-                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partnership.title', basePermissionPath)]]"
-                                    label="[[getLabel('tpm_activities.partnership.title', basePermissionPath)]]"
-                                    placeholder="[[getPlaceholderText('tpm_activities.partnership.title', basePermissionPath)]]"
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partnership', basePermissionPath)]]"
+                                    label="[[getLabel('tpm_activities.partnership', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.partnership', basePermissionPath)]]"
                                     options="[[partner.interventions]]"
                                     custom-object-options
                                     option-label="title"
                                     option-value="id"
-                                    selected="{{editedItem.partnershipId}}"
+                                    selected="{{editedItem.partnership}}"
                                     update-selected
-                                    required$="[[_setRequired('tpm_activities.partnership.title', basePermissionPath)]]"
-                                    disabled$="[[_isReadOnly(editedItem.partnerId, 'true', someRequestInProcess)]]"
-                                    readonly$="[[_isReadOnly(editedItem.partnerId, 'true', someRequestInProcess)]]"
-                                    invalid="{{errors.partnership.title}}"
-                                    error-message="{{errors.partnership.title}}"
+                                    required$="[[_setRequired('tpm_activities.partnership', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly(editedItem.implementing_partner, 'true', someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly(editedItem.implementing_partner, 'true', someRequestInProcess)]]"
+                                    invalid="{{errors.partnership}}"
+                                    error-message="{{errors.partnership}}"
                                     on-focus="_resetFieldError"
                                     dynamic-align
                                     hide-search>
                             </etools-searchable-multiselection-menu>
+
+                            <etools-loading active="{{partnershipRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
                     </div>
 
@@ -128,40 +137,42 @@
                         <div class="input-container input-container-ms">
                             <!-- CP Output -->
                             <etools-searchable-multiselection-menu
-                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.cp_output.name', basePermissionPath)]]"
-                                    label="[[getLabel('tpm_activities.cp_output.name', basePermissionPath)]]"
-                                    placeholder="[[getPlaceholderText('tpm_activities.cp_output.name', basePermissionPath)]]"
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.cp_output', basePermissionPath)]]"
+                                    label="[[getLabel('tpm_activities.cp_output', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.cp_output', basePermissionPath)]]"
                                     options="[[cpOutputs]]"
                                     custom-object-options
-                                    option-label="display_name"
-                                    option-value="value"
-                                    selected="{{editedItem.cpOutput}}"
+                                    option-label="name"
+                                    option-value="id"
+                                    selected="{{editedItem.cp_output}}"
                                     update-selected
-                                    required$="[[_setRequired('tpm_activities.cp_output.name', basePermissionPath)]]"
-                                    disabled$="[[_isReadOnly(editedItem.partnerId, editedItem.partnershipId, someRequestInProcess)]]"
-                                    readonly$="[[_isReadOnly(editedItem.partnerId, editedItem.partnershipId, someRequestInProcess)]]"
-                                    invalid="{{errors.cp_output.name}}"
-                                    error-message="{{errors.cp_output.name}}"
+                                    required$="[[_setRequired('tpm_activities.cp_output', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly(editedItem.implementing_partner, editedItem.partnership, someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly(editedItem.implementing_partner, editedItem.partnership, someRequestInProcess)]]"
+                                    invalid="{{errors.cp_output}}"
+                                    error-message="{{errors.cp_output}}"
                                     on-focus="_resetFieldError"
                                     dynamic-align
                                     hide-search>
                             </etools-searchable-multiselection-menu>
+
+                            <etools-loading active="{{cpRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
 
                         <div class="input-container input-container-ms">
                             <!-- Date of visit-->
                             <paper-input
                                     id="dateOfVisitInput"
-                                    class$="disabled-as-readonly [[_setRequired('tpm_activities.cp_output.from_date', basePermissionPath)]]"
-                                    value="[[prettyDate(editedItem.from_date)]]"
-                                    label="[[getLabel('tpm_activities.cp_output.from_date', basePermissionPath)]]"
+                                    class$="disabled-as-readonly [[_setRequired('tpm_activities.date', basePermissionPath)]]"
+                                    value="[[prettyDate(editedItem.date)]]"
+                                    label="[[getLabel('tpm_activities.date', basePermissionPath)]]"
                                     placeholder="&#8212;"
                                     data-selector="dateOfVisit"
-                                    required="[[_setRequired('tpm_activities.cp_output.from_date', basePermissionPath)]]"
+                                    required="[[_setRequired('tpm_activities.date', basePermissionPath)]]"
                                     disabled$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
                                     readonly$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
-                                    invalid$="{{errors.cp_output.from_date}}"
-                                    error-message="{{errors.cp_output.from_date}}"
+                                    invalid$="{{errors.cp_output.date}}"
+                                    error-message="{{errors.cp_output.date}}"
                                     on-focus="_resetFieldError"
                                     on-down="openDatePicker">
                                 <etools-datepicker
@@ -169,8 +180,8 @@
                                         modal="[[datepickerModal]]"
                                         prefix
                                         format="YYYY-MM-DD"
-                                        date="[[prepareDate(editedItem.from_date)]]"
-                                        pretty-date="{{editedItem.from_date}}"
+                                        date="[[prepareDate(editedItem.date)]]"
+                                        pretty-date="{{editedItem.date}}"
                                         no-init
                                         show-clear-btn>
                                 </etools-datepicker>
@@ -187,13 +198,13 @@
                                     placeholder="[[getPlaceholderText('tpm_activities.locations', basePermissionPath)]]"
                                     options="[[locations]]"
                                     custom-object-options
-                                    option-label="display_name"
-                                    option-value="value"
-                                    selected-values="{{editedItem.selectedLocations}}"
+                                    option-label="name"
+                                    option-value="id"
+                                    selected-values="{{editedItem.locations}}"
                                     update-selected
                                     required$="[[_setRequired('tpm_activities.locations', basePermissionPath)]]"
-                                    disabled$="[[_isReadOnly(editedItem.partnerId, editedItem.partnershipId, someRequestInProcess)]]"
-                                    readonly$="[[_isReadOnly(editedItem.partnerId, editedItem.partnershipId, someRequestInProcess)]]"
+                                    disabled$="[[_isReadOnly(editedItem.implementing_partner, editedItem.partnership, someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly(editedItem.implementing_partner, editedItem.partnership, someRequestInProcess)]]"
                                     invalid="{{errors.locations}}"
                                     error-message="{{errors.locations}}"
                                     on-focus="_resetFieldError"

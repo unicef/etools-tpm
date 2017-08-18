@@ -3,3 +3,14 @@ etools-content-panel {
          padding: 0;
     }'};
 }
+
+.loading {
+    position: absolute;
+    top: 28px;
+    left: auto;
+    background-color: #fff;
+}
+
+.loading:not([active]) {
+    display: none !important;
+}

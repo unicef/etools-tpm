@@ -1,18 +1,16 @@
 <!--import [polymer, etools-ajax, lodash, etools-app-config]-->
 
 <dom-module id="get-partner-organisation-data">
-
     <template>
-
-        <etools-ajax url="[[url]]"
-                     on-success="_handleResponse"
-                     on-fail="_handleError"></etools-ajax>
+        <etools-ajax
+                url="[[url]]"
+                on-success="_handleResponse"
+                on-fail="_handleError">
+        </etools-ajax>
     </template>
 
     <script>
-
         Polymer({
-
             is: 'get-partner-organisation-data',
 
             behaviors: [
@@ -20,7 +18,6 @@
             ],
 
             properties: {
-
                 partnerId: {
                     type: Number,
                     notify: true,
@@ -30,7 +27,6 @@
                     type: Object,
                     notify: true
                 }
-
             },
 
             _handleResponse: function (data, detail) {
@@ -57,9 +53,6 @@
                 this.url = this.getEndpoint('partnerOrganisationDetails', {id: partnerId}).url;
                 this.partnerId = null;
             }
-
         });
-
     </script>
-
 </dom-module>

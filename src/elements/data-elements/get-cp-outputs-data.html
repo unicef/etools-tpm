@@ -1,6 +1,6 @@
 <!--import [polymer, etools-ajax, lodash, etools-app-config]-->
 
-<dom-module id="get-partnership-data">
+<dom-module id="get-cp-outputs-data">
     <template>
         <etools-ajax
                 url="[[url]]"
@@ -11,48 +11,50 @@
 
     <script>
         Polymer({
-            is: 'get-partnership-data',
+            is: 'get-cp-outputs-data',
 
             behaviors: [
                 etoolsAppConfig.globals
             ],
 
             properties: {
-                partnershipId: {
-                    type: Number,
+                cpIds: {
+                    type: Array,
                     notify: true,
-                    observer: '_partnershipIdChanged'
+                    observer: '_cpIdsChanged'
                 },
-                partnership: {
-                    type: Object,
+                cpOutputs: {
+                    type: Array,
                     notify: true
                 }
             },
 
             _handleResponse: function (data, detail) {
                 this.lastData = _.clone(data.detail);
-                this.partnership = data.detail;
-                this.fire('partnership-loaded', {success: true});
+                this.cpOutputs = data.detail;
+                this.fire('cp-outputs-loaded', {success: true});
             },
 
             _handleError: function () {
                 this.lastError = true;
-                this.fire('partnership-loaded');
+                this.fire('cp-outputs-loaded');
             },
 
-            _partnershipIdChanged: function(partnershipId) {
-                if (!partnershipId) { return; }
-                if (partnershipId === this.lastNumber) {
-                    this.partnershipId = null;
+            _cpIdsChanged: function(cpIds) {
+                if (!(cpIds instanceof Array) || !cpIds.length) { return; }
+
+                let stringOfIds = cpIds.join(',');
+                if (stringOfIds === this.lastIds) {
+                    this.cpIds = null;
                     this.lastError ? this._handleError() : this._handleResponse({detail: _.clone(this.lastData)});
                     return;
                 }
 
                 this.lastError = false;
-                this.lastNumber = partnershipId;
-                this.url = this.getEndpoint('partnershipDetails', {id: partnershipId}).url;
-                this.partnershipId = null;
-            }
+                this.lastIds = stringOfIds;
+                this.url = this.getEndpoint('cpOutputs').url + '?values=' + stringOfIds;
+                this.cpIds = null;
+            },
         });
     </script>
 </dom-module>

@@ -31,11 +31,11 @@ Polymer({
             type: Object,
             value: function() {
                 return {
-                    partnerId: null,
-                    partnershipId: null,
-                    cpOutput: '',
-                    from_date: '',
-                    selectedLocations: [],
+                    implementing_partner: null,
+                    partnership: null,
+                    cp_output: null,
+                    date: '',
+                    locations: [],
                 };
             }
         },
@@ -44,6 +44,10 @@ Polymer({
             value: false,
         },
         partnershipRequestInProcess: {
+            type: Boolean,
+            value: false,
+        },
+        cpRequestInProcess: {
             type: Boolean,
             value: false,
         },
@@ -56,20 +60,20 @@ Polymer({
             value: [{
                 'size': 25,
                 'label': 'Implementing Partner',
-                'path': 'tpm_activities.partnership.partner'
+                'path': 'implementing_partner'
             }, {
                 'size': 30,
                 'label': 'Partnership',
-                'path': 'tpm_activities.partnership.title'
+                'path': 'partnership'
             }, {
                 'size': 30,
                 'label': 'CP Output',
-                'path': 'tpm_activities.cp_output.name'
+                'path': 'cp_output'
             }, {
                 'size': 15,
                 'name': 'date',
                 'label': 'Date',
-                'path': 'tpm_activities.cp_output.from_date'
+                'path': 'date'
             }]
         },
         details: {
@@ -78,7 +82,7 @@ Polymer({
                 return [{
                     'size': 100,
                     'label': 'Locations',
-                    'path': 'tpm_activities.locations'
+                    'path': 'locations'
                 }, {
                     'size': 100,
                     'label': 'Link to eTools Programme Documents',
@@ -113,12 +117,13 @@ Polymer({
         'delete-confirmed': 'removeItem',
         'partner-loaded': '_partnerLoaded',
         'partnership-loaded': '_partnershipLoaded',
+        'cp-outputs-loaded': '_cpOutputsLoaded',
     },
 
     observers: [
-        '_setSomeRequestInProcess(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess)',
-        '_requestPartner(editedItem.partnerId)',
-        '_requestPartnership(editedItem.partnershipId)',
+        '_setSomeRequestInProcess(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess)',
+        '_requestPartner(editedItem.implementing_partner)',
+        '_requestPartnership(editedItem.partnership)',
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject.tpm_activities)',
         'updateStyles(basePermissionPath, someRequestInProcess)',
@@ -126,11 +131,10 @@ Polymer({
 
     ready: function() {
         this.partners = this.getData('partnerOrganisations') || [];
-        // this.outputsList = this.getData('ppSsfaOutputs');
     },
 
-    _setSomeRequestInProcess: function(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess) {
-        this.someRequestInProcess = requestInProcess || partnerRequestInProcess || partnershipRequestInProcess;
+    _setSomeRequestInProcess: function(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess) {
+        this.someRequestInProcess = requestInProcess || partnerRequestInProcess || partnershipRequestInProcess || cpRequestInProcess;
     },
 
     _getActivitiesLength: function(dataItemsLength) {
@@ -140,119 +144,117 @@ Polymer({
     _isReadOnly: function(partnerId, partnershipId, someRequestInProcess) {
         let partnerDefined = partnerId || partnerId === 0;
         let partnershipDefined = partnershipId || partnershipId === 0;
-        // console.log(partnerId, partnershipId);
         return !partnerDefined || !partnershipDefined || someRequestInProcess;
     },
 
     _requestPartner: function(partnerId) {
         if (this.partnerRequestInProcess) { return; }
 
-        this.set('editedItem.partnershipId', null);
+        this.set('editedItem.partnership', null);
         this.set('partner.interventions', []);
-        //TODO: reset locs\outputs, add spinners
+
+        this.set('editedItem.locations', []);
+        this.set('locations', []);
+
+        this.set('editedItem.cp_output', null);
+        this.set('cpOutputs', []);
 
         if (!partnerId && partnerId !== 0) { return; }
 
         this.partnerRequestInProcess = true;
-        this.editedItem.partnerId = partnerId;
+        this.editedItem.implementing_partner = partnerId;
         this.partnerId = partnerId;
         return true;
     },
 
     _partnerLoaded: function() {
-        // console.log(this.partner);
         this.partnerRequestInProcess = false;
     },
 
     _requestPartnership: function(partnershipId) {
         if (this.partnershipRequestInProcess) { return; }
 
-        //TODO: reset locs\outputs
+        this.set('editedItem.locations', []);
+        this.set('locations', []);
+
+        this.set('editedItem.cp_output', null);
+        this.set('cpOutputs', []);
 
         if (!partnershipId && partnershipId !== 0) { return; }
 
         this.partnershipRequestInProcess = true;
-        this.editedItem.partnershipId = partnershipId;
+        this.editedItem.partnership = partnershipId;
         this.partnershipId = partnershipId;
         return true;
     },
 
     _partnershipLoaded: function() {
-        // console.log(this.partner);
         this.partnershipRequestInProcess = false;
+        this._updateLocations();
+        this._updateCpOutputs();
     },
 
-    // addSector: function(event, details) {
-    //     if (!details || !details.id || !details.item) { throw 'Details object is not provided or incorrect!'; }
-    //
-    //     let activity = this.dataItems.filter((activity) => { return activity.id === details.id; })[0];
-    //     if (!activity) { throw `Can not find activity with id ${details.id}`; }
-    //
-    //     let options = activity.partnership.sector_locations.map((sectorLocation) => { return sectorLocation.sector; });
-    //     this.set('sectorOptions', options);
-    //     this.set('newItem', details.item);
-    //
-    //     this.sectorDialogOpened = true;
-    // },
-    //
-    // addOutput: function(event, details) {
-    //     if (!details || !details.id || !details.item) { throw 'Details object is not provided or incorrect!'; }
-    //
-    //     let activity = this.dataItems.filter((activity) => { return activity.id === details.id; })[0];
-    //     if (!activity) { throw `Can not find activity with id ${details.id}`; }
-    //
-    //     let resultLinks = {};
-    //     _.each(activity.partnership.resultLinks, (result) => {
-    //         resultLinks[result.cp_output] = result.id;
-    //     });
-    //     let options = this.outputsList.filter((output) => {
-    //         let exists = resultLinks[output.id];
-    //         if (exists) { output.resultId = exists; }
-    //         return exists;
-    //     });
-    //     this.set('outputOptions', options);
-    //     this.set('newItem', details.item);
-    //
-    //     this.outputDialogOpened = true;
-    // },
-    //
-    // addActivity: function() {
-    //     this.set('newItem', {});
-    //     this.activityDialogOpened = true;
-    // },
-    //
-    // addItem: function() {
-    //     this.requestInProcess = true;
-    //     this.fire('action-activated', {type: 'save', quietUpdate: true});
-    // },
-    //
-    // getActivitiesData: function() {
-    //     //add new partnership check
-    //     if (this.newItem && this.newItem.partnerOrganisation && this.newItem.intervention) {
-    //         let id = this.newItem.intervention.id;
-    //         return [{
-    //             partnership: id,
-    //             tpm_sectors: []
-    //         }];
-    //     }
-    //     //get partnerships data
-    //     let partnerships = Polymer.dom(this.root).querySelectorAll('activity-partnership-element'),
-    //         data = [];
-    //
-    //     _.each(partnerships, (partnership) => {
-    //         let partnershipData = partnership.getPartnershipData();
-    //         if (partnershipData) { data.push(partnershipData); }
-    //     });
-    //
-    //     return data.length ? data : null;
-    // },
+    _updateLocations: function() {
+        let sectors = this.get('partnership.sector_locations');
+        if (!(sectors instanceof Array)) { return; }
 
-    // visitUpdated: function(success) {
-    //     this.requestInProcess = false;
-    //     if (success) {
-    //         this.activityDialogOpened = false;
-    //         this.sectorDialogOpened = false;
-    //         this.outputDialogOpened = false;
-    //     }
-    // }
+        let locations = [];
+        sectors.forEach((sector) => {
+            if (sector && (sector.locations instanceof Array)) {
+                locations = locations.concat(sector.locations);
+            }
+        });
+        locations = _.sortBy(locations, ['name']);
+
+        this.set('locations', locations);
+    },
+
+    _updateCpOutputs: function() {
+        let resultLinks = this.get('partnership.result_links');
+        if (!(resultLinks instanceof Array)) { return; }
+
+        let cpIds = [];
+        resultLinks.forEach((link) => {
+            if (link && (link.cp_output || link.cp_output === 0)) {
+                cpIds.push(link.cp_output);
+            }
+        });
+
+        if (cpIds.length) {
+            this._requestCpOutputs(cpIds);
+        }
+    },
+
+    _requestCpOutputs: function(cpIds) {
+        if (this.cpRequestInProcess) { return; }
+
+        this.cpRequestInProcess = true;
+        this.cpIds = cpIds;
+        return true;
+    },
+
+    _cpOutputsLoaded: function() {
+        this.cpRequestInProcess = false;
+    },
+
+    getActivitiesData: function() {
+        // //add new partnership check
+        // if (this.newItem && this.newItem.partnerOrganisation && this.newItem.intervention) {
+        //     let id = this.newItem.intervention.id;
+        //     return [{
+        //         partnership: id,
+        //         tpm_sectors: []
+        //     }];
+        // }
+        // //get partnerships data
+        // let partnerships = Polymer.dom(this.root).querySelectorAll('activity-partnership-element'),
+        //     data = [];
+        //
+        // _.each(partnerships, (partnership) => {
+        //     let partnershipData = partnership.getPartnershipData();
+        //     if (partnershipData) { data.push(partnershipData); }
+        // });
+        //
+        // return data.length ? data : null;
+    },
 });
