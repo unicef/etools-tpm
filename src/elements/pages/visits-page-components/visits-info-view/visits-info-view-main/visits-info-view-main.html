@@ -1,7 +1,7 @@
 <!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea]-->
 <!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data,
-            permission-controller, textarea-max-rows-behavior, tab-inputs-styles, visit-activity-tab, file-attachments-tab,
-            static-data-behavior, common-methods-behavior]-->
+            permission-controller, textarea-max-rows-behavior, tab-inputs-styles, visit-activity-tab, visit-details-tab,
+            file-attachments-tab, static-data-behavior, common-methods-behavior]-->
 
 <dom-module id="visits-info-view-main">
     <template>
@@ -48,7 +48,7 @@
                                 </div>
                             </etools-content-panel>
                         </template>
-
+                       <visit-details-tab id="visitDetails" visit="[[visit]]" permission-base="[[permissionBase]]"></visit-details-tab>
                        <visit-activity-tab id="visitActivity" activities="[[visit.tpm_activities]]" permission-base="[[permissionBase]]"></visit-activity-tab>
                     </div>
 

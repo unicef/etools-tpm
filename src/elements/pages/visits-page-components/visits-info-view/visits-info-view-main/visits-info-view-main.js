@@ -117,8 +117,15 @@ Polymer({
     getVisitData: function() {
         let data = {};
         let visitActivityData = this.$.visitActivity && this.$.visitActivity.getActivitiesData();
+        let visitDetailsData = this.$.visitDetails && this.$.visitDetails.getDetailsData();
         if (visitActivityData) {
             data.tpm_activities = visitActivityData;
+        }
+        if (visitDetailsData) {
+            data.sections = visitDetailsData.sections;
+            data.unicef_focal_points = visitDetailsData.unicef_focal_points;
+            data.offices = visitDetailsData.offices;
+            data.tpm_partner_focal_points = visitDetailsData.tpm_partner_focal_points;
         }
         return data;
     },
