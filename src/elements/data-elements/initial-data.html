@@ -30,6 +30,21 @@
         <etools-ajax url="[[outputsEndpoint]]"
                      on-success="_outputsLoaded"
                      on-fail="_outputsError"></etools-ajax>
+
+        <!--Sections Covered-->
+        <etools-ajax url="[[sectionsEndpoint]]"
+                     on-success="_sectionsLoaded"
+                     on-fail="_sectionsError"></etools-ajax>
+
+        <!--Unicef Users-->
+        <etools-ajax url="[[unicefUsersEndpoint]]"
+                     on-success="_unicefUsersLoaded"
+                     on-fail="_unicefUsersError"></etools-ajax>
+
+        <!--Offices-->
+        <etools-ajax url="[[officesEndpoint]]"
+                     on-success="_officesLoaded"
+                     on-fail="_officesError"></etools-ajax>
     </template>
 
     <script>
@@ -59,6 +74,9 @@
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
                         this.outputsEndpoint = this.getEndpoint('ppSsfaOutputs').url;
                     }
+                    this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
+                    this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
+                    this.officesEndpoint = this.getEndpoint('offices').url;
                     this.partnersEndpoint = this.getEndpoint('partnersList');
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this._allDataLoaded();
@@ -67,7 +85,8 @@
                 _allDataLoaded: function() {
                     let tpmUser = this.isTpmUser();
                     if (((dataLoaded.organizations && dataLoaded.outputs) || tpmUser) &&
-                            dataLoaded.visitsOptions &&
+                            dataLoaded.visitsOptions && dataLoaded.sections &&  dataLoaded.unicefUsers &&
+                            dataLoaded.offices &&
                             (dataLoaded.partnersOptions || tpmUser)) {
                         this.fire('initial-data-loaded');
                     }
@@ -163,12 +182,51 @@
                     this._responseError('TPM partners');
                 },
 
+                _sectionsLoaded: function(data, detail) {
+                    if (!detail) {
+                        this._sectionsError();
+                    }
+                    this._setData('sections', detail);
+                    dataLoaded.sections = true;
+                    this._allDataLoaded();
+                },
+
+                _unicefUsersLoaded: function(data, detail) {
+                    if (!detail) {
+                        this._unicefUsersError();
+                    }
+                    this._setData('unicefUsers', detail);
+                    dataLoaded.unicefUsers = true;
+                    this._allDataLoaded();
+                },
+
+                _officesLoaded: function(data, detail) {
+                    if (!detail) {
+                        this._officesError();
+                    }
+                    this._setData('offices', detail);
+                    dataLoaded.offices = true;
+                    this._allDataLoaded();
+                },
+
                 _organisationsError: function() {
                     this._responseError('partner organisations');
                 },
 
                 _outputsError: function() {
                     this._responseError('ppSsfaOutputs');
+                },
+
+                _sectionsError: function() {
+                    this._responseError('sections');
+                },
+
+                _unicefUsersError: function() {
+                    this._responseError('unicefUsers');
+                },
+
+                _officesError: function() {
+                    this._responseError('offices');
                 },
 
                 _responseError: function(request) {

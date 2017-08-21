@@ -1,0 +1,159 @@
+<!--import [polymer, etools-content-panel, lodash, paper-input, etools-searchable-multiselection-menu, date-behavior]-->
+<!--import [module-styles, tab-layout-styles, tab-inputs-styles, permission-controller, static-data-behavior,
+            common-methods-behavior]-->
+
+<dom-module id="visit-details-tab">
+    <template>
+        <style include="tab-inputs-styles tab-layout-styles module-styles">
+        </style>
+
+        <etools-ajax method="GET"
+                     url="{{partnerStaffUrl}}"
+                     on-success="_partnersLoad"
+                     on-fail="_partnersLoadError"></etools-ajax>
+
+        <etools-content-panel panel-title="Visit Details">
+            <div class="row-h group">
+                <div class="input-container">
+                    <!-- Reference Number -->
+                    <paper-input label="{{getLabel('reference_number', permissionBase)}}"
+                                 value="{{visit.reference_number}}"
+                                 placeholder="{{getPlaceholderText('reference_number', permissionBase)}}"
+                                 class="without-border"
+                                 disabled readonly></paper-input>
+                    <paper-tooltip offset="0">[[visit.reference_number]]</paper-tooltip>
+                </div>
+                <div class="input-container">
+                    <!-- Vendor Name -->
+                    <paper-input label="{{getLabel('tpm_partner.name', permissionBase)}}"
+                                 value="{{visit.tpm_partner.name}}"
+                                 placeholder="{{getPlaceholderText('tpm_partner.name', permissionBase)}}"
+                                 class$="disabled-as-readonly [[_setRequired('tpm_partner.name', permissionBase)]]"
+                                 invalid="{{_checkInvalid(errors.tpm_partner.name)}}"
+                                 error-message="{{errors.tpm_partner.name}}"
+                                 on-focus="_resetFieldError"
+                                 required$="[[_setRequired('tpm_partner.name', permissionBase)]]"
+                                 disabled$="[[isReadOnly('tpm_partner.name', permissionBase)]]"></paper-input>
+                    <paper-tooltip offset="0">[[visit.reference_number]]</paper-tooltip>
+                </div>
+                <div class="input-container">
+                    <!-- Start End Date -->
+
+                    <div class="input-container input-container-ms">
+                    <paper-input
+                            class$="disabled-as-readonly"
+                            value="[[prettyDate(visit.start_date)]]"
+                            label="[[getLabel('start_date', permissionBase)]]"
+                            placeholder="[[getReadonlyPlaceholder(visit.start_date)]]"
+                            disabled
+                            readonly>
+                        <iron-icon
+                                prefix
+                                icon="date-range">
+                        </iron-icon>
+                    </paper-input>
+                    </div>
+                    <div class="input-container input-container-ms">
+                    <paper-input
+                            class$="disabled-as-readonly"
+                            value="[[prettyDate(visit.end_date)]]"
+                            label="[[getLabel('end_date', permissionBase)]]"
+                            placeholder="[[getReadonlyPlaceholder(visit.end_date)]]"
+                            disabled
+                            readonly>
+                    </paper-input>
+                    </div>
+                </div>
+            </div>
+            <div class="row-h group">
+                <div class="input-container input-container-l">
+                    <etools-searchable-multiselection-menu
+                            class$="disabled-as-readonly validate-input [[_setRequired('sections', permissionBase)]] fua-description"
+                            label="[[getLabel('sections', permissionBase)]]"
+                            placeholder="[[getPlaceholderText('sections', permissionBase)]]"
+                            options="[[sectionsList]]"
+                            custom-object-options
+                            option-label="name"
+                            option-value="id"
+                            value="{{visit.sections}}"
+                            required$="[[_setRequired('sections', permissionBase)]]"
+                            disabled$="[[isReadOnly('sections', permissionBase)]]"
+                            readonly$="[[isReadOnly('sections', permissionBase)]]"
+                            invalid="{{errors.sections}}"
+                            error-message="{{errors.sections}}"
+                            on-focus="_resetFieldError"
+                            multi
+                            hide-search>
+                    </etools-searchable-multiselection-menu>
+                </div>
+            </div>
+            <div class="row-h group">
+                <div class="input-container input-container-l">
+                    <etools-searchable-multiselection-menu
+                            class$="disabled-as-readonly validate-input [[_setRequired('unicef_focal_points', permissionBase)]] fua-description"
+                            label="[[getLabel('unicef_focal_points', permissionBase)]]"
+                            placeholder="[[getPlaceholderText('unicef_focal_points', permissionBase)]]"
+                            options="[[unicefUsersList]]"
+                            custom-object-options
+                            option-label="name"
+                            option-value="id"
+                            value="{{visit.unicef_focal_points}}"
+                            required$="[[_setRequired('unicef_focal_points', permissionBase)]]"
+                            disabled$="[[isReadOnly('unicef_focal_points', permissionBase)]]"
+                            readonly$="[[isReadOnly('unicef_focal_points', permissionBase)]]"
+                            invalid="{{errors.unicef_focal_points}}"
+                            error-message="{{errors.unicef_focal_points}}"
+                            on-focus="_resetFieldError"
+                            multi
+                            hide-search>
+                    </etools-searchable-multiselection-menu>
+                </div>
+            </div>
+            <div class="row-h group">
+                <div class="input-container input-container-l">
+                    <etools-searchable-multiselection-menu
+                            class$="disabled-as-readonly validate-input [[_setRequired('offices', permissionBase)]] fua-description"
+                            label="[[getLabel('offices', permissionBase)]]"
+                            placeholder="[[getPlaceholderText('offices', permissionBase)]]"
+                            options="[[officesList]]"
+                            custom-object-options
+                            option-label="name"
+                            option-value="id"
+                            value="{{visit.offices}}"
+                            required$="[[_setRequired('offices', permissionBase)]]"
+                            disabled$="[[isReadOnly('offices', permissionBase)]]"
+                            readonly$="[[isReadOnly('offices', permissionBase)]]"
+                            invalid="{{errors.offices}}"
+                            error-message="{{errors.offices}}"
+                            on-focus="_resetFieldError"
+                            multi
+                            hide-search>
+                    </etools-searchable-multiselection-menu>
+                </div>
+            </div>
+            <div class="row-h group">
+                <div class="input-container input-container-l">
+                    <etools-searchable-multiselection-menu
+                            class$="disabled-as-readonly validate-input [[_setRequired('tpm_partner_focal_points', permissionBase)]] fua-description"
+                            label="[[getLabel('tpm_partner_focal_points', permissionBase)]]"
+                            placeholder="[[getPlaceholderText('tpm_partner_focal_points', permissionBase)]]"
+                            options="[[partners]]"
+                            custom-object-options
+                            option-label="name"
+                            option-value="id"
+                            value="{{visit.tpm_partner_focal_points}}"
+                            required$="[[_setRequired('tpm_partner_focal_points', permissionBase)]]"
+                            disabled$="[[isReadOnly('tpm_partner_focal_points', permissionBase)]]"
+                            readonly$="[[isReadOnly('tpm_partner_focal_points', permissionBase)]]"
+                            invalid="{{errors.tpm_partner_focal_points}}"
+                            error-message="{{errors.tpm_partner_focal_points}}"
+                            on-focus="_resetFieldError"
+                            multi
+                            hide-search>
+                    </etools-searchable-multiselection-menu>
+                </div>
+            </div>
+        </etools-content-panel>
+    </template>
+    <!-- inject scripts './visit-details-tab.js'-->
+</dom-module>
