@@ -37,14 +37,12 @@
                     <paper-tooltip offset="0">[[visit.reference_number]]</paper-tooltip>
                 </div>
                 <div class="input-container">
-                    <!-- Start End Date -->
-
-                    <div class="input-container input-container-ms">
+                    <!-- Dates of Visit -->
                     <paper-input
                             class$="disabled-as-readonly"
-                            value="[[prettyDate(visit.start_date)]]"
-                            label="[[getLabel('start_date', permissionBase)]]"
-                            placeholder="[[getReadonlyPlaceholder(visit.start_date)]]"
+                            value="[[setVisitDates(visit.start_date, visit.end_date)]]"
+                            label="Dates of Visit"
+                            placeholder="Dates of Visit"
                             disabled
                             readonly>
                         <iron-icon
@@ -52,17 +50,6 @@
                                 icon="date-range">
                         </iron-icon>
                     </paper-input>
-                    </div>
-                    <div class="input-container input-container-ms">
-                    <paper-input
-                            class$="disabled-as-readonly"
-                            value="[[prettyDate(visit.end_date)]]"
-                            label="[[getLabel('end_date', permissionBase)]]"
-                            placeholder="[[getReadonlyPlaceholder(visit.end_date)]]"
-                            disabled
-                            readonly>
-                    </paper-input>
-                    </div>
                 </div>
             </div>
             <div class="row-h group">
@@ -75,6 +62,7 @@
                             custom-object-options
                             option-label="name"
                             option-value="id"
+                            selected-values="{{selectedSections}}"
                             value="{{visit.sections}}"
                             required$="[[_setRequired('sections', permissionBase)]]"
                             disabled$="[[isReadOnly('sections', permissionBase)]]"
@@ -97,6 +85,7 @@
                             custom-object-options
                             option-label="name"
                             option-value="id"
+                            selected-values="{{selectedFocalPoints}}"
                             value="{{visit.unicef_focal_points}}"
                             required$="[[_setRequired('unicef_focal_points', permissionBase)]]"
                             disabled$="[[isReadOnly('unicef_focal_points', permissionBase)]]"
@@ -119,6 +108,7 @@
                             custom-object-options
                             option-label="name"
                             option-value="id"
+                            selected-values="{{selectedOfficers}}"
                             value="{{visit.offices}}"
                             required$="[[_setRequired('offices', permissionBase)]]"
                             disabled$="[[isReadOnly('offices', permissionBase)]]"
@@ -141,7 +131,8 @@
                             custom-object-options
                             option-label="name"
                             option-value="id"
-                            value="{{visit.tpm_partner_focal_points}}"
+                            selected-values="{{selectedTpms}}"
+                            value="[[setSelectedTpms(visit.tpm_partner_focal_points)]]"
                             required$="[[_setRequired('tpm_partner_focal_points', permissionBase)]]"
                             disabled$="[[isReadOnly('tpm_partner_focal_points', permissionBase)]]"
                             readonly$="[[isReadOnly('tpm_partner_focal_points', permissionBase)]]"

@@ -44,7 +44,12 @@
                                 <div class="cancellation-text">[[visit.reject_comment]]</div>
                             </etools-content-panel>
                         </template>
-                       <visit-details-tab id="visitDetails" visit="[[visit]]" permission-base="[[permissionBase]]"></visit-details-tab>
+
+                       <visit-details-tab id="visitDetails"
+                                          visit="[[visit]]"
+                                          original-data="[[originalData]]"
+                                          permission-base="[[permissionBase]]"></visit-details-tab>
+
                        <visit-activity-tab id="visitActivity" activities="[[visit.tpm_activities]]" permission-base="[[permissionBase]]"></visit-activity-tab>
                     </div>
 

@@ -1,7 +1,7 @@
 <!--import [polymer, iron-pages, app-route, etools-app-config]-->
 
 <!--import [page-layout-styles, shared-styles,  module-styles, visit-info-data,
-            visits-list-view, visits-info-view-main, query-params-controller]-->
+            visits-list-view, visits-info-view-main, query-params-controller, lodash]-->
 
 <dom-module id="visits-page-main">
     <template>
@@ -29,6 +29,7 @@
 
             <visits-info-view-main name="visit"
                                    visit="{{visitDetails}}"
+                                   original-data="[[originalData]]"
                                    route="{{subroute}}"></visits-info-view-main>
 
         </iron-pages>

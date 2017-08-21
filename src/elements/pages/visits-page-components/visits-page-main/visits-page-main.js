@@ -15,10 +15,18 @@ Polymer({
             type: Boolean,
             value: true
         },
-        visitDetails: Object
+        visitDetails: Object,
+        originalData: {
+            type: Object,
+            readOnly: true,
+            value: function() {
+                return {};
+            }
+        }
     },
     observers: [
-        '_routeConfig(route)'
+        '_routeConfig(route)',
+        '_visitLoaded(visitDetails)'
     ],
 
     _routeConfig: function(route) {
@@ -37,6 +45,7 @@ Polymer({
             this.fire('404');
         }
     },
+
     _configListParams: function() {
         let queriesUpdates = {},
             queries = this.parseQueries();
@@ -54,6 +63,7 @@ Polymer({
         }, 100);
         return this.parseQueries();
     },
+
     _queryParamsChanged: function() {
         if (!~this.route.prefix.indexOf('/visits') || !this.routeData) { return; }
         if (this.routeData.view === 'list') {
@@ -65,9 +75,15 @@ Polymer({
             }, 100);
         }
     },
+
     _setVisitsListQueries: function(queries) {
         if (!_.isEmpty(queries) && (!this.visitsListQueries || !_.isEqual(this.visitsListQueries, queries))) {
             this.visitsListQueries = queries;
         }
+    },
+
+    _visitLoaded: function(visitDetails) {
+        if (!visitDetails) { return; }
+        this._setOriginalData(_.cloneDeep(visitDetails));
     }
 });

@@ -21,8 +21,18 @@ Polymer({
             value: function() {
                 return [];
             }
+        },
+        originalData: {
+            type: Object,
+            value: function() {
+                return {};
+            }
         }
     },
+
+    observers: [
+        'setSelectedSections()'
+    ],
 
     ready: function() {
         this.sectionsList = this.getData('sections');
@@ -52,16 +62,37 @@ Polymer({
             });
         }
     },
+
     _partnersLoadError: function() {
         console.error(`Can not load partner staff members`);
     },
 
     getDetailsData: function() {
-        return {
-            sections: this.visit.sections,
-            unicef_focal_points: this.visit.unicef_focal_points,
-            offices: this.visit.offices,
-            tpm_partner_focal_points: this.visit.tpm_partner_focal_points
+        let data = {
+            sections: this.selectedSections || [],
+            unicef_focal_points: this.selectedFocalPoints || [],
+            offices: this.selectedOfficers || [],
+            tpm_partner_focal_points: this.selectedTpms || []
         };
+        return _.pickBy(data, (value, key) => {
+            let original = (this.originalData[key] || []).map((data) => `${data.id}`);
+            return !_.isEqual(original, value);
+        });
+    },
+
+    setVisitDates: function(start, end) {
+        if (!start) { return '';}
+        start = this.prettyDate(start);
+        end = this.prettyDate(end);
+        return `${start} - ${end}`;
+    },
+
+    setSelectedTpms(selected = []) {
+        return selected.map((profile) => {
+            return {
+                id: profile.id,
+                name: `${profile.user.first_name} ${profile.user.last_name}`
+            };
+        });
     }
 });
