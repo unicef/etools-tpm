@@ -28,7 +28,7 @@
         describe('method getLink()', () => {
             it('returns partners details link if isTpmUser() method returns true', () => {
                 let spy = sinon.stub(myEl, 'isTpmUser').returns(true);
-                sinon.stub(myEl, 'getPartnerId').returns(1);
+                myEl.getPartnerId = function() { return 1; }
 
                 assert.isFalse(spy.called);
                 assert.equal(myEl.getLink(), 'partners/1/details');
@@ -37,7 +37,7 @@
 
             it('returns partners list link if isTpmUser() method returns false', () => {
                 let spy = sinon.stub(myEl, 'isTpmUser').returns(false);
-                sinon.stub(myEl, 'getPartnerId').returns(1);
+                myEl.getPartnerId = function() { return 1; }
 
                 assert.isFalse(spy.called);
                 assert.equal(myEl.getLink(), 'partners/list');

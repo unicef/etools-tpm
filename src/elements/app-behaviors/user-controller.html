@@ -33,7 +33,10 @@
             },
 
             getPartnerId: function() {
-                if (!_user) { throw 'User data is missing'; }
+                if (!_user) {
+//                    console.error('User data is missing');
+                    return;
+                }
                 return _user.partnerId;
             },
 

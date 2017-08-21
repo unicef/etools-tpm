@@ -35,6 +35,7 @@
 
             getLink: function() {
                 let partnerId = this.getPartnerId();
+                if (!partnerId) { return ''; }
                 return this.isTpmUser() ? `partners/${partnerId}/details` : 'partners/list';
             },
 

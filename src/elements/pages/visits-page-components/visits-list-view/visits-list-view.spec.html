@@ -28,11 +28,11 @@
         describe('method _showAddButton()', function () {
             it('returns result of actionAllowed() method', function () {
                 let spy = sinon.stub(myEl, 'actionAllowed');
-                spy.withArgs('new_visit', 'addVisit').returns('returned_value');
+                spy.withArgs('new_visit', 'create').returns('returned_value');
 
                 assert.equal(myEl._showAddButton(), 'returned_value');
                 assert.isTrue(spy.calledOnce);
-                assert.isTrue(spy.calledWithExactly('new_visit', 'addVisit'));
+                assert.isTrue(spy.calledWithExactly('new_visit', 'create'));
             });
         });
 

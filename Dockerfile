@@ -20,7 +20,7 @@ RUN mv docker.wct.conf.js wct.conf.js
 
 RUN npm install
 RUN bower --allow-root install
-RUN gulp prodBuild
+RUN gulp
 
 EXPOSE 8080
 CMD ["node", "express.js"]
