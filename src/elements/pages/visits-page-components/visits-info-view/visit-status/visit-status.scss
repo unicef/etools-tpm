@@ -164,30 +164,13 @@
         }
         &.pending iron-icon { display: none !important; }
 
-        &.rejected {
-            .status-icon .icon-wrapper {
-                background: transparent;
-                .status-nr { display: none; }
-                iron-icon[icon="check"] { display: none; }
-                iron-icon[icon="warning"] {
-                    display: inline-block;
-                    width: 25px;
-                    height: 25px;
-                    color: var(--module-error);
-                }
-            }
-            .status {
-                color: inherit;
-                font-weight: bold;
-            }
-        }
-
+        &.report_rejected,
+        &.rejected,
         &.cancelled {
             .status-icon .icon-wrapper {
                 background: transparent;
                 .status-nr { display: none; }
-                iron-icon[icon="check"] ,
-                iron-icon[icon="warning"] { display: none; }
+                iron-icon[icon="check"] { display: none; }
                 iron-icon[icon="cancel"] {
                     display: inline-block;
                     width: 25px;

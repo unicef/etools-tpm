@@ -21,6 +21,8 @@ Polymer({
             return 'rejected';
         } else if (status === 'cancelled') {
             return 'cancelled';
+        } else if (status === 'tpm_report_rejected') {
+            return 'report_rejected';
         } else if (currentStatus === status) {
             return 'active';
         } else if (this._getStatusIndex(currentStatus, statuses) > this._getStatusIndex(status, statuses)) {
@@ -50,6 +52,7 @@ Polymer({
     hideStatus: function(currentStatus, status) {
         return (status === 'tpm_accepted' && currentStatus === 'tpm_rejected') ||
             (status === 'tpm_rejected' && currentStatus !== 'tpm_rejected') ||
+            (status === 'tpm_report_rejected' && currentStatus !== 'tpm_report_rejected') ||
             (status === 'cancelled' && currentStatus !== 'cancelled') ||
             (status === 'tpm_rejected' && !currentStatus);
     },

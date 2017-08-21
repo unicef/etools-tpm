@@ -24,6 +24,7 @@ Polymer({
                         tpm_reported: 'TPM Reported',
                         unicef_approved: 'UNICEF Approved',
                         report_submitted: 'Report Submitted',
+                        tpm_report_rejected: 'TPM Report Rejected',
                         active: 'Active',
                         cancelled: 'Cancelled'
                     }

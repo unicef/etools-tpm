@@ -14,6 +14,8 @@
     }
 }
 
+
+
 paper-dialog {
     background-color: #ffffff;
     border-radius: 4px;
@@ -105,4 +107,16 @@ paper-button[disabled]:not(.btn-cancel) {
     max-height: calc(90vh - 147px);
     margin: 0;
     padding: 0;
+}
+
+:host([hide-confirm-btn]) {
+    #buttons {
+        border-top: none;
+    }
+
+    .btn-confirm { display: none; }
+
+    .dialog-title {
+        margin-bottom: 0 !important;
+    }
 }

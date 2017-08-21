@@ -8,12 +8,17 @@ Polymer({
         TPMBehaviors.PermissionController,
         TPMBehaviors.TextareaMaxRowsBehavior,
         TPMBehaviors.CommonMethodsBehavior,
+        TPMBehaviors.UserController
     ],
 
     properties: {
         visit: {
             type: Object,
             notify: true
+        },
+        comments: {
+            type: Array,
+            computed: 'reverseComments(visit.report_reject_comments)'
         }
     },
 
@@ -190,6 +195,30 @@ Polymer({
             this.dialogTitle = 'Reject Report';
             this.isDeleteDialog = false;
         }
+    },
+
+    openCommentsDialog: function() {
+        this.commentsDialogOpened = true;
+    },
+
+    getCommentDate: function(date) {
+        return moment(date).format('DD MMM YYYY');
+    },
+
+    showOldComments: function(comments) {
+        return comments && comments.length > 1;
+    },
+
+    _filterComments: function(comment) {
+        return comment.id !== this.visit.report_reject_comments[0].id;
+    },
+
+    showRejectionComments: function(comments, status) {
+        return comments && comments.length && this.isTpmUser() && status === 'tpm_report_rejected';
+    },
+
+    reverseComments: function(comments) {
+        return (comments || []).reverse();
     }
 
 });

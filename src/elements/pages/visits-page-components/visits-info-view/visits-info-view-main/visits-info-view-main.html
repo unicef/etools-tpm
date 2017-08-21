@@ -1,4 +1,4 @@
-<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea, iron-icons]-->
+<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea, iron-icons, paper-button]-->
 <!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data,
             permission-controller, textarea-max-rows-behavior, tab-inputs-styles, visit-activity-tab, file-attachments-tab,
             static-data-behavior, common-methods-behavior]-->
@@ -49,6 +49,40 @@
                     </div>
 
                     <div name="report">
+                        <template is="dom-if" if="[[showRejectionComments(comments, visit.status)]]">
+                            <div class="report-rejected">
+                                <div class="report-rejected-label">
+                                    <iron-icon icon="error"></iron-icon> Report was sent back
+                                </div>
+
+                                <paper-button on-tap="openCommentsDialog">View Comments</paper-button>
+
+                                <dialog-element opened="{{commentsDialogOpened}}"
+                                                dialog-title="Comments"
+                                                hide-confirm-btn>
+                                   <div class="messages-block first">
+                                       <div class="block-title">Last Comment</div>
+                                       <div class="comment-block">
+                                           <div class="comment-date">[[getCommentDate(comments.0.rejected_at)]]</div>
+                                           <div class="comment-message">[[comments.0.reject_reason]]</div>
+                                       </div>
+                                   </div>
+
+                                    <template is="dom-if" if="[[showOldComments(comments)]]">
+                                        <div class="messages-block">
+                                            <div class="block-title">Older Comments</div>
+                                            <template is="dom-repeat" items="[[comments]]" as="comment" filter="_filterComments">
+                                                <div class="comment-block">
+                                                    <div class="comment-date">[[getCommentDate(comment.rejected_at)]]</div>
+                                                    <div class="comment-message">[[comment.reject_reason]]</div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+
+                                </dialog-element>
+                            </div>
+                        </template>
                        <file-attachments-tab
                             id="report"
                             tab-title="[[getLabel('report', permissionBase)]]"
@@ -100,19 +134,22 @@
                         dialog-title="{{dialogTitle}}"
                         delete-dialog="{{isDeleteDialog}}"
                         confirm-btn-text="Continue">
-                    <div class="row-h group">
-                        <div class="input-container input-container-l">
-                            <paper-textarea label="Reject Reason"
-                                            max-rows="4"
-                                            required
-                                            error-message="This field is required."
-                                            id="rejectionReasonInput"
-                                            class="required"
-                                            on-focus="_resetFieldError"
-                                            placeholder="Enter reason of reject">
-                            </paper-textarea>
-                        </div>
+            <div class="row-h repeatable-item-container" without-line>
+                <div class="row-h group">
+                    <div class="input-container input-container-l">
+                        <paper-textarea label="Reject Reason"
+                                        max-rows="4"
+                                        required
+                                        error-message="This field is required."
+                                        id="rejectionReasonInput"
+                                        class="required"
+                                        on-focus="_resetFieldError"
+                                        placeholder="Enter reason of reject">
+                        </paper-textarea>
                     </div>
+                </div>
+            </div>
+
         </dialog-element>
 
     </template>
