@@ -226,6 +226,16 @@ Polymer({
 
     reverseComments: function(comments) {
         return (comments || []).reverse();
+    },
+
+    _showReportTabs: function (permissionBase, visit) {
+        if (!permissionBase || !visit) {
+            return false;
+        }
+
+        return this.actionAllowed(permissionBase, 'submit') ||
+            visit.status === 'report_submitted' ||
+            visit.status === 'final';
     }
 
 });

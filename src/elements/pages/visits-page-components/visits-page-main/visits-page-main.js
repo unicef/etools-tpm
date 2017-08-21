@@ -86,4 +86,5 @@ Polymer({
         if (!visitDetails) { return; }
         this._setOriginalData(_.cloneDeep(visitDetails));
     }
+
 });
