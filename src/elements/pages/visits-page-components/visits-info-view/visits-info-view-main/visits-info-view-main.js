@@ -228,7 +228,7 @@ Polymer({
         return (comments || []).reverse();
     },
 
-    _showReportTabs: function (permissionBase, visit) {
+    _showReportTabs: function(permissionBase, visit) {
         if (!permissionBase || !visit) {
             return false;
         }
