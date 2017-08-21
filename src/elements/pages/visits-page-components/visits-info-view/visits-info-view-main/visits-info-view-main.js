@@ -14,7 +14,13 @@ Polymer({
         visit: {
             type: Object,
             notify: true
-        }
+        },
+        errorObject: {
+            type: Object,
+            value: function() {
+                return {};
+            }
+        },
     },
 
     observers: ['_setPermissionBase(visit.id)'],
@@ -22,7 +28,6 @@ Polymer({
     listeners: {
         'action-activated': '_processAction',
         'dialog-confirmed': 'rejectVisit',
-        'visit-updated': 'visitUpdated'
     },
 
     ready: function() {
@@ -150,10 +155,4 @@ Polymer({
     _showRejectionReason: function(visit) {
         return visit.status === 'tpm_rejected';
     },
-
-    visitUpdated: function() {
-        let visitActivity = this.$.visitActivity;
-        if (visitActivity) { visitActivity.visitUpdated('success'); }
-    }
-
 });

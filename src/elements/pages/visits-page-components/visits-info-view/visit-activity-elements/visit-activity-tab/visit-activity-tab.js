@@ -27,13 +27,28 @@ Polymer({
                 return {};
             }
         },
+        cpOutputs: {
+            type: Array,
+            value: function() {
+                return [];
+            }
+        },
         itemModel: {
             type: Object,
             value: function() {
                 return {
-                    implementing_partner: null,
-                    partnership: null,
-                    cp_output: null,
+                    implementing_partner: {
+                        id: null,
+                        name: '',
+                    },
+                    partnership: {
+                        id: null,
+                        title: '',
+                    },
+                    cp_output: {
+                        id: null,
+                        result_name: '',
+                    },
                     date: '',
                     locations: [],
                 };
@@ -60,15 +75,15 @@ Polymer({
             value: [{
                 'size': 25,
                 'label': 'Implementing Partner',
-                'path': 'implementing_partner'
+                'path': 'implementing_partner.name'
             }, {
                 'size': 30,
                 'label': 'Partnership',
-                'path': 'partnership'
+                'path': 'partnership.title'
             }, {
                 'size': 30,
                 'label': 'CP Output',
-                'path': 'cp_output'
+                'path': 'cp_output.result_name'
             }, {
                 'size': 15,
                 'name': 'date',
@@ -81,6 +96,8 @@ Polymer({
             value: function() {
                 return [{
                     'size': 100,
+                    'name': 'array',
+                    'property': 'name',
                     'label': 'Locations',
                     'path': 'locations'
                 }, {
@@ -122,8 +139,8 @@ Polymer({
 
     observers: [
         '_setSomeRequestInProcess(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess)',
-        '_requestPartner(editedItem.implementing_partner)',
-        '_requestPartnership(editedItem.partnership)',
+        '_requestPartner(editedItem.implementing_partner.id)',
+        '_requestPartnership(editedItem.partnership.id)',
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject.tpm_activities)',
         'updateStyles(basePermissionPath, someRequestInProcess)',
@@ -141,57 +158,70 @@ Polymer({
         return dataItemsLength || 0;
     },
 
-    _isReadOnly: function(partnerId, partnershipId, someRequestInProcess) {
-        let partnerDefined = partnerId || partnerId === 0;
-        let partnershipDefined = partnershipId || partnershipId === 0;
+    _isReadOnly: function(partner, partnership, someRequestInProcess) {
+        let partnerDefined = partner && (partner.id || partner.id === 0) || partner === 'true';
+        let partnershipDefined = partnership && (partnership.id || partnership.id === 0) || partnership === 'true';
         return !partnerDefined || !partnershipDefined || someRequestInProcess;
     },
 
     _requestPartner: function(partnerId) {
-        if (this.partnerRequestInProcess) { return; }
+        if (this.partnerRequestInProcess || this.lastPartnerId === partnerId) { return; }
+        this.lastPartnerId = partnerId;
 
-        this.set('editedItem.partnership', null);
-        this.set('partner.interventions', []);
+        if (!this.editDialogOpened) {
+            this.set('partnership', null);
+            this.set('editedItem.partnership', null);
+            this.set('partner.interventions', []);
 
-        this.set('editedItem.locations', []);
-        this.set('locations', []);
+            this.set('editedItem.locations', []);
+            this.set('locations', []);
 
-        this.set('editedItem.cp_output', null);
-        this.set('cpOutputs', []);
+            this.set('editedItem.cp_output', null);
+            this.set('cpOutputs', []);
+        }
 
         if (!partnerId && partnerId !== 0) { return; }
 
         this.partnerRequestInProcess = true;
-        this.editedItem.implementing_partner = partnerId;
         this.partnerId = partnerId;
         return true;
     },
 
-    _partnerLoaded: function() {
+    _partnerLoaded: function(event, details) {
         this.partnerRequestInProcess = false;
+
+        if (this.editDialogOpened && !details.success) {
+            this.editDialogOpened = false;
+        }
     },
 
     _requestPartnership: function(partnershipId) {
-        if (this.partnershipRequestInProcess) { return; }
+        if (this.partnershipRequestInProcess || this.lastPartnershipId === partnershipId) { return; }
+        this.lastPartnershipId = partnershipId;
 
-        this.set('editedItem.locations', []);
-        this.set('locations', []);
+        if (!this.editDialogOpened) {
+            this.set('editedItem.locations', []);
+            this.set('locations', []);
 
-        this.set('editedItem.cp_output', null);
-        this.set('cpOutputs', []);
+            this.set('editedItem.cp_output', null);
+            this.set('cpOutputs', []);
+        }
 
         if (!partnershipId && partnershipId !== 0) { return; }
 
         this.partnershipRequestInProcess = true;
-        this.editedItem.partnership = partnershipId;
         this.partnershipId = partnershipId;
         return true;
     },
 
-    _partnershipLoaded: function() {
+    _partnershipLoaded: function(event, details) {
         this.partnershipRequestInProcess = false;
         this._updateLocations();
         this._updateCpOutputs();
+
+        if (this.editDialogOpened && !details.success) {
+            this.editDialogOpened = false;
+        }
     },
 
     _updateLocations: function() {
@@ -222,6 +252,8 @@ Polymer({
 
         if (cpIds.length) {
             this._requestCpOutputs(cpIds);
+        } else {
+            this.editDialogOpened = false;
         }
     },
 
@@ -234,27 +266,46 @@ Polymer({
     },
 
     _cpOutputsLoaded: function() {
+        this.editDialogOpened = false;
         this.cpRequestInProcess = false;
     },
 
+    _openDialog: function(index) {
+        if (!this.deleteDialog) {
+            this.editDialogOpened = true;
+            this.editedItem = _.cloneDeep(this.dataItems[index]);
+            this.originalEditedObj = _.cloneDeep(this.dataItems[index]);
+        } else {
+            let id = this.dataItems && this.dataItems[index] && this.dataItems[index].id;
+            this.editedItem = {id};
+        }
+
+        this.editedIndex = index;
+        this.dialogOpened = true;
+    },
+
     getActivitiesData: function() {
-        // //add new partnership check
-        // if (this.newItem && this.newItem.partnerOrganisation && this.newItem.intervention) {
-        //     let id = this.newItem.intervention.id;
-        //     return [{
-        //         partnership: id,
-        //         tpm_sectors: []
-        //     }];
-        // }
-        // //get partnerships data
-        // let partnerships = Polymer.dom(this.root).querySelectorAll('activity-partnership-element'),
-        //     data = [];
-        //
-        // _.each(partnerships, (partnership) => {
-        //     let partnershipData = partnership.getPartnershipData();
-        //     if (partnershipData) { data.push(partnershipData); }
-        // });
-        //
-        // return data.length ? data : null;
+        let implementingPartner = this.get('editedItem.implementing_partner.id');
+        let partnership = this.get('editedItem.partnership.id');
+        let cpOutput = this.get('editedItem.cp_output.id');
+        let date = this.get('editedItem.date') || undefined;
+        let id = this.get('editedItem.id');
+        let _delete = this.get('editedItem._delete');
+        let locations = this.get('editedItem.locations') || [];
+
+        locations = locations.map((location) => {
+            return location && location.id;
+        });
+        locations = locations.length ? locations : undefined;
+
+        return [{
+            implementing_partner: implementingPartner,
+            partnership,
+            cp_output: cpOutput,
+            date,
+            locations,
+            id,
+            _delete,
+        }];
     },
 });

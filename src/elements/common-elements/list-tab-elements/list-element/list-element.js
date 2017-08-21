@@ -137,6 +137,8 @@ Polymer({
             value = this._refactorCurrency(value);
         } else if (item.name === 'percents') {
             value = this._refactorPercents(value);
+        } else if (item.name === 'array') {
+            value = this._refactorArray(value, item.property);
         }
 
         if (bool) {
@@ -170,6 +172,21 @@ Polymer({
     _refactorPercents: function(value) {
         let regexp = /[\d]+.[\d]{2}/;
         return regexp.test(value) ? `${value}%` : null;
+    },
+
+    _refactorArray: function(array, property) {
+        let isValidArgs = (array instanceof Array) && property && (typeof property === 'string');
+        if (!isValidArgs) { return null; }
+
+        let stringValues = [];
+        array.forEach((object) => {
+            let value = object[property];
+            if (value && (typeof value === 'string')) {
+                stringValues.push(value);
+            }
+        });
+
+        return stringValues.length ? stringValues.join(' ') : null;
     },
 
     _getAdditionalValue: function(item) {
