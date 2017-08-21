@@ -47,10 +47,6 @@ Polymer({
         if (action) { this.fire(`action-activated`, {type: action}); }
     },
 
-    _setBtnClass: function(length) {
-        return this._showOtherActions(length) ? 'with-actions' : '';
-    },
-
     _showOtherActions: function(length) {
         return length > 1;
     },
