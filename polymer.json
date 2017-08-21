@@ -5,7 +5,7 @@
     "src/elements/pages/not-found-page-view/not-found-page-view.html",
     "src/elements/pages/partners-page-components/partners-page-main/partners-page-main.html",
     "src/elements/pages/visits-page-components/visits-page-main/visits-page-main.html",
-    "src/elements/pages/partners-page-components/partners-list-view/partners-list-view-main.html"
+    "src/elements/pages/partners-page-components/partners-list-view/partners-list-view.html"
   ],
   "sourceGlobs": [
     "src/assets/**/*",

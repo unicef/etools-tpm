@@ -33,7 +33,7 @@ function buildElements(done) {
             })
         ))
         // combine html/js/scss
-        .pipe(builder([`${process.cwd()}/src/bower_components/`]))
+        .pipe(builder([{path: `${process.cwd()}/bower_components/`, new_base: `${process.cwd()}/src/bower_components/`}]))
         // compile html/js/scss
         .pipe(gulpIf(
             function(file) {
@@ -45,7 +45,7 @@ function buildElements(done) {
                 }),
                 compileHtmlTags('script', function (tag, data) {
                     return data.pipe(babel({
-                        presets: ['es2015']
+                        presets: ['es2015', 'es2017']
                     }).on('error', function(error) {console.log('\x1b[31m%s\x1b[0m', error.message); done()}));
                 }),
                 through2(function(file, enc, callback){

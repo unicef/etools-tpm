@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var ROOT = __dirname + '/build/';
 
+app.use('/tpm/', express.static(ROOT));
 app.use('/', express.static(ROOT));
 
 app.get('[^.]+', function(req, res) {
