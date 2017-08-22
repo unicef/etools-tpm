@@ -8,3 +8,4 @@ dist/
 *.sublime-workspace
 
 
+/bower_components/
