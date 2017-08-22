@@ -36,14 +36,6 @@ Polymer({
 
     ready: function() {
         this.visitFileTypes = this.getData('visit_attachments_types');
-        this.reportFileTypes = this.getData('report_attachments_types');
-
-        //add report attachments file types if not exists
-        if (!this.reportFileTypes) {
-            let reportAttachmentsTypes = this.getChoices(`engagement_${this.visit && this.visit.id}.report.file_type`);
-            this._setData('report_attachments_types', reportAttachmentsTypes);
-            this.reportFileTypes = reportAttachmentsTypes;
-        }
     },
 
     _setPermissionBase: function(id) {
@@ -53,6 +45,7 @@ Polymer({
         } else {
             this.permissionBase = `visit_${id}`;
         }
+        this.reportFileTypes = this.getChoices(`${this.permissionBase}.report.file_type`) || [];
     },
 
     _attachmentsReadonly: function(base, type) {
@@ -228,14 +221,8 @@ Polymer({
         return (comments || []).reverse();
     },
 
-    _showReportTabs: function(permissionBase, visit) {
-        if (!permissionBase || !visit) {
-            return false;
-        }
-
-        return this.actionAllowed(permissionBase, 'submit') ||
-            visit.status === 'report_submitted' ||
-            visit.status === 'final';
+    _showReportTabs: function(permissionBase) {
+        return this.collectionExists(`${permissionBase}.report`, 'GET');
     }
 
 });

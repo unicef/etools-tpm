@@ -21,7 +21,11 @@
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                 <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
-                <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
+
+                <template is="dom-if" if="[[_showReportTabs(permissionBase)]]">
+                    <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
+                </template>
+
                 <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
             </paper-tabs>
         </div>
@@ -53,58 +57,64 @@
                        <visit-activity-tab id="visitActivity" activities="[[visit.tpm_activities]]" permission-base="[[permissionBase]]"></visit-activity-tab>
                     </div>
 
-                    <div name="report">
-                        <template is="dom-if" if="[[showRejectionComments(comments, visit.status)]]">
-                            <div class="report-rejected">
-                                <div class="report-rejected-label">
-                                    <iron-icon icon="error"></iron-icon> Report was sent back
-                                </div>
+                    <template is="dom-if" if="[[_showReportTabs(permissionBase)]]">
+                        <div name="report">
+                            <template is="dom-if" if="[[showRejectionComments(comments, visit.status)]]">
+                                <div class="report-rejected">
+                                    <div class="report-rejected-label">
+                                        <iron-icon icon="error"></iron-icon>
+                                        Report was sent back
+                                    </div>
 
-                                <paper-button on-tap="openCommentsDialog">View Comments</paper-button>
+                                    <paper-button on-tap="openCommentsDialog">View Comments</paper-button>
 
-                                <dialog-element opened="{{commentsDialogOpened}}"
-                                                dialog-title="Comments"
-                                                hide-confirm-btn>
-                                   <div class="messages-block first">
-                                       <div class="block-title">Last Comment</div>
-                                       <div class="comment-block">
-                                           <div class="comment-date">[[getCommentDate(comments.0.rejected_at)]]</div>
-                                           <div class="comment-message">[[comments.0.reject_reason]]</div>
-                                       </div>
-                                   </div>
-
-                                    <template is="dom-if" if="[[showOldComments(comments)]]">
-                                        <div class="messages-block">
-                                            <div class="block-title">Older Comments</div>
-                                            <template is="dom-repeat" items="[[comments]]" as="comment" filter="_filterComments">
-                                                <div class="comment-block">
-                                                    <div class="comment-date">[[getCommentDate(comment.rejected_at)]]</div>
-                                                    <div class="comment-message">[[comment.reject_reason]]</div>
-                                                </div>
-                                            </template>
+                                    <dialog-element opened="{{commentsDialogOpened}}"
+                                                    dialog-title="Comments"
+                                                    hide-confirm-btn>
+                                        <div class="messages-block first">
+                                            <div class="block-title">Last Comment</div>
+                                            <div class="comment-block">
+                                                <div class="comment-date">[[getCommentDate(comments.0.rejected_at)]]</div>
+                                                <div class="comment-message">[[comments.0.reject_reason]]</div>
+                                            </div>
                                         </div>
-                                    </template>
 
-                                </dialog-element>
-                            </div>
-                        </template>
-                       <file-attachments-tab
-                            id="report"
-                            tab-title="[[getLabel('report', permissionBase)]]"
-                            base-permission-path="{{permissionBase}}"
-                            main-property="report"
-                            error-object="{{errorObject}}"
-                            data-items="[[visit.report]]"
-                            file-types="[[reportFileTypes]]"
-                            file-types-label="[[getLabel('report.file_type', permissionBase)]]"
-                            readonly="[[_attachmentsReadonly(permissionBase, 'report')]]"
-                            save-with-button
-                            file-type-required
-                            allow-download
-                            allow-edit
-                            multiple>
-                    </file-attachments-tab>
-                    </div>
+                                        <template is="dom-if" if="[[showOldComments(comments)]]">
+                                            <div class="messages-block">
+                                                <div class="block-title">Older Comments</div>
+                                                <template is="dom-repeat" items="[[comments]]" as="comment"
+                                                          filter="_filterComments">
+                                                    <div class="comment-block">
+                                                        <div class="comment-date">[[getCommentDate(comment.rejected_at)]]
+                                                        </div>
+                                                        <div class="comment-message">[[comment.reject_reason]]</div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                    </dialog-element>
+                                </div>
+                            </template>
+                            <file-attachments-tab
+                                    id="report"
+                                    tab-title="[[getLabel('report', permissionBase)]]"
+                                    base-permission-path="{{permissionBase}}"
+                                    main-property="report"
+                                    error-object="{{errorObject}}"
+                                    data-items="[[visit.report]]"
+                                    file-types="[[reportFileTypes]]"
+                                    file-types-label="[[getLabel('report.file_type', permissionBase)]]"
+                                    readonly="[[_attachmentsReadonly(permissionBase, 'report')]]"
+                                    save-with-button
+                                    file-type-required
+                                    allow-download
+                                    allow-edit
+                                    multiple>
+                            </file-attachments-tab>
+                        </div>
+                    </template>
+
 
                     <div name="attachments">
                         <file-attachments-tab
