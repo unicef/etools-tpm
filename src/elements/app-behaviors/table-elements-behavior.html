@@ -88,7 +88,6 @@
         },
 
         validate: function() {
-            if (this.editedItem && this.editedItem._delete) { return true; }
             let elements = Polymer.dom(this.root).querySelectorAll('.validate-input'),
                     valid = true;
 
@@ -177,7 +176,7 @@
             //save after popup click
             if (this.dialogOpened && !this.saveWithButton) {
                 this.requestInProcess = true;
-                this.fire('action-activated', {type: 'save', quietAdding: true});
+                this.fire('save-progress', {quietAdding: true});
                 return;
             }
 

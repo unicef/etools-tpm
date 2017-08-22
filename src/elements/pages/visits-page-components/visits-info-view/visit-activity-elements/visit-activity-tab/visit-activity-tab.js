@@ -3,309 +3,142 @@
 Polymer({
     is: 'visit-activity-tab',
 
-    behaviors: [
-        TPMBehaviors.DateBehavior,
-        TPMBehaviors.StaticDataController,
-        TPMBehaviors.TableElementsBehavior,
-        TPMBehaviors.CommonMethodsBehavior
-    ],
+    behaviors: [TPMBehaviors.StaticDataController],
 
     properties: {
-        mainProperty: {
-            type: String,
-            value: 'tpm_activities'
-        },
-        partner: {
-            type: Object,
-            value: function() {
-                return {};
-            }
-        },
-        partnership: {
-            type: Object,
-            value: function() {
-                return {};
-            }
-        },
-        cpOutputs: {
-            type: Array,
-            value: function() {
-                return [];
-            }
-        },
-        itemModel: {
-            type: Object,
-            value: function() {
-                return {
-                    implementing_partner: {
-                        id: null,
-                        name: '',
-                    },
-                    partnership: {
-                        id: null,
-                        title: '',
-                    },
-                    cp_output: {
-                        id: null,
-                        result_name: '',
-                    },
-                    date: '',
-                    locations: [],
-                };
-            }
-        },
-        partnerRequestInProcess: {
-            type: Boolean,
-            value: false,
-        },
-        partnershipRequestInProcess: {
-            type: Boolean,
-            value: false,
-        },
-        cpRequestInProcess: {
-            type: Boolean,
-            value: false,
-        },
-        someRequestInProcess: {
-            type: Boolean,
-            value: false,
-        },
         columns: {
             type: Array,
             value: [{
-                'size': 25,
-                'label': 'Implementing Partner',
-                'path': 'implementing_partner.name'
+                'size': 60,
+                'label': 'Implementing Partner'
             }, {
-                'size': 30,
-                'label': 'Partnership',
-                'path': 'partnership.title'
-            }, {
-                'size': 30,
-                'label': 'CP Output',
-                'path': 'cp_output.result_name'
-            }, {
-                'size': 15,
-                'name': 'date',
-                'label': 'Date',
-                'path': 'date'
+                'size': 40,
+                'label': 'Partnership'
             }]
         },
-        details: {
-            type: Array,
-            value: function() {
-                return [{
-                    'size': 100,
-                    'name': 'array',
-                    'property': 'name',
-                    'label': 'Locations',
-                    'path': 'locations'
-                }, {
-                    'size': 100,
-                    'label': 'Link to eTools Programme Documents',
-                    'path': 'tpm_activities.partnership.attachments'
-                }];
-            }
-        },
-        addDialogTexts: {
+        partnerOrg: {
             type: Object,
             value: function() {
-                return {
-                    title: 'Add Visit Activity'
-                };
+                return {};
             }
         },
-        editDialogTexts: {
+        emptyObject: {
             type: Object,
             value: function() {
-                return {
-                    title: 'Edit Visit Activity'
-                };
+                return {};
             }
-        },
-        deleteTitle: {
-            type: String,
-            value: 'Are you sure that you want to delete this visit activity?'
-        },
+        }
     },
 
     listeners: {
-        'dialog-confirmed': '_addItemFromDialog',
-        'delete-confirmed': 'removeItem',
+        'add-sector': 'addSector',
+        'dialog-confirmed': 'addItem',
         'partner-loaded': '_partnerLoaded',
-        'partnership-loaded': '_partnershipLoaded',
-        'cp-outputs-loaded': '_cpOutputsLoaded',
+        'add-output': 'addOutput'
     },
 
-    observers: [
-        '_setSomeRequestInProcess(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess)',
-        '_requestPartner(editedItem.implementing_partner.id)',
-        '_requestPartnership(editedItem.partnership.id)',
-        'resetDialog(dialogOpened)',
-        '_errorHandler(errorObject.tpm_activities)',
-        'updateStyles(basePermissionPath, someRequestInProcess)',
-    ],
+    observers: ['resetNewItem(sectorDialogOpened, activityDialogOpened, outputDialogOpened)'],
 
     ready: function() {
-        this.partners = this.getData('partnerOrganisations') || [];
+        this.partnerOrganisations = this.getData('partnerOrganisations');
+        this.outputsList = this.getData('ppSsfaOutputs');
     },
 
-    _setSomeRequestInProcess: function(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess) {
-        this.someRequestInProcess = requestInProcess || partnerRequestInProcess || partnershipRequestInProcess || cpRequestInProcess;
+    addSector: function(event, details) {
+        if (!details || !details.id || !details.item) { throw 'Details object is not provided or incorrect!'; }
+
+        let activity = this.activities.filter((activity) => { return activity.id === details.id; })[0];
+        if (!activity) { throw `Can not find activity with id ${details.id}`; }
+
+        let options = activity.partnership.sector_locations.map((sectorLocation) => { return sectorLocation.sector; });
+        this.set('sectorOptions', options);
+        this.set('newItem', details.item);
+
+        this.sectorDialogOpened = true;
     },
 
-    _getActivitiesLength: function(dataItemsLength) {
-        return dataItemsLength || 0;
-    },
+    addOutput: function(event, details) {
+        if (!details || !details.id || !details.item) { throw 'Details object is not provided or incorrect!'; }
 
-    _isReadOnly: function(partner, partnership, someRequestInProcess) {
-        let partnerDefined = partner && (partner.id || partner.id === 0) || partner === 'true';
-        let partnershipDefined = partnership && (partnership.id || partnership.id === 0) || partnership === 'true';
-        return !partnerDefined || !partnershipDefined || someRequestInProcess;
-    },
+        let activity = this.activities.filter((activity) => { return activity.id === details.id; })[0];
+        if (!activity) { throw `Can not find activity with id ${details.id}`; }
 
-    _requestPartner: function(partnerId) {
-        if (this.partnerRequestInProcess || this.lastPartnerId === partnerId) { return; }
-        this.lastPartnerId = partnerId;
-
-        if (!this.editDialogOpened) {
-            this.set('partnership', null);
-            this.set('editedItem.partnership', null);
-            this.set('partner.interventions', []);
-
-            this.set('editedItem.locations', []);
-            this.set('locations', []);
-
-            this.set('editedItem.cp_output', null);
-            this.set('cpOutputs', []);
-        }
-
-        if (!partnerId && partnerId !== 0) { return; }
-
-        this.partnerRequestInProcess = true;
-        this.partnerId = partnerId;
-        return true;
-    },
-
-    _partnerLoaded: function(event, details) {
-        this.partnerRequestInProcess = false;
-
-        if (this.editDialogOpened && !details.success) {
-            this.editDialogOpened = false;
-        }
-    },
-
-    _requestPartnership: function(partnershipId) {
-        if (this.partnershipRequestInProcess || this.lastPartnershipId === partnershipId) { return; }
-        this.lastPartnershipId = partnershipId;
-
-        if (!this.editDialogOpened) {
-            this.set('editedItem.locations', []);
-            this.set('locations', []);
-
-            this.set('editedItem.cp_output', null);
-            this.set('cpOutputs', []);
-        }
-
-        if (!partnershipId && partnershipId !== 0) { return; }
-
-        this.partnershipRequestInProcess = true;
-        this.partnershipId = partnershipId;
-        return true;
-    },
-
-    _partnershipLoaded: function(event, details) {
-        this.partnershipRequestInProcess = false;
-        this._updateLocations();
-        this._updateCpOutputs();
-
-        if (this.editDialogOpened && !details.success) {
-            this.editDialogOpened = false;
-        }
-    },
-
-    _updateLocations: function() {
-        let sectors = this.get('partnership.sector_locations');
-        if (!(sectors instanceof Array)) { return; }
-
-        let locations = [];
-        sectors.forEach((sector) => {
-            if (sector && (sector.locations instanceof Array)) {
-                locations = locations.concat(sector.locations);
-            }
+        let resultLinks = {};
+        _.each(activity.partnership.resultLinks, (result) => {
+            resultLinks[result.cp_output] = result.id;
         });
-        locations = _.sortBy(locations, ['name']);
-
-        this.set('locations', locations);
-    },
-
-    _updateCpOutputs: function() {
-        let resultLinks = this.get('partnership.result_links');
-        if (!(resultLinks instanceof Array)) { return; }
-
-        let cpIds = [];
-        resultLinks.forEach((link) => {
-            if (link && (link.cp_output || link.cp_output === 0)) {
-                cpIds.push(link.cp_output);
-            }
+        let options = this.outputsList.filter((output) => {
+            let exists = resultLinks[output.id];
+            if (exists) { output.resultId = exists; }
+            return exists;
         });
+        this.set('outputOptions', options);
+        this.set('newItem', details.item);
 
-        if (cpIds.length) {
-            this._requestCpOutputs(cpIds);
-        } else {
-            this.editDialogOpened = false;
-        }
+        this.outputDialogOpened = true;
     },
 
-    _requestCpOutputs: function(cpIds) {
-        if (this.cpRequestInProcess) { return; }
-
-        this.cpRequestInProcess = true;
-        this.cpIds = cpIds;
-        return true;
+    addActivity: function() {
+        this.set('newItem', {});
+        this.activityDialogOpened = true;
     },
 
-    _cpOutputsLoaded: function() {
-        this.editDialogOpened = false;
-        this.cpRequestInProcess = false;
-    },
-
-    _openDialog: function(index) {
-        if (!this.deleteDialog) {
-            this.editDialogOpened = true;
-            this.editedItem = _.cloneDeep(this.dataItems[index]);
-            this.originalEditedObj = _.cloneDeep(this.dataItems[index]);
-        } else {
-            let id = this.dataItems && this.dataItems[index] && this.dataItems[index].id;
-            this.editedItem = {id};
-        }
-
-        this.editedIndex = index;
-        this.dialogOpened = true;
+    addItem: function() {
+        this.requestInProcess = true;
+        this.fire('action-activated', {type: 'save', quietUpdate: true});
     },
 
     getActivitiesData: function() {
-        let implementingPartner = this.get('editedItem.implementing_partner.id');
-        let partnership = this.get('editedItem.partnership.id');
-        let cpOutput = this.get('editedItem.cp_output.id');
-        let date = this.get('editedItem.date') || undefined;
-        let id = this.get('editedItem.id');
-        let _delete = this.get('editedItem._delete');
-        let locations = this.get('editedItem.locations') || [];
+        //add new partnership check
+        if (this.newItem && this.newItem.partnerOrganisation && this.newItem.intervention) {
+            let id = this.newItem.intervention.id;
+            return [{
+                partnership: id,
+                tpm_sectors: []
+            }];
+        }
+        //get partnerships data
+        let partnerships = Polymer.dom(this.root).querySelectorAll('activity-partnership-element'),
+            data = [];
 
-        locations = locations.map((location) => {
-            return location && location.id;
+        _.each(partnerships, (partnership) => {
+            let partnershipData = partnership.getPartnershipData();
+            if (partnershipData) { data.push(partnershipData); }
         });
-        locations = locations.length ? locations : undefined;
 
-        return [{
-            implementing_partner: implementingPartner,
-            partnership,
-            cp_output: cpOutput,
-            date,
-            locations,
-            id,
-            _delete,
-        }];
+        return data.length ? data : null;
     },
+
+    resetNewItem: function() {
+        _.each(this.newItem, (value, key) => {
+            delete this.newItem[key];
+        });
+    },
+
+    _requestPartner: function(event, id) {
+        if (this.pOrgRequestInProcess) { return; }
+
+        this.set('newItem.intervention', null);
+
+        let partnerId = (event && event.detail && event.detail.selectedValues && event.detail.selectedValues.id) || id;
+
+        if (!partnerId) { return; }
+
+        this.pOrgRequestInProcess = true;
+        this.partnerOrgId = partnerId;
+        return true;
+    },
+
+    _partnerLoaded: function() {
+        this.pOrgRequestInProcess = false;
+    },
+
+    visitUpdated: function(success) {
+        this.requestInProcess = false;
+        if (success) {
+            this.activityDialogOpened = false;
+            this.sectorDialogOpened = false;
+            this.outputDialogOpened = false;
+        }
+    }
 });
