@@ -96,7 +96,7 @@
                 _partnersLoaded: function(data, detail) {
                     let partners = detail && detail.results,
                         partnerId = partners && partners[0] && partners[0].id,
-                            tpmUser = this.isTpmUser();
+                        tpmUser = this.isTpmUser();
 
                     if (tpmUser && !partnerId) {
                         console.error('Can not get TPM Partner id!');

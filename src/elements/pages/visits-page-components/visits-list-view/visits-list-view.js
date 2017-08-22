@@ -82,8 +82,8 @@
         },
 
         openAddVisitPopup: function() {
-            let partners = this.getData('tpmPartners');
-            this.set('partnerOrganisations', partners);
+            let partners = this.getData('tpmPartners') || [];
+            this.set('partnerOrganisations', partners.filter((partner) => partner.status === 'active'));
             this.dialogOpened = true;
         },
 
