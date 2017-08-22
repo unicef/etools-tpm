@@ -111,7 +111,7 @@ Polymer({
                     data: data,
                     message: message,
                     action: details.type,
-                    quietUpdate: details.quietUpdate
+                    quietAdding: details.quietAdding
                 };
             });
     },

@@ -1,12 +1,16 @@
-:host {
-    position: relative;
-    display: block;
-
-}
-
 etools-content-panel {
     --ecp-content: #{'{
-            padding: 10px 0 0;
-            background-color: var(--gray-02);
-        }'};
+         padding: 0;
+    }'};
+}
+
+.loading {
+    position: absolute;
+    top: 28px;
+    left: auto;
+    background-color: #fff;
+}
+
+.loading:not([active]) {
+    display: none !important;
 }
