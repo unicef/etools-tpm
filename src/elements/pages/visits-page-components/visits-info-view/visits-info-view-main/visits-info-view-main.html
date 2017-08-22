@@ -54,7 +54,12 @@
                                           original-data="[[originalData]]"
                                           permission-base="[[permissionBase]]"></visit-details-tab>
 
-                       <visit-activity-tab id="visitActivity" activities="[[visit.tpm_activities]]" permission-base="[[permissionBase]]"></visit-activity-tab>
+                        <visit-activity-tab
+                                id="visitActivity"
+                                error-object="{{errorObject}}"
+                                data-items="[[visit.tpm_activities]]"
+                                base-permission-path="[[permissionBase]]">
+                        </visit-activity-tab>
                     </div>
 
                     <template is="dom-if" if="[[_showReportTabs(permissionBase)]]">

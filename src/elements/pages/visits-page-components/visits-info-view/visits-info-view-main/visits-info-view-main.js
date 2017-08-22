@@ -19,7 +19,13 @@ Polymer({
         comments: {
             type: Array,
             computed: 'reverseComments(visit.report_reject_comments)'
-        }
+        },
+        errorObject: {
+            type: Object,
+            value: function() {
+                return {};
+            }
+        },
     },
 
     observers: [
@@ -29,9 +35,7 @@ Polymer({
 
     listeners: {
         'action-activated': '_processAction',
-        'dialog-confirmed': 'rejectAction',
         'delete-confirmed': 'cancelVisit',
-        'visit-updated': 'visitUpdated'
     },
 
     ready: function() {
@@ -105,7 +109,7 @@ Polymer({
             data: data,
             message: message,
             action: details.type,
-            quietUpdate: details.quietUpdate
+            quietAdding: details.quietAdding
         };
     },
     /* jshint ignore:end */
@@ -178,11 +182,6 @@ Polymer({
         return visit.status === 'tpm_rejected';
     },
 
-    visitUpdated: function() {
-        let visitActivity = this.$.visitActivity;
-        if (visitActivity) { visitActivity.visitUpdated('success'); }
-    },
-
     manageCancellationDialog: function(type) {
         if (type === 'reject') {
             this.dialogTitle = 'Reject Visit';
@@ -224,5 +223,4 @@ Polymer({
     _showReportTabs: function(permissionBase) {
         return this.collectionExists(`${permissionBase}.report`, 'GET');
     }
-
 });

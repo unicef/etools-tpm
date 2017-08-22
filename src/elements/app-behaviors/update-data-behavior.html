@@ -50,10 +50,10 @@
                 console.error(`Can not update ${this.postfix}. Data is missing`);
             }
             this.fire(`${this.postfix}-updated`, {success: true});
-            if (!this.quietUpdate) {
+            if (!this.quietAdding) {
                 this.fire('toast', {text: `${this.postfix[0].toUpperCase()}${this.postfix.slice(1)} has been updated!`});
             } else {
-                this.quietUpdate = false;
+                this.quietAdding = false;
             }
         },
 
@@ -97,12 +97,12 @@
                 this.postRequest = _.clone(details);
                 this.postRequest.data = {};
             }
-            this.quietUpdate = details.quietUpdate;
+            this.quietAdding = details.quietAdding;
             this._startPatchRequest(url, details.data);
         },
 
         _startPatchRequest: function(url, data) {
-            if (!this.quietUpdate) {
+            if (!this.quietAdding) {
                 this.fire('global-loading', {message: `Saving ${this.postfix}...`, active: true, type: `save-${this.postfix}`});
             }
             this.method = 'PATCH';
