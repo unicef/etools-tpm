@@ -30,10 +30,6 @@ Polymer({
         }
     },
 
-    observers: [
-        'setSelectedSections()'
-    ],
-
     ready: function() {
         this.sectionsList = this.getData('sections');
         this.officesList = this.getData('offices');
@@ -82,9 +78,7 @@ Polymer({
 
     setVisitDates: function(start, end) {
         if (!start) { return '';}
-        start = this.prettyDate(start);
-        end = this.prettyDate(end);
-        return `${start} - ${end}`;
+        return [this.prettyDate(start), this.prettyDate(end)].join(' - ');
     },
 
     setSelectedTpms(selected = []) {
