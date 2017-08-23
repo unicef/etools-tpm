@@ -21,8 +21,17 @@
     describe('<partners-list-view>', function () {
         let myEl;
 
+        before(function() {
+            server = sinon.fakeServer.create();
+            server.respondWith('test' );
+        });
+
         beforeEach(function () {
             myEl = fixture('partners-list-view-fixture');
+        });
+
+        after(function() {
+            server.restore();
         });
 
         describe('listeners', function () {
