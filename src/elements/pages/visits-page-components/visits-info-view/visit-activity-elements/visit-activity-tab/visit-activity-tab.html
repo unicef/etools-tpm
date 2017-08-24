@@ -1,7 +1,7 @@
 <!--import [polymer, etools-content-panel, lodash, paper-icon-button, paper-input, iron-icons,
             etools-searchable-multiselection-menu, etools-datepicker, lodash]-->
 <!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, list-element, activity-partnership-element,
-            dialog-element, date-behavior, static-data-behavior, common-methods-behavior, table-elements-behavior,
+            dialog-element, file-upload, date-behavior, static-data-behavior, common-methods-behavior, table-elements-behavior,
             get-partner-organisation-data, get-partnership-data, get-cp-outputs-data]-->
 
 <dom-module id="visit-activity-tab">
@@ -216,8 +216,16 @@
                     </div>
 
                     <div class="row-h group">
-                        <div class="input-container input-container-l">
-                            <!-- TODO: File Upload -->
+                        <div class="input-container input-container-ms">
+                            <file-upload
+                                    id="fileUpload"
+                                    label="[[getLabel('tpm_activities.pd_files', basePermissionPath)]]"
+                                    upload-label="[[getLabel('tpm_activities.pd_files.file', basePermissionPath)]]"
+                                    disabled="[[someRequestInProcess]]"
+                                    readonly="[[isReadOnly('tpm_activities.pd_files', basePermissionPath, someRequestInProcess)]]"
+                                    errors="{{errors.pd_files}}"
+                                    files="[[editedItem.pd_files]]">
+                            </file-upload>
                         </div>
                     </div>
                 </div>

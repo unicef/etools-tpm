@@ -140,6 +140,8 @@ Polymer({
             value = this._refactorPercents(value);
         } else if (item.name === 'array') {
             value = this._refactorArray(value, item.property);
+        } else if (item.name === 'files') {
+            value = this._refactorFilesLinks(value, item.property);
         }
 
         if (bool) {
@@ -180,14 +182,58 @@ Polymer({
         if (!isValidArgs) { return null; }
 
         let stringValues = [];
+        let value;
+
         array.forEach((object) => {
-            let value = object[property];
+            value = object[property];
             if (value && (typeof value === 'string')) {
                 stringValues.push(value);
             }
         });
 
         return stringValues.length ? stringValues.join(' ') : null;
+    },
+
+    _refactorFilesLinks: function(files, property) {
+        let isValidArgs = (files instanceof Array) && property && (typeof property === 'string');
+        if (!isValidArgs) { return '--'; }
+
+        let filesInfo = [];
+        let filesHtml = [];
+        let value;
+        let name;
+
+        files.forEach((object) => {
+            value = object[property];
+            if (value && (typeof value === 'string')) {
+                name = value.split('/').pop();
+                filesInfo.push({
+                    url: value,
+                    name: name,
+                });
+            }
+        });
+
+        filesInfo.forEach((file) => {
+            filesHtml.push(`
+            <div class="file-link">
+                <iron-icon icon="icons:attachment"
+                           width="25"
+                           height="25"
+                           style="color: rgba(0, 0, 0, 0.5);">
+                </iron-icon>
+                <a class="truncate"
+                   target="_blank"
+                   download="${file.name}"
+                   href="${file.url}"
+                   style="color: #40c4ff; text-decoration: none; vertical-align: bottom;">
+                    ${file.name}
+                </a>
+            </div>
+            `);
+        });
+
+        return filesHtml.length ? filesHtml.join('\n') : '--';
     },
 
     _getAdditionalValue: function(item) {

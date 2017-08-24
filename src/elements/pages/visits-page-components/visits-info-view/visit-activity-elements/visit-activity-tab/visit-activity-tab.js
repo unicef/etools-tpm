@@ -51,6 +51,7 @@ Polymer({
                     },
                     date: '',
                     locations: [],
+                    pd_files: []
                 };
             }
         },
@@ -83,7 +84,7 @@ Polymer({
             }, {
                 'size': 30,
                 'label': 'CP Output',
-                'path': 'cp_output.result_name'
+                'path': 'cp_output.name'
             }, {
                 'size': 15,
                 'name': 'date',
@@ -99,11 +100,14 @@ Polymer({
                     'name': 'array',
                     'property': 'name',
                     'label': 'Locations',
-                    'path': 'locations'
+                    'path': 'locations',
                 }, {
                     'size': 100,
+                    'name': 'files',
+                    'property': 'file',
                     'label': 'Link to eTools Programme Documents',
-                    'path': 'tpm_activities.partnership.attachments'
+                    'path': 'pd_files',
+                    'files': 'true',
                 }];
             }
         },
@@ -143,11 +147,16 @@ Polymer({
         '_requestPartnership(editedItem.partnership.id)',
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject.tpm_activities)',
-        'updateStyles(basePermissionPath, someRequestInProcess)',
+        'updateStyles(basePermissionPath, someRequestInProcess, editedItem.*)',
+        'resetAttachments(dialogOpened)',
     ],
 
     ready: function() {
         this.partners = this.getData('partnerOrganisations') || [];
+    },
+
+    resetAttachments: function() {
+        this.$.fileUpload.reset();
     },
 
     _setSomeRequestInProcess: function(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess) {
@@ -284,28 +293,78 @@ Polymer({
         this.dialogOpened = true;
     },
 
-    getActivitiesData: function() {
-        let implementingPartner = this.get('editedItem.implementing_partner.id');
-        let partnership = this.get('editedItem.partnership.id');
-        let cpOutput = this.get('editedItem.cp_output.id');
-        let date = this.get('editedItem.date') || undefined;
-        let id = this.get('editedItem.id');
-        let _delete = this.get('editedItem._delete');
-        let locations = this.get('editedItem.locations') || [];
+    _errorHandler: function(errorData) {
+        this.requestInProcess = false;
+        if (!errorData) { return; }
+        let refactoredData = this.dialogOpened ? this.refactorErrorObject(errorData)[0] : this.refactorErrorObject(errorData);
+        this.set('errors', refactoredData);
+    },
+
+    _getData: function() {
+        let paths = ['implementing_partner.id', 'partnership.id', 'cp_output.id', 'date', '_delete', 'locations'];
+        let originalData = _.pick(this.originalEditedObj, paths);
+        let currentData = _.pick(this.editedItem, paths);
+        let changedData = {};
+
+        paths.forEach((path) => {
+            let originalValue = _.get(originalData, path);
+            let currentValue = _.get(currentData, path);
+
+            if (path === 'cp_output.id') {
+                originalValue = +originalValue;
+            }
+
+            if (originalValue !== currentValue) {
+                _.set(changedData, path, currentValue);
+            }
+        });
+
+        let implementingPartner = _.get(changedData, 'implementing_partner.id') || undefined;
+        let partnership = _.get(changedData, 'partnership.id');
+        let cpOutput = _.get(changedData, 'cp_output.id');
+        let date = _.get(changedData, 'date') || undefined;
+        let _delete = _.get(changedData, '_delete');
+        let locations = _.isEqual(originalData.locations, currentData.locations) ? [] : (currentData.locations || []);
 
         locations = locations.map((location) => {
             return location && location.id;
         });
         locations = locations.length ? locations : undefined;
 
-        return [{
+        return {
             implementing_partner: implementingPartner,
             partnership,
             cp_output: cpOutput,
             date,
             locations,
-            id,
             _delete,
-        }];
+        };
+    },
+
+    getActivitiesData: function() {
+        let data = this._getData();
+
+        return new Promise((resolve, reject) => {
+            this.$.fileUpload.getFiles()
+                .then((files) => {
+                    data.pd_files = files;
+
+                    let dataValues = _.values(data);
+                    let dataNotEmpty = dataValues.some(value => value !== undefined);
+
+                    if (dataNotEmpty && !this.addDialog) {
+                        data.id = _.get(this.editedItem, 'id');
+                    }
+
+                    if (dataNotEmpty) {
+                        resolve([data]);
+                    } else {
+                        resolve(null);
+                    }
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     },
 });
