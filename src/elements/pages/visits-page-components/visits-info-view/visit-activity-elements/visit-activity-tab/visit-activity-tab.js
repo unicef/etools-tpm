@@ -100,11 +100,14 @@ Polymer({
                     'name': 'array',
                     'property': 'name',
                     'label': 'Locations',
-                    'path': 'locations'
+                    'path': 'locations',
                 }, {
                     'size': 100,
+                    'name': 'files',
+                    'property': 'file',
                     'label': 'Link to eTools Programme Documents',
-                    'path': 'tpm_activities.partnership.attachments'
+                    'path': 'pd_files',
+                    'files': 'true',
                 }];
             }
         },
