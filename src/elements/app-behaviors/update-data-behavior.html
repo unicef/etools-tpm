@@ -71,6 +71,9 @@
             if (status === 400) {
                 this.set('errorObject', response);
                 this.fire('toast', {text: `Can not save ${this.postfix} data. Please check all fields and try again later!`});
+            } else if(status === 413) {
+                this.errorObject = {};
+                this.fire('toast', {text: `Error: Exceeded the maximum size of the uploaded file.`});
             } else {
                 this.errorObject = {};
                 this.fire('toast', {text: `Can not update ${this.postfix}. Please try again later!`});
