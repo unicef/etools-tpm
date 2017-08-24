@@ -95,13 +95,16 @@ Polymer({
 
         let attachmentsTab = Polymer.dom(this.root).querySelector('#attachments');
         let reportTab = Polymer.dom(this.root).querySelector('#report');
+        let visitActivity = this.$.visitActivity;
         let data = this.getVisitData();
 
-        let visitAttachments = attachmentsTab && await attachmentsTab.getFiles(),
-            reportAttachments = reportTab && await reportTab.getFiles();
+        let visitAttachments = attachmentsTab && await attachmentsTab.getFiles();
+        let reportAttachments = reportTab && await reportTab.getFiles();
+        let visitActivityData = visitActivity && await visitActivity.getActivitiesData();
 
         if (visitAttachments) { data.attachments = visitAttachments; }
         if (reportAttachments) { data.report = reportAttachments; }
+        if (visitActivityData) { data.tpm_activities = visitActivityData; }
 
         this.newVisitDetails = {
             method: method,
@@ -119,11 +122,7 @@ Polymer({
 
     getVisitData: function() {
         let data = {};
-        let visitActivityData = this.$.visitActivity && this.$.visitActivity.getActivitiesData();
         let visitDetailsData = this.$.visitDetails && this.$.visitDetails.getDetailsData();
-        if (visitActivityData) {
-            data.tpm_activities = visitActivityData;
-        }
         if (visitDetailsData) {
             data.sections = visitDetailsData.sections;
             data.unicef_focal_points = visitDetailsData.unicef_focal_points;
