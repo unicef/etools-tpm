@@ -7,9 +7,12 @@
         <user-data user="{{user}}"></user-data>
 
         <!--tpm partners-->
-        <etools-ajax endpoint="[[partnersEndpoint]]"
-                     on-success="_partnersLoaded"
-                     on-fail="_partnersError"></etools-ajax>
+        <etools-ajax
+                id="tpmPartners"
+                url="[[partnersUrl]]"
+                on-success="_partnersLoaded"
+                on-fail="_partnersError">
+        </etools-ajax>
 
         <etools-ajax method="OPTIONS"
                      url="[[partnersOptionsUrl]]"
@@ -68,6 +71,14 @@
                     'user-profile-loaded': 'loadStaticData'
                 },
 
+                attached: function() {
+                    document.addEventListener('reload-tpm-partners', this._reloadTpmPartners.bind(this));
+                },
+
+                detached: function() {
+                    document.removeEventListener('reload-tpm-partners', this._reloadTpmPartners);
+                },
+
                 loadStaticData: function () {
                     if (!this.isTpmUser()) {
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
@@ -78,7 +89,7 @@
                         this.officesEndpoint = this.getEndpoint('offices').url;
                     }
 
-                    this.partnersEndpoint = this.getEndpoint('partnersList');
+                    this.partnersUrl = this.getEndpoint('partnersList').url;
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this._allDataLoaded();
                 },
@@ -106,12 +117,18 @@
 
                     if (tpmUser) {
                         this._setPartnerId(partnerId);
+                    } else if (dataLoaded.partners) {
+                        this._updateData('tpmPartners', partners);
                     } else {
                         this._setData('tpmPartners', partners);
                     }
 
                     dataLoaded.partners = true;
                     this._allDataLoaded();
+                },
+
+                _reloadTpmPartners: function() {
+                    this.partnersUrl = this.getEndpoint('partnersList').url + `?reload=${new Date().getTime()}`;
                 },
 
                 _organisationsLoaded: function(data, detail) {

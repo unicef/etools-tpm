@@ -21,6 +21,11 @@
             this.fire('global-loading', {type: 'update-permissions', active: true, message: 'Updating data...'});
             this.fire('global-loading', {type: `${details.action}-${this.postfix}`});
 
+            if (details.action === 'activate' && this.postfix === 'partner') {
+                let reloadTpmPartnersEvent = new CustomEvent('reload-tpm-partners');
+                document.dispatchEvent(reloadTpmPartnersEvent);
+            }
+
             this.optionsUrl = this.getEndpoint(`${this.postfix}Details`, {id: details.id}).url;
             this.postRequest = null;
         },
