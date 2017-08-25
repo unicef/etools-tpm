@@ -15,6 +15,6 @@ Polymer({
     },
 
     setPartnersLink: function(user) {
-        return user.partnerId ? `partners/${user.partnerId}/details` : 'partners/list';
+        return user.partnerId ? `partners/${user.partnerId}/details` : 'partners/list?reload=true';
     }
 });
