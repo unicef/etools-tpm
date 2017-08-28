@@ -42,9 +42,7 @@ Polymer({
             this._setVisitsListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
-            this.debounce('clearSearchQueries', () => {
-                this.clearQueries();
-            }, 100);
+            this.clearQueries();
             this.visitId = +view;
         } else if (view === '' || _.isUndefined(view)) {
             this.set('route.path', '/list');
@@ -71,9 +69,7 @@ Polymer({
             this.lastParams = _.clone(queries);
         }
 
-        this.debounce('updateSearchQueries', () => {
-            this.updateQueries(queriesUpdates, null, noNotify);
-        }, 100);
+        this.updateQueries(queriesUpdates, null, noNotify);
         return this.parseQueries();
     },
 
@@ -83,9 +79,7 @@ Polymer({
             let queries = this._configListParams();
             this._setVisitsListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
-            this.debounce('clearSearchQueries', () => {
-                this.clearQueries();
-            }, 100);
+            this.clearQueries();
         }
     },
 

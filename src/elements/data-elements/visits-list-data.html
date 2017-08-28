@@ -50,7 +50,7 @@
 
                 this._setVisitsList(detail.results);
                 this.listLength = detail.count;
-                this.requestQueries.reload = false;
+                this.updateQueries({reload: false});
 
                 this.fire('global-loading', {type: 'visits-list'});
             },
@@ -81,11 +81,13 @@
             reloadRequired: function () {
                 let lastKeys = _.keys(this.lastState);
                 let requestQueriesKeys = _.keys(this.requestQueries);
-                let filtersKeys = ['query_1', 'query_2', 'status', 'query_3', 'query_4']; //TODO: change filter keys
+                let filtersKeys = ['tpm_activities__implementing_partner', 'tpm_activities__locations', 'status',
+                    'sections', 'tpm_activities__cp_output'];
                 let queriesKeys = lastKeys.concat(requestQueriesKeys);
 
                 queriesKeys = _.uniq(queriesKeys);
                 queriesKeys = _.difference(queriesKeys, filtersKeys);
+                _.pull(queriesKeys, 'reload');
 
                 let otherQueriesChanged = queriesKeys.some((key) => {
                     let lastValue = this.lastState[key];
@@ -113,7 +115,7 @@
                     return;
                 }
 
-                this.requestQueries.reload = false;
+                this.updateQueries({reload: false});
                 this.fire('global-loading', {type: 'visits-list'});
                 this.fire('toast', {text: 'Page not found.'});
             },

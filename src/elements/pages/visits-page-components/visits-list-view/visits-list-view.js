@@ -66,14 +66,14 @@
                 value: [
                     {
                         name: 'Implementing Partner',
-                        query: 'query_1', //TODO: query
+                        query: 'tpm_activities__implementing_partner',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
                     },
                     {
                         name: 'Location',
-                        query: 'query_2', //TODO: query
+                        query: 'tpm_activities__locations',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
@@ -88,14 +88,14 @@
                     },
                     {
                         name: 'Section',
-                        query: 'query_3', //TODO: query
+                        query: 'sections',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
                     },
                     {
                         name: 'CP Output',
-                        query: 'query_4', //TODO: query
+                        query: 'tpm_activities__cp_output',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
@@ -136,18 +136,18 @@
         },
 
         setFiltersSelections: function() {
-            let partnerFilterIndex = this._getFilterIndex('query_1');
-            let locationFilterIndex = this._getFilterIndex('query_2');
+            let partnerFilterIndex = this._getFilterIndex('tpm_activities__implementing_partner');
+            let locationFilterIndex = this._getFilterIndex('tpm_activities__locations');
             let statusFilterIndex = this._getFilterIndex('status');
-            let sectionFilterIndex = this._getFilterIndex('query_3');
-            let cpFilterIndex = this._getFilterIndex('query_4');
+            let sectionFilterIndex = this._getFilterIndex('sections');
+            let cpFilterIndex = this._getFilterIndex('tpm_activities__cp_output');
 
             if (partnerFilterIndex !== -1) {
                 this.set(`filters.${partnerFilterIndex}.selection`, this.getData('partnerOrganisations') || []);
             }
 
             if (locationFilterIndex !== -1) {
-                this.set(`filters.${locationFilterIndex}.selection`, this.getData('offices') || []); //TODO:
+                this.set(`filters.${locationFilterIndex}.selection`, this.getData('locations') || []);
             }
 
             if (statusFilterIndex !== -1) {
@@ -155,11 +155,11 @@
             }
 
             if (sectionFilterIndex !== -1) {
-                this.set(`filters.${sectionFilterIndex}.selection`, this.getData('sections') || []); //TODO:
+                this.set(`filters.${sectionFilterIndex}.selection`, this.getData('sections') || []);
             }
 
             if (cpFilterIndex !== -1) {
-                this.set(`filters.${cpFilterIndex}.selection`, this.getData('ppSsfaOutputs') || []); //TODO:
+                this.set(`filters.${cpFilterIndex}.selection`, this.getData('ppSsfaOutputs') || []);
             }
         },
 

@@ -11,6 +11,7 @@ App global configuration
     etoolsCustomDexieDb.version(1).stores({
         collectionsList: '&name, expire',
         partners: 'id',
+        locations: 'id',
     });
 
     var etoolsAppConfig = {
@@ -56,6 +57,11 @@ App global configuration
             },
             cpOutputs: {
                 template: '/api/v2/reports/results/'
+            },
+            locations: {
+                url: '/api/locations-light/',
+                exp: 7 * 24 * 3600 * 1000, // 7d
+                cachingKey: 'locations',
             },
             changeCountry: {
                 url: '/users/api/changecountry/'

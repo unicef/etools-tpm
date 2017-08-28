@@ -47,7 +47,7 @@
                 }
 
                 this._setPartnersList(detail.results);
-                this.requestQueries.reload = false;
+                this.updateQueries({reload: false});
                 this.fire('global-loading', {type: 'partners-list'});
             },
 
@@ -66,7 +66,11 @@
 
                 let endpoint = this.getEndpoint('partnersList');
                 endpoint.url += this.getQueriesString().replace('?', '&');
-                if (this.requestQueries.reload) { endpoint.url += `&reload=${new Date().getTime()}`; }
+
+                if (this.requestQueries.reload) {
+                    endpoint.url += `&reload=${new Date().getTime()}`;
+                }
+
                 this.endpoint = endpoint;
             },
 
@@ -75,7 +79,7 @@
                     detail.request.detail.request && detail.request.detail.request.xhr;
                 let {status, response} = responseData || {};
 
-                this.requestQueries.reload = false;
+                this.updateQueries({reload: false});
                 this.fire('global-loading', {type: 'partners-list'});
             },
         });
