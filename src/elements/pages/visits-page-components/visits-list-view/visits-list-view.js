@@ -9,7 +9,8 @@
             TPMBehaviors.PermissionController,
             TPMBehaviors.StaticDataController,
             TPMBehaviors.CommonMethodsBehavior,
-            TPMBehaviors.LastCreatedController
+            TPMBehaviors.LastCreatedController,
+            TPMBehaviors.UserController,
         ],
 
         properties: {
@@ -32,14 +33,16 @@
                 }, {
                     'size': 30,
                     'label': 'TPM Name',
-                    'name': 'name',
+                    'name': 'tpm_partner__name',
                     'path': 'tpm_partner.name',
                     'ordered': false
                 }, {
                     'size': 30,
+                    'name': 'ordered_list',
+                    'property': 'name',
                     'label': 'Implementing Partners',
-                    'name': 'implementing_partners',
-                    'ordered': false
+                    'path': 'implementing_partners',
+                    'html': 'true',
                 }, {
                     'size': 20,
                     'label': 'Status',
@@ -52,12 +55,16 @@
                 value: function() {
                     return [{
                         'size': 100,
+                        'name': 'array',
+                        'property': 'name',
                         'label': 'Locations',
-                        'name': 'locations'
+                        'path': 'locations',
                     }, {
                         'size': 100,
+                        'name': 'array',
+                        'property': 'name',
                         'label': 'UNICEF Focal Points',
-                        'name': 'unicef_focal_points'
+                        'path': 'unicef_focal_points'
                     }];
                 }
             },
@@ -124,7 +131,33 @@
         },
 
         setupFiltersAndHeadings: function() {
-            //TODO: hide TPM Name for TPM
+            let isTpmUser;
+            try {
+                isTpmUser = this.isTpmUser();
+            } catch (err) {
+                console.log(err);
+            }
+
+            if (isTpmUser) {
+                //remove IP, section and CP outputs filters
+                let partnerFilterIndex = this._getFilterIndex('tpm_activities__implementing_partner');
+                this.filters.splice(partnerFilterIndex, 1);
+
+                let sectionFilterIndex = this._getFilterIndex('sections');
+                this.filters.splice(sectionFilterIndex, 1);
+
+                let cpFilterIndex = this._getFilterIndex('tpm_activities__cp_output');
+                this.filters.splice(cpFilterIndex, 1);
+
+                //remove TPM name column
+                let partnerHeadingIndex = this.listHeadings.findIndex((heading) => {
+                    return heading.name === 'tpm_partner__name';
+                });
+                this.listHeadings.splice(partnerHeadingIndex, 1);
+                this.listHeadings.forEach((heading) => {
+                    heading.size += 10;
+                });
+            }
         },
 
         _getFilterIndex: function(query) {
@@ -159,7 +192,7 @@
             }
 
             if (cpFilterIndex !== -1) {
-                this.set(`filters.${cpFilterIndex}.selection`, this.getData('ppSsfaOutputs') || []);
+                this.set(`filters.${cpFilterIndex}.selection`, this.getData('cpOutputs') || []);
             }
         },
 

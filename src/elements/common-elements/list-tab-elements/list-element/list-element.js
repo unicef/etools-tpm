@@ -140,6 +140,8 @@ Polymer({
             value = this._refactorPercents(value);
         } else if (item.name === 'array') {
             value = this._refactorArray(value, item.property);
+        } else if (item.name === 'ordered_list') {
+            value = this._refactorOrderedList(value, item.property);
         } else if (item.name === 'files') {
             value = this._refactorFilesLinks(value, item.property);
         }
@@ -191,7 +193,34 @@ Polymer({
             }
         });
 
-        return stringValues.length ? stringValues.join(' ') : null;
+        return stringValues.length ? stringValues.join('; ') : null;
+    },
+
+    _refactorOrderedList: function(items, property) {
+        let isValidArgs = (items instanceof Array) && property && (typeof property === 'string');
+        if (!isValidArgs) { return '--'; }
+
+        let itemsInfo = [];
+        let itemsHtml = [];
+        let count = 1;
+        let indexRequired = false;
+        let value;
+
+        items.forEach((item) => {
+            value = item[property];
+            if (value && (typeof value === 'string')) {
+                itemsInfo.push(value);
+            }
+        });
+
+        indexRequired = itemsInfo.length > 1;
+
+        itemsInfo.forEach((name) => {
+            value = indexRequired ? `<div>${count++}. ${name}</div>` : `<div>${name}</div>`;
+            itemsHtml.push(value);
+        });
+
+        return itemsHtml.length ? itemsHtml.join('\n') : '--';
     },
 
     _refactorFilesLinks: function(files, property) {
