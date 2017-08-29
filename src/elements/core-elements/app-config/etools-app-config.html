@@ -58,6 +58,9 @@ App global configuration
             cpOutputs: {
                 template: '/api/reports/results/'
             },
+            cpOutputsV2: {
+                url: '/api/v2/reports/results/'
+            },
             locations: {
                 url: '/api/locations-light/',
                 exp: 7 * 24 * 3600 * 1000, // 7d
@@ -68,9 +71,6 @@ App global configuration
             },
             syncVendorData: {
                 template: '/api/tpm/partners/sync/<%=id%>/'
-            },
-            ppSsfaOutputs: {
-                url: '/api/v2/reports/results/'
             },
             sectorsCovered: {
                 url: '/api/reports/sectors/'
