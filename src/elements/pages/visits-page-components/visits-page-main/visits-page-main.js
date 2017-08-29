@@ -2,14 +2,20 @@
 
 Polymer({
     is: 'visits-page-main',
+
     behaviors: [
-        TPMBehaviors.QueryParamsController
+        TPMBehaviors.QueryParamsController,
+        TPMBehaviors.PermissionController
     ],
     properties: {
         queryParams: {
             type: Object,
             notify: true,
             observer: '_queryParamsChanged'
+        },
+        initiation: {
+            type: Number,
+            value: 0
         },
         withoutPagination: {
             type: Boolean,
@@ -25,42 +31,45 @@ Polymer({
         }
     },
     observers: [
-        '_routeConfig(route)',
+        '_routeConfig(routeData.view)',
         '_visitLoaded(visitDetails)'
     ],
 
-    _routeConfig: function(route) {
-        if (this.route && !~this.route.prefix.indexOf('/visits')) { return; }
-        let view = this.routeData ? this.routeData.view : route.path.split('/')[1];
+    _routeConfig: function(view) {
+        if (!this.route || !~this.route.prefix.indexOf('/visits')) { return; }
         if (view === 'list') {
-            let queries = this._configListParams();
+            let queries = this._configListParams(this.initiation++);
             this._setVisitsListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
-            this.debounce('clearSearchQueries', () => {
-                this.clearQueries();
-            }, 100);
+            this.clearQueries();
             this.visitId = +view;
+        } else if (view === '' || _.isUndefined(view)) {
+            this.set('route.path', '/list');
         } else {
+            this.clearQueries();
             this.fire('404');
         }
     },
 
-    _configListParams: function() {
+    _configListParams: function(noNotify) {
         let queriesUpdates = {},
             queries = this.parseQueries();
 
+        if (!queries.page_size) { queriesUpdates.page_size = '10'; }
         if (!queries.ordering) { queriesUpdates.ordering = 'reference_number'; }
+        if (!queries.page) { queriesUpdates.page = '1'; }
 
-        if (!this.lastParams) {
-            this.lastParams = _.clone(queries);
-        } else if (!_.isEqual(this.lastParams, queries)) {
+        let page = +queries.page;
+        if (isNaN(page) || (this.lastParams && (queries.page_size !== this.lastParams.page_size || queries.ordering !== this.lastParams.ordering))) {
+            queriesUpdates.page = '1';
+        }
+
+        if (!this.lastParams || !_.isEqual(this.lastParams, queries)) {
             this.lastParams = _.clone(queries);
         }
 
-        this.debounce('updateSearchQueries', () => {
-            this.updateQueries(queriesUpdates, null);
-        }, 100);
+        this.updateQueries(queriesUpdates, null, noNotify);
         return this.parseQueries();
     },
 
@@ -70,9 +79,7 @@ Polymer({
             let queries = this._configListParams();
             this._setVisitsListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
-            this.debounce('clearSearchQueries', () => {
-                this.clearQueries();
-            }, 100);
+            this.clearQueries();
         }
     },
 

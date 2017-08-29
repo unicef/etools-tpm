@@ -48,6 +48,11 @@
         <etools-ajax url="[[officesEndpoint]]"
                      on-success="_officesLoaded"
                      on-fail="_officesError"></etools-ajax>
+
+        <!--Locations-->
+        <etools-ajax url="[[locationsUrl]]"
+                     on-success="_locationsLoaded"
+                     on-fail="_locationsError"></etools-ajax>
     </template>
 
     <script>
@@ -83,7 +88,7 @@
                     if (!this.isTpmUser()) {
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
-                        this.outputsEndpoint = this.getEndpoint('ppSsfaOutputs').url;
+                        this.outputsEndpoint = this.getEndpoint('cpOutputs').url;
                         this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
                         this.officesEndpoint = this.getEndpoint('offices').url;
@@ -91,6 +96,7 @@
 
                     this.partnersUrl = this.getEndpoint('partnersList').url;
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
+                    this.locationsUrl = this.getEndpoint('locations').url;
                     this._allDataLoaded();
                 },
 
@@ -99,7 +105,7 @@
                     if (((dataLoaded.organizations && dataLoaded.outputs) || tpmUser) &&
                             dataLoaded.visitsOptions &&
                             ((dataLoaded.sections &&  dataLoaded.unicefUsers &&
-                            dataLoaded.offices && dataLoaded.partnersOptions) || tpmUser)) {
+                            dataLoaded.offices && dataLoaded.partnersOptions && dataLoaded.locations) || tpmUser)) {
                         this.fire('initial-data-loaded');
                     }
                 },
@@ -144,7 +150,7 @@
                     if (!detail) {
                         this._outputsError();
                     }
-                    this._setData('ppSsfaOutputs', detail);
+                    this._setData('cpOutputs', detail);
                     dataLoaded.outputs = true;
                     this._allDataLoaded();
                 },
@@ -224,12 +230,21 @@
                     this._allDataLoaded();
                 },
 
+                _locationsLoaded: function(data, detail) {
+                    if (!detail) {
+                        this._locationsError();
+                    }
+                    this._setData('locations', detail);
+                    dataLoaded.locations = true;
+                    this._allDataLoaded();
+                },
+
                 _organisationsError: function() {
                     this._responseError('partner organisations');
                 },
 
                 _outputsError: function() {
-                    this._responseError('ppSsfaOutputs');
+                    this._responseError('cpOutputs');
                 },
 
                 _sectionsError: function() {
@@ -242,6 +257,10 @@
 
                 _officesError: function() {
                     this._responseError('offices');
+                },
+
+                _locationsError: function() {
+                    this._responseError('locations');
                 },
 
                 _responseError: function(request) {

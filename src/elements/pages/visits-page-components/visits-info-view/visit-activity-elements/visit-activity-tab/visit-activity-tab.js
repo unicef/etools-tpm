@@ -117,7 +117,7 @@ Polymer({
                     'property': 'file',
                     'label': 'Link to eTools Programme Documents',
                     'path': 'pd_files',
-                    'files': 'true',
+                    'details_html': 'true',
                 }];
             }
         },
