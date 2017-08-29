@@ -111,7 +111,7 @@
                             <!-- Partnership-->
                             <etools-searchable-multiselection-menu
                                     class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partnership', basePermissionPath)]]"
-                                    value="{{editedItem.partnership}}"
+                                    value="{{optionsModel.partnership}}"
                                     label="[[getLabel('tpm_activities.partnership', basePermissionPath)]]"
                                     placeholder="[[getPlaceholderText('tpm_activities.partnership', basePermissionPath)]]"
                                     options="[[partner.interventions]]"
@@ -138,7 +138,7 @@
                             <!-- CP Output -->
                             <etools-searchable-multiselection-menu
                                     class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.cp_output', basePermissionPath)]]"
-                                    value="{{editedItem.cp_output}}"
+                                    value="{{optionsModel.cp_output}}"
                                     label="[[getLabel('tpm_activities.cp_output', basePermissionPath)]]"
                                     placeholder="[[getPlaceholderText('tpm_activities.cp_output', basePermissionPath)]]"
                                     options="[[cpOutputs]]"
@@ -147,8 +147,8 @@
                                     option-value="id"
                                     update-selected
                                     required$="[[_setRequired('tpm_activities.cp_output', basePermissionPath)]]"
-                                    disabled$="[[_isReadOnly(editedItem.implementing_partner, editedItem.partnership, someRequestInProcess)]]"
-                                    readonly$="[[_isReadOnly(editedItem.implementing_partner, editedItem.partnership, someRequestInProcess)]]"
+                                    disabled$="[[_isReadOnly(editedItem.implementing_partner, optionsModel.partnership, someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly(editedItem.implementing_partner, optionsModel.partnership, someRequestInProcess)]]"
                                     invalid="{{errors.cp_output}}"
                                     error-message="{{errors.cp_output}}"
                                     on-focus="_resetFieldError"
@@ -194,7 +194,7 @@
                             <!-- Locations -->
                             <etools-searchable-multiselection-menu
                                     class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.locations', basePermissionPath)]]"
-                                    value="{{editedItem.locations}}"
+                                    value="{{optionsModel.locations}}"
                                     label="[[getLabel('tpm_activities.locations', basePermissionPath)]]"
                                     placeholder="[[getPlaceholderText('tpm_activities.locations', basePermissionPath)]]"
                                     options="[[locations]]"
@@ -203,8 +203,8 @@
                                     option-value="id"
                                     update-selected
                                     required$="[[_setRequired('tpm_activities.locations', basePermissionPath)]]"
-                                    disabled$="[[_isReadOnly(editedItem.implementing_partner, editedItem.partnership, someRequestInProcess)]]"
-                                    readonly$="[[_isReadOnly(editedItem.implementing_partner, editedItem.partnership, someRequestInProcess)]]"
+                                    disabled$="[[_isReadOnly(editedItem.implementing_partner, optionsModel.partnership, someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly(editedItem.implementing_partner, optionsModel.partnership, someRequestInProcess)]]"
                                     invalid="{{errors.locations}}"
                                     error-message="{{errors.locations}}"
                                     on-focus="_resetFieldError"
