@@ -71,8 +71,10 @@
                             error-message="{{errors.sections}}"
                             on-focus="_resetFieldError"
                             multi
-                            hide-search>
+                            hide-search
+                            no-title-attr>
                     </etools-searchable-multiselection-menu>
+                    <paper-tooltip offset="0">[[getTooltipText(visit.sections)]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -94,8 +96,10 @@
                             error-message="{{errors.unicef_focal_points}}"
                             on-focus="_resetFieldError"
                             multi
-                            hide-search>
+                            hide-search
+                            no-title-attr>
                     </etools-searchable-multiselection-menu>
+                    <paper-tooltip offset="0">[[getTooltipText(visit.unicef_focal_points)]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -117,8 +121,10 @@
                             error-message="{{errors.offices}}"
                             on-focus="_resetFieldError"
                             multi
-                            hide-search>
+                            hide-search
+                            no-title-attr>
                     </etools-searchable-multiselection-menu>
+                    <paper-tooltip offset="0">[[getTooltipText(visit.offices)]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -140,8 +146,10 @@
                             error-message="{{errors.tpm_partner_focal_points}}"
                             on-focus="_resetFieldError"
                             multi
-                            hide-search>
+                            hide-search
+                            no-title-attr>
                     </etools-searchable-multiselection-menu>
+                    <paper-tooltip offset="0">[[getTooltipText(visit.tpm_partner_focal_points)]]</paper-tooltip>
                 </div>
             </div>
         </etools-content-panel>

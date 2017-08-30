@@ -88,5 +88,9 @@ Polymer({
                 name: `${profile.user.first_name} ${profile.user.last_name}`
             };
         });
+    },
+
+    getTooltipText: function(selected = []) {
+        return this.setSelectedTpms(selected).join(',');
     }
 });

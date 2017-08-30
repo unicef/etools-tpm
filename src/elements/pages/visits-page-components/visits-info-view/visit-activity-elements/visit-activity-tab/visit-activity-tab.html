@@ -101,8 +101,10 @@
                                     invalid="{{errors.implementing_partner}}"
                                     error-message="{{errors.implementing_partner}}"
                                     on-focus="_resetFieldError"
-                                    dynamic-align>
+                                    dynamic-align
+                                    no-title-attr>
                             </etools-searchable-multiselection-menu>
+                            <paper-tooltip offset="0">[[editedItem.implementing_partner.name]]</paper-tooltip>
 
                             <etools-loading active="{{partnerRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
@@ -126,8 +128,10 @@
                                     error-message="{{errors.partnership}}"
                                     on-focus="_resetFieldError"
                                     dynamic-align
-                                    hide-search>
+                                    hide-search
+                                    no-title-attr>
                             </etools-searchable-multiselection-menu>
+                            <paper-tooltip offset="0">[[editedItem.implementing_partner.name]]</paper-tooltip>
 
                             <etools-loading active="{{partnershipRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
@@ -153,8 +157,10 @@
                                     error-message="{{errors.cp_output}}"
                                     on-focus="_resetFieldError"
                                     dynamic-align
-                                    hide-search>
+                                    hide-search
+                                    no-title-attr>
                             </etools-searchable-multiselection-menu>
+                            <paper-tooltip offset="0">[[editedItem.cp_output.name]]</paper-tooltip>
 
                             <etools-loading active="{{cpRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
@@ -210,8 +216,10 @@
                                     on-focus="_resetFieldError"
                                     dynamic-align
                                     multi
-                                    hide-search>
+                                    hide-search
+                                    no-title-attr>
                             </etools-searchable-multiselection-menu>
+                            <paper-tooltip offset="0">[[editedItem.locations.name]]</paper-tooltip>
                         </div>
                     </div>
 
