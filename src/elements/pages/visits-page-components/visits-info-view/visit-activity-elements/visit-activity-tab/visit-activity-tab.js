@@ -405,6 +405,7 @@ Polymer({
     },
 
     getActivitiesData: function() {
+        if (!this.dialogOpened) { return null; }
         let data = this._getData();
 
         return new Promise((resolve, reject) => {

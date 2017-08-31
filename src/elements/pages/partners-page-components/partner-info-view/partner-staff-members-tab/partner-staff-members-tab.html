@@ -13,7 +13,7 @@
 
         <!--requests-->
         <get-staff-members-list partner-id="{{partnerId}}"
-                                staff-base="{{staffBase}}"
+                                staff-base="{{basePermissionPath}}"
                                 datalength="{{datalength}}"
                                 queries="{{listQueries}}"
                                 data-items="{{dataItems}}"
@@ -29,7 +29,7 @@
         <etools-content-panel panel-title="TPM Staff Members ([[_staffLength(datalength, dataItems.length, searchQuery)]])" show-expand-btn>
             <div slot="panel-btns">
                 <div class="add-button-container">
-                    <paper-icon-button hidden$="[[!isReadOnly(staffBase)]]"
+                    <paper-icon-button hidden$="[[!_canBeChanged(basePermissionPath)]]"
                                        class="panel-button"
                                        on-tap="openAddDialog"
                                        icon="add-box"></paper-icon-button>
@@ -61,7 +61,7 @@
                             no-additional
                             headings="[[columns]]"
                             no-animation>
-                        <div slot="hover" class="edit-icon-slot" hidden$="[[!isReadOnly(staffBase)]]">
+                        <div slot="hover" class="edit-icon-slot" hidden$="[[!_canBeChanged(basePermissionPath)]]">
                             <paper-icon-button icon="icons:create" class="edit-icon" on-tap="openEditDialog"></paper-icon-button>
                             <paper-icon-button icon="icons:delete" class="edit-icon" on-tap="openDeleteDialog"></paper-icon-button>
                         </div>
@@ -103,8 +103,8 @@
                                          value="{{editedItem.user.email}}"
                                          placeholder="Enter E-mail"
                                          maxlength="45"
-                                         class$="validate-input {{_setRequired('user.email', staffBase)}} email"
-                                         required="{{_setRequired('user.email', staffBase)}}"
+                                         class$="validate-input {{_setRequired('user.email', basePermissionPath)}} email"
+                                         required="{{_setRequired('user.email', basePermissionPath)}}"
                                          disabled="{{_emailDisabled(requestInProcess, addDialog, emailChecking)}}"
                                          readonly$="{{_emailDisabled(requestInProcess, addDialog, emailChecking)}}"
                                          on-focus="_resetFieldError"
@@ -123,9 +123,9 @@
                             <paper-input label="First Name"
                                          value="{{editedItem.user.first_name}}"
                                          placeholder="Enter First Name"
-                                         class$="validate-input {{_setRequired('user.first_name', staffBase)}}"
+                                         class$="validate-input {{_setRequired('user.first_name', basePermissionPath)}}"
                                          maxlength="30"
-                                         required="{{_setRequired('user.first_name', staffBase)}}"
+                                         required="{{_setRequired('user.first_name', basePermissionPath)}}"
                                          invalid="{{errors.user.first_name}}"
                                          error-message="{{errors.user.first_name}}"
                                          disabled="{{requestInProcess}}"
@@ -140,8 +140,8 @@
                                          value="{{editedItem.user.last_name}}"
                                          placeholder="Enter Last Name"
                                          maxlength="30"
-                                         class$="validate-input {{_setRequired('user.last_name', staffBase)}}"
-                                         required="{{_setRequired('user.last_name', staffBase)}}"
+                                         class$="validate-input {{_setRequired('user.last_name', basePermissionPath)}}"
+                                         required="{{_setRequired('user.last_name', basePermissionPath)}}"
                                          invalid="{{errors.user.last_name}}"
                                          error-message="{{errors.user.last_name}}"
                                          disabled="{{requestInProcess}}"
@@ -158,10 +158,10 @@
                                      placeholder="Enter Position"
                                      maxlength="45"
                                      on-focus="_resetFieldError"
-                                     class$="validate-input {{_setRequired('user.profile.job_title', staffBase)}}"
+                                     class$="validate-input {{_setRequired('user.profile.job_title', basePermissionPath)}}"
                                      disabled="{{requestInProcess}}"
                                      readonly$="{{requestInProcess}}"
-                                     required="{{_setRequired('user.profile.job_title', staffBase)}}"
+                                     required="{{_setRequired('user.profile.job_title', basePermissionPath)}}"
                                      invalid="{{errors.profile.job_title}}"
                                      error-message="{{errors.profile.job_title}}">
                         </paper-input>
@@ -175,12 +175,12 @@
                                          allowed-pattern="[\d\s-]"
                                          placeholder="Enter Phone"
                                          maxlength="20"
-                                         class$="validate-input {{_setRequired('user.profile.phone_number', staffBase)}}"
+                                         class$="validate-input {{_setRequired('user.profile.phone_number', basePermissionPath)}}"
                                          disabled="{{requestInProcess}}"
                                          readonly$="{{requestInProcess}}"
                                          invalid="{{errors.user.profile.phone_number}}"
                                          error-message="{{errors.user.profile.phone_number}}"
-                                         required="{{_setRequired('user.profile.phone_number', staffBase)}}">
+                                         required="{{_setRequired('user.profile.phone_number', basePermissionPath)}}">
                                 <iron-icon prefix icon="communication:phone"></iron-icon>
                             </paper-input>
                             <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.profile.phone_number)]]</paper-tooltip>
