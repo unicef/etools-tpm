@@ -74,7 +74,7 @@
                             hide-search
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
-                    <paper-tooltip offset="0">[[getTooltipText(visit.sections)]]</paper-tooltip>
+                    <paper-tooltip offset="0">[[getTooltipText(selectedSections, sectionsList)]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -99,7 +99,7 @@
                             hide-search
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
-                    <paper-tooltip offset="0">[[getTooltipText(visit.unicef_focal_points)]]</paper-tooltip>
+                    <paper-tooltip offset="0">[[getTooltipText(selectedFocalPoints, unicefUsersList)]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -124,7 +124,7 @@
                             hide-search
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
-                    <paper-tooltip offset="0">[[getTooltipText(visit.offices)]]</paper-tooltip>
+                    <paper-tooltip offset="0">[[getTooltipText(selectedOfficers, officesList)]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -140,8 +140,6 @@
                             selected-values="{{selectedTpms}}"
                             value="[[setSelectedTpms(visit.tpm_partner_focal_points)]]"
                             required$="[[_setRequired('tpm_partner_focal_points', permissionBase)]]"
-                            disabled$="[[isReadOnly('tpm_partner_focal_points', permissionBase)]]"
-                            readonly$="[[isReadOnly('tpm_partner_focal_points', permissionBase)]]"
                             invalid="{{errors.tpm_partner_focal_points}}"
                             error-message="{{errors.tpm_partner_focal_points}}"
                             on-focus="_resetFieldError"
@@ -149,7 +147,7 @@
                             hide-search
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
-                    <paper-tooltip offset="0">[[getTooltipText(visit.tpm_partner_focal_points)]]</paper-tooltip>
+                    <paper-tooltip offset="0">[[getTooltipText(selectedTpms, partners)]]</paper-tooltip>
                 </div>
             </div>
         </etools-content-panel>
