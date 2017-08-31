@@ -400,6 +400,7 @@ Polymer({
             cp_output: cpOutput,
             date,
             locations,
+            section: 1,
             _delete,
         };
     },
