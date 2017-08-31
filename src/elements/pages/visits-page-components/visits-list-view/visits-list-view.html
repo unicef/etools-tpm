@@ -1,6 +1,7 @@
-<!--import [polymer, module-styles, page-layout-styles, shared-styles, list-tab-main, dialog-element, create-visit,
-            search-and-filter, visits-list-data, pages-header-element, permission-controller, tab-inputs-styles,
-            common-methods-behavior,  app-route/app-location, last-created-behavior]-->
+<!--import [polymer]-->
+<!--import [module-styles, page-layout-styles, shared-styles, list-tab-main, static-data-behavior, search-and-filter,
+            dialog-element, create-visit, visits-list-data, pages-header-element, permission-controller, user-controller,
+            tab-inputs-styles, etools-app-config, common-methods-behavior, app-route/app-location, last-created-behavior]-->
 
 <dom-module id="visits-list-view">
     <template>
@@ -26,6 +27,7 @@
         <visits-list-data
                 id="listData"
                 visits-list="{{visitsList}}"
+                list-length="{{listLength}}"
                 request-queries="[[requestQueries]]"
                 without-pagination="[[withoutPagination]]">
         </visits-list-data>
@@ -38,15 +40,23 @@
                 page-title="List of Visits">
         </pages-header-element>
 
+        <search-and-filter
+                id="filters"
+                search-label="Search vendor # or name"
+                filters="[[filters]]"
+                query-params="{{queryParams}}"
+                search-params="[[searchParams]]">
+        </search-and-filter>
+
         <list-tab-main
-                header-title="Visits"
+                header-title="results to show"
                 data="[[visitsList]]"
+                list-length="[[listLength]]"
                 headings="[[listHeadings]]"
                 query-params="{{queryParams}}"
                 details="[[listDetails]]"
-                without-pagination
                 has-collapse
-                no-table-title>
+                base-permission-path="[[basePermissionPath]]">
         </list-tab-main>
 
         <dialog-element
@@ -72,11 +82,10 @@
                         readonly$="[[requestInProcess]]"
                         error-message="This field is required"
                         on-focus="_resetFieldError"
-                        no-title-attr></etools-searchable-multiselection-menu>
+                        no-title-attr>
+                </etools-searchable-multiselection-menu>
                 <paper-tooltip offset="0">[[partnerOrganisation.name]]</paper-tooltip>
-
             </div>
-
         </dialog-element>
     </template>
 

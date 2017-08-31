@@ -55,6 +55,16 @@ Polymer({
                 };
             }
         },
+        optionsModel: {
+            type: Object,
+            value: function() {
+                return {
+                    partnership: null,
+                    cp_output: null,
+                    locations: null,
+                };
+            },
+        },
         partnerRequestInProcess: {
             type: Boolean,
             value: false,
@@ -107,7 +117,7 @@ Polymer({
                     'property': 'file',
                     'label': 'Link to eTools Programme Documents',
                     'path': 'pd_files',
-                    'files': 'true',
+                    'details_html': 'true',
                 }];
             }
         },
@@ -144,11 +154,14 @@ Polymer({
     observers: [
         '_setSomeRequestInProcess(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess)',
         '_requestPartner(editedItem.implementing_partner.id)',
-        '_requestPartnership(editedItem.partnership.id)',
+        '_requestPartnership(optionsModel.partnership.id)',
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject.tpm_activities)',
-        'updateStyles(basePermissionPath, someRequestInProcess, editedItem.*)',
+        'updateStyles(basePermissionPath, someRequestInProcess, editedItem.*, optionsModel.*)',
         'resetAttachments(dialogOpened)',
+        '_setPartnershipValue(partner.interventions, editedItem.partnership)',
+        '_setCpValue(cpOutputs, editedItem.cp_output)',
+        '_setLocationsValue(locations, editedItem.locations)',
     ],
 
     ready: function() {
@@ -173,19 +186,60 @@ Polymer({
         return !partnerDefined || !partnershipDefined || someRequestInProcess;
     },
 
+    _setPartnershipValue: function(options, value) {
+        if (value && value.id && options && options.length) {
+            let optionsContainsPartnership = options.find((option) => {
+                return option.id === value.id;
+            });
+            if (optionsContainsPartnership) {
+                this.async(() => {
+                    this.set('optionsModel.partnership', value);
+                }, 200);
+            }
+        }
+    },
+
+    _setCpValue: function(options, value) {
+        if (value && value.id && options && options.length) {
+            let optionsContainsCp = options.find((option) => {
+                return option.id === +value.id;
+            });
+            if (optionsContainsCp) {
+                this.async(() => {
+                    this.set('optionsModel.cp_output', value);
+                }, 200);
+            }
+        }
+    },
+
+    _setLocationsValue: function(options, values) {
+        if (values && values.length && options && options.length) {
+            let filteredLocations = _.filter(values, (location) => {
+                return !!options.find((option) => {
+                    return option.id === location.id;
+                });
+            });
+            if (filteredLocations.length === values.length && filteredLocations.length !== 0) {
+                this.async(() => {
+                    this.set('optionsModel.locations', values);
+                }, 200);
+            }
+        }
+    },
+
     _requestPartner: function(partnerId) {
         if (this.partnerRequestInProcess || this.lastPartnerId === partnerId) { return; }
         this.lastPartnerId = partnerId;
 
         if (!this.editDialogOpened) {
             this.set('partnership', null);
-            this.set('editedItem.partnership', null);
+            this.set('optionsModel.partnership', null);
             this.set('partner.interventions', []);
 
-            this.set('editedItem.locations', []);
+            this.set('optionsModel.locations', []);
             this.set('locations', []);
 
-            this.set('editedItem.cp_output', null);
+            this.set('optionsModel.cp_output', null);
             this.set('cpOutputs', []);
         }
 
@@ -209,10 +263,10 @@ Polymer({
         this.lastPartnershipId = partnershipId;
 
         if (!this.editDialogOpened) {
-            this.set('editedItem.locations', []);
+            this.set('optionsModel.locations', []);
             this.set('locations', []);
 
-            this.set('editedItem.cp_output', null);
+            this.set('optionsModel.cp_output', null);
             this.set('cpOutputs', []);
         }
 
@@ -301,12 +355,21 @@ Polymer({
     },
 
     _getData: function() {
-        let paths = ['implementing_partner.id', 'partnership.id', 'cp_output.id', 'date', '_delete', 'locations'];
-        let originalData = _.pick(this.originalEditedObj, paths);
+        let paths = ['implementing_partner.id', 'date', '_delete'];
+        let optionsPaths = ['partnership.id', 'cp_output.id', 'locations'];
+        let allPaths = paths.concat(optionsPaths);
+
+        let originalData = _.pick(this.originalEditedObj, allPaths);
         let currentData = _.pick(this.editedItem, paths);
+        let optionsData = {};
         let changedData = {};
 
-        paths.forEach((path) => {
+        optionsPaths.forEach((path) => {
+            _.set(optionsData, path, _.get(this.optionsModel, path) || null);
+        });
+        _.assign(currentData, optionsData);
+
+        allPaths.forEach((path) => {
             let originalValue = _.get(originalData, path);
             let currentValue = _.get(currentData, path);
 

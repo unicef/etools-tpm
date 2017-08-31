@@ -128,7 +128,7 @@
                                <div class$="row-details-content w[[item.size]]">
                                    <span class="rdc-title">[[getHeadingLabel(basePermissionPath, item)]]</span>
 
-                                   <template is="dom-if" if="[[!_isOneOfType(item, 'files')]]">
+                                   <template is="dom-if" if="[[!_isOneOfType(item, 'details_html')]]">
                                        <template is="dom-if" if="[[_getValue(item, data)]]">
                                            [[_getValue(item, data)]]
                                        </template>
@@ -138,7 +138,7 @@
                                        </template>
                                    </template>
 
-                                   <template is="dom-if" if="[[_isOneOfType(item, 'files')]]">
+                                   <template is="dom-if" if="[[_isOneOfType(item, 'details_html')]]">
                                        <insert-html html="[[_getValue(item, data)]]"></insert-html>
                                    </template>
                                </div>

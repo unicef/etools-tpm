@@ -3,63 +3,181 @@
 (function() {
     Polymer({
         is: 'search-and-filter',
-        behaviors: [TPMBehaviors.QueryParamsController],
+
+        behaviors: [
+            TPMBehaviors.QueryParamsController
+        ],
+
         properties: {
-            filters: Array,
+            filters: {
+                type: Array,
+                value: function() {
+                    return [];
+                }
+            },
+            searchLabel: {
+                type: String
+            },
+            searchString: {
+                type: String
+            },
             usedFilters: {
                 type: Array,
-                value: [],
+                value: function() {
+                    return [];
+                }
             },
-            availableFilters: Array,
+            availableFilters: {
+                type: Array,
+                value: []
+            },
             queryParams: {
                 type: Object,
                 notify: true
             }
         },
-        observers: ['hiddenOn(queryParams.show_hidden)'],
+
+        observers: [
+            '_restoreFilters(queryParams.*)'
+        ],
+
         searchKeyDown: function() {
-            //    search logic
+            this.debounce('searchKeyDown', () => {
+                if (this.searchString.length !== 1) {
+                    this.updateQueries({search: this.searchString || undefined, page: '1'});
+                }
+            }, 300);
         },
+
         addFilter: function(e) {
-            var newFilter = this.filters.filter(function(filter) {
-                return filter.name === e.model.item.name;
-            })[0];
+            let query = (typeof e === 'string') ? e : e.model.item.query;
+            let alreadySelected = this.usedFilters.findIndex((filter) => {
+                return filter.query === query;
+            });
 
-            this.set('availableFilters', this.availableFilters.filter(function(filter) {
-                return filter.name !== newFilter.name;
-            }));
+            if (alreadySelected === -1) {
+                let newFilter = this.filters.find((filter) => {
+                    return filter.query === query;
+                });
 
-            this.push('usedFilters', newFilter);
+                this.set('availableFilters', this.availableFilters.filter((filter) => {
+                    return filter.query !== newFilter.query;
+                }));
+
+                this._setFilterValue(newFilter);
+                this.push('usedFilters', newFilter);
+
+                if (this.queryParams[query] === undefined) {
+                    let queryObject = {};
+                    queryObject[query] = true;
+                    this.updateQueries(queryObject);
+                }
+            }
         },
+
         removeFilter: function(e) {
+            let query = e.model.item.query;
+            let removedFilter = this.filters.find((filter) => {
+                return filter.query === query;
+            });
 
-            var filterName = e.model.item.name;
-            var pristineFilter = this.filters.filter(function(filter) {
-                return filter.name === filterName;
-            })[0];
+            this.push('availableFilters', removedFilter);
 
-            this.push('availableFilters', pristineFilter);
-
-            var indexToRemove = this.usedFilters.indexOf(e.model.item);
+            let indexToRemove = this.usedFilters.indexOf(e.model.item);
+            let queryObject = {};
+            queryObject[query] = undefined;
+            queryObject.page = '1';
 
             this.splice('usedFilters', indexToRemove, 1);
+            this.updateQueries(queryObject);
         },
-        _changeShowHidden: function() {
-            if (this.showHidden) {
-                this.updateQueries({show_hidden: 'true'});
+
+        _restoreFilters: function() {
+            this.debounce('_restoreFilters', () => {
+                let queryParams = this.queryParams;
+
+                if (!queryParams) {
+                    return;
+                }
+
+                this.availableFilters = this.filters;
+                this.usedFilters = [];
+
+                if (queryParams.search) {
+                    this.set('searchString', queryParams.search);
+                } else {
+                    this.set('searchString', '');
+                }
+
+                this.filters.forEach((filter) => {
+                    if (queryParams[filter.query] !== undefined) {
+                        this.addFilter(filter.query);
+                    }
+                });
+            }, 50);
+        },
+
+        _getFilterIndex: function(query) {
+            if (!this.filters) { return -1; }
+
+            return this.filters.findIndex((filter) => {
+                return filter.query === query;
+            });
+        },
+
+        _setFilterValue: function(filter) {
+            if (!filter) {
+                return;
+            }
+
+            let filterValue = this.get(`queryParams.${filter.query}`);
+
+            if (filterValue !== undefined) {
+                filter.value = this._getFilterValue(filterValue, filter);
             } else {
-                this.updateQueries({show_hidden: false});
+                filter.value = undefined;
             }
         },
-        hiddenOn: function(on) {
-            if (on && !this.showHidden) {
-                this.showHidden = true;
-            } else if (!on && this.showHidden) {
-                this.showHidden = false;
+
+        _getFilterValue: function(filterValue, filter) {
+            if (!filter || !filter.selection || filterValue === undefined) {
+                return;
+            }
+
+            let optionValue = filter.optionValue;
+
+            return filter.selection.find((selectionItem) => {
+                return selectionItem[optionValue].toString() === filterValue;
+            });
+        },
+
+        _getFilter: function(query) {
+            let filterIndex = this.filters.findIndex((filter) => {
+                return filter.query === query;
+            });
+
+            if (filterIndex !== -1) {
+                return this.get(`filters.${filterIndex}`);
+            } else {
+                return {};
             }
         },
-        ready: function() {
-            this.availableFilters = this.filters;
+
+        _changeFilterValue: function(e, detail) {
+            if (!e || !e.currentTarget || !detail) {
+                return;
+            }
+
+            let query = e.currentTarget.id;
+
+            if (detail.selectedValues && query) {
+                let filter = this._getFilter(query);
+                let optionValue = filter.optionValue || 'value';
+                let queryObject = {page: '1'};
+                queryObject[query] = detail.selectedValues[optionValue];
+
+                this.updateQueries(queryObject);
+            }
         }
     });
 })();

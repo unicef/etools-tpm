@@ -1,51 +1,55 @@
-<!--import [polymer, paper-input, paper-card, iron-icon, etools-searchable-multiselection-menu,
-            paper-menu-button, paper-button, paper-menu, paper-toggle-button,
-            shared-styles, module-styles, iron-flex-layout, query-params-controller]-->
+<!--import [polymer, paper-input, paper-card, iron-icon, etools-searchable-multiselection-menu, paper-menu-button,
+            paper-button, paper-menu, iron-flex-layout]-->
+
+<!--import [shared-styles, module-styles, tab-inputs-styles, query-params-controller]-->
 
 <dom-module id="search-and-filter">
     <template>
-        <style include="shared-styles module-styles iron-flex"></style>
+        <style include="shared-styles module-styles tab-inputs-styles iron-flex"></style>
          <!--inject styles './search-and-filter.scss'-->
 
         <paper-card class="second-header horizontal layout center">
-
             <div class="flex horizontal layout wrap">
                 <div class="layout horizontal search-input-container">
                     <paper-input
-                            inline
-                            id="search-input"
-                            label="Search vendor # or name"
-                            on-keydown="searchKeyDown">
+                            value="{{searchString}}"
+                            label="[[searchLabel]]"
+                            on-keydown="searchKeyDown"
+                            inline>
 
                         <iron-icon icon="search" prefix></iron-icon>
                     </paper-input>
                 </div>
+
                 <!-- FILTERS -->
                 <template is="dom-repeat" items="[[usedFilters]]">
-
                     <div class="layout horizontal">
-
-                        <etools-searchable-multiselection-menu label="[[item.name]]" class="filter-dropdown"
-                                                               id="[[item.filterName]]"
-                                                               options="[[item.selection]]"
-                                                               on-value-change="changeFilterValue"
-                                                               placeholder="Select">
+                        <etools-searchable-multiselection-menu
+                                id="[[item.query]]"
+                                class="filter-dropdown"
+                                value="[[item.value]]"
+                                label="[[item.label]]"
+                                placeholder$="Select [[item.name]]"
+                                options="[[item.selection]]"
+                                custom-object-options
+                                option-label="[[item.optionLabel]]"
+                                option-value="[[item.optionValue]]"
+                                on-value-change="_changeFilterValue"
+                                hide-search="[[item.hideSearch]]">
                         </etools-searchable-multiselection-menu>
 
                         <div class="filter-reset-button" on-click="removeFilter">×</div>
                     </div>
                 </template>
-
             </div>
 
             <!-- ADD FILTERS -->
             <div id="add-filter-container">
-
-                <paper-menu-button>
-
+                <paper-menu-button horizontal-align="right" vertical-align="top" no-overlap>
                     <paper-button class="dropdown-trigger">
                         <iron-icon icon="filter-list" class="filter-list-icon"></iron-icon>
-                        ADD FILTER
+
+                        <span class="add-filter-text">ADD FILTER</span>
                     </paper-button>
 
                     <paper-menu class="dropdown-content">
@@ -55,18 +59,7 @@
                     </paper-menu>
                 </paper-menu-button>
             </div>
-
-            <div class="toggle-hidden-div horizontal layout center">
-                <span>Show hidden</span>
-                <paper-toggle-button
-                        id="show-hidden-toggle"
-                        checked="{{showHidden}}"
-                        on-change="_changeShowHidden"
-                        class="right-float">
-                </paper-toggle-button>
-            </div>
         </paper-card>
-
     </template>
 
     <!-- inject scripts './search-and-filter.js'-->
