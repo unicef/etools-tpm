@@ -8,9 +8,12 @@ Polymer({
         TPMBehaviors.CommonMethodsBehavior
     ],
     properties: {
+        basePermissionPath: {
+            type: String
+        },
         mainProperty: {
             type: String,
-            value: 'staff_members'
+            value: 'user'
         },
         partnerId: {
             type: String
@@ -133,7 +136,7 @@ Polymer({
         'resetDialog(dialogOpened)',
         '_handleUpdateError(errorObject.staff_members)',
         '_queriesChanged(listSize, listPage, searchQuery)',
-        'updateStyles(emailChecking, staffBase, addDialog)'
+        'updateStyles(emailChecking, basePermissionPath, addDialog)'
     ],
 
     attached: function() {
