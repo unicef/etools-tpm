@@ -43,6 +43,8 @@
                     'label': 'Implementing Partners',
                     'path': 'implementing_partners',
                     'html': 'true',
+                    'class': 'no-order',
+                    'noOrder': true,
                 }, {
                     'size': 20,
                     'label': 'Status',

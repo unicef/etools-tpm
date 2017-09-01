@@ -345,6 +345,14 @@ Polymer({
         this.cpRequestInProcess = false;
     },
 
+    locationsTooltipText: function(locations) {
+        if (!(locations instanceof Array)) { return ''; }
+        let names = locations
+            .map(location => location && location.name)
+            .filter(name => name !== undefined);
+        return names.join(', ');
+    },
+
     _openDialog: function(index) {
         if (!this.deleteDialog) {
             this.editDialogOpened = true;
