@@ -86,26 +86,25 @@
 
                 loadStaticData: function () {
                     if (!this.isTpmUser()) {
-                        this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
+                        this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
                         this.outputsEndpoint = this.getEndpoint('cpOutputs').url;
                         this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
                         this.officesEndpoint = this.getEndpoint('offices').url;
                     }
 
-                    this.partnersUrl = this.getEndpoint('partnersList').url;
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
+                    this.partnersUrl = this.getEndpoint('partnersList').url;
                     this.locationsUrl = this.getEndpoint('locations').url;
                     this._allDataLoaded();
                 },
 
                 _allDataLoaded: function() {
                     let tpmUser = this.isTpmUser();
-                    if (((dataLoaded.organizations && dataLoaded.outputs) || tpmUser) &&
-                            dataLoaded.visitsOptions &&
-                            ((dataLoaded.sections &&  dataLoaded.unicefUsers &&
-                            dataLoaded.offices && dataLoaded.partnersOptions && dataLoaded.locations) || tpmUser)) {
+                    if (dataLoaded.visitsOptions && dataLoaded.partners && dataLoaded.locations &&
+                        (tpmUser || (dataLoaded.partnersOptions && dataLoaded.organizations && dataLoaded.outputs &&
+                        dataLoaded.sections && dataLoaded.unicefUsers && dataLoaded.offices))) {
                         this.fire('initial-data-loaded');
                     }
                 },
