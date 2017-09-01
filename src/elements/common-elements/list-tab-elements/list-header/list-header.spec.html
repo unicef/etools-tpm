@@ -74,6 +74,23 @@
                 assert.isUndefined(myEl.orderBy);
             });
 
+            it('should do nothing if event.model.item is undefined', function () {
+                let event = {model: {item: undefined}};
+
+                assert.isUndefined(myEl.orderBy);
+                myEl._changeOrder(event);
+                assert.isUndefined(myEl.orderBy);
+            });
+
+
+            it('should do nothing if event.model.item.noOrder is true', function () {
+                let event = {model: {item: {noOrder: true}}};
+
+                assert.isUndefined(myEl.orderBy);
+                myEl._changeOrder(event);
+                assert.isUndefined(myEl.orderBy);
+            });
+
             it('toggles current order direction', function () {
                 myEl.orderBy = orderByProp;
 
