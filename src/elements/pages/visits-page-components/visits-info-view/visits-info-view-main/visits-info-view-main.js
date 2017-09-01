@@ -36,6 +36,7 @@ Polymer({
     listeners: {
         'action-activated': '_processAction',
         'delete-confirmed': 'cancelVisit',
+        'dialog-confirmed': 'rejectAction',
     },
 
     ready: function() {
