@@ -179,10 +179,23 @@ Polymer({
         return dataItemsLength || 0;
     },
 
-    _isReadOnly: function(partner, partnership, someRequestInProcess) {
+    _canBeChanged: function(basePermissionPath) {
+        let fields = [
+            'tpm_activities.implementing_partner', 'tpm_activities.partnership',
+            'tpm_activities.cp_output', 'tpm_activities.section', 'tpm_activities.date',
+            'tpm_activities.locations', 'tpm_activities.additional_information'
+        ];
+        //return true if some field can be edited
+        return fields.some((field) => {
+            return !this.isReadOnly(field, basePermissionPath);
+        });
+    },
+
+    _isReadOnly: function(field, partner, partnership, someRequestInProcess, basePermissionPath) {
+        let fieldReadonly = this.isReadOnly(field, basePermissionPath);
         let partnerDefined = partner && (partner.id || partner.id === 0) || partner === 'true';
         let partnershipDefined = partnership && (partnership.id || partnership.id === 0) || partnership === 'true';
-        return !partnerDefined || !partnershipDefined || someRequestInProcess;
+        return fieldReadonly || !partnerDefined || !partnershipDefined || someRequestInProcess;
     },
 
     _setPartnershipValue: function(options, value) {
