@@ -88,16 +88,5 @@ Polymer({
                 name: `${profile.user.first_name} ${profile.user.last_name}`
             };
         });
-    },
-
-    getTooltipText: function(selected, options) {
-        let tooltip = '';
-        _.each(selected, (value) => {
-            let displayValue = _.filter(options, ['id', +value]);
-            if (displayValue.length > 0) {
-                tooltip += displayValue[0].name;
-            }
-        });
-        return tooltip;
     }
 });
