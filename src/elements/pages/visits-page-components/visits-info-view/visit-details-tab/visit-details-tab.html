@@ -55,31 +55,6 @@
             <div class="row-h group">
                 <div class="input-container input-container-l">
                     <etools-searchable-multiselection-menu
-                            class$="disabled-as-readonly validate-input [[_setRequired('sections', permissionBase)]] fua-description"
-                            label="[[getLabel('sections', permissionBase)]]"
-                            placeholder="[[getPlaceholderText('sections', permissionBase)]]"
-                            options="[[sectionsList]]"
-                            custom-object-options
-                            option-label="name"
-                            option-value="id"
-                            selected-values="{{selectedSections}}"
-                            value="{{visit.sections}}"
-                            required$="[[_setRequired('sections', permissionBase)]]"
-                            disabled$="[[isReadOnly('sections', permissionBase)]]"
-                            readonly$="[[isReadOnly('sections', permissionBase)]]"
-                            invalid="{{errors.sections}}"
-                            error-message="{{errors.sections}}"
-                            on-focus="_resetFieldError"
-                            multi
-                            hide-search
-                            no-title-attr>
-                    </etools-searchable-multiselection-menu>
-                    <paper-tooltip offset="0">[[getTooltipText(selectedSections, sectionsList, 'name')]]</paper-tooltip>
-                </div>
-            </div>
-            <div class="row-h group">
-                <div class="input-container input-container-l">
-                    <etools-searchable-multiselection-menu
                             class$="disabled-as-readonly validate-input [[_setRequired('unicef_focal_points', permissionBase)]] fua-description"
                             label="[[getLabel('unicef_focal_points', permissionBase)]]"
                             placeholder="[[getPlaceholderText('unicef_focal_points', permissionBase)]]"

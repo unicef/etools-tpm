@@ -31,7 +31,6 @@ Polymer({
     },
 
     ready: function() {
-        this.sectionsList = this.getData('sections');
         this.officesList = this.getData('offices');
         this.unicefUsersList = (this.getData('unicefUsers') || []).map((user) => {
             return {
@@ -65,7 +64,6 @@ Polymer({
 
     getDetailsData: function() {
         let data = {
-            sections: this.selectedSections || [],
             unicef_focal_points: this.selectedFocalPoints || [],
             offices: this.selectedOfficers || [],
             tpm_partner_focal_points: this.selectedTpms || []

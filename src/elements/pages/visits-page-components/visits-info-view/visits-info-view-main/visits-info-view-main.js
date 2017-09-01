@@ -125,7 +125,6 @@ Polymer({
         let data = {};
         let visitDetailsData = this.$.visitDetails && this.$.visitDetails.getDetailsData();
         if (visitDetailsData) {
-            data.sections = visitDetailsData.sections;
             data.unicef_focal_points = visitDetailsData.unicef_focal_points;
             data.offices = visitDetailsData.offices;
             data.tpm_partner_focal_points = visitDetailsData.tpm_partner_focal_points;
