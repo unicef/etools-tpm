@@ -133,7 +133,7 @@
                                     hide-search
                                     no-title-attr>
                             </etools-searchable-multiselection-menu>
-                            <paper-tooltip offset="0">[[optionsModel.partnership.name]]</paper-tooltip>
+                            <paper-tooltip offset="0">[[optionsModel.partnership.title]]</paper-tooltip>
 
                             <etools-loading active="{{partnershipRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
@@ -248,7 +248,7 @@
                                     hide-search
                                     no-title-attr>
                             </etools-searchable-multiselection-menu>
-                            <paper-tooltip offset="0">[[optionsModel.locations.name]]</paper-tooltip>
+                            <paper-tooltip offset="0">[[locationsTooltipText(optionsModel.locations)]]</paper-tooltip>
                         </div>
                     </div>
 
