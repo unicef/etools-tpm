@@ -1,8 +1,8 @@
 <!--import [polymer, etools-content-panel, lodash, paper-icon-button, paper-input, iron-icons,
             etools-searchable-multiselection-menu, etools-datepicker, lodash]-->
 <!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, list-element, activity-partnership-element,
-            dialog-element, file-upload, date-behavior, static-data-behavior, common-methods-behavior, table-elements-behavior,
-            get-partner-organisation-data, get-partnership-data, get-cp-outputs-data]-->
+            dialog-element, date-behavior, static-data-behavior, common-methods-behavior, table-elements-behavior,
+            textarea-max-rows-behavior, get-partner-organisation-data, get-partnership-data, get-cp-outputs-data]-->
 
 <dom-module id="visit-activity-tab">
     <template>
@@ -83,7 +83,7 @@
             <div class="row-h repeatable-item-container" without-line>
                 <div class="repeatable-item-content">
                     <div class="row-h group">
-                        <div class="input-container input-container-ms">
+                        <div class="input-container input-container-l">
                             <!-- Implementing Partner -->
                             <etools-searchable-multiselection-menu
                                     class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.implementing_partner', basePermissionPath)]]"
@@ -108,8 +108,10 @@
 
                             <etools-loading active="{{partnerRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
+                    </div>
 
-                        <div class="input-container input-container-ms">
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
                             <!-- Partnership-->
                             <etools-searchable-multiselection-menu
                                     class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partnership', basePermissionPath)]]"
@@ -138,7 +140,7 @@
                     </div>
 
                     <div class="row-h group">
-                        <div class="input-container input-container-ms">
+                        <div class="input-container input-container-l">
                             <!-- CP Output -->
                             <etools-searchable-multiselection-menu
                                     class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.cp_output', basePermissionPath)]]"
@@ -164,8 +166,35 @@
 
                             <etools-loading active="{{cpRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
+                    </div>
 
-                        <div class="input-container input-container-ms">
+                    <div class="row-h group">
+                        <div class="input-container input-container-70">
+                            <!-- Section -->
+                            <etools-searchable-multiselection-menu
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.section', basePermissionPath)]]"
+                                    value="{{editedItem.section}}"
+                                    label="[[getLabel('tpm_activities.section', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.section', basePermissionPath)]]"
+                                    options="[[sections]]"
+                                    custom-object-options
+                                    option-label="name"
+                                    option-value="id"
+                                    update-selected
+                                    required$="[[_setRequired('tpm_activities.section', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
+                                    invalid="{{errors.section}}"
+                                    error-message="{{errors.section}}"
+                                    on-focus="_resetFieldError"
+                                    dynamic-align
+                                    hide-search
+                                    no-title-attr>
+                            </etools-searchable-multiselection-menu>
+                            <paper-tooltip offset="0">[[editedItem.section.name]]</paper-tooltip>
+                        </div>
+
+                        <div class="input-container input-container-s">
                             <!-- Date of visit-->
                             <paper-input
                                     id="dateOfVisitInput"
@@ -224,16 +253,23 @@
                     </div>
 
                     <div class="row-h group">
-                        <div class="input-container input-container-ms">
-                            <file-upload
-                                    id="fileUpload"
-                                    label="[[getLabel('tpm_activities.pd_files', basePermissionPath)]]"
-                                    upload-label="[[getLabel('tpm_activities.pd_files.file', basePermissionPath)]]"
-                                    disabled="[[someRequestInProcess]]"
-                                    readonly="[[isReadOnly('tpm_activities.pd_files', basePermissionPath, someRequestInProcess)]]"
-                                    errors="{{errors.pd_files}}"
-                                    files="[[editedItem.pd_files]]">
-                            </file-upload>
+                        <div class="input-container input-container-l">
+                            <!-- Additional information -->
+                            <paper-textarea
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.additional_information', basePermissionPath)]]"
+                                    value="{{editedItem.additional_information}}"
+                                    label="[[getLabel('tpm_activities.additional_information', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.additional_information', basePermissionPath)]]"
+                                    required$="[[_setRequired('tpm_activities.additional_information', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
+                                    readonly$="[[_isReadOnly('true', 'true', someRequestInProcess)]]"
+                                    max-rows="4"
+                                    invalid$="{{errors.additional_information}}"
+                                    error-message="{{errors.additional_information}}"
+                                    on-focus="_resetFieldError"
+                                    no-title-attr>
+                            </paper-textarea>
+                            <paper-tooltip offset="0">[[editedItem.additional_information]]</paper-tooltip>
                         </div>
                     </div>
                 </div>
