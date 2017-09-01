@@ -7,7 +7,8 @@ Polymer({
         TPMBehaviors.DateBehavior,
         TPMBehaviors.StaticDataController,
         TPMBehaviors.TableElementsBehavior,
-        TPMBehaviors.CommonMethodsBehavior
+        TPMBehaviors.CommonMethodsBehavior,
+        TPMBehaviors.TextareaMaxRowsBehavior,
     ],
 
     properties: {
@@ -51,7 +52,8 @@ Polymer({
                     },
                     date: '',
                     locations: [],
-                    pd_files: []
+                    section: null,
+                    additional_information: '',
                 };
             }
         },
@@ -107,17 +109,18 @@ Polymer({
             value: function() {
                 return [{
                     'size': 100,
+                    'label': 'Section',
+                    'path': 'section.name',
+                }, {
+                    'size': 100,
                     'name': 'array',
                     'property': 'name',
                     'label': 'Locations',
                     'path': 'locations',
                 }, {
                     'size': 100,
-                    'name': 'files',
-                    'property': 'file',
-                    'label': 'Link to eTools Programme Documents',
-                    'path': 'pd_files',
-                    'details_html': 'true',
+                    'label': 'Additional information',
+                    'path': 'additional_information',
                 }];
             }
         },
@@ -158,7 +161,6 @@ Polymer({
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject.tpm_activities)',
         'updateStyles(basePermissionPath, someRequestInProcess, editedItem.*, optionsModel.*)',
-        'resetAttachments(dialogOpened)',
         '_setPartnershipValue(partner.interventions, editedItem.partnership)',
         '_setCpValue(cpOutputs, editedItem.cp_output)',
         '_setLocationsValue(locations, editedItem.locations)',
@@ -166,10 +168,7 @@ Polymer({
 
     ready: function() {
         this.partners = this.getData('partnerOrganisations') || [];
-    },
-
-    resetAttachments: function() {
-        this.$.fileUpload.reset();
+        this.sections = this.getData('sections') || [];
     },
 
     _setSomeRequestInProcess: function(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess) {
@@ -355,7 +354,7 @@ Polymer({
     },
 
     _getData: function() {
-        let paths = ['implementing_partner.id', 'date', '_delete'];
+        let paths = ['implementing_partner.id', 'date', 'section.id', 'additional_information', '_delete'];
         let optionsPaths = ['partnership.id', 'cp_output.id', 'locations'];
         let allPaths = paths.concat(optionsPaths);
 
@@ -385,6 +384,8 @@ Polymer({
         let implementingPartner = _.get(changedData, 'implementing_partner.id') || undefined;
         let partnership = _.get(changedData, 'partnership.id');
         let cpOutput = _.get(changedData, 'cp_output.id');
+        let section = _.get(changedData, 'section.id');
+        let additionalInformation = _.get(changedData, 'additional_information');
         let date = _.get(changedData, 'date') || undefined;
         let _delete = _.get(changedData, '_delete');
         let locations = _.isEqual(originalData.locations, currentData.locations) ? [] : (currentData.locations || []);
@@ -398,9 +399,10 @@ Polymer({
             implementing_partner: implementingPartner,
             partnership,
             cp_output: cpOutput,
+            section,
+            additional_information: additionalInformation,
             date,
             locations,
-            section: 1,
             _delete,
         };
     },
@@ -408,28 +410,17 @@ Polymer({
     getActivitiesData: function() {
         if (!this.dialogOpened) { return null; }
         let data = this._getData();
+        let dataValues = _.values(data);
+        let dataNotEmpty = dataValues.some(value => value !== undefined);
 
-        return new Promise((resolve, reject) => {
-            this.$.fileUpload.getFiles()
-                .then((files) => {
-                    data.pd_files = files;
+        if (dataNotEmpty && !this.addDialog) {
+            data.id = _.get(this.editedItem, 'id');
+        }
 
-                    let dataValues = _.values(data);
-                    let dataNotEmpty = dataValues.some(value => value !== undefined);
+        if (dataNotEmpty) {
+            return [data];
+        }
 
-                    if (dataNotEmpty && !this.addDialog) {
-                        data.id = _.get(this.editedItem, 'id');
-                    }
-
-                    if (dataNotEmpty) {
-                        resolve([data]);
-                    } else {
-                        resolve(null);
-                    }
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+        return null;
     },
 });
