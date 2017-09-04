@@ -28,9 +28,8 @@
 
         <etools-content-panel panel-title="TPM Staff Members ([[_staffLength(datalength, dataItems.length, searchQuery)]])" show-expand-btn>
             <div slot="panel-btns">
-                <div class="add-button-container">
-                    <paper-icon-button hidden$="[[!_canBeChanged(basePermissionPath)]]"
-                                       class="panel-button"
+                <div class="add-button-container" hidden$="[[!_canBeChanged(basePermissionPath)]]">
+                    <paper-icon-button class="panel-button"
                                        on-tap="openAddDialog"
                                        icon="add-box"></paper-icon-button>
                     <paper-tooltip offset="0">Add</paper-tooltip>
