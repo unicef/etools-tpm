@@ -18,6 +18,11 @@
 
     iron-icon { display: inline-block;}
 
+    &.vision-container {
+        border-bottom: none;
+        padding: 25px 35px 0;
+    }
+
     .status-icon {
         .icon-wrapper {
             background-color: var(--gray-light);
@@ -53,7 +58,8 @@
         margin-bottom: 15px;
         box-sizing: border-box;
         text-transform: capitalize;
-        color: var(--gray-mid);
+        color: inherit;
+        font-weight: bold;
 
         .status-date {
             color: var(--gray-mid);
@@ -85,10 +91,6 @@
             iron-icon[icon="warning"] { display: none; }
             .status-nr { display: none; }
         }
-        .status {
-            color: inherit;
-            font-weight: bold;
-        }
     }
 
     &.cancelled {
@@ -101,10 +103,6 @@
                 color: var(--gray-darkest);
             }
         }
-        .status {
-            color: inherit;
-            font-weight: bold;
-        }
     }
 
     &.draft {
@@ -116,9 +114,54 @@
                 height: 16px;
             }
         }
-        .status {
-            color: inherit;
-            font-weight: bold;
+    }
+
+    &.synced {
+        .status-icon .icon-wrapper {
+            background: var(--module-success);
+            iron-icon[icon="autorenew"] {
+                display: inline-block;
+                --iron-icon-height: 100%;
+                --iron-icon-width: 100%;
+            }
+            .status-nr { display: none; }
+        }
+    }
+
+    &.not_synced {
+        .status-icon .icon-wrapper {
+            background: #3A94FF;
+            iron-icon[icon="info"] {
+                display: inline-block;
+                --iron-icon-height: 100%;
+                --iron-icon-width: 100%;
+            }
+            .status-nr { display: none; }
+        }
+    }
+
+    &.blocked {
+        .status-icon .icon-wrapper {
+            background: var(--module-warning);
+            iron-icon[icon="block"] {
+                display: inline-block;
+                --iron-icon-height: 100%;
+                --iron-icon-width: 100%;
+            }
+            .status-nr { display: none; }
+        }
+    }
+
+    &.deleted {
+        .status-icon .icon-wrapper {
+            background: transparent;
+            iron-icon[icon="delete-forever"] {
+                color: var(--module-error);
+                display: inline-block;
+                width: 25px;
+                height: 25px;
+            }
+            .status-nr { display: none; }
         }
     }
 }

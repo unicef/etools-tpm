@@ -27,7 +27,8 @@ Polymer({
 
     observers: [
         '_setPermissionBase(partner.id)',
-        '_routeConfig(route)'
+        '_routeConfig(route)',
+        '_setVisionStatus(partner)'
     ],
 
     listeners: {
@@ -150,6 +151,25 @@ Polymer({
             format = 'on DD MMMM, YYYY';
 
         return moment.utc(date).format(format);
+    },
+
+    _setVisionStatus: function(partner) {
+        let {synced, blocked, deleted} = partner || {};
+
+        if (!synced) {
+            this._setVisionTexts('not_synced', 'Not Synced');
+        } else if (deleted) {
+            this._setVisionTexts('deleted', 'Marked For Deletion in VISION');
+        } else if (blocked) {
+            this._setVisionTexts('blocked', 'Blocked in VISION');
+        } else {
+            this._setVisionTexts('synced', 'Synced from VISION');
+        }
+    },
+
+    _setVisionTexts: function(status, text) {
+        this.set('visionStatusName', text);
+        this.set('visionStatus', status);
     }
 
 });
