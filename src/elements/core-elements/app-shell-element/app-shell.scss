@@ -4,10 +4,6 @@
 
 
 app-drawer {
-    visibility: visible;
-    right: initial;
-    z-index: 65 !important;
-
     --app-drawer-width: 70px;
     --app-drawer-content-container: #{'{
         transform: translate3d(0, 0, 0);
@@ -15,11 +11,6 @@ app-drawer {
     }'};
 }
 
-app-drawer-layout {
-    padding-left: 70px;
-}
-
-app-header {
-    z-index: 60 !important;
-    padding-left: 70px;
+app-header-layout {
+    z-index: 102;
 }

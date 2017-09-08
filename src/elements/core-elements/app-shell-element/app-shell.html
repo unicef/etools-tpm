@@ -24,7 +24,7 @@
 
         <etools-loading id="global-loading" absolute></etools-loading>
 
-        <app-drawer-layout id="layout" opened-when-narrow force-narrow narrow="{{narrow}}">
+        <app-drawer-layout id="layout">
 
             <!-- Drawer content -->
             <app-drawer id="drawer" transition-duration="350" disable-swipe>
@@ -35,10 +35,11 @@
 
             <!-- Main content -->
 
-            <app-header id="header" fixed shadow>
-                <app-main-header user="[[user]]"></app-main-header>
-            </app-header>
-
+            <app-header-layout>
+                <app-header id="header" fixed shadow>
+                    <app-main-header user="[[user]]"></app-main-header>
+                </app-header>
+            </app-header-layout>
             <iron-pages id="pages"
                         selected="[[page]]"
                         attr-for-selected="name"
@@ -50,9 +51,9 @@
                                     query-params="{{queryParams}}"></partners-page-main>
 
                 <visits-page-main name="visits"
-                                 id="visits"
-                                 route="{{subroute}}"
-                                 query-params="{{queryParams}}"></visits-page-main>
+                                  id="visits"
+                                  route="{{subroute}}"
+                                  query-params="{{queryParams}}"></visits-page-main>
 
                 <not-found-page-view name="not-found" id="not-found"></not-found-page-view>
             </iron-pages>
