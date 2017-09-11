@@ -77,5 +77,8 @@ Polymer({
     exportData: function() {
         if (!this.exportLink) { throw 'Can not find export link!'; }
         window.open(this.exportLink, '_blank');
+    },
+    _toggleOpened: function() {
+        this.$.dropdownMenu.select(null);
     }
 });
