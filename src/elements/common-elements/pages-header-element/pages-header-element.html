@@ -14,21 +14,16 @@
                 <span class="flex title">[[_setTitle(pageData, pageTitle)]]</span>
 
                 <div class="side-heading-button-holder">
-                    <paper-menu-button hidden$="[[!showExportButton]]" on-tap="exportData">
+                    <paper-menu-button hidden$="[[!showExportButton]]">
                         <paper-button class="grey-buttons dropdown-trigger">
                             <iron-icon icon="file-download"></iron-icon>
                             Export
                         </paper-button>
+                        <paper-menu class="dropdown-content">
+                            <paper-item on-tap="exportData">Location Level</paper-item>
+                            <paper-item on-tap="exportData">Activity Level</paper-item>
+                        </paper-menu>
                     </paper-menu-button>
-
-                    <paper-button
-                            hidden$="[[hidePrintButton]]"
-                            class="grey-buttons"
-                            on-click="print">
-
-                        <iron-icon icon="print"></iron-icon>
-                        Print
-                    </paper-button>
 
                         <paper-button class="add-btn" raised hidden$="[[_hideAddButton(showAddButton)]]"
                                       on-tap="addNewTap">
