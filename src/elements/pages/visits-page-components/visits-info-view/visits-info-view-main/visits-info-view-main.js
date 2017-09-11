@@ -57,13 +57,14 @@ Polymer({
     observers: [
         '_setPermissionBase(visit.id)',
         'resetDialog(dialogOpened)',
+        'resetApprovalDialog(approvalDialog)',
         '_createActivitiesId(visit.tpm_activities)'
     ],
 
     listeners: {
         'action-activated': '_processAction',
         'delete-confirmed': 'cancelVisit',
-        'dialog-confirmed': 'rejectAction',
+        'dialog-confirmed': 'confirmDialog',
     },
 
     ready: function() {
@@ -112,9 +113,8 @@ Polymer({
                 message = 'Sending report...';
             break;
             case 'approve':
-                method = 'POST';
-                message = 'Approving report...';
-            break;
+                this.approvalDialog = true;
+                return;
             default:
                 throw `Unknown event type: ${details.type}`;
         }
@@ -159,6 +159,14 @@ Polymer({
         return data;
     },
 
+    confirmDialog: function() {
+        if (this.dialogOpened) {
+            this.rejectAction();
+        } else {
+            this.approveVisit();
+        }
+    },
+
     rejectAction: function() {
         if (!this.dialogOpened) { return; }
         let input = this.$.rejectionReasonInput;
@@ -195,8 +203,47 @@ Polymer({
         this.dialogOpened = false;
     },
 
+    approveVisit: function() {
+        if (!this.approvalDialog) { return; }
+
+        let data = this._getApproveData();
+
+        this.newVisitDetails = {
+            method: 'POST',
+            id: this.visit.id,
+            data,
+            message: 'Approving report...',
+            action: 'approve',
+            ignorePatch: true
+        };
+
+        this.approvalDialog = false;
+    },
+
+    _getApproveData: function() {
+        let programmaticCheckboxes = Polymer.dom(this.root).querySelectorAll('paper-checkbox.programmatic-visit[checked]');
+        let programmaticVisits = programmaticCheckboxes.map(checkbox => +checkbox.getAttribute('activity-id'));
+
+        let data = {mark_as_programmatic_visit: programmaticVisits};
+
+        if (this.sendToUnicef) { data.notify_focal_point = true; }
+        if (this.sendToTpm) { data.notify_tpm_partner = true; }
+        if (this.approvalComment) { data.approval_comment = this.approvalComment; }
+
+        return data;
+    },
+
     resetDialog: function() {
         this.$.rejectionReasonInput.value = '';
+    },
+
+    resetApprovalDialog: function(opened) {
+        if (opened) { return; }
+        let checkboxes = Polymer.dom(this.root).querySelectorAll('paper-checkbox.programmatic-visit[checked]');
+        _.each(checkboxes, checkbox => checkbox.checked = false);
+        this.sendToUnicef = false;
+        this.sendToTpm = false;
+        this.approvalComment = '';
     },
 
     _resetFieldError: function(event) {

@@ -176,7 +176,7 @@
 
         </dialog-element>
 
-        <dialog-element opened
+        <dialog-element opened="{{approvalDialog}}"
                         approve-popup
                         dialog-title="Approve Report"
                         confirm-btn-text="Approve">
@@ -209,6 +209,7 @@
                 <div class="row-h group">
                     <div class="input-container input-container-l">
                         <paper-textarea label="Comments"
+                                        value="{{approvalComment}}"
                                         max-rows="4"
                                         id="approveComments"
                                         on-focus="_resetFieldError"
