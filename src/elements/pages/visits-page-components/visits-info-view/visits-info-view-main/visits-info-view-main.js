@@ -228,7 +228,7 @@ Polymer({
         if (!activities || !activities.length) { return; }
 
         _.each(activities, (activity, index) => {
-            activity.unique_id = `000${index + 1}`.slice(-4)
+            activity.unique_id = `000${index + 1}`.slice(-4);
         });
     }
 });
