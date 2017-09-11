@@ -13,13 +13,13 @@
         <etools-content-panel class="content-section clearfix" panel-title="TPM Partner Details">
             <div class="row-h group">
                 <div class="input-container">
-                    <!-- Organization name -->
-                    <paper-input label="{{getLabel('name', basePermissionPath)}}"
-                                 value="{{partner.name}}"
+                    <!-- Vendor number -->
+                    <paper-input label="{{getLabel('vendor_number', basePermissionPath)}}"
+                                 value="{{partner.vendor_number}}"
                                  placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly></paper-input>
-                    <paper-tooltip offset="0">[[_getTitleValue(partner.name)]]</paper-tooltip>
+                    <paper-tooltip offset="0">[[_getTitleValue(partner.vendor_number)]]</paper-tooltip>
                 </div>
 
                 <div class="input-container input-container-m">
@@ -39,13 +39,13 @@
             <div class="row-h group">
 
                 <div class="input-container">
-                    <!-- Vendor number -->
-                    <paper-input label="{{getLabel('vendor_number', basePermissionPath)}}"
-                                 value="{{partner.vendor_number}}"
+                    <!-- Organization name -->
+                    <paper-input label="{{getLabel('name', basePermissionPath)}}"
+                                 value="{{partner.name}}"
                                  placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly></paper-input>
-                    <paper-tooltip offset="0">[[_getTitleValue(partner.vendor_number)]]</paper-tooltip>
+                    <paper-tooltip offset="0">[[_getTitleValue(partner.name)]]</paper-tooltip>
                 </div>
 
                 <div class="input-container">

@@ -67,6 +67,12 @@
                         'property': 'name',
                         'label': 'UNICEF Focal Points',
                         'path': 'unicef_focal_points'
+                    }, {
+                        'size': 100,
+                        'name': 'array',
+                        'property': 'name',
+                        'label': 'Sections',
+                        'path': 'sections'
                     }];
                 }
             },

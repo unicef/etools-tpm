@@ -48,14 +48,9 @@
                     'link': 'partners/*data_id*/details',
                     'ordered': false
                 }, {
-                    'size': 40,
+                    'size': 50,
                     'label': 'Vendor Name',
                     'name': 'name',
-                    'ordered': false
-                }, {
-                    'size': 10,
-                    'label': 'Country',
-                    'name': 'country',
                     'ordered': false
                 }, {
                     'size': 15,

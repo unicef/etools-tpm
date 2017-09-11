@@ -86,15 +86,19 @@ Polymer({
         columns: {
             type: Array,
             value: [{
+                'size': 10,
+                'label': 'ID',
+                'name': 'unique_id'
+            },{
                 'size': 25,
                 'label': 'Implementing Partner',
                 'path': 'implementing_partner.name'
             }, {
-                'size': 30,
+                'size': 25,
                 'label': 'Partnership',
                 'path': 'partnership.title'
             }, {
-                'size': 30,
+                'size': 25,
                 'label': 'CP Output',
                 'path': 'cp_output.name'
             }, {
