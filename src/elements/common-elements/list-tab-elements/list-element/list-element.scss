@@ -44,6 +44,7 @@
 
             &.right { text-align: right; }
             &.center { text-align: center; }
+            &.overflow-visible { overflow: visible; }
         }
         a.col-data {
             color: var(--module-primary);

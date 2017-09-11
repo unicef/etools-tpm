@@ -120,3 +120,9 @@ paper-button[disabled]:not(.btn-cancel) {
         margin-bottom: 0 !important;
     }
 }
+
+:host([approve-popup]) {
+    .dialog-title {
+        margin-bottom: 0 !important;
+    }
+}

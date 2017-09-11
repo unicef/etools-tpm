@@ -26,6 +26,32 @@ Polymer({
                 return {};
             }
         },
+        columns: {
+            type: Array,
+            value: function() {
+                return [{
+                    'size': 15,
+                    'label': 'Id #',
+                    'path': 'unique_id'
+                }, {
+                    'size': 40,
+                    'label': 'Implementing Partner',
+                    'path': 'implementing_partner.name'
+                }, {
+                    'size': 45,
+                    'label': 'Partnership',
+                    'path': 'partnership.title'
+                }, {
+                    'size': '150px',
+                    'label': 'Programmatic Visit',
+                    'custom': true,
+                    'property': true,
+                    'class': 'overflow-visible',
+                    'align': 'center',
+                    'doNotHide': true
+                }];
+            }
+        }
     },
 
     observers: [
