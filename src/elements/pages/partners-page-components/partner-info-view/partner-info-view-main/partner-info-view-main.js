@@ -154,11 +154,11 @@ Polymer({
     },
 
     _setVisionStatus: function(partner) {
-        let {vision_synced, blocked, deleted_flag} = partner || {};
+        let {vision_synced: synced, blocked, deleted_flag: deleted} = partner || {};
 
-        if (!vision_synced) {
+        if (!synced) {
             this._setVisionTexts('not_synced', 'Not Synced');
-        } else if (deleted_flag) {
+        } else if (deleted) {
             this._setVisionTexts('deleted', 'Marked For Deletion in VISION');
         } else if (blocked) {
             this._setVisionTexts('blocked', 'Blocked in VISION');

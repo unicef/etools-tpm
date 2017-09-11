@@ -66,12 +66,18 @@
                         <div name="report">
                             <template is="dom-if" if="[[showRejectionComments(comments, visit.status)]]">
                                 <div class="report-rejected">
-                                    <div class="report-rejected-label">
-                                        <iron-icon icon="error"></iron-icon>
-                                        Report was sent back
-                                    </div>
+                                    <etools-content-panel class="cancellation-tab" panel-title="">
+                                        <div class="group">
+                                            <div slot="panel-btns" class="bookmark">
+                                                <iron-icon icon="bookmark"></iron-icon>
+                                            </div>
 
-                                    <paper-button on-tap="openCommentsDialog">View Comments</paper-button>
+                                            <div class="cancellation-title">Request for more information</div>
+                                            <div class="cancellation-text">[[comments.0.reject_reason]]</div>
+
+                                            <paper-button on-tap="openCommentsDialog" hidden$="[[!showOldComments(comments)]]">View more Comments</paper-button>
+                                        </div>
+                                    </etools-content-panel>
 
                                     <dialog-element opened="{{commentsDialogOpened}}"
                                                     dialog-title="Comments"

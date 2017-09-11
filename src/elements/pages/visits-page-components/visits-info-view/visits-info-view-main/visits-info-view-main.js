@@ -212,7 +212,7 @@ Polymer({
     },
 
     showRejectionComments: function(comments, status) {
-        return comments && comments.length && this.isTpmUser() && status === 'tpm_report_rejected';
+        return comments && comments.length /*&& this.isTpmUser()*/ && status === 'tpm_report_rejected';
     },
 
     reverseComments: function(comments) {
