@@ -1,7 +1,7 @@
-<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea, iron-icons, paper-button]-->
+<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea, iron-icons, paper-button, paper-checkbox]-->
 <!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data,
             permission-controller, textarea-max-rows-behavior, tab-inputs-styles, visit-activity-tab, visit-details-tab,
-            file-attachments-tab, static-data-behavior, common-methods-behavior]-->
+            file-attachments-tab, static-data-behavior, common-methods-behavior, list-header, list-element]-->
 
 <dom-module id="visits-info-view-main">
     <template>
@@ -170,6 +170,60 @@
                                         on-focus="_resetFieldError"
                                         placeholder="Enter reason of reject">
                         </paper-textarea>
+                    </div>
+                </div>
+            </div>
+
+        </dialog-element>
+
+        <dialog-element opened="{{approvalDialog}}"
+                        approve-popup
+                        dialog-title="Approve Report"
+                        confirm-btn-text="Approve">
+
+            <list-header
+                    id="list-header"
+                    no-additional
+                    no-ordered
+                    data="[[columns]]"
+                    base-permission-path="[[basePermissionPath]]">
+            </list-header>
+
+            <template is="dom-repeat" items="[[visit.tpm_activities]]">
+                <list-element
+                        class="list-element"
+                        data="[[item]]"
+                        base-permission-path="[[basePermissionPath]]"
+                        headings="[[columns]]"
+                        no-additional
+                        no-ordered
+                        multiline
+                        no-animation>
+                    <div slot="custom" style="overflow: visible;">
+                        <paper-checkbox activity-id$="[[item.id]]" class="programmatic-visit"></paper-checkbox>
+                    </div>
+                </list-element>
+            </template>
+
+            <div class="row-h repeatable-item-container" without-line>
+                <div class="row-h group">
+                    <div class="input-container input-container-l">
+                        <paper-textarea label="Comments"
+                                        value="{{approvalComment}}"
+                                        max-rows="4"
+                                        id="approveComments"
+                                        on-focus="_resetFieldError"
+                                        placeholder="Enter Comments">
+                        </paper-textarea>
+                    </div>
+                </div>
+
+                <div class="row-h group">
+                    <div class="input-container input-container-ms">
+                        <paper-checkbox class="send-to" checked="{{sendToUnicef}}">Send to UNICEF Focal Points</paper-checkbox>
+                    </div>
+                    <div class="input-container input-container-ms">
+                        <paper-checkbox class="send-to" checked="{{sendToTpm}}">Send to TPM Focal Points</paper-checkbox>
                     </div>
                 </div>
             </div>
