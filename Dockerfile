@@ -4,6 +4,7 @@ RUN apk update
 RUN apk add git
 RUN npm install -g bower gulp-cli
 
+ENV version=1
 
 RUN mkdir /code/
 ADD . /code/
