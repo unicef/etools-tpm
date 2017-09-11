@@ -30,7 +30,8 @@ Polymer({
 
     observers: [
         '_setPermissionBase(visit.id)',
-        'resetDialog(dialogOpened)'
+        'resetDialog(dialogOpened)',
+        '_createActivitiesId(visit.tpm_activities)'
     ],
 
     listeners: {
@@ -221,5 +222,13 @@ Polymer({
 
     _showReportTabs: function(permissionBase) {
         return this.collectionExists(`${permissionBase}.report`, 'GET');
+    },
+
+    _createActivitiesId: function(activities) {
+        if (!activities || !activities.length) { return; }
+
+        _.each(activities, (activity, index) => {
+            activity.unique_id = `000${index + 1}`.slice(-4)
+        });
     }
 });
