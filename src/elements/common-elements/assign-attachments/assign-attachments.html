@@ -9,6 +9,7 @@
         <style include="module-styles tab-layout-styles tab-inputs-styles"></style>
 
         <etools-content-panel
+                show-expand-btn
                 list
                 class="content-section clearfix"
                 panel-title="Attachments">
@@ -30,7 +31,7 @@
                     base-permission-path="[[attachmentsBase]]">
             </list-header>
 
-            <template is="dom-repeat" items="[[dataItems]]">
+            <template is="dom-repeat" items="[[dataItems]]" filter="showActivity">
                 <list-element
                         class="list-element"
                         data="[[item]]"
@@ -93,7 +94,7 @@
                                     hide-search
                                     no-title-attr>
                             </etools-searchable-multiselection-menu>
-                            <paper-tooltip offset="0">[[editedItem.id.name]]</paper-tooltip>
+                            <paper-tooltip offset="0">[[editedItem.activity.name]]</paper-tooltip>
                         </div>
                     </div>
 

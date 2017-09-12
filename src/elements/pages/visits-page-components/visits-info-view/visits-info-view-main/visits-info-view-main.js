@@ -20,12 +20,12 @@ Polymer({
             type: Array,
             computed: 'reverseComments(visit.report_reject_comments)'
         },
-        columns: {
+        attachmentsColumns: {
             type: Array,
             value: [{
                 'size': 10,
                 'label': 'ID',
-                'path': 'unique_id.id'
+                'path': 'unique_id'
             }, {
                 'size': 40,
                 'label': 'Implementing Partner',
@@ -243,8 +243,9 @@ Polymer({
     _createActivitiesId: function(activities) {
         if (!activities || !activities.length) { return; }
 
-        _.each(activities, (activity, index) => {
-            activity.unique_id = `000${index + 1}`.slice(-4);
+        this.visit.tpm_activities.forEach((activity, index) => {
+            let uniqueId = `000${index + 1}`.slice(-4);
+            this.set(`visit.tpm_activities.${index}.unique_id`, uniqueId);
         });
     }
 });

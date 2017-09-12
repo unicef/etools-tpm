@@ -1,12 +1,10 @@
-<!--import [polymer, iron-icon, paper-icon-button, paper-tooltip, paper-toast]-->
+<!--import [polymer, iron-icon, paper-icon-button, paper-tooltip]-->
 <!--import [tab-inputs-styles, module-styles]-->
 
 <dom-module id="file-upload">
     <template>
         <style include="tab-inputs-styles module-styles"></style>
         <!-- inject styles './file-upload.scss'-->
-
-        <label class="label">[[label]]</label>
 
         <template is="dom-repeat" items="[[files]]">
             <paper-input
@@ -39,11 +37,29 @@
                on-change="_fileSelected">
 
         <template is="dom-if" if="[[!_hideUploadButton(multiple, readonly, files.length)]]" restamp>
-            <paper-button class="upload-button" on-tap="_openFileChooser">
-                <iron-icon icon="file-upload"></iron-icon>
-                [[uploadLabel]]
+            <!-- File Upload -->
+            <paper-input-container
+                    class="validate-input"
+                    always-float-label
+                    required
+                    disabled$="[[disabled]]"
+                    readonly$="[[readonly]]"
+                    invalid$="{{files.error}}">
+                <label aria-hidden="true" for="uploadButton">[[uploadLabel]]</label>
+
+                <paper-button id="uploadButton" class="upload-button" on-tap="_openFileChooser">
+                    <iron-icon icon="file-upload"></iron-icon>
+                    [[uploadLabel]]
+                </paper-button>
+
+                <template is="dom-if" if="[[files.error]]">
+                    <paper-input-error aria-live="assertive">[[files.error]]</paper-input-error>
+                </template>
+
+                <input hidden required>
+
                 <paper-tooltip offset="0">[[uploadLabel]]</paper-tooltip>
-            </paper-button>
+            </paper-input-container>
         </template>
     </template>
 

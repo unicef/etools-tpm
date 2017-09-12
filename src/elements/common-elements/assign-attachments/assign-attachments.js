@@ -45,27 +45,7 @@ Polymer({
         },
         details: {
             type: Array,
-            value: function() {
-                return [{
-                    'size': '100px',
-                    'name': 'date',
-                    'label': 'Date Uploaded',
-                    'labelPath': `created`,
-                    'path': 'created'
-                }, {
-                    'size': 35,
-                    'label': 'Document Type',
-                    'labelPath': `file_type`,
-                    'path': 'display_name'
-                }, {
-                    'size': 65,
-                    'label': 'File Attachment',
-                    'labelPath': `file`,
-                    'property': 'file_name',
-                    'custom': true,
-                    'doNotHide': false
-                }];
-            }
+            value: [{}],
         },
         fileTypes: {
             type: Array,
@@ -103,11 +83,15 @@ Polymer({
         '_errorHandler(errorObject)',
         'updateStyles(attachmentsBase, requestInProcess, editedItem.*)',
         '_setAttachmentsBase(basePermissionPath, attachmentsPath)',
-        '_setDropdownOptions(dataItems, columns)',
+        '_setDropdownOptions(dataItems, columns, dataItems.*)',
     ],
 
     _setAttachmentsBase: function(basePermissionPath, attachmentsPath) {
         this.set('attachmentsBase', `${basePermissionPath}.${attachmentsPath}`);
+    },
+
+    showActivity: function(item) {
+        return item && item[this.filesProperty] && item[this.filesProperty].length;
     },
 
     _isReadOnly: function(field, basePermissionPath, inProcess) {

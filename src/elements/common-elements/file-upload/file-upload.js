@@ -75,10 +75,11 @@
 
         validate: function() {
             if (this.required && !this.files.length) {
-                this.fire('toast', {text: 'File is not selected'});
+                this.set('files.error', 'File is not selected');
                 return false;
             }
 
+            this.set('files.error', null);
             return true;
         },
 
@@ -99,6 +100,7 @@
                 evt.initEvent('click', true, false);
                 elem.dispatchEvent(evt);
                 this.editedIndex = index;
+                this.set('files.error', null);
             }
         },
 
