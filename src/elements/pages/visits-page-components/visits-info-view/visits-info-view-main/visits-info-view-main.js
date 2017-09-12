@@ -20,6 +20,27 @@ Polymer({
             type: Array,
             computed: 'reverseComments(visit.report_reject_comments)'
         },
+        columns: {
+            type: Array,
+            value: [{
+                'size': 10,
+                'label': 'ID',
+                'path': 'unique_id.id'
+            }, {
+                'size': 40,
+                'label': 'Implementing Partner',
+                'path': 'implementing_partner.name'
+            }, {
+                'size': 40,
+                'label': 'PD/SSFA ToR',
+                'path': 'partnership.title'
+            }, {
+                'size': 10,
+                'name': 'date',
+                'label': 'Date',
+                'path': 'date'
+            }]
+        },
         errorObject: {
             type: Object,
             value: function() {
@@ -54,11 +75,6 @@ Polymer({
         this.reportFileTypes = this.getChoices(`${this.permissionBase}.report.file_type`) || [];
     },
 
-    _attachmentsReadonly: function(base, type) {
-        let readOnly = this.isReadonly(`${base}.${type}`);
-        if (readOnly === null) { readOnly = true; }
-        return readOnly;
-    },
     /* jshint ignore:start */
     _processAction: async function(event, details) {
         if (!details || !details.type) { throw 'Event type is not provided!'; }
@@ -100,13 +116,13 @@ Polymer({
         let visitActivity = this.$.visitActivity;
         let data = this.getVisitData();
 
-        let visitAttachments = attachmentsTab && await attachmentsTab.getFiles();
+        let visitAttachments = attachmentsTab && await attachmentsTab.getAttachmentsData();
         let reportAttachments = reportTab && await reportTab.getFiles();
         let visitActivityData = visitActivity && await visitActivity.getActivitiesData();
 
-        if (visitAttachments) { data.attachments = visitAttachments; }
         if (reportAttachments) { data.report = reportAttachments; }
         if (visitActivityData) { data.tpm_activities = visitActivityData; }
+        if (visitAttachments) { data.tpm_activities = visitAttachments; }
 
         this.newVisitDetails = {
             method: method,

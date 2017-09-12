@@ -122,8 +122,8 @@
 
         <template is="dom-if" if="[[showCollapse]]">
             <iron-collapse id="details" opened="{{detailsOpened}}" no-animation="[[noAnimation]]">
-                <slot name="detailSlot">
-                   <div id="collapse-wrapper">
+               <div id="collapse-wrapper">
+                   <slot name="detailSlot">
                        <div class="partners-data-details group">
                            <template is="dom-repeat" items="[[details]]">
                                <div class$="row-details-content w[[item.size]]">
@@ -146,8 +146,8 @@
 
                            </template>
                        </div>
-                   </div>
-                </slot>
+                   </slot>
+               </div>
             </iron-collapse>
         </template>
     </template>

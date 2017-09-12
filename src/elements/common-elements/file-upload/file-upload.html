@@ -1,4 +1,4 @@
-<!--import [polymer, iron-icon, paper-icon-button, paper-tooltip]-->
+<!--import [polymer, iron-icon, paper-icon-button, paper-tooltip, paper-toast]-->
 <!--import [tab-inputs-styles, module-styles]-->
 
 <dom-module id="file-upload">
@@ -24,7 +24,7 @@
                 <paper-icon-button
                         suffix
                         icon="clear"
-                        hidden$="[[_hideDeleteBtn(disabled, readonly)]]"
+                        hidden$="[[_hideDeleteBtn(allowDelete, disabled, readonly)]]"
                         on-tap="_deleteFile">
                 </paper-icon-button>
             </paper-input>
@@ -38,11 +38,13 @@
                readonly$="[[readonly]]"
                on-change="_fileSelected">
 
-        <paper-button class="upload-button" on-tap="_openFileChooser">
-            <iron-icon icon="file-upload"></iron-icon>
-            [[uploadLabel]]
-            <paper-tooltip offset="0">[[uploadLabel]]</paper-tooltip>
-        </paper-button>
+        <template is="dom-if" if="[[!_hideUploadButton(multiple, readonly, files.length)]]" restamp>
+            <paper-button class="upload-button" on-tap="_openFileChooser">
+                <iron-icon icon="file-upload"></iron-icon>
+                [[uploadLabel]]
+                <paper-tooltip offset="0">[[uploadLabel]]</paper-tooltip>
+            </paper-button>
+        </template>
     </template>
 
     <!-- inject scripts './file-upload.js'-->

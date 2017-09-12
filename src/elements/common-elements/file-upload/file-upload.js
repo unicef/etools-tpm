@@ -13,11 +13,23 @@
                 type: String,
                 value: 'Upload File'
             },
+            required: {
+                type: Boolean,
+                value: false
+            },
             readonly: {
                 type: Boolean,
                 value: false
             },
             disabled: {
+                type: Boolean,
+                value: false
+            },
+            multiple: {
+                type: Boolean,
+                value: false
+            },
+            allowDelete: {
                 type: Boolean,
                 value: false
             },
@@ -55,14 +67,27 @@
             if (!errors || !this.files) { return; }
 
             this.files.forEach((file, index) => {
-                let errorMessage = this.get(`errors.${index}.id`);
+                let errorMessage = this.get(`errors.${index}.file`);
                 this.set(`files.${index}.invalid`, !!errorMessage);
                 this.set(`files.${index}.error`, errorMessage);
             });
         },
 
-        _hideDeleteBtn: function(disabled, readonly) {
-            return disabled || readonly;
+        validate: function() {
+            if (this.required && !this.files.length) {
+                this.fire('toast', {text: 'File is not selected'});
+                return false;
+            }
+
+            return true;
+        },
+
+        _hideUploadButton: function(multiple, readonly, filesLength) {
+            return readonly || (!multiple && filesLength);
+        },
+
+        _hideDeleteBtn: function(allowDelete, disabled, readonly) {
+            return !allowDelete || disabled || readonly;
         },
 
         _openFileChooser: function(e) {

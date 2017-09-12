@@ -1,0 +1,64 @@
+<!--import [polymer]-->
+<!--import [module-styles, date-behavior]-->
+
+<dom-module id="file-details">
+    <template>
+        <style include="module-styles"></style>
+        <!-- inject styles './file-details.scss'-->
+
+        <div class="partners-data-details group">
+            <!--Headers-->
+            <div class="row-details-content truncate w15">
+                <span class="rdc-title">Date Uploaded</span>
+            </div>
+
+            <div class="row-details-content truncate w20">
+                <span class="rdc-title">Document Type</span>
+            </div>
+
+            <div class="row-details-content truncate w65">
+                <span class="rdc-title">File Attachment</span>
+            </div>
+            <!--End Headers-->
+
+            <template is="dom-repeat" items="[[files]]">
+                <div class="row-details-content truncate w15">
+                    [[getDate(item)]]
+                </div>
+
+                <div class="row-details-content truncate w20">
+                    [[getValue(item.type)]]
+
+                    <paper-tooltip hidden$="[[!item.type]]" offset="0">[[getValue(item.type)]]</paper-tooltip>
+                </div>
+
+                <div class="row-details-content truncate w55">
+                    <template is="dom-if" if="[[item.file_name]]">
+                        <iron-icon icon="icons:attachment" class="download-icon"></iron-icon>
+
+                        <a href$="[[item.file]]"
+                           download$="[[item.file_name]]"
+                           target="_blank">
+                            [[item.file_name]]
+                        </a>
+                        <paper-tooltip offset="0">[[item.file_name]]</paper-tooltip>
+                    </template>
+
+                    <template is="dom-if" if="[[!item.file_name]]">
+                        <span>--</span>
+                    </template>
+                </div>
+
+                <div class="row-details-content truncate right w10">
+                    <a class="delete-btn"
+                       on-tap="fireDeleteEvent"
+                       hidden$="[[!showDeleteBtn(item, allowDelete)]]">
+                        Delete
+                    </a>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <!-- inject scripts './file-details.js'-->
+</dom-module>
