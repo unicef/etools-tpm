@@ -305,7 +305,9 @@ Polymer({
             activity.unique_id = `000${index + 1}`.slice(-4);
         });
     },
-    _setExportLink: function(visit) {
-        return this.getEndpoint('visitDetails', {id: visit.id}).url + 'export_pdf/';
+    _setExportLinks: function(visit) {
+        return [{
+            url: this.getEndpoint('visitDetails', {id: visit.id}).url + 'export_pdf/'
+        }];
     }
 });

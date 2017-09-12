@@ -172,8 +172,10 @@ Polymer({
         this.set('visionStatusName', text);
         this.set('visionStatus', status);
     },
-    _setExportLink: function(visit) {
-        return this.getEndpoint('partnerDetails', {id: visit.id}).url + '?format=csv';
+    _setExportLinks: function(partner) {
+        return [{
+            url: this.getEndpoint('partnerDetails', {id: partner.id}).url + '?format=csv'
+        }];
     }
 
 });

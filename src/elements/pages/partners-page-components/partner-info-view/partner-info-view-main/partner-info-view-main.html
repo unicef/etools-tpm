@@ -15,8 +15,7 @@
         <update-partner-details-data new-partner-details="{{newPartnerDetails}}" partner="{{partner}}"
                                      error-object="{{errorObject}}" base-permission-path="{{permissionBase}}"></update-partner-details-data>
 
-        <pages-header-element show-export-button
-                              export-link="[[_setExportLink(partner)]]"
+        <pages-header-element export-links="[[_setExportLinks(partner)]]"
                               page-title="[[partner.name]]"></pages-header-element>
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">

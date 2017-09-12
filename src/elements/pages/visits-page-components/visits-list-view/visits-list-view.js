@@ -243,5 +243,14 @@
                 this.dialogOpened = false;
             }
         },
+        _getLinks: function() {
+            return [{
+                name: 'Locations Level',
+                url: this.getEndpoint('visitsList').url + 'locations/export/'
+            },{
+                name: 'Activities Level',
+                url: this.getEndpoint('visitsList').url + 'activities/export/'
+            }];
+        }
     });
 })();

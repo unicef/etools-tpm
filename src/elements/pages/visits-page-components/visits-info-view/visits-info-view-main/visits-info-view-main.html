@@ -17,8 +17,7 @@
                                    error-object="{{errorObject}}"
                                    base-permission-path="{{permissionBase}}"></update-visit-details-data>
 
-        <pages-header-element show-export-button
-                              export-link="[[_setExportLink(visit)]]"
+        <pages-header-element export-links="[[_setExportLinks(visit)]]"
                               page-title="Assign TPM visit"></pages-header-element>
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
