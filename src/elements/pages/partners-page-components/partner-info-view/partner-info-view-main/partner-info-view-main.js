@@ -4,6 +4,7 @@ Polymer({
     is: 'partner-info-view-main',
 
     behaviors: [
+        etoolsAppConfig.globals,
         TPMBehaviors.StaticDataController,
         TPMBehaviors.PermissionController,
         TPMBehaviors.CommonMethodsBehavior,
@@ -170,6 +171,9 @@ Polymer({
     _setVisionTexts: function(status, text) {
         this.set('visionStatusName', text);
         this.set('visionStatus', status);
+    },
+    _setExportLink: function(visit) {
+        return this.getEndpoint('partnerDetails', {id: visit.id}).url + '?format=csv';
     }
 
 });

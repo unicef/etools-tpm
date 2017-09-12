@@ -19,10 +19,10 @@
                             <iron-icon icon="file-download"></iron-icon>
                             Export
                         </paper-button>
-                        <paper-listbox class="dropdown-content mw-140">
+                        <paper-menu id="dropdownMenu" class="dropdown-content mw-140">
                             <paper-item on-tap="exportData">Location Level</paper-item>
                             <paper-item on-tap="exportData">Activity Level</paper-item>
-                        </paper-listbox>
+                        </paper-menu>
                     </paper-menu-button>
 
                     <paper-button class="add-btn" raised hidden$="[[_hideAddButton(showAddButton)]]"
