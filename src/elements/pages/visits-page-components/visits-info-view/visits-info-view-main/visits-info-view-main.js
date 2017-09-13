@@ -311,7 +311,7 @@ Polymer({
     },
 
     _showReportTabs: function(permissionBase) {
-        return this.collectionExists(`${permissionBase}.report`, 'GET');
+        return this.collectionExists(`${permissionBase}.tpm_activities.report_attachments`, 'GET');
     },
 
     _createActivitiesId: function(activities) {
