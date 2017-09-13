@@ -310,8 +310,8 @@ Polymer({
         return (comments || []).reverse();
     },
 
-    _showReportTabs: function(permissionBase) {
-        return this.collectionExists(`${permissionBase}.tpm_activities.report_attachments`, 'GET');
+    _showTab: function(permissionBase, field) {
+        return this.collectionExists(`${permissionBase}.${field}`, 'GET');
     },
 
     _createActivitiesId: function(activities) {

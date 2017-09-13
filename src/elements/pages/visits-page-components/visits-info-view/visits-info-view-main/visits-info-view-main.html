@@ -24,8 +24,12 @@
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                 <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
 
-                <template is="dom-if" if="[[_showReportTabs(permissionBase)]]">
+                <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]">
                     <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
+                </template>
+
+                <template is="dom-if" if="[[_showTab(permissionBase, 'action_points')]]">
+                    <paper-tab name="action-points"><span class="tab-content">Action Points</span></paper-tab>
                 </template>
 
                 <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
@@ -64,7 +68,7 @@
                         </visit-activity-tab>
                     </div>
 
-                    <template is="dom-if" if="[[_showReportTabs(permissionBase)]]">
+                    <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]">
                         <div name="report">
                             <template is="dom-if" if="[[showRejectionComments(comments, visit.status)]]">
                                 <div class="report-rejected">
@@ -124,6 +128,12 @@
                                     allow-edit
                                     multiple>
                             </file-attachments-tab>
+                        </div>
+                    </template>
+
+                    <template is="dom-if" if="[[_showTab(permissionBase, 'action_points')]]">
+                        <div name="action-points">
+                            <span class="tab-content">Action Points page</span>
                         </div>
                     </template>
 
