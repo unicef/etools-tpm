@@ -6,8 +6,6 @@
         <style include="tab-inputs-styles module-styles"></style>
         <!-- inject styles './file-upload.scss'-->
 
-        <label class="label">[[label]]</label>
-
         <template is="dom-repeat" items="[[files]]">
             <paper-input
                     value="[[_getFileName(item)]]"
@@ -24,7 +22,7 @@
                 <paper-icon-button
                         suffix
                         icon="clear"
-                        hidden$="[[_hideDeleteBtn(disabled, readonly)]]"
+                        hidden$="[[_hideDeleteBtn(allowDelete, disabled, readonly)]]"
                         on-tap="_deleteFile">
                 </paper-icon-button>
             </paper-input>
@@ -38,11 +36,31 @@
                readonly$="[[readonly]]"
                on-change="_fileSelected">
 
-        <paper-button class="upload-button" on-tap="_openFileChooser">
-            <iron-icon icon="file-upload"></iron-icon>
-            [[uploadLabel]]
-            <paper-tooltip offset="0">[[uploadLabel]]</paper-tooltip>
-        </paper-button>
+        <template is="dom-if" if="[[!_hideUploadButton(multiple, readonly, files.length)]]" restamp>
+            <!-- File Upload -->
+            <paper-input-container
+                    class="validate-input"
+                    always-float-label
+                    required
+                    disabled$="[[disabled]]"
+                    readonly$="[[readonly]]"
+                    invalid$="{{files.error}}">
+                <label aria-hidden="true" for="uploadButton">[[uploadLabel]]</label>
+
+                <paper-button id="uploadButton" class="upload-button" on-tap="_openFileChooser">
+                    <iron-icon icon="file-upload"></iron-icon>
+                    [[uploadLabel]]
+                </paper-button>
+
+                <template is="dom-if" if="[[files.error]]">
+                    <paper-input-error aria-live="assertive">[[files.error]]</paper-input-error>
+                </template>
+
+                <input hidden required>
+
+                <paper-tooltip offset="0">[[uploadLabel]]</paper-tooltip>
+            </paper-input-container>
+        </template>
     </template>
 
     <!-- inject scripts './file-upload.js'-->

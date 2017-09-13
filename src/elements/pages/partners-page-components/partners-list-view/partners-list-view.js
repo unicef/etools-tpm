@@ -224,8 +224,10 @@
         _disableVendorNumberInput: function(requestInProcess, vendorRequestInProcess) {
             return requestInProcess || vendorRequestInProcess;
         },
-        _setExportLink: function() {
-            return this.getEndpoint('partnersList').url + '&format=csv&page_size=all';
+        _setExportLinks: function() {
+            return [{
+                url: this.getEndpoint('partnersList').url + '&format=csv&page_size=all'
+            }];
         }
     });
 })();

@@ -63,7 +63,9 @@
         },
 
         _handleError: function (event, error) {
-            let action = this.postRequest && this.postRequest.action ;
+            let action = this.postRequest && this.postRequest.action;
+            this.postRequest = null;
+
             this.fire('global-loading', {type: `${action}-${this.postfix}`});
             this.fire('global-loading', {type: `save-${this.postfix}`});
             this.fire(`${this.postfix}-updated`);

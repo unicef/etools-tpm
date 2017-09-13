@@ -8,10 +8,6 @@ Polymer({
             type: Boolean,
             value: false
         },
-        showExportButton: {
-            type: Boolean,
-            value: false
-        },
         hidePrintButton: {
             type: Boolean,
             value: false
@@ -44,15 +40,19 @@ Polymer({
             value: function() {
                 return {};
             }
-        }
+        },
+        exportLinks: Array,
     },
-
-    behaviors: [etoolsAppConfig.globals],
+    behaviors: [
+        etoolsAppConfig.globals
+    ],
 
     attached: function() {
         this.baseUrl = this.basePath;
     },
-
+    _toggleOpened: function() {
+        this.$.dropdownMenu.select(null);
+    },
     _hideAddButton: function(show) {
         return !show;
     },
@@ -74,11 +74,12 @@ Polymer({
         return pageData.unique_id;
     },
 
-    exportData: function() {
-        if (!this.exportLink) { throw 'Can not find export link!'; }
-        window.open(this.exportLink, '_blank');
+    exportData: function(e) {
+        if (this.exportLinks < 1) { throw 'Can not find export link!'; }
+        let url = (e && e.model && e.model.item) ? e.model.item.url : this.exportLinks[0].url;
+        window.open(url, '_blank');
     },
-    _toggleOpened: function() {
-        this.$.dropdownMenu.select(null);
-    }
+    _isDropDown: function(exportLinks) {
+        return exportLinks.length > 1;
+    },
 });

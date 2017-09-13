@@ -1,9 +1,27 @@
+//Upload button styles
+paper-input-container {
+    margin: 0 12px;
+
+    --paper-input-container-focus-color: var(--module-primary);
+    --paper-input-container: #{'{
+        color: var(--gray-50) !important;
+        font-size: 13px;
+        opacity: 1 !important;
+    }'};
+    --paper-input-container-underline: #{'{
+        display: none !important;
+    }'};
+    --paper-input-container-underline-focus: #{'{
+        display: none;
+    }'};
+    --paper-input-container-underline-disabled: #{'{
+        display: block !important;
+        border-bottom: 1px dashed var(--gray-20) !important;
+    }'};
+}
+
 //Upload paper-input styles
 paper-input {
-    &[invalid] {
-        padding: 0 12px 8px;
-    }
-
     --paper-input-container-underline: #{'{
         border-bottom: 1px solid var(--gray-20)!important;
     }'};
@@ -11,6 +29,21 @@ paper-input {
     --paper-input-container-underline-disabled: #{'{
         display: block !important;
         border-bottom: 1px dashed var(--gray-20) !important;
+    }'};
+}
+
+.upload-button {
+    --paper-button: #{'{
+        display: block;
+        width: 120px;
+        font-weight: bold;
+        font-size: 14px;
+        margin: 0;
+        padding-left: 0;
+        padding-right: 4px;
+        height: 36px;
+        color: var(--module-primary);
+        background-color: #ffffff;
     }'};
 }
 
@@ -22,20 +55,12 @@ paper-icon-button {
     opacity: 0.54;
 }
 
-.label {
-    display: block;
-    padding: 0 12px;
-    margin-top: 8px;
-    font-size: 12px;
-    color: var(--gray-50);
-}
-
 .upload-button {
     --paper-button: #{'{
         display: inline-block;
         font-weight: bold;
         font-size: 14px;
-        margin: 2px 0 0 12px;
+        margin: 2px 0 0 0;
         padding-left: 0;
         padding-right: 4px;
         height: 36px;
