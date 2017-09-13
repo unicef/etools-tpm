@@ -51,6 +51,9 @@ Polymer({
             type: Array,
             value: []
         },
+        title: {
+            type: String,
+        },
         dialogDropdownLabel: {
             type: String,
         },
@@ -102,6 +105,14 @@ Polymer({
         if (readOnly === null) { readOnly = true; }
 
         return readOnly;
+    },
+
+    isAttachmentsEmpty: function(dataItems) {
+        if (!Array.isArray(dataItems) || !dataItems.length) { return true; }
+
+        return !dataItems.some((item) => {
+            return this.showActivity(item);
+        });
     },
 
     _setDropdownOptions: function(dataItems, columns) {
