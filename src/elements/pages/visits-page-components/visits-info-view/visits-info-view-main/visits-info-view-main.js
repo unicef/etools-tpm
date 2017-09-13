@@ -90,7 +90,7 @@ Polymer({
     },
 
     ready: function() {
-        this.visitFileTypes = this.getData('visit_attachments_types');
+        this.visitFileTypes = this.getData('visit_attachments_types') || [];
     },
 
     _setPermissionBase: function(id) {
@@ -100,7 +100,8 @@ Polymer({
         } else {
             this.permissionBase = `visit_${id}`;
         }
-        this.reportFileTypes = this.getChoices(`${this.permissionBase}.report_attachments.file_type`) || [];
+        this.reportFileTypes = this.getChoices(`${this.permissionBase}.tpm_activities.report_attachments.file_type`) || [];
+        this.simpleFileTypes = this.getChoices(`${this.permissionBase}.report_attachments.file_type`) || [];
     },
 
     _attachmentsReadonly: function(base, type) {
