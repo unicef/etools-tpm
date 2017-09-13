@@ -25,8 +25,9 @@
 
     .row-details-content {
         float: left;
-        box-sizing: border-box;
+        height: 25px;
         padding-right: 0;
+        padding-bottom: 8px;
         vertical-align: top;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -40,7 +41,6 @@
             color: rgba(0, 0, 0, 0.54);
             font-weight: 500;
             font-size: 13px;
-            margin-bottom: 10px;
         }
     }
 }
