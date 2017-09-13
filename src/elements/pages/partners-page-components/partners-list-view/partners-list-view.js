@@ -44,22 +44,26 @@
                 value: [{
                     'size': 15,
                     'label': 'Vendor #',
+                    'labelPath': 'vendor_number',
                     'name': 'vendor_number',
                     'link': 'partners/*data_id*/details',
                     'ordered': false
                 }, {
                     'size': 50,
                     'label': 'Vendor Name',
+                    'labelPath': 'name',
                     'name': 'name',
                     'ordered': false
                 }, {
                     'size': 15,
                     'label': 'Phone #',
+                    'labelPath': 'phone_number',
                     'name': 'phone_number',
                     'ordered': false
                 }, {
                     'size': 20,
                     'label': 'Email',
+                    'labelPath': 'email',
                     'name': 'email',
                     'ordered': false
                 }]
