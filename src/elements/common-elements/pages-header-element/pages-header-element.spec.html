@@ -118,7 +118,7 @@
                 assert.isFalse(spy.called);
                 myEl.exportData();
                 assert.isTrue(spy.calledOnce);
-                assert.isTrue(spy.calledWithExactly(myEl.exportLinks, '_blank'));
+                assert.isTrue(spy.calledWithExactly(myEl.exportLinks[0].url, '_blank'));
             });
         });
     });
