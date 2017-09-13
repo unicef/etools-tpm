@@ -164,7 +164,7 @@
                     this._addToCollection('new_visit', actions);
 
                     let statusesData = this.getChoices('new_visit.status');
-                    let visitAttachmentsTypes = this.getChoices('new_visit.attachments.file_type');
+                    let visitAttachmentsTypes = this.getChoices('new_visit.tpm_activities.attachments.file_type');
 
                     if (!statusesData) { console.error('Can not load visit statuses data'); }
                     if (!visitAttachmentsTypes) { this._responseError('Can not load visit attachments types'); }

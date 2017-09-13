@@ -21,6 +21,27 @@ Polymer({
             type: Array,
             computed: 'reverseComments(visit.report_reject_comments)'
         },
+        attachmentsColumns: {
+            type: Array,
+            value: [{
+                'size': 10,
+                'label': 'ID',
+                'path': 'unique_id'
+            }, {
+                'size': 40,
+                'label': 'Implementing Partner',
+                'path': 'implementing_partner.name'
+            }, {
+                'size': 40,
+                'label': 'PD/SSFA ToR',
+                'path': 'partnership.title'
+            }, {
+                'size': 10,
+                'name': 'date',
+                'label': 'Date',
+                'path': 'date'
+            }]
+        },
         errorObject: {
             type: Object,
             value: function() {
@@ -82,11 +103,6 @@ Polymer({
         this.reportFileTypes = this.getChoices(`${this.permissionBase}.report.file_type`) || [];
     },
 
-    _attachmentsReadonly: function(base, type) {
-        let readOnly = this.isReadonly(`${base}.${type}`);
-        if (readOnly === null) { readOnly = true; }
-        return readOnly;
-    },
     /* jshint ignore:start */
     _processAction: async function(event, details) {
         if (!details || !details.type) { throw 'Event type is not provided!'; }
@@ -127,13 +143,13 @@ Polymer({
         let visitActivity = this.$.visitActivity;
         let data = this.getVisitData();
 
-        let visitAttachments = attachmentsTab && await attachmentsTab.getFiles();
+        let visitAttachments = attachmentsTab && await attachmentsTab.getAttachmentsData();
         let reportAttachments = reportTab && await reportTab.getFiles();
         let visitActivityData = visitActivity && await visitActivity.getActivitiesData();
 
-        if (visitAttachments) { data.attachments = visitAttachments; }
         if (reportAttachments) { data.report = reportAttachments; }
         if (visitActivityData) { data.tpm_activities = visitActivityData; }
+        if (visitAttachments) { data.tpm_activities = visitAttachments; }
 
         this.newVisitDetails = {
             method: method,
@@ -301,8 +317,9 @@ Polymer({
     _createActivitiesId: function(activities) {
         if (!activities || !activities.length) { return; }
 
-        _.each(activities, (activity, index) => {
-            activity.unique_id = `000${index + 1}`.slice(-4);
+        this.visit.tpm_activities.forEach((activity, index) => {
+            let uniqueId = `000${index + 1}`.slice(-4);
+            this.set(`visit.tpm_activities.${index}.unique_id`, uniqueId);
         });
     },
     _setExportLinks: function(visit) {

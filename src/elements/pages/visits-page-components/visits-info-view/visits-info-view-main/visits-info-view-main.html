@@ -1,8 +1,9 @@
 <!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea, iron-icons, paper-button, paper-checkbox]-->
 <!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data,
             permission-controller, textarea-max-rows-behavior, tab-inputs-styles, visit-activity-tab, visit-details-tab,
-            file-attachments-tab, static-data-behavior, common-methods-behavior, list-header, etools-app-config,
+            file-attachments-tab, assign-attachments, static-data-behavior, common-methods-behavior, list-header, etools-app-config,
             list-element]-->
+
 
 <dom-module id="visits-info-view-main">
     <template>
@@ -126,28 +127,20 @@
                         </div>
                     </template>
 
-
                     <div name="attachments">
-                        <file-attachments-tab
+                        <assign-attachments
                                 id="attachments"
-                                tab-title="[[getLabel('attachments', permissionBase)]]"
                                 base-permission-path="{{permissionBase}}"
-                                main-property="attachments"
+                                attachments-path="tpm_activities.attachments"
+                                files-property="attachments"
+                                dialog-dropdown-label="Visit Activity"
                                 error-object="{{errorObject}}"
-                                data-items="[[visit.attachments]]"
-                                file-types="[[visitFileTypes]]"
-                                file-types-label="[[getLabel('attachments.file_type', permissionBase)]]"
-                                readonly="[[_attachmentsReadonly(permissionBase, 'attachments')]]"
-                                file-type-required
-                                allow-download
-                                allow-edit
-                                multiple>
-                        </file-attachments-tab>
+                                data-items="[[visit.tpm_activities]]"
+                                columns="[[attachmentsColumns]]"
+                                file-types="[[visitFileTypes]]">
+                        </assign-attachments>
                     </div>
-
                 </iron-pages>
-
-
             </div>
 
             <div id="sidebar">
