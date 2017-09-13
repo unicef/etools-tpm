@@ -1,6 +1,6 @@
 {
-  "name": "eTools - Partnership Management Portal",
-  "short_name": "eTools - Partnership Management",
+  "name": "eTools - Third Party Management",
+  "short_name": "eTools - TP Management",
   "start_url": "/?homescreen=1",
   "display": "standalone",
   "theme_color": "#3f51b5",
