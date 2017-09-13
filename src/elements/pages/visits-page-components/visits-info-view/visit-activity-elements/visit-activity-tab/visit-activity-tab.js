@@ -383,7 +383,8 @@ Polymer({
         let optionsPaths = ['partnership.id', 'cp_output.id', 'locations'];
         let allPaths = paths.concat(optionsPaths);
 
-        let originalData = _.pick(this.originalEditedObj, allPaths);
+        let originalEditedObj = this.addDialog ? {} : this.originalEditedObj;
+        let originalData = _.pick(originalEditedObj, allPaths);
         let currentData = _.pick(this.editedItem, paths);
         let optionsData = {};
         let changedData = {};
@@ -407,8 +408,8 @@ Polymer({
         });
 
         let implementingPartner = _.get(changedData, 'implementing_partner.id') || undefined;
-        let partnership = _.get(changedData, 'partnership.id');
-        let cpOutput = _.get(changedData, 'cp_output.id');
+        let partnership = _.get(changedData, 'partnership.id') || undefined;
+        let cpOutput = _.get(changedData, 'cp_output.id') || undefined;
         let section = _.get(changedData, 'section.id');
         let additionalInformation = _.get(changedData, 'additional_information');
         let date = _.get(changedData, 'date') || undefined;
