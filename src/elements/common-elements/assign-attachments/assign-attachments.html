@@ -12,7 +12,7 @@
                 show-expand-btn
                 list
                 class="content-section clearfix"
-                panel-title="Attachments">
+                panel-title="[[title]]">
             <div slot="panel-btns">
                 <div hidden$="[[isReadonly(attachmentsBase)]]">
                     <paper-icon-button
@@ -53,7 +53,7 @@
                 </list-element>
             </template>
 
-            <template is="dom-if" if="[[!dataItems.length]]">
+            <template is="dom-if" if="[[isAttachmentsEmpty(dataItems)]]">
                 <list-element
                         class="list-element"
                         data="[[emptyObj]]"

@@ -113,21 +113,19 @@
                                     </dialog-element>
                                 </div>
                             </template>
-                            <file-attachments-tab
+
+                            <assign-attachments
                                     id="report"
-                                    tab-title="[[getLabel('report', permissionBase)]]"
                                     base-permission-path="{{permissionBase}}"
-                                    main-property="report"
+                                    attachments-path="tpm_activities.report_attachments"
+                                    files-property="report_attachments"
+                                    title="[[getLabel('tpm_activities.report_attachments', permissionBase)]]"
+                                    dialog-dropdown-label="getLabel('tpm_activities.report_attachments', permissionBase)"
                                     error-object="{{errorObject}}"
-                                    data-items="[[visit.report]]"
-                                    file-types="[[reportFileTypes]]"
-                                    file-types-label="[[getLabel('report.file_type', permissionBase)]]"
-                                    readonly="[[_attachmentsReadonly(permissionBase, 'report')]]"
-                                    file-type-required
-                                    allow-download
-                                    allow-edit
-                                    multiple>
-                            </file-attachments-tab>
+                                    data-items="[[visit.tpm_activities]]"
+                                    columns="[[attachmentsColumns]]"
+                                    file-types="[[visitFileTypes]]">
+                            </assign-attachments>
                         </div>
                     </template>
 
@@ -143,12 +141,31 @@
                                 base-permission-path="{{permissionBase}}"
                                 attachments-path="tpm_activities.attachments"
                                 files-property="attachments"
+                                title="[[getLabel('tpm_activities.attachments', permissionBase)]]"
                                 dialog-dropdown-label="Visit Activity"
                                 error-object="{{errorObject}}"
                                 data-items="[[visit.tpm_activities]]"
                                 columns="[[attachmentsColumns]]"
                                 file-types="[[visitFileTypes]]">
                         </assign-attachments>
+
+                        <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]">
+                            <file-attachments-tab
+                                    id="simpleAttachments"
+                                    tab-title="[[getLabel('report_attachments', permissionBase)]]"
+                                    base-permission-path="{{permissionBase}}"
+                                    main-property="report_attachments"
+                                    error-object="{{errorObject}}"
+                                    data-items="[[visit.report_attachments]]"
+                                    file-types="[[reportFileTypes]]"
+                                    file-types-label="[[getLabel('report_attachments.file_type', permissionBase)]]"
+                                    readonly="[[_attachmentsReadonly(permissionBase, 'report_attachments')]]"
+                                    file-type-required
+                                    allow-download
+                                    allow-edit
+                                    multiple>
+                            </file-attachments-tab>
+                        </template>
                     </div>
                 </iron-pages>
             </div>
