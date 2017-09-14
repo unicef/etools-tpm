@@ -87,7 +87,8 @@ Polymer({
         '_setPermissionBase(visit.id)',
         'resetDialog(dialogOpened)',
         'resetApprovalDialog(approvalDialog)',
-        '_createActivitiesId(visit.tpm_activities)'
+        '_createActivitiesId(visit.tpm_activities)',
+        '_errorOccurred(errorObject)'
     ],
 
     listeners: {
@@ -354,9 +355,11 @@ Polymer({
             this.set(`visit.tpm_activities.${index}.unique_id`, uniqueId);
         });
     },
+
     _setExportLinks: function(visit) {
         return [{
             url: this.getEndpoint('visitDetails', {id: visit.id}).url + 'export_pdf/'
         }];
     }
+
 });

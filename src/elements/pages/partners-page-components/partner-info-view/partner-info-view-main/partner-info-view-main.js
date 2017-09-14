@@ -29,7 +29,8 @@ Polymer({
     observers: [
         '_setPermissionBase(partner.id)',
         '_routeConfig(route)',
-        '_setVisionStatus(partner)'
+        '_setVisionStatus(partner)',
+        '_errorOccurred(errorObject)'
     ],
 
     listeners: {
