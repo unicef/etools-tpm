@@ -6,6 +6,8 @@
         <style include="tab-inputs-styles module-styles"></style>
         <!-- inject styles './file-upload.scss'-->
 
+        <label class="label" hidden$="[[!files.length]]">[[uploadLabel]]</label>
+
         <template is="dom-repeat" items="[[files]]">
             <paper-input
                     value="[[_getFileName(item)]]"
