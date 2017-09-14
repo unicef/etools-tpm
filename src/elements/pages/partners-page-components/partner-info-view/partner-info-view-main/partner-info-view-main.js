@@ -29,7 +29,8 @@ Polymer({
     observers: [
         '_setPermissionBase(partner.id)',
         '_routeConfig(route)',
-        '_setVisionStatus(partner)'
+        '_setVisionStatus(partner)',
+        '_errorOccurred(errorObject)'
     ],
 
     listeners: {
@@ -119,10 +120,9 @@ Polymer({
     },
 
     validatePartner: function() {
-        let detailsValid = this.$.partnerDetails.validate(),
-            staffMembersValid = this.$.staffMembers.validate();
+        let detailsValid = this.$.partnerDetails.validate();
 
-        if (!detailsValid || !staffMembersValid) {
+        if (!detailsValid) {
             this.set('routeData.tab', 'details');
             this.fire('toast', {text: 'Fix invalid fields before saving'});
             return false;

@@ -30,6 +30,8 @@ Polymer({
         }
     },
 
+    observers: ['_errorHandler(errorObject)'],
+
     ready: function() {
         this.officesList = this.getData('offices');
         this.unicefUsersList = (this.getData('unicefUsers') || []).map((user) => {

@@ -97,15 +97,23 @@
         },
 
         getTooltipText: function(selectedValues, options, field) {
-        let tooltip = [];
-        _.each(selectedValues, (value) => {
-            let displayValue = _.filter(options, ['id', +value]);
-            if (displayValue.length > 0) {
-                tooltip.push(displayValue[0][field]);
+            let tooltip = [];
+            _.each(selectedValues, (value) => {
+                let displayValue = _.filter(options, ['id', +value]);
+                if (displayValue.length > 0) {
+                    tooltip.push(displayValue[0][field]);
+                }
+            });
+            return tooltip.join(', ');
+        },
+
+        _errorOccurred: function(errorObject) {
+            let tab = this.whichPageTrows(errorObject),
+                    currentTab = this.routeData && this.routeData.tab;
+            if (tab && tab !== currentTab) {
+                this.set('routeData.tab', tab);
             }
-        });
-        return tooltip.join(', ');
-    }
+        }
 
     };
 

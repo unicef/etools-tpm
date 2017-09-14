@@ -87,7 +87,8 @@ Polymer({
         '_setPermissionBase(visit.id)',
         'resetDialog(dialogOpened)',
         'resetApprovalDialog(approvalDialog)',
-        '_createActivitiesId(visit.tpm_activities)'
+        '_createActivitiesId(visit.tpm_activities)',
+        '_errorOccurred(errorObject)'
     ],
 
     listeners: {
@@ -133,6 +134,9 @@ Polymer({
             break;
             case 'reject':
             case 'cancel':
+                this.manageCancellationDialog(details.type);
+                this.dialogOpened = true;
+                return;
             case 'reject_report':
                 this.manageCancellationDialog(details.type);
                 this.dialogOpened = true;
@@ -221,6 +225,7 @@ Polymer({
             ignorePatch: true
         };
 
+        this.isRejectReportDialog = false;
         this.dialogOpened = false;
     },
 
@@ -300,7 +305,12 @@ Polymer({
             this.dialogTitle = 'Do you want to cancel this visit?';
             this.isDeleteDialog = true;
         } else if (type === 'reject_report') {
-            this.dialogTitle = 'Reject Report';
+            this.isRejectReportDialog = true;
+            let title = `Report for ${this.visit.reference_number}`;
+            if (this.visit.start_date && this.visit.end_date) {
+                title += `${this.visit.start_date} - ${this.visit.end_date}`;
+            }
+            this.dialogTitle = title;
             this.isDeleteDialog = false;
         }
     },
@@ -315,6 +325,10 @@ Polymer({
 
     showOldComments: function(comments) {
         return comments && comments.length > 1;
+    },
+
+    showRejectComments: function(comments, isRejectReportDialog) {
+        return isRejectReportDialog && comments && comments.length > 1;
     },
 
     _filterComments: function(comment) {
@@ -341,9 +355,11 @@ Polymer({
             this.set(`visit.tpm_activities.${index}.unique_id`, uniqueId);
         });
     },
+
     _setExportLinks: function(visit) {
         return [{
             url: this.getEndpoint('visitDetails', {id: visit.id}).url + 'export_pdf/'
         }];
     }
+
 });
