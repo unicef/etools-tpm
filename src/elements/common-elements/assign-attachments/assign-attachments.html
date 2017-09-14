@@ -28,14 +28,13 @@
                     id="list-header"
                     no-ordered
                     data="[[columns]]"
-                    base-permission-path="[[attachmentsBase]]">
+                    base-permission-path="[[basePermissionPath]]">
             </list-header>
 
             <template is="dom-repeat" items="[[dataItems]]" filter="showActivity">
                 <list-element
                         class="list-element"
                         data="[[item]]"
-                        base-permission-path="[[attachmentsBase]]"
                         headings="[[columns]]"
                         details="[[details]]"
                         has-collapse
@@ -43,6 +42,7 @@
                         no-animation>
                     <div slot="detailSlot">
                         <file-details
+                                base-permission-path="[[attachmentsBase]]"
                                 allow-delete="[[!isReadonly(attachmentsBase)]]"
                                 parent-id="[[item.id]]"
                                 data="[[item]]"

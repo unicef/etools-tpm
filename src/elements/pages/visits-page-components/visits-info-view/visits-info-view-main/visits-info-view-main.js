@@ -26,19 +26,23 @@ Polymer({
             value: [{
                 'size': 10,
                 'label': 'ID',
+                'labelPath': 'tpm_activities.id',
                 'path': 'unique_id'
             }, {
                 'size': 40,
                 'label': 'Implementing Partner',
+                'labelPath': 'tpm_activities.implementing_partner',
                 'path': 'implementing_partner.name'
             }, {
                 'size': 40,
                 'label': 'PD/SSFA ToR',
+                'labelPath': 'tpm_activities.implementing_partner',
                 'path': 'partnership.title'
             }, {
                 'size': 10,
                 'name': 'date',
                 'label': 'Date',
+                'labelPath': 'tpm_activities.date',
                 'path': 'date'
             }]
         },
@@ -54,14 +58,17 @@ Polymer({
                 return [{
                     'size': 15,
                     'label': 'Id #',
+                    'labelPath': 'tpm_activities.id',
                     'path': 'unique_id'
                 }, {
                     'size': 40,
                     'label': 'Implementing Partner',
+                    'labelPath': 'tpm_activities.implementing_partner',
                     'path': 'implementing_partner.name'
                 }, {
                     'size': 45,
                     'label': 'Partnership',
+                    'labelPath': 'tpm_activities.partnership',
                     'path': 'partnership.title'
                 }, {
                     'size': '150px',

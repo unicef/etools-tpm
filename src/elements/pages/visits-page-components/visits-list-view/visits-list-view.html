@@ -55,7 +55,7 @@
                 query-params="{{queryParams}}"
                 details="[[listDetails]]"
                 has-collapse
-                base-permission-path="[[basePermissionPath]]">
+                base-permission-path="new_visit">
         </list-tab-main>
 
         <dialog-element
@@ -71,8 +71,8 @@
                         options="[[partnerOrganisations]]"
                         class="disabled-as-readonly validate-input required"
                         value="{{partnerOrganisation}}"
-                        label="TPM Vendor"
-                        placeholder="Select TPM Vendor"
+                        label="[[getLabel('tpm_partner', 'new_visit')]]"
+                        placeholder="[[getPlaceholderText('tpm_partner', 'new_visit')]]"
                         custom-object-options
                         option-value="id"
                         option-label="name"

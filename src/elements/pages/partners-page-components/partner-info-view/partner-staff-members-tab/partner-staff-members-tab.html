@@ -51,7 +51,12 @@
             <div class="panel-content group">
                 <etools-loading active="[[listLoading]]"  loading-text="Loading list data..." class="loading"></etools-loading>
 
-                <list-header no-additional no-ordered data="[[columns]]"></list-header>
+                <list-header
+                        no-additional
+                        no-ordered
+                        data="[[columns]]"
+                        base-permission-path="[[basePermissionPath]]">
+                </list-header>
 
                 <template is="dom-repeat" items="[[dataItems]]" filter="_showItems">
                     <list-element
@@ -98,9 +103,9 @@
                     <div class="row-h group">
                         <div class="input-container">
                             <!-- Email address -->
-                            <paper-input label="E-mail address"
+                            <paper-input label="[[getLabel('user.email', basePermissionPath)]]"
                                          value="{{editedItem.user.email}}"
-                                         placeholder="Enter E-mail"
+                                         placeholder="[[getPlaceholderText('user.email', basePermissionPath)]]"
                                          maxlength="45"
                                          class$="validate-input {{_setRequired('user.email', basePermissionPath)}} email"
                                          required="{{_setRequired('user.email', basePermissionPath)}}"
@@ -119,9 +124,9 @@
 
                         <div class="input-container">
                             <!-- First Name -->
-                            <paper-input label="First Name"
+                            <paper-input label="[[getLabel('user.first_name', basePermissionPath)]]"
                                          value="{{editedItem.user.first_name}}"
-                                         placeholder="Enter First Name"
+                                         placeholder="[[getPlaceholderText('user.first_name', basePermissionPath)]]"
                                          class$="validate-input {{_setRequired('user.first_name', basePermissionPath)}}"
                                          maxlength="30"
                                          required="{{_setRequired('user.first_name', basePermissionPath)}}"
@@ -135,9 +140,9 @@
                         </div>
                         <div class="input-container">
                             <!-- Last Name -->
-                            <paper-input label="Last Name"
+                            <paper-input label="[[getLabel('user.last_name', basePermissionPath)]]"
                                          value="{{editedItem.user.last_name}}"
-                                         placeholder="Enter Last Name"
+                                         placeholder="[[getPlaceholderText('user.last_name', basePermissionPath)]]"
                                          maxlength="30"
                                          class$="validate-input {{_setRequired('user.last_name', basePermissionPath)}}"
                                          required="{{_setRequired('user.last_name', basePermissionPath)}}"
@@ -152,9 +157,9 @@
                     </div>
                     <div class="input-container">
                         <!-- Position -->
-                        <paper-input label="Position"
+                        <paper-input label="[[getLabel('user.profile.job_title', basePermissionPath)]]"
                                      value="{{editedItem.user.profile.job_title}}"
-                                     placeholder="Enter Position"
+                                     placeholder="[[getPlaceholderText('user.profile.job_title', basePermissionPath)]]"
                                      maxlength="45"
                                      on-focus="_resetFieldError"
                                      class$="validate-input {{_setRequired('user.profile.job_title', basePermissionPath)}}"
@@ -169,10 +174,10 @@
                     <div class="row-h group">
                         <div class="input-container">
                             <!-- Phone number -->
-                            <paper-input label="Phone number"
+                            <paper-input label="[[getLabel('user.profile.phone_number', basePermissionPath)]]"
                                          value="{{editedItem.user.profile.phone_number}}"
                                          allowed-pattern="[\d\s-]"
-                                         placeholder="Enter Phone"
+                                         placeholder="[[getPlaceholderText('user.profile.phone_number', basePermissionPath)]]"
                                          maxlength="20"
                                          class$="validate-input {{_setRequired('user.profile.phone_number', basePermissionPath)}}"
                                          disabled="{{requestInProcess}}"
@@ -189,19 +194,21 @@
                     </div>
 
                     <div class="row-h group">
-                        <!--receive notification-->
+                        <!--active user-->
                         <div class="staff-check-box notify-box input-container">
                             <etools-checkable-input checked="{{editedItem.user.is_active}}"
-                                                    label="Active"
+                                                    label="[[getLabel('user.is_active', basePermissionPath)]]"
                                                     disabled="{{requestInProcess}}"
                                                     readonly$="{{requestInProcess}}"
                                                     type="checkbox"
                                                     label-alignment="right">
                             </etools-checkable-input>
                         </div>
-                        <div class="staff-check-box notify-box input-container">
+
+                        <!--receive notification-->
+                        <div class="staff-check-box notify-box input-container input-container-m">
                             <etools-checkable-input checked="{{editedItem.receive_tpm_notifications}}"
-                                                    label="Notify"
+                                                    label="[[getLabel('receive_tpm_notifications', basePermissionPath)]]"
                                                     disabled="{{requestInProcess}}"
                                                     readonly$="{{requestInProcess}}"
                                                     type="checkbox"
