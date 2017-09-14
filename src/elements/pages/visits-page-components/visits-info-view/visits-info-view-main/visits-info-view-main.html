@@ -195,6 +195,20 @@
                 </div>
             </div>
 
+            <template is="dom-if" if="[[showRejectComments(comments, isRejectReportDialog)]]">
+                <div class="messages-block">
+                    <div class="block-title">Older Comments</div>
+                    <template is="dom-repeat" items="[[comments]]" as="comment"
+                              filter="_filterComments">
+                        <div class="comment-block">
+                            <div class="comment-date">[[getCommentDate(comment.rejected_at)]]
+                            </div>
+                            <div class="comment-message">[[comment.reject_reason]]</div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
         </dialog-element>
 
         <dialog-element opened="{{approvalDialog}}"
