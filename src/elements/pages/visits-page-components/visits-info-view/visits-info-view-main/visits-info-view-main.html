@@ -50,7 +50,7 @@
                                     <iron-icon icon="bookmark"></iron-icon>
                                 </div>
 
-                                <div class="cancellation-title">Rejection Reason</div>
+                                <div class="cancellation-title">[[getLabel('reject_comment', permissionBase)]]</div>
                                 <div class="cancellation-text">[[visit.reject_comment]]</div>
                             </etools-content-panel>
                         </template>
@@ -78,7 +78,7 @@
                                                 <iron-icon icon="bookmark"></iron-icon>
                                             </div>
 
-                                            <div class="cancellation-title">Request for more information</div>
+                                            <div class="cancellation-title">[[getLabel('report_reject_comments.reject_reason', permissionBase)]]</div>
                                             <div class="cancellation-text">[[comments.0.reject_reason]]</div>
 
                                             <paper-button on-tap="openCommentsDialog" hidden$="[[!showOldComments(comments)]]">View more Comments</paper-button>
@@ -182,14 +182,14 @@
             <div class="row-h repeatable-item-container" without-line>
                 <div class="row-h group">
                     <div class="input-container input-container-l">
-                        <paper-textarea label="Reject Reason"
+                        <paper-textarea label="[[getLabel('report_reject_comments.reject_reason', permissionBase)]]"
                                         max-rows="4"
                                         required
                                         error-message="This field is required."
                                         id="rejectionReasonInput"
                                         class="required"
                                         on-focus="_resetFieldError"
-                                        placeholder="Enter reason of reject">
+                                        placeholder="[[getPlaceholderText('report_reject_comments.reject_reason', permissionBase)]]">
                         </paper-textarea>
                     </div>
                 </div>
@@ -207,14 +207,14 @@
                     no-additional
                     no-ordered
                     data="[[columns]]"
-                    base-permission-path="[[basePermissionPath]]">
+                    base-permission-path="[[permissionBase]]">
             </list-header>
 
             <template is="dom-repeat" items="[[visit.tpm_activities]]">
                 <list-element
                         class="list-element"
                         data="[[item]]"
-                        base-permission-path="[[basePermissionPath]]"
+                        base-permission-path="[[permissionBase]]"
                         headings="[[columns]]"
                         no-additional
                         no-ordered
@@ -229,12 +229,12 @@
             <div class="row-h repeatable-item-container" without-line>
                 <div class="row-h group">
                     <div class="input-container input-container-l">
-                        <paper-textarea label="Comments"
+                        <paper-textarea label="[[getLabel('report_reject_comments', permissionBase)]]"
                                         value="{{approvalComment}}"
                                         max-rows="4"
                                         id="approveComments"
                                         on-focus="_resetFieldError"
-                                        placeholder="Enter Comments">
+                                        placeholder="[[getPlaceholderText('report_reject_comments', permissionBase)]]">
                         </paper-textarea>
                     </div>
                 </div>

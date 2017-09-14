@@ -27,12 +27,14 @@
                 value: [{
                     'size': 20,
                     'label': 'Reference #',
+                    'labelPath': 'reference_number',
                     'name': 'reference_number',
                     'link': 'visits/*data_id*/details',
                     'ordered': false
                 }, {
                     'size': 30,
                     'label': 'TPM Name',
+                    'labelPath': 'tpm_partner.name',
                     'name': 'tpm_partner__name',
                     'path': 'tpm_partner.name',
                     'ordered': false
@@ -41,6 +43,7 @@
                     'name': 'ordered_list',
                     'property': 'name',
                     'label': 'Implementing Partners',
+                    'labelPath': 'implementing_partners',
                     'path': 'implementing_partners',
                     'html': 'true',
                     'class': 'no-order',
@@ -48,6 +51,7 @@
                 }, {
                     'size': 20,
                     'label': 'Status',
+                    'labelPath': 'status',
                     'name': 'status',
                     'ordered': false
                 }]
@@ -60,18 +64,21 @@
                         'name': 'array',
                         'property': 'name',
                         'label': 'Locations',
+                        'labelPath': 'locations',
                         'path': 'locations',
                     }, {
                         'size': 100,
                         'name': 'array',
                         'property': 'name',
                         'label': 'UNICEF Focal Points',
+                        'labelPath': 'unicef_focal_points',
                         'path': 'unicef_focal_points'
                     }, {
                         'size': 100,
                         'name': 'array',
                         'property': 'name',
                         'label': 'Sections',
+                        'labelPath': 'sections',
                         'path': 'sections'
                     }];
                 }

@@ -6,9 +6,13 @@
 
         behaviors: [
             TPMBehaviors.DateBehavior,
+            TPMBehaviors.CommonMethodsBehavior,
         ],
 
         properties: {
+            basePermissionPath: {
+                type: String
+            },
             allowDelete: {
                 type: Boolean,
                 value: false,

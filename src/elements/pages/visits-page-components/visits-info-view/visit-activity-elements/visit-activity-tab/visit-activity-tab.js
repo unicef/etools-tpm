@@ -88,23 +88,28 @@ Polymer({
             value: [{
                 'size': 10,
                 'label': 'ID',
+                'labelPath': 'tpm_activities.id',
                 'name': 'unique_id'
             },{
                 'size': 25,
                 'label': 'Implementing Partner',
+                'labelPath': 'tpm_activities.implementing_partner',
                 'path': 'implementing_partner.name'
             }, {
                 'size': 25,
                 'label': 'Partnership',
+                'labelPath': 'tpm_activities.partnership.title',
                 'path': 'partnership.title'
             }, {
                 'size': 25,
                 'label': 'CP Output',
+                'labelPath': 'tpm_activities.cp_output',
                 'path': 'cp_output.name'
             }, {
                 'size': 15,
                 'name': 'date',
                 'label': 'Date',
+                'labelPath': 'tpm_activities.date',
                 'path': 'date'
             }]
         },
@@ -114,16 +119,19 @@ Polymer({
                 return [{
                     'size': 100,
                     'label': 'Section',
+                    'labelPath': 'tpm_activities.section',
                     'path': 'section.name',
                 }, {
                     'size': 100,
                     'name': 'array',
                     'property': 'name',
                     'label': 'Locations',
+                    'labelPath': 'tpm_activities.locations',
                     'path': 'locations',
                 }, {
                     'size': 100,
                     'label': 'Additional information',
+                    'labelPath': 'tpm_activities.additional_information',
                     'path': 'additional_information',
                 }];
             }

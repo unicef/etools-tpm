@@ -49,26 +49,32 @@ Polymer({
                     {
                         'size': 18,
                         'label': 'Position',
+                        'labelPath': 'user.profile.job_title',
                         'name': 'user.profile.job_title'
                     }, {
                         'size': 18,
                         'label': 'First Name',
+                        'labelPath': 'user.first_name',
                         'name': 'user.first_name'
                     }, {
                         'size': 18,
                         'label': 'Last Name',
+                        'labelPath': 'user.last_name',
                         'name': 'user.last_name'
                     }, {
                         'size': 18,
                         'label': 'Phone Number',
+                        'labelPath': 'user.profile.phone_number',
                         'name': 'user.profile.phone_number'
                     }, {
                         'size': 18,
                         'label': 'E-mail Address',
+                        'labelPath': 'user.email',
                         'name': 'user.email'
                     }, {
                         'size': 5,
                         'label': 'Active',
+                        'labelPath': 'user.is_active',
                         'icon': 'check',
                         'align': 'center',
                         'name': 'user.is_active'
@@ -76,6 +82,7 @@ Polymer({
                     {
                         'size': 5,
                         'label': 'Notify',
+                        'labelPath': 'receive_tpm_notifications',
                         'icon': 'check',
                         'align': 'center',
                         'name': 'receive_tpm_notifications'

@@ -42,7 +42,7 @@
                     <!-- Organization name -->
                     <paper-input label="{{getLabel('name', basePermissionPath)}}"
                                  value="{{partner.name}}"
-                                 placeholder="Empty Field"
+                                 placeholder="{{getPlaceholderText('name', basePermissionPath)}}"
                                  class="without-border"
                                  disabled readonly></paper-input>
                     <paper-tooltip offset="0">[[_getTitleValue(partner.name)]]</paper-tooltip>

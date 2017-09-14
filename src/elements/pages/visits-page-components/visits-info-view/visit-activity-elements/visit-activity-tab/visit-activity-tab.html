@@ -27,7 +27,7 @@
         <etools-content-panel
                 list
                 class="content-section clearfix"
-                panel-title="Visit Activities ([[_getActivitiesLength(dataItems.length)]])">
+                panel-title="[[getLabel('tpm_activities', basePermissionPath)]] ([[_getActivitiesLength(dataItems.length)]])">
             <div slot="panel-btns">
                 <div hidden$="[[!_canBeChanged(basePermissionPath)]]" >
                     <paper-icon-button
