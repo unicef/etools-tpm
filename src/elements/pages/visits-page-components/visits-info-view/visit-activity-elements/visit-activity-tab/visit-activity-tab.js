@@ -383,6 +383,11 @@ Polymer({
         this.requestInProcess = false;
         if (!errorData) { return; }
         let refactoredData = this.dialogOpened ? this.refactorErrorObject(errorData)[0] : this.refactorErrorObject(errorData);
+
+        if (typeof refactoredData === 'string') {
+            this.fire('toast', {text: `TPM Activities: ${refactoredData}`});
+        }
+
         this.set('errors', refactoredData);
     },
 

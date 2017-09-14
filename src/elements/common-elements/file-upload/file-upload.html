@@ -6,7 +6,7 @@
         <style include="tab-inputs-styles module-styles"></style>
         <!-- inject styles './file-upload.scss'-->
 
-        <label class="label" hidden$="[[!files.length]]">[[uploadLabel]]</label>
+        <label class="label" hidden$="[[!files.length]]" invalid$="[[files.error]]">[[uploadLabel]]</label>
 
         <template is="dom-repeat" items="[[files]]">
             <paper-input
@@ -15,7 +15,7 @@
                     no-label-float
                     disabled="[[disabled]]"
                     readonly
-                    invalid$="{{item.invalid}}"
+                    invalid$="{{item.error}}"
                     error-message="{{item.error}}"
                     on-change="_resetFieldError"
                     on-tap="_openFileChooser">

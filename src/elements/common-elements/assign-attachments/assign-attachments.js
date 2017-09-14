@@ -17,7 +17,7 @@ Polymer({
         attachmentsBase: {
             type: String,
         },
-        attachmentsPath: {
+        parentProperty: {
             type: String,
         },
         filesProperty: {
@@ -85,12 +85,12 @@ Polymer({
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject)',
         'updateStyles(attachmentsBase, requestInProcess, editedItem.*)',
-        '_setAttachmentsBase(basePermissionPath, attachmentsPath)',
+        '_setAttachmentsBase(basePermissionPath, parentProperty, filesProperty)',
         '_setDropdownOptions(dataItems, columns, dataItems.*)',
     ],
 
-    _setAttachmentsBase: function(basePermissionPath, attachmentsPath) {
-        this.set('attachmentsBase', `${basePermissionPath}.${attachmentsPath}`);
+    _setAttachmentsBase: function(basePermissionPath, parentProperty, filesProperty) {
+        this.set('attachmentsBase', `${basePermissionPath}.${parentProperty}.${filesProperty}`);
     },
 
     showActivity: function(item) {
@@ -155,16 +155,40 @@ Polymer({
 
     _errorHandler: function(errorData) {
         this.requestInProcess = false;
-        let nonField = this.checkNonField(errorData);
 
+        let fullErrorPath = `${this.parentProperty}.0.${this.filesProperty}`;
+        let error = _.get(errorData, fullErrorPath);
+        if (!error) { return; }
+
+        let nonField = this.checkNonField(errorData);
         if (nonField) {
             this.fire('toast', {text: `Attachments: ${nonField}`});
         }
 
-        errorData = _.get(errorData, this.attachmentsPath.replace('.', '.0.'));
-        if (!errorData) { return; }
-        let refactoredData = this.dialogOpened ? this.refactorErrorObject(errorData) : this.refactorErrorObject(errorData)[0];
-        this.set('errors', refactoredData);
+        let errorPath = this.dialogOpened ? fullErrorPath : this.parentProperty;
+        let attachmentsErrorData = _.get(errorData, errorPath);
+        if (!attachmentsErrorData) { return; }
+
+        if (this.dialogOpened) {
+            let refactoredData = this.refactorErrorObject(attachmentsErrorData);
+            this.set('errors', refactoredData);
+        } else {
+            this.handleErrors(attachmentsErrorData);
+        }
+    },
+
+    handleErrors: function(errorData) {
+        if (!Array.isArray(errorData)) { return; }
+
+        errorData.forEach((item) => {
+            let activity = this.dropdownOptions.find((option) => {
+                return +option.id === +item.id;
+            });
+
+            if (activity && activity.name) {
+                this.fire('toast', {text: `Attach files for ${activity.name}`});
+            }
+        });
     },
 
     deleteAssignedFile: function(event, detail) {

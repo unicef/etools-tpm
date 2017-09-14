@@ -118,7 +118,7 @@
                             <assign-attachments
                                     id="report"
                                     base-permission-path="{{permissionBase}}"
-                                    attachments-path="tpm_activities.report_attachments"
+                                    parent-property="tpm_activities"
                                     files-property="report_attachments"
                                     title="[[getLabel('tpm_activities.report_attachments', permissionBase)]]"
                                     dialog-dropdown-label="Visit Activity"
@@ -140,7 +140,7 @@
                         <assign-attachments
                                 id="attachments"
                                 base-permission-path="{{permissionBase}}"
-                                attachments-path="tpm_activities.attachments"
+                                parent-property="tpm_activities"
                                 files-property="attachments"
                                 title="[[getLabel('tpm_activities.attachments', permissionBase)]]"
                                 dialog-dropdown-label="Visit Activity"
