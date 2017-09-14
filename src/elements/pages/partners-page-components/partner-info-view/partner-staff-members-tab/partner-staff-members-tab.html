@@ -194,7 +194,7 @@
                     </div>
 
                     <div class="row-h group">
-                        <!--receive notification-->
+                        <!--active user-->
                         <div class="staff-check-box notify-box input-container">
                             <etools-checkable-input checked="{{editedItem.user.is_active}}"
                                                     label="[[getLabel('user.is_active', basePermissionPath)]]"
@@ -204,7 +204,9 @@
                                                     label-alignment="right">
                             </etools-checkable-input>
                         </div>
-                        <div class="staff-check-box notify-box input-container">
+
+                        <!--receive notification-->
+                        <div class="staff-check-box notify-box input-container input-container-m">
                             <etools-checkable-input checked="{{editedItem.receive_tpm_notifications}}"
                                                     label="[[getLabel('receive_tpm_notifications', basePermissionPath)]]"
                                                     disabled="{{requestInProcess}}"
