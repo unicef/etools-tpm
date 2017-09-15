@@ -79,12 +79,6 @@
 
             return _.isEmpty(data) ? null : data;
         },
-
-        getFullAddress: function(partner) {
-            let addressItems = [partner.country, partner.city, partner.postal_code, partner.street_address];
-            return addressItems.filter((val) => {return val;}).join(', ');
-        }
-
     });
 
 })();

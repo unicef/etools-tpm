@@ -107,6 +107,12 @@
             return tooltip.join(', ');
         },
 
+        getPartnerAddress: function(partner) {
+            if (!partner) { return; }
+            let addressItems = [partner.country, partner.city, partner.postal_code, partner.street_address];
+            return addressItems.filter(val => val).join(', ');
+        },
+
         _errorOccurred: function(errorObject) {
             let tab = this.whichPageTrows(errorObject),
                     currentTab = this.routeData && this.routeData.tab;
