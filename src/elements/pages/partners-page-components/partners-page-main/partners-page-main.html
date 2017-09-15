@@ -1,6 +1,6 @@
 <!--import [polymer, paper-tabs, paper-input]-->
 
-<!--import [page-layout-styles, shared-styles, pages-header-element, module-styles, user-controller, partners-list-view,
+<!--import [page-layout-styles, shared-styles, pages-header-element, module-styles, user-controller,
              partner-info-view-main, query-params-controller, permission-controller, partner-details-data, lodash]-->
 
 <dom-module id="partners-page-main">
@@ -32,6 +32,7 @@
                 role="main">
 
                 <partners-list-view
+                        id="partnersList"
                         name="list"
                         query-params="{{queryParams}}"
                         request-queries="[[partnersListQueries]]"
