@@ -13,7 +13,7 @@
                 <template is="dom-repeat" items="{{statuses}}" as="status">
 
                     <div hidden$="[[hideStatus(visit.status, status.value)]]">
-                        <div class$="status-container [[_getStatusClass(visit.status, status.value, statuses)]]">
+                        <div class$="status-container [[_getStatusClass(visit, status.value, statuses)]]">
                             <div class="status-icon">
                             <span class="icon-wrapper">
                                 <span class="status-nr">[[setIndex(status.value, statuses)]]</span>
