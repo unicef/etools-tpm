@@ -54,6 +54,7 @@ Polymer({
             (status === 'tpm_rejected' && currentStatus !== 'tpm_rejected') ||
             (status === 'tpm_report_rejected' && currentStatus !== 'tpm_report_rejected') ||
             (status === 'cancelled' && currentStatus !== 'cancelled') ||
+            (status === 'tpm_reported' && currentStatus === 'tpm_report_rejected') ||
             (status === 'tpm_rejected' && !currentStatus);
     },
 
