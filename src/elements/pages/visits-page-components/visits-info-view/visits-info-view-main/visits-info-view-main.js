@@ -301,8 +301,10 @@ Polymer({
             this.dialogTitle = 'Reject Visit';
             this.isDeleteDialog = false;
             this.rejectLabel = 'Reject Reason';
+            this.rejectConfirm = 'Continue';
         } else if (type === 'cancel') {
             this.dialogTitle = 'Do you want to cancel this visit?';
+            this.rejectConfirm = 'Continue';
             this.isDeleteDialog = true;
         } else if (type === 'reject_report') {
             this.isRejectReportDialog = true;
@@ -311,6 +313,7 @@ Polymer({
                 title += `${this.visit.start_date} - ${this.visit.end_date}`;
             }
             this.dialogTitle = title;
+            this.rejectConfirm = 'Send back to TPM';
             this.isDeleteDialog = false;
         }
     },
@@ -328,7 +331,7 @@ Polymer({
     },
 
     showRejectComments: function(comments, isRejectReportDialog) {
-        return isRejectReportDialog && comments && comments.length > 1;
+        return isRejectReportDialog && comments && comments.length;
     },
 
     _filterComments: function(comment) {
