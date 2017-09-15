@@ -68,8 +68,8 @@
 
             this.files.forEach((file, index) => {
                 let errorMessage = this.get(`errors.${index}.file`);
-                this.set(`files.${index}.invalid`, !!errorMessage);
                 this.set(`files.${index}.error`, errorMessage);
+                this.set('files.error', true);
             });
         },
 
