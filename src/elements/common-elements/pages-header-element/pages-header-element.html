@@ -14,7 +14,7 @@
                 <span class="flex title">[[_setTitle(pageData, pageTitle)]]</span>
 
                 <div class="side-heading-button-holder">
-                    <div class="export-buttons" hidden$="[[exportLinks.length]]">
+                    <div class="export-buttons" hidden$="[[!exportLinks.length]]">
                         <paper-menu-button id="dropdown" hidden$="[[!_isDropDown(exportLinks)]]" on-tap="_toggleOpened">
                             <paper-button class="grey-buttons dropdown-trigger">
                                 <iron-icon icon="file-download"></iron-icon>
@@ -31,6 +31,11 @@
                             Export
                         </paper-button>
                     </div>
+
+                    <paper-button class="grey-buttons visit-letter" hidden$="[[!downloadLetterUrl]]" on-tap="downloadLetter">
+                        <iron-icon icon="file-download"></iron-icon>
+                        Visit Letter
+                    </paper-button>
 
                     <paper-button class="add-btn" raised hidden$="[[_hideAddButton(showAddButton)]]"
                                   on-tap="addNewTap">

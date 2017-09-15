@@ -26,6 +26,8 @@
                 document.dispatchEvent(reloadTpmPartnersEvent);
             }
 
+            if (details.action === 'accept') { this.visitAccepted = true; }
+
             this.optionsUrl = this.getEndpoint(`${this.postfix}Details`, {id: details.id}).url;
             this.postRequest = null;
         },
@@ -54,7 +56,8 @@
             } else {
                 console.error(`Can not update ${this.postfix}. Data is missing`);
             }
-            this.fire(`${this.postfix}-updated`, {success: true});
+            this.fire(`${this.postfix}-updated`, {success: true, visitAccepted: this.visitAccepted});
+            this.visitAccepted = false;
             if (!this.quietAdding) {
                 this.fire('toast', {text: `${this.postfix[0].toUpperCase()}${this.postfix.slice(1)} has been updated!`});
             } else {

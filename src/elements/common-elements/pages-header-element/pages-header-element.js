@@ -41,7 +41,16 @@ Polymer({
                 return {};
             }
         },
-        exportLinks: Array,
+        exportLinks: {
+            type: Array,
+            value: function() {
+                return [];
+            }
+        },
+        downloadLetterUrl: {
+            type: String,
+            value: ''
+        }
     },
     behaviors: [
         etoolsAppConfig.globals
@@ -79,7 +88,13 @@ Polymer({
         let url = (e && e.model && e.model.item) ? e.model.item.url : this.exportLinks[0].url;
         window.open(url, '_blank');
     },
+
     _isDropDown: function(exportLinks) {
         return exportLinks.length > 1;
     },
+
+    downloadLetter: function() {
+        window.open(this.downloadLetterUrl, '_blank');
+    }
+
 });

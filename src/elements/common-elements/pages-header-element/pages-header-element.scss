@@ -10,9 +10,11 @@
         cursor: pointer;
     }
 
-    .export-buttons {
+    .export-buttons:not([hidden]) {
         display: inline-block;
     }
+
+    .visit-letter { margin: 8px; }
 }
 .header-wrapper {
     //box-shadow: inset 0 -1px rgba(0,0,0,0.26);

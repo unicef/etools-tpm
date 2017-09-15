@@ -95,6 +95,7 @@ Polymer({
         'action-activated': '_processAction',
         'delete-confirmed': 'cancelVisit',
         'dialog-confirmed': 'confirmDialog',
+        'visit-updated': 'notifyAboutLetter'
     },
 
     ready: function() {
@@ -359,10 +360,17 @@ Polymer({
         });
     },
 
-    _setExportLinks: function(visit) {
-        return [{
-            url: this.getEndpoint('visitDetails', {id: visit.id}).url + 'export_pdf/'
-        }];
+    _setLetterLink: function(visit) {
+        let statuses = ['draft', 'assigned', 'cancelled'];
+        if (!visit || !this.isTpmUser() || !!~statuses.indexOf(visit.status)) { return; }
+        return this.getEndpoint('visitDetails', {id: visit.id}).url + 'export_pdf/';
+    },
+
+    notifyAboutLetter: function(event) {
+        let visitAccepted = event && event.detail && event.detail.visitAccepted;
+        if (visitAccepted) {
+            this.fire('toast', {text: 'Visit Letter has been generated!'});
+        }
     }
 
 });
