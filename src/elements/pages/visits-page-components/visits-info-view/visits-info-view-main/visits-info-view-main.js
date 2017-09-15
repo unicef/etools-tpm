@@ -25,7 +25,7 @@ Polymer({
             type: Array,
             value: [{
                 'size': 10,
-                'label': 'ID',
+                'label': 'Activity Id',
                 'labelPath': 'tpm_activities.id',
                 'path': 'unique_id'
             }, {

@@ -94,7 +94,7 @@ Polymer({
             type: Object,
             value: function() {
                 return {
-                    title: 'Add new Staff Member'
+                    title: 'Add new TPM Contact'
                 };
             }
         },
@@ -130,6 +130,11 @@ Polymer({
         searchQuery: {
             type: String,
             value: ''
+        },
+        tabTitle: {
+            type: String,
+            value: '',
+            computed: 'setTabTitle(permissionBase, datalength, dataItems.length, searchQuery)'
         }
     },
 
@@ -348,6 +353,12 @@ Polymer({
                 this.set('searchQuery', value);
             }, 500);
         }
+    },
+
+    setTabTitle: function(basePermissionPath, datalength, dataItems, searchQuery) {
+        if (!basePermissionPath) { return; }
+        let title = this.getFieldAttribute(`${basePermissionPath}.staff_members`, 'label', 'GET');
+        return `${title} (${this._staffLength(datalength, dataItems, searchQuery)})`;
     }
 
 });
