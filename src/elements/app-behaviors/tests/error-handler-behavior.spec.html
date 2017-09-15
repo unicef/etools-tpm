@@ -89,22 +89,6 @@
             });
         });
 
-        it('method whichPageTrows iterates over argument properties and return tab name in which this property exists in priority order or null', function() {
-            var object = {};
-            assert.isNull(behaviorObj.whichPageTrows(object));
-
-            object.date_of_comments_by_unicef = true;
-            assert.equal(behaviorObj.whichPageTrows(object), 'report');
-
-            object.questionnaire = true;
-            assert.equal(behaviorObj.whichPageTrows(object), 'questionnaire');
-
-            object.engagement_attachments = true;
-            assert.equal(behaviorObj.whichPageTrows(object), 'attachments');
-
-            object.agreement = true;
-            assert.equal(behaviorObj.whichPageTrows(object), 'overview');
-        })
     });
 </script>
 

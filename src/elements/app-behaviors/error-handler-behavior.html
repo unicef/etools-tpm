@@ -28,9 +28,10 @@
 
             whichPageTrows: function(errorObj) {
                 let errors = this.refactorErrorObject(errorObj);
-                if (errors.tpm_activities && errors.tpm_activities.report_attachments) {
+                let activityError = errors.tpm_activities && errors.tpm_activities[0];
+                if (activityError && activityError.report_attachments) {
                     return 'report';
-                } else if (errors.tpm_activities && errors.tpm_activities.attachments ||
+                } else if (activityError && activityError.attachments ||
                             errors.report_attachments ||
                             errors.attachments) {
                     return 'attachments';
