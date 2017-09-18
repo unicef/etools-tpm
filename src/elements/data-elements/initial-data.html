@@ -50,9 +50,13 @@
                      on-fail="_officesError"></etools-ajax>
 
         <!--Locations-->
-        <etools-ajax url="[[locationsUrl]]"
-                     on-success="_locationsLoaded"
-                     on-fail="_locationsError"></etools-ajax>
+        <etools-ajax
+                endpoint="[[locationsEndpoint]]"
+                caching-storage="custom"
+                dexie-db-collection="locations"
+                on-success="_locationsLoaded"
+                on-fail="_locationsError">
+        </etools-ajax>
     </template>
 
     <script>
@@ -96,13 +100,13 @@
 
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this.partnersUrl = this.getEndpoint('partnersList').url;
-                    this.locationsUrl = this.getEndpoint('locations').url;
+                    this.locationsEndpoint = this.getEndpoint('locations');
                     this._allDataLoaded();
                 },
 
                 _allDataLoaded: function() {
                     let tpmUser = this.isTpmUser();
-                    if (dataLoaded.visitsOptions && dataLoaded.partners && dataLoaded.locations &&
+                    if (dataLoaded.visitsOptions && dataLoaded.partners &&
                         (tpmUser || (dataLoaded.partnersOptions && dataLoaded.organizations && dataLoaded.outputs &&
                         dataLoaded.sections && dataLoaded.unicefUsers && dataLoaded.offices))) {
                         this.fire('initial-data-loaded');
@@ -229,13 +233,16 @@
                     this._allDataLoaded();
                 },
 
-                _locationsLoaded: function(data, detail) {
-                    if (!detail) {
+                _locationsLoaded: function(event, details) {
+                    if (!details || details.error) {
                         this._locationsError();
+                    } else {
+                        let locations = _.sortBy(details, ['name']);
+                        this._setData('locations', locations);
+
+                        let locationsLoaded = new CustomEvent('locations-loaded');
+                        document.dispatchEvent(locationsLoaded);
                     }
-                    this._setData('locations', detail);
-                    dataLoaded.locations = true;
-                    this._allDataLoaded();
                 },
 
                 _organisationsError: function() {

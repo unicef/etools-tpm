@@ -179,7 +179,9 @@ Polymer({
     ready: function() {
         this.partners = this.getData('partnerOrganisations') || [];
         this.sections = this.getData('sections') || [];
-        this.locations = this.getData('locations') || [];
+
+        this._updateLocations();
+        document.addEventListener('locations-loaded', this._updateLocations.bind(this));
     },
 
     _setSomeRequestInProcess: function(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess) {
@@ -207,6 +209,10 @@ Polymer({
         let partnerDefined = partner && (partner.id || partner.id === 0) || partner === 'true';
         let partnershipDefined = partnership && (partnership.id || partnership.id === 0) || partnership === 'true';
         return fieldReadonly || !partnerDefined || !partnershipDefined || someRequestInProcess;
+    },
+
+    _updateLocations: function() {
+        this.locations = this.getData('locations') || [];
     },
 
     _setPartnershipValue: function(options, value) {

@@ -94,13 +94,6 @@
                         selection: []
                     },
                     {
-                        name: 'Location',
-                        query: 'tpm_activities__locations',
-                        optionValue: 'id',
-                        optionLabel: 'name',
-                        selection: []
-                    },
-                    {
                         name: 'status',
                         query: 'status',
                         hideSearch: true,
@@ -185,17 +178,12 @@
 
         setFiltersSelections: function() {
             let partnerFilterIndex = this._getFilterIndex('tpm_activities__implementing_partner');
-            let locationFilterIndex = this._getFilterIndex('tpm_activities__locations');
             let statusFilterIndex = this._getFilterIndex('status');
             let sectionFilterIndex = this._getFilterIndex('sections');
             let cpFilterIndex = this._getFilterIndex('tpm_activities__cp_output');
 
             if (partnerFilterIndex !== -1) {
                 this.set(`filters.${partnerFilterIndex}.selection`, this.getData('partnerOrganisations') || []);
-            }
-
-            if (locationFilterIndex !== -1) {
-                this.set(`filters.${locationFilterIndex}.selection`, this.getData('locations') || []);
             }
 
             if (statusFilterIndex !== -1) {
