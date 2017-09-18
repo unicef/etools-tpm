@@ -1,0 +1,174 @@
+<!--import [etools-content-panel, lodash, paper-icon-button] -->
+
+<!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header,
+            list-element, common-methods-behavior, dialog-element, date-behavior,
+            static-data-behavior, common-methods-behavior, table-elements-behavior] -->
+
+<dom-module id="action-points">
+    <template>
+        <!-- inject styles './action-points.scss'-->
+        <style include="module-styles tab-layout-styles tab-inputs-styles"></style>
+
+        <etools-content-panel
+                list
+                class="content-section clearfix"
+                panel-title="[[title]]">
+            <div slot="panel-btns">
+                <div hidden$="[[isReadonly(basePermissionPath)]]">
+                    <paper-icon-button
+                            class="panel-button"
+                            on-tap="openAddDialog"
+                            icon="add-box">
+                    </paper-icon-button>
+                    <paper-tooltip offset="0">Add</paper-tooltip>
+                </div>
+            </div>
+            <list-header
+                  no-ordered
+                  data="[[columns]]"
+                  base-permission-path="[[basePermissionPath]]">
+            </list-header>
+            <template is="dom-repeat" items="[[dataItems]]">
+                  <list-element
+                        class="list-element"
+                        data="[[item]]"
+                        headings="[[columns]]"
+                        details="[[details]]"
+                        has-collapse
+                        multiline
+                        no-animation>
+                        <div slot="custom">
+                            [[getStatusDisplayName(item.status)]]
+                        </div>
+                  </list-element>
+            </template>
+            <template is="dom-if" if="[[!dataItems.length]]">
+                <list-element
+                        class="list-element"
+                        data="[[emptyObj]]"
+                        headings="[[columns]]"
+                        no-animation>
+                </list-element>
+            </template>
+            <dialog-element
+                    opened="{{dialogOpened}}"
+                    delete-dialog="[[deleteDialog]]"
+                    dialog-title="[[dialogTitle]]"
+                    confirm-btn-text="[[confirmBtnText]]"
+                    request-in-process="{{requestInProcess}}">
+                <div class="row-h repeatable-item-container" without-line>
+                    <div class="repeatable-item-content">
+                        <div class="row-h group">
+                            <div class="input-container input-container-l">
+                                <paper-input
+                                    class$="disabled-as-readonly validate-input [[_setRequired('action_points.description', basePermissionPath)]]"
+                                    label="{{getLabel('action_points.description', basePermissionPath)}}"
+                                    placeholder="{{getPlaceholderText('action_points.description', basePermissionPath)}}"
+                                    value="{{editedItem.description}}"
+                                    required$="[[_setRequired('action_points.description', basePermissionPath)]]"
+                                    disabled$="[[isReadOnly('action_points.description', basePermissionPath)]]"
+                                    readonly$="[[isReadOnly('action_points.description', basePermissionPath)]]"
+                                    invalid="{{_checkInvalid(errors.description)}}"
+                                    error-message="{{errors.description}}"
+                                    on-focus="_resetFieldError">
+                                </paper-input>
+                                <paper-tooltip offset="0">[[editedItem.description]]</paper-tooltip>
+                            </div>
+                        </div>
+                        <div class="row-h group">
+                            <div class="input-container">
+                                <etools-searchable-multiselection-menu
+                                        class$="disabled-as-readonly validate-input [[_setRequired('action_points.person_responsible', basePermissionPath)]]"
+                                        selected="{{editedItem.person_responsible}}"
+                                        label="[[getLabel('action_points.person_responsible', basePermissionPath)]]"
+                                        placeholder="[[getPlaceholderText('action_points.person_responsible', basePermissionPath)]]"
+                                        options="[[usersList]]"
+                                        custom-object-options
+                                        option-label="name"
+                                        option-value="id"
+                                        update-selected
+                                        required$="[[_setRequired('action_points.person_responsible', basePermissionPath)]]"
+                                        disabled$="[[isReadOnly('action_points.person_responsible', basePermissionPath)]]"
+                                        readonly$="[[isReadOnly('action_points.person_responsible', basePermissionPath)]]"
+                                        invalid="{{errors.action_points.person_responsible}}"
+                                        error-message="{{errors.action_points.person_responsible}}"
+                                        on-focus="_resetFieldError"
+                                        hide-search
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                                <paper-tooltip offset="0">[[getTooltipText(selectedPersonResponsible, usersList, 'name')]]</paper-tooltip>
+                            </div>
+                            <div class="input-container">
+                                <paper-input
+                                        class$="disabled-as-readonly validate-input [[_setRequired('action_points.due_date', basePermissionPath)]]"
+                                        value="[[prettyDate(editedItem.due_date)]]"
+                                        label="[[getLabel('action_points.due_date', basePermissionPath)]]"
+                                        placeholder="&#8212;"
+                                        data-selector="dueDate"
+                                        required="[[_setRequired('action_points.due_date', basePermissionPath)]]"
+                                        disabled$="[[isReadOnly('action_points.due_date', basePermissionPath)]]"
+                                        readonly$="[[isReadOnly('action_points.due_date', basePermissionPath)]]"
+                                        invalid$="{{errors.action_points.due_date}}"
+                                        error-message="{{errors.action_points.due_date}}"
+                                        on-focus="_resetFieldError"
+                                        on-down="openDatePicker">
+                                    <etools-datepicker
+                                            id="dueDate"
+                                            modal="[[datepickerModal]]"
+                                            prefix
+                                            format="YYYY-MM-DD"
+                                            date="[[prepareDate(editedItem.due_date)]]"
+                                            pretty-date="{{editedItem.due_date}}"
+                                            no-init
+                                            show-clear-btn>
+                                    </etools-datepicker>
+                                </paper-input>
+                                <paper-tooltip offset="0">[[prepareDate(editedItem.due_date)]]</paper-tooltip>
+                            </div>
+                            <div class="input-container">
+                                <etools-searchable-multiselection-menu
+                                        class$="disabled-as-readonly validate-input [[_setRequired('action_points.status', basePermissionPath)]]"
+                                        selected="{{editedItem.status}}"
+                                        label="[[getLabel('action_points.status', basePermissionPath)]]"
+                                        placeholder="[[getPlaceholderText('action_points.status', basePermissionPath)]]"
+                                        options="[[statuses]]"
+                                        custom-object-options
+                                        option-label="display_name"
+                                        option-value="value"
+                                        update-selected
+                                        required="[[_setRequired('action_points.status', basePermissionPath)]]"
+                                        disabled$="[[isReadOnly('action_points.status', basePermissionPath)]]"
+                                        readonly$="[[isReadOnly('action_points.status', basePermissionPath)]]"
+                                        invalid="{{errors.action_points.status}}"
+                                        error-message="{{errors.action_points.status}}"
+                                        on-focus="_resetFieldError"
+                                        dynamic-align
+                                        hide-search
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                                <paper-tooltip offset="0">[[editedItem.status]]</paper-tooltip>
+                            </div>
+                    </div>
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
+                            <paper-input class$="disabled-as-readonly [[_setRequired('action_points.comments', basePermissionPath)]]"
+                                         value="{{editedItem.comments}}"
+                                         label="{{getLabel('action_points.comments', basePermissionPath)}}"
+                                         placeholder="{{getPlaceholderText('action_points.comments', basePermissionPath)}}"
+                                         required$="[[_setRequired('action_points.comments', basePermissionPath)]]"
+                                         disabled$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
+                                         readonly$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
+                                         invalid="{{_checkInvalid(errors.action_points.comments)}}"
+                                         error-message="{{errors.action_points.comments}}"
+                                         on-focus="_resetFieldError">
+                            </paper-input>
+                            <paper-tooltip offset="0">[[editedItem.description]]</paper-tooltip>
+                        </div>
+                    </div>
+                </div>
+            </dialog-element>
+        </etools-content-panel>
+    </template>
+
+    <!-- inject scripts './action-points.js'-->
+</dom-module>

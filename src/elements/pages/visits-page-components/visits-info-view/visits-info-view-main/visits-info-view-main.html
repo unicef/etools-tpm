@@ -1,5 +1,5 @@
 <!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea, iron-icons, paper-button, paper-checkbox]-->
-<!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data,
+<!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data, action-points,
             permission-controller, textarea-max-rows-behavior, tab-inputs-styles, visit-activity-tab, visit-details-tab,
             file-attachments-tab, assign-attachments, static-data-behavior, common-methods-behavior, list-header, etools-app-config,
             list-element]-->
@@ -136,7 +136,14 @@
 
                     <template is="dom-if" if="[[_showTab(permissionBase, 'action_points')]]">
                         <div name="action-points">
-                            <span class="tab-content">Action Points page</span>
+                          <action-points
+                              id="actionPoints"
+                              base-permission-path="{{permissionBase}}"
+                              data-items=[[visit.action_points]]
+                              title="[[getLabel('action_points', permissionBase)]]"
+                              statuses=[[actionPointStatues]]
+                              error-object="{{errorObject}}">
+                          </action-points>
                         </div>
                     </template>
 

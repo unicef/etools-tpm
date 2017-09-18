@@ -111,6 +111,7 @@ Polymer({
         }
         this.reportFileTypes = this.getChoices(`${this.permissionBase}.tpm_activities.report_attachments.file_type`) || [];
         this.simpleFileTypes = this.getChoices(`${this.permissionBase}.report_attachments.file_type`) || [];
+        this.actionPointStatues = this.getChoices(`${this.permissionBase}.action_points.status`) || [];
     },
 
     _attachmentsReadonly: function(base, type) {
@@ -163,17 +164,21 @@ Polymer({
         let reportTab = Polymer.dom(this.root).querySelector('#report');
         let simpleAttachmentsTab = Polymer.dom(this.root).querySelector('#simpleAttachments');
         let visitActivity = this.$.visitActivity;
+        let actionPoints = Polymer.dom(this.root).querySelector('#actionPoints');
+
         let data = this.getVisitData();
 
         let visitAttachments = attachmentsTab && await attachmentsTab.getAttachmentsData();
         let reportAttachments = reportTab && await reportTab.getAttachmentsData();
         let simpleAttachments = simpleAttachmentsTab && await simpleAttachmentsTab.getFiles();
         let visitActivityData = visitActivity && await visitActivity.getActivitiesData();
+        let actionPointsData = actionPoints && await actionPoints.getTabData();
 
         if (reportAttachments) { data.tpm_activities = reportAttachments; }
         if (visitActivityData) { data.tpm_activities = visitActivityData; }
         if (visitAttachments) { data.tpm_activities = visitAttachments; }
         if (simpleAttachments) { data.report_attachments = simpleAttachments; }
+        if (actionPointsData) { data.action_points = actionPointsData; }
 
         this.newVisitDetails = {
             method: method,
