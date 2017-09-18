@@ -26,6 +26,8 @@
 
         <!--partner organisations-->
         <etools-ajax endpoint="[[organisationsEndpoint]]"
+                     caching-storage="custom"
+                     dexie-db-collection="partners"
                      on-success="_organisationsLoaded"
                      on-fail="_organisationsError"></etools-ajax>
 
