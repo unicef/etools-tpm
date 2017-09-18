@@ -37,6 +37,11 @@
                 overflow: visible;
             }
             .truncate { white-space: nowrap; }
+            .html-content {
+                position: relative;
+                display: block;
+                overflow: hidden;
+            }
             .additional {
                 color: var(--dark-secondary-text-color);
                 font-size: 11px;

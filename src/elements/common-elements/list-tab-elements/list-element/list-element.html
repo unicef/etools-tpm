@@ -28,7 +28,7 @@
             <div class="partner-data" style$="padding-right: [[paddingRight]];">
                 <template is="dom-repeat" items="[[headings]]">
                     <template is="dom-if" if="[[_isOneOfType(item, 'link')]]">
-                        <a class$="col-data w[[item.size]] [[item.align]] [[item.class]]"
+                        <a class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate"
                            href$="[[_getLink(item.link, data)]]">
                             <span class="truncate">
                                 <template is="dom-if" if="[[_getValue(item, data)]]">
@@ -64,7 +64,7 @@
 
                     <template is="dom-if" if="[[_isOneOfType(item, 'html')]]">
                         <span class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate">
-                            <span class="truncate">
+                            <span class="truncate html-content">
                                 <insert-html html="[[_getValue(item, data)]]"></insert-html>
                             </span>
                         </span>
