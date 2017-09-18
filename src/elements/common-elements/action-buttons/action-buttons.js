@@ -21,7 +21,12 @@ Polymer({
                     'finalize': 'assignment-turned-in',
                     'activate': 'check',
                     'confirm': 'check',
-                    'assign': 'check'
+                    'assign': 'check',
+                    'approve': 'assignment-turned-in',
+                    'reject_report': 'cancel',
+                    'send_report': 'assignment-turned-in',
+                    'accept': 'check',
+                    'reject': 'cancel'
                 };
             }
         }
