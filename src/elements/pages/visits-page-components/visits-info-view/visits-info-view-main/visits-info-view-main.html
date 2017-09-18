@@ -203,8 +203,7 @@
             <template is="dom-if" if="[[showRejectComments(comments, isRejectReportDialog)]]">
                 <div class="messages-block">
                     <div class="block-title">Older Comments</div>
-                    <template is="dom-repeat" items="[[comments]]" as="comment"
-                              filter="_filterComments">
+                    <template is="dom-repeat" items="[[comments]]" as="comment">
                         <div class="comment-block">
                             <div class="comment-date">[[getCommentDate(comment.rejected_at)]]
                             </div>

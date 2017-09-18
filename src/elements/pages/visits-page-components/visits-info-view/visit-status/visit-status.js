@@ -14,23 +14,31 @@ Polymer({
             value: function() {
                 return {};
             }
+        },
+        statusesIndex: {
+            type: Object,
+            value: function() {
+                return {
+                    draft: 1,
+                    assigned: 2,
+                    tpm_accepted: 3,
+                    tpm_rejected: 3,
+                    tpm_reported: 4,
+                    tpm_report_rejected: 4,
+                    unicef_approved: 5
+                };
+            },
+            readOnly: true
         }
     },
 
-    observers: ['_setCancelledPosition(visit.status)'],
+    observers: ['manageStatusesData(visit.status)'],
 
     ready: function() {
         this.statuses = this.getData('statuses') || [];
-        _.each(this.statuses, (status) => {
-            if (status.value === 'draft') {
-                this.set(`dateProperties.draft`, 'date_created');
-            } else {
-                this.set(`dateProperties.${status.value}`, `date_of_${status.value}`);
-            }
-        })
     },
 
-    _getStatusClass: function(visit, status, statuses) {
+    _getStatusClass: function(visit, status) {
         if (!visit || !visit.status || !status) { return; }
         let currentStatus = visit.status,
             statusDateField = this.dateProperties[status];
@@ -50,18 +58,9 @@ Polymer({
         }
     },
 
-    _getStatusIndex: function(status, statuses) {
-        if (!status || !statuses) { return; }
-        if (!this.statusesArray) { this.statusesArray = statuses.map((status) => { return status.value; }); }
-
-        let currentIndex = this.statusesArray.indexOf(status),
-            statusIndex = Math.ceil(currentIndex/2);
-
-        return statusIndex >= 0 ? statusIndex : -1;
-    },
-
-    setIndex: function(status, statuses) {
-        return this._getStatusIndex(status, statuses) + 1;
+    setIndex: function(status, currentStatus, indexes) {
+        let index = indexes[status];
+        return currentStatus === 'cancelled' ? index + 1 : index;
     },
 
     hideStatus: function(currentStatus, status) {
@@ -78,19 +77,43 @@ Polymer({
         return !!(lastStatus && lastStatus.value === status);
     },
 
-    _setCancelledPosition: function(status) {
-        if (!status || status !== 'cancelled') { return; }
-        let cancelledStatus = this.splice('statuses', this.statuses.findIndex(status => status.value === 'cancelled'), 1);
+    manageStatusesData: function(currentStatus) {
+        if (!currentStatus) { return; }
+
+        let statuses = this.getData('statuses');
+        if (_.isEmpty(this.dateProperties)) { this.setDateProperties(); }
+
+        let cancelledIndex = statuses.findIndex(status => status.value === 'cancelled'),
+            cancelledStatus = statuses.splice(cancelledIndex, 1)[0];
+
+        if (currentStatus === 'cancelled') {
+            let lastActiveIndex = this.getLastActiveIndex(statuses);
+            statuses.splice(lastActiveIndex + 1, 0, cancelledStatus);
+        }
+
+        this.set('statuses', statuses);
+    },
+
+    setDateProperties: function() {
+        _.each(this.statuses, (status) => {
+            if (status.value === 'draft') {
+                this.set(`dateProperties.draft`, 'date_created');
+            } else {
+                this.set(`dateProperties.${status.value}`, `date_of_${status.value}`);
+            }
+        });
+    },
+
+    getLastActiveIndex: function(statuses) {
         let lastActiveIndex;
-        _.forEachRight(this.statuses, (status, index) => {
+        _.forEachRight(statuses, (status, index) => {
             if (lastActiveIndex) { return; }
             let statusDateField = this.dateProperties[status.value];
             if (this.visit[statusDateField]) {
                 lastActiveIndex = index;
             }
         });
-
-        this.splice('statuses', lastActiveIndex + 1, 0, cancelledStatus);
+        return lastActiveIndex;
     }
 
 });
