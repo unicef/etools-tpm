@@ -31,23 +31,19 @@ Polymer({
             type: Array,
             value: function() {
                 return [{
-                    'size': 20,
+                    'size': 25,
                     'label': 'Description',
                     'path': 'description'
                 }, {
-                    'size': 20,
+                    'size': 25,
                     'label': 'Person Responsible',
                     'path': 'person_responsible.name'
                 }, {
-                    'size': 20,
+                    'size': 25,
                     'label': 'Assigned By',
                     'path': 'author.name'
                 }, {
-                    'size': 20,
-                    'label': 'Section',
-                    'path': 'section'
-                }, {
-                    'size': 20,
+                    'size': 25,
                     'label': 'Status',
                     'property': 'status',
                     'custom': true,
