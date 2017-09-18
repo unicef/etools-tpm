@@ -99,50 +99,15 @@
                     </div>
 
                     <div class="row-h group">
-                        <div class="input-container input-container-ms">
+                        <div class="input-container input-container-l">
                             <!-- Partner Address -->
                             <paper-input label="[[getLabel('street_address', basePermissionPath)]]"
                                          class$="without-border [[_setReadonlyFieldClass(data)]]"
                                          disabled readonly
-                                         value="[[data.street_address]]"
+                                         value="[[getPartnerAddress(data)]]"
                                          placeholder="[[getReadonlyPlaceholder(data)]]">
                             </paper-input>
-                            <paper-tooltip offset="0">[[data.street_address]]</paper-tooltip>
-                        </div>
-
-                        <div class="input-container input-container-ms">
-                            <!-- Partner Postal Code -->
-                            <paper-input label="[[getLabel('postal_code', basePermissionPath)]]"
-                                         class$="without-border [[_setReadonlyFieldClass(data)]]"
-                                         disabled readonly
-                                         value="[[data.postal_code]]"
-                                         placeholder="[[getReadonlyPlaceholder(data)]]">
-                            </paper-input>
-                            <paper-tooltip offset="0">[[data.postal_code]]</paper-tooltip>
-                        </div>
-                    </div>
-
-                    <div class="row-h group">
-                        <div class="input-container input-container-ms">
-                            <!-- Partner City -->
-                            <paper-input label="[[getLabel('city', basePermissionPath)]]"
-                                         class$="without-border [[_setReadonlyFieldClass(data)]]"
-                                         disabled readonly
-                                         value="[[data.city]]"
-                                         placeholder="[[getReadonlyPlaceholder(data)]]">
-                            </paper-input>
-                            <paper-tooltip offset="0">[[data.city]]</paper-tooltip>
-                        </div>
-
-                        <div class="input-container input-container-ms">
-                            <!-- Partner Country -->
-                            <paper-input label="[[getLabel('country', basePermissionPath)]]"
-                                         class$="without-border [[_setReadonlyFieldClass(data)]]"
-                                         disabled readonly
-                                         value="[[data.country]]"
-                                         placeholder="[[getReadonlyPlaceholder(data)]]">
-                            </paper-input>
-                            <paper-tooltip offset="0">[[data.country]]</paper-tooltip>
+                            <paper-tooltip offset="0">[[getPartnerAddress(data)]]</paper-tooltip>
                         </div>
                     </div>
 

@@ -25,15 +25,14 @@
                 <div class="input-container input-container-m">
                     <!-- Address -->
                     <paper-input label="{{getLabel('street_address', basePermissionPath)}}"
-                                 value="{{getFullAddress(partner)}}"
+                                 value="{{getPartnerAddress(partner)}}"
                                  placeholder="Empty Field"
                                  class="without-border"
                                  disabled readonly>
                             <iron-icon prefix icon="communication:location-on"></iron-icon>
                     </paper-input>
-                    <paper-tooltip offset="0">[[getFullAddress(partner)]]</paper-tooltip>
+                    <paper-tooltip offset="0">[[getPartnerAddress(partner)]]</paper-tooltip>
                 </div>
-
             </div>
 
             <div class="row-h group">
