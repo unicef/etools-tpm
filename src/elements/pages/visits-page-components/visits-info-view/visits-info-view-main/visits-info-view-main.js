@@ -369,7 +369,7 @@ Polymer({
     notifyAboutLetter: function(event) {
         let visitAccepted = event && event.detail && event.detail.visitAccepted;
         if (visitAccepted) {
-            this.fire('toast', {text: 'Visit Letter has been generated!'});
+            this.fire('toast', {text: 'Visit letter is generated. You can download it from top right corner at any time.'});
         }
     }
 
