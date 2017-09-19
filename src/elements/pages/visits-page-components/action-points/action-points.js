@@ -76,11 +76,31 @@ Polymer({
                 return [];
             }
         },
+        addDialogTexts: {
+            type: Object,
+            value: function() {
+                return {
+                    title: 'Add Action Point'
+                };
+            }
+        },
+        editDialogTexts: {
+            type: Object,
+            value: function() {
+                return {
+                    title: 'Edit Action Point'
+                };
+            }
+        },
+        deleteTitle: {
+            type: String,
+            value: 'Are you sure that you want to delete this Action Point?'
+        },
     },
     observers: [
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject)',
-        'updateStyles(attachmentsBase, requestInProcess, editedItem.*)',
+        'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
     ],
     listeners: {
         'dialog-confirmed': '_addItemFromDialog',
