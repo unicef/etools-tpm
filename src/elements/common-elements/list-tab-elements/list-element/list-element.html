@@ -64,7 +64,7 @@
 
                     <template is="dom-if" if="[[_isOneOfType(item, 'html')]]">
                         <span class$="col-data w[[item.size]] [[item.align]] [[item.class]] truncate">
-                            <span class="truncate html-content">
+                            <span class="truncate">
                                 <insert-html html="[[_getValue(item, data)]]"></insert-html>
                             </span>
                         </span>
