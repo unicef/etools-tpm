@@ -8,11 +8,16 @@ Polymer({
         TPMBehaviors.StaticDataController,
         TPMBehaviors.TableElementsBehavior,
         TPMBehaviors.CommonMethodsBehavior,
+        TPMBehaviors.TextareaMaxRowsBehavior,
     ],
 
     properties: {
         basePermissionPath: {
             type: String
+        },
+        mainProperty: {
+            type: String,
+            value: 'action_points'
         },
         title: {
             type: String
@@ -79,6 +84,7 @@ Polymer({
     ],
     listeners: {
         'dialog-confirmed': '_addItemFromDialog',
+        'delete-confirmed': 'removeItem',
     },
 
     ready: function() {
@@ -92,5 +98,13 @@ Polymer({
     getStatusDisplayName: function(value) {
         let status = _.find(this.statuses, ['value', value]);
         return status ? status.display_name : '–';
-    }
+    },
+    getCurrentData: function() {
+        if (!this.dialogOpened) { return null; }
+        let currentData = _.cloneDeep(this.editedItem);
+        if (currentData.person_responsible && currentData.person_responsible.id) {
+            currentData.person_responsible = currentData.person_responsible.id;
+        }
+        return [currentData];
+    },
 });
