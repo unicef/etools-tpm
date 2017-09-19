@@ -121,7 +121,14 @@ Polymer({
     },
     getCurrentData: function() {
         if (!this.dialogOpened) { return null; }
+        let originalEditedObj = this.addDialog ? {} : this.originalEditedObj;
         let currentData = _.cloneDeep(this.editedItem);
+        if (originalEditedObj) {
+            currentData = _.pickBy(currentData, (value, key) => {
+                let original = originalEditedObj[key];
+                return !_.isEqual(original, value) || _.isEqual(key, 'id');
+            });
+        }
         if (currentData.person_responsible && currentData.person_responsible.id) {
             currentData.person_responsible = currentData.person_responsible.id;
         }

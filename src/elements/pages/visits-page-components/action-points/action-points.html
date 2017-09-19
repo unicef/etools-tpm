@@ -14,7 +14,7 @@
                 class="content-section clearfix"
                 panel-title="[[title]]">
             <div slot="panel-btns">
-                <div hidden$="[[isReadonly(basePermissionPath)]]">
+                <div hidden$="[[isReadOnly('action_points', basePermissionPath)]]">
                     <paper-icon-button
                             class="panel-button"
                             on-tap="openAddDialog"
