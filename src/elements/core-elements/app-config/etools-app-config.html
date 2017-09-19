@@ -63,7 +63,7 @@ App global configuration
             },
             locations: {
                 url: '/api/locations-light/',
-                exp: 7 * 24 * 3600 * 1000, // 7d
+                exp: 90 * 24 * 3600 * 1000, // 3 months
                 cachingKey: 'locations',
             },
             changeCountry: {
@@ -136,7 +136,7 @@ App global configuration
 
                 localStorage.removeItem('userId');
 
-                etoolsCustomDexieDb.collectionsList.clear();
+                etoolsCustomDexieDb.collectionsList.delete('partners');
                 etoolsCustomDexieDb.partners.clear();
             },
 
