@@ -64,6 +64,7 @@
                         error.request.detail.request && error.request.detail.request.xhr;
 
                 let {status, response} = responseData || {};
+                if (typeof response === 'string') { response = JSON.parse(response); }
 
                 this.set('errors', response);
                 this.fire('vendor-updated', {success: false});
