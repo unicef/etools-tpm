@@ -368,7 +368,7 @@ Polymer({
     _setLetterLink: function(visit) {
         let statuses = ['draft', 'assigned', 'cancelled'];
         if (!visit || !this.isTpmUser() || !!~statuses.indexOf(visit.status)) { return; }
-        return this.getEndpoint('visitDetails', {id: visit.id}).url + 'export_pdf/';
+        return this.getEndpoint('visitDetails', {id: visit.id}).url + 'visit-letter/';
     },
 
     notifyAboutLetter: function(event) {
