@@ -4,7 +4,7 @@
 
 .status-container {
     position: relative;
-    padding: 25px 35px;
+    padding: 24px 24px 36px;
     border-bottom: solid 1px #e8e8e8;
 
     @apply(--layout-horizontal);
@@ -20,7 +20,7 @@
 
     &.vision-container {
         border-bottom: none;
-        padding: 25px 35px 0;
+        padding: 24px 24px 0;
     }
 
     .status-icon {
@@ -167,7 +167,9 @@
 }
 
 action-buttons {
-    padding: 25px 0;
+    position: relative;
+    box-sizing: border-box;
+    padding: 24px;
 }
 
 etools-content-panel {
