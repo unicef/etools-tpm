@@ -46,6 +46,7 @@ Polymer({
     listeners: {
         'global-loading': '_handleGlobalLoading',
         'toast': 'queueToast',
+        'drawer-toggle-tap': 'toggleDrawer',
         '404': '_pageNotFound',
         'initial-data-loaded': '_initialDataLoaded'
     },
@@ -59,6 +60,29 @@ Polymer({
         if (this.initLoadingComplete && this.route.path === '/tpm/') {
             this._configPath();
         }
+
+        this.$.drawer.$.scrim.remove();
+    },
+
+    toggleDrawer: function() {
+        let isClosed = !this.$.drawer.opened;
+        let drawerWidth;
+
+        if (isClosed) {
+            drawerWidth = '220px';
+        } else {
+            drawerWidth = '70px';
+        }
+
+        this.$.drawer.customStyle['--app-drawer-width'] = drawerWidth;
+        this.$.drawer.updateStyles();
+
+        this.$.layout.style.paddingLeft = drawerWidth;
+        this.$.header.style.paddingLeft = drawerWidth;
+
+        this.$.drawer.querySelector('app-sidebar-menu').toggleClass('opened', isClosed);
+        this.$.drawer.toggleClass('opened', isClosed);
+        this.$.drawer.toggleAttribute('opened', isClosed);
     },
 
     queueToast: function(e, detail) {
