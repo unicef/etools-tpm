@@ -10,6 +10,10 @@ Polymer({
         etoolsAppConfig.globals
     ],
 
+    _toggleDrawer: function() {
+        this.fire('drawer-toggle-tap');
+    },
+
     setPartnersIcon: function(user) {
         return user.partnerId ? 'person' : 'people';
     },
