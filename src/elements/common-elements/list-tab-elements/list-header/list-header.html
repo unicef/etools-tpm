@@ -8,48 +8,48 @@
 
         <div class="heading-row-header clearfix" style$="padding-right: [[paddingRight]];">
             <template is="dom-repeat" items="[[data]]">
-                <div  class$="local-headings w[[item.size]] [[item.align]] [[item.class]]" ordered$="{{item.ordered}}" on-tap="_changeOrder">
+                <div class$="local-headings w[[item.size]] [[item.align]] [[item.class]]" ordered$="{{item.ordered}}"
+                     on-tap="_changeOrder">
                     <span class="textsec heading">[[getHeadingLabel(basePermissionPath, item)]]</span>
 
-                        <iron-icon
-                                class="down-icon"
-                                icon="icons:arrow-downward">
-                        </iron-icon>
+                    <iron-icon
+                            class="down-icon"
+                            icon="icons:arrow-downward">
+                    </iron-icon>
 
-                        <iron-icon
-                                class="up-icon"
-                                icon="icons:arrow-upward">
-                        </iron-icon>
+                    <iron-icon
+                            class="up-icon"
+                            icon="icons:arrow-upward">
+                    </iron-icon>
+                </div>
+            </template>
+
+            <template is="dom-if" if="[[item.group]]">
+                <div class$="local-headings group-local-headings w[[item.size]] [[item.align]]"
+                     ordered$="{{item.ordered}}"
+                     on-tap="_changeOrder">
+                    <div class$="group-heading textsec heading [[item.align]]">
+                        <span>[[item.label]]</span>
                     </div>
-                </template>
 
-                <template is="dom-if" if="[[item.group]]">
-                    <div class$="local-headings group-local-headings w[[item.size]] [[item.align]]"
-                         ordered$="{{item.ordered}}"
-                         on-tap="_changeOrder">
-                        <div class$="group-heading textsec heading [[item.align]]">
-                            <span>[[item.label]]</span>
+                    <template is="dom-repeat" items="[[item.columns]]" as="groupColumn">
+                        <div class$="local-headings group-local-heading w[[groupColumn.size]] [[groupColumn.align]]"
+                             ordered$="{{groupColumn.ordered}}"
+                             on-tap="_changeOrder">
+                            <span class="textsec heading">[[getHeadingLabel(basePermissionPath, groupColumn)]]</span>
+
+                            <iron-icon
+                                    class="down-icon"
+                                    icon="icons:arrow-downward">
+                            </iron-icon>
+
+                            <iron-icon
+                                    class="up-icon"
+                                    icon="icons:arrow-upward">
+                            </iron-icon>
                         </div>
-
-                        <template is="dom-repeat" items="[[item.columns]]" as="groupColumn">
-                            <div class$="local-headings group-local-heading w[[groupColumn.size]] [[groupColumn.align]]"
-                                 ordered$="{{groupColumn.ordered}}"
-                                 on-tap="_changeOrder">
-                                <span class="textsec heading">[[getHeadingLabel(basePermissionPath, groupColumn)]]</span>
-
-                                <iron-icon
-                                        class="down-icon"
-                                        icon="icons:arrow-downward">
-                                </iron-icon>
-
-                                <iron-icon
-                                        class="up-icon"
-                                        icon="icons:arrow-upward">
-                                </iron-icon>
-                            </div>
-                        </template>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </template>
         </div>
     </template>
