@@ -6,10 +6,12 @@
         <style include="module-styles tab-inputs-styles ps-styles"></style>
         <!-- inject styles './dialog-element.scss'-->
 
-        <paper-dialog opened="{{opened}}"
-                      modal="{{requestInProcess}}"
-                      with-backdrop
-                      ok-btn-text="sync from vision">
+        <paper-dialog
+                id="dialog"
+                opened="{{opened}}"
+                modal="{{requestInProcess}}"
+                with-backdrop
+                ok-btn-text="sync from vision">
             <h2 class="dialog-title">[[dialogTitle]]</h2>
             <iron-icon icon="icons:close" class="close-btn" dialog-dismiss$="{{_setDialogDismiss(requestInProcess, confirmDialogOpened)}}"></iron-icon>
 
@@ -116,7 +118,11 @@
             },
             _stopPropagation: function(event) {
                 event.stopImmediatePropagation();
-            }
+            },
+
+            notifyResize: function () {
+                this.$.dialog.notifyResize();
+            },
         });
     </script>
 </dom-module>

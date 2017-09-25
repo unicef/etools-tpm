@@ -172,6 +172,7 @@ Polymer({
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject.tpm_activities)',
         'updateStyles(basePermissionPath, someRequestInProcess, editedItem.*, optionsModel.*)',
+        'notifyDialogResize("activityDialog", editedItem.*, optionsModel.*)',
         '_setPartnershipValue(partner.interventions, editedItem.partnership)',
         '_setCpValue(cpOutputs, editedItem.cp_output)',
     ],

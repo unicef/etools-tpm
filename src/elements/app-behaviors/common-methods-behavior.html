@@ -119,8 +119,13 @@
             if (tab && tab !== currentTab) {
                 this.set('routeData.tab', tab);
             }
-        }
+        },
 
+        notifyDialogResize: function (dialogId) {
+            this.debounce('dialogResizeDebouncer', () => {
+                this.$[dialogId].notifyResize();
+            }, 100);
+        }
     };
 
     TPMBehaviors.CommonMethodsBehavior = [
