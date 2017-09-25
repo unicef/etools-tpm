@@ -230,7 +230,7 @@
         },
         _setExportLinks: function() {
             return [{
-                url: this.getEndpoint('partnersList').url + '&format=csv&page_size=all'
+                url: this.getEndpoint('partnersExport').url
             }];
         }
     });
