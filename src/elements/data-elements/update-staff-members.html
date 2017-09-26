@@ -56,7 +56,9 @@
                 if (typeof response === 'string') {
                     try {
                         response = JSON.parse(response);
-                    } catch (e) {}
+                    } catch (e) {
+                        response = {};
+                    }
                 }
 
                 this.fire('staff-updated', {error: true, errorData: response, status: status});
