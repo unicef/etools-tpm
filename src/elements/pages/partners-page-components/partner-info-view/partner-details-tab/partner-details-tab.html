@@ -57,6 +57,7 @@
                                  invalid="{{_checkInvalid(errors.user.email)}}"
                                  error-message="{{errors.user.email}}"
                                  on-focus="_resetFieldError"
+                                 on-tap="_resetFieldError"
                                  required$="[[_setRequired('email', basePermissionPath)]]"
                                  disabled$="[[isReadOnly('email', basePermissionPath)]]"
                                  maxlength="{{getMaxLength('email', basePermissionPath)}}">
@@ -75,6 +76,7 @@
                                  invalid="{{_checkInvalid(errors.user.profile.phone_number)}}"
                                  error-message="{{errors.user.profile.phone_number}}"
                                  on-focus="_resetFieldError"
+                                 on-tap="_resetFieldError"
                                  required$="[[_setRequired('phone_number', basePermissionPath)]]"
                                  disabled$="[[isReadOnly('phone_number', basePermissionPath)]]"
                                  allowed-pattern="[\d\s-+()]"

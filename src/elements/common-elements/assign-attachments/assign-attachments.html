@@ -88,6 +88,7 @@
                                     disabled$="[[_isReadOnly('id', attachmentsBase, requestInProcess)]]"
                                     readonly$="[[_isReadOnly('id', attachmentsBase, requestInProcess)]]"
                                     on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError"
                                     dynamic-align
                                     hide-search
                                     no-title-attr>
@@ -115,6 +116,7 @@
                                     invalid="{{errors.0.file_type}}"
                                     error-message="{{errors.0.file_type}}"
                                     on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError"
                                     dynamic-align
                                     hide-search
                                     no-title-attr>

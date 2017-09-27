@@ -80,6 +80,7 @@
                                          disabled$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
                                          readonly$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
                                          on-focus="_resetFieldError"
+                                         on-tap="_resetFieldError"
                                          on-blur="_requestVendor">
                             </paper-input>
                             <paper-tooltip offset="0">[[data.vendor_number]]</paper-tooltip>
@@ -126,6 +127,7 @@
                                     readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
                                     value="{{data.phone_number}}"
                                     on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError"
                                     invalid$="{{errors.phone_number}}"
                                     error-message="{{errors.phone_number}}"
                                     placeholder="[[getPlaceholderText('phone_number', basePermissionPath)]]">
@@ -146,6 +148,7 @@
                                     readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
                                     value="{{data.email}}"
                                     on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError"
                                     invalid$="{{errors.email}}"
                                     error-message="{{errors.email}}"
                                     placeholder="[[getPlaceholderText('email', basePermissionPath)]]">
