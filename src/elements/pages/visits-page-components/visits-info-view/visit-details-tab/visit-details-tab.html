@@ -32,6 +32,7 @@
                                  invalid="{{_checkInvalid(errors.tpm_partner.name)}}"
                                  error-message="{{errors.tpm_partner.name}}"
                                  on-focus="_resetFieldError"
+                                 on-tap="_resetFieldError"
                                  required$="[[_setRequired('tpm_partner.name', permissionBase)]]"
                                  disabled$="[[isReadOnly('tpm_partner.name', permissionBase)]]"></paper-input>
                     <paper-tooltip offset="0">[[visit.reference_number]]</paper-tooltip>
@@ -70,6 +71,7 @@
                             invalid="{{errors.unicef_focal_points}}"
                             error-message="{{errors.unicef_focal_points}}"
                             on-focus="_resetFieldError"
+                            on-tap="_resetFieldError"
                             multi
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
@@ -94,6 +96,7 @@
                             invalid="{{errors.offices}}"
                             error-message="{{errors.offices}}"
                             on-focus="_resetFieldError"
+                            on-tap="_resetFieldError"
                             multi
                             hide-search
                             no-title-attr>
@@ -119,6 +122,7 @@
                             invalid="{{errors.tpm_partner_focal_points}}"
                             error-message="{{errors.tpm_partner_focal_points}}"
                             on-focus="_resetFieldError"
+                            on-tap="_resetFieldError"
                             multi
                             hide-search
                             no-title-attr>

@@ -112,6 +112,7 @@
                                          disabled="{{_emailDisabled(requestInProcess, addDialog, emailChecking)}}"
                                          readonly$="{{_emailDisabled(requestInProcess, addDialog, emailChecking)}}"
                                          on-focus="_resetFieldError"
+                                         on-tap="_resetFieldError"
                                          on-blur="_checkEmail"
                                          id="emailInput"
                                          invalid="{{errors.user.email}}"
@@ -134,7 +135,8 @@
                                          error-message="{{errors.user.first_name}}"
                                          disabled="{{requestInProcess}}"
                                          readonly$="{{requestInProcess}}"
-                                         on-focus="_resetFieldError">
+                                         on-focus="_resetFieldError"
+                                         on-tap="_resetFieldError">
                             </paper-input>
                             <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.first_name)]]</paper-tooltip>
                         </div>
@@ -150,7 +152,8 @@
                                          error-message="{{errors.user.last_name}}"
                                          disabled="{{requestInProcess}}"
                                          readonly$="{{requestInProcess}}"
-                                         on-focus="_resetFieldError">
+                                         on-focus="_resetFieldError"
+                                         on-tap="_resetFieldError">
                             </paper-input>
                             <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.last_name)]]</paper-tooltip>
                         </div>
@@ -162,6 +165,7 @@
                                      placeholder="[[getPlaceholderText('user.profile.job_title', basePermissionPath)]]"
                                      maxlength="45"
                                      on-focus="_resetFieldError"
+                                     on-tap="_resetFieldError"
                                      class$="validate-input {{_setRequired('user.profile.job_title', basePermissionPath)}}"
                                      disabled="{{requestInProcess}}"
                                      readonly$="{{requestInProcess}}"

@@ -74,7 +74,8 @@
                                     max-rows="4"
                                     invalid="{{_checkInvalid(errors.description)}}"
                                     error-message="{{errors.description}}"
-                                    on-focus="_resetFieldError">
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError">
                                 </paper-textarea>
                                 <paper-tooltip offset="0">[[editedItem.description]]</paper-tooltip>
                             </div>
@@ -97,6 +98,7 @@
                                         invalid="{{errors.action_points.person_responsible}}"
                                         error-message="{{errors.action_points.person_responsible}}"
                                         on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
                                         hide-search
                                         no-title-attr>
                                 </etools-searchable-multiselection-menu>
@@ -115,6 +117,7 @@
                                         invalid$="{{errors.action_points.due_date}}"
                                         error-message="{{errors.action_points.due_date}}"
                                         on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
                                         on-down="openDatePicker">
                                     <etools-datepicker
                                             id="dueDate"
@@ -146,6 +149,7 @@
                                         invalid="{{errors.action_points.status}}"
                                         error-message="{{errors.action_points.status}}"
                                         on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
                                         dynamic-align
                                         hide-search
                                         no-title-attr>
@@ -156,16 +160,17 @@
                     <div class="row-h group">
                         <div class="input-container input-container-l">
                             <paper-textarea class$="disabled-as-readonly [[_setRequired('action_points.comments', basePermissionPath)]]"
-                                         value="{{editedItem.comments}}"
-                                         label="{{getLabel('action_points.comments', basePermissionPath)}}"
-                                         placeholder="{{getPlaceholderText('action_points.comments', basePermissionPath)}}"
-                                         required$="[[_setRequired('action_points.comments', basePermissionPath)]]"
-                                         disabled$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
-                                         readonly$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
-                                         max-rows="4"
-                                         invalid="{{_checkInvalid(errors.action_points.comments)}}"
-                                         error-message="{{errors.action_points.comments}}"
-                                         on-focus="_resetFieldError">
+                                            value="{{editedItem.comments}}"
+                                            label="{{getLabel('action_points.comments', basePermissionPath)}}"
+                                            placeholder="{{getPlaceholderText('action_points.comments', basePermissionPath)}}"
+                                            required$="[[_setRequired('action_points.comments', basePermissionPath)]]"
+                                            disabled$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
+                                            readonly$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
+                                            max-rows="4"
+                                            invalid="{{_checkInvalid(errors.action_points.comments)}}"
+                                            error-message="{{errors.action_points.comments}}"
+                                            on-focus="_resetFieldError"
+                                            on-tap="_resetFieldError">
                             </paper-textarea>
                             <paper-tooltip offset="0">[[editedItem.description]]</paper-tooltip>
                         </div>
