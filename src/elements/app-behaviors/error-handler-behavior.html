@@ -27,7 +27,8 @@
             },
 
             whichPageTrows: function(errorObj) {
-                let errors = this.refactorErrorObject(errorObj);
+                let errors = this.refactorErrorObject(errorObj) || {};
+                if (_.isEmpty(errors)) { return null; }
                 let activityError = errors.tpm_activities && errors.tpm_activities[0];
                 if (activityError && activityError.report_attachments) {
                     return 'report';
