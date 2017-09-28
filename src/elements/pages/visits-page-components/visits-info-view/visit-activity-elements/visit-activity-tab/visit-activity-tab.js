@@ -346,6 +346,20 @@ Polymer({
 
         this.editedIndex = index;
         this.dialogOpened = true;
+        this.copyDialog = false;
+    },
+
+    openAddActivityDialog: function() {
+        this.openAddDialog();
+        this.copyDialog = false;
+    },
+
+    openCopyDialog: function(e) {
+        this.openEditDialog(e);
+
+        this.dialogTitle = 'Copy Item';
+        this.confirmBtnText = 'Add';
+        this.copyDialog = true;
     },
 
     _errorHandler: function(errorData) {
@@ -360,14 +374,44 @@ Polymer({
         this.set('errors', refactoredData);
     },
 
-    _getData: function() {
+    validate: function() {
+        let changesNotEmpty = true;
+        let dataChanges;
+        let changes;
+
+        if (this.copyDialog) {
+            dataChanges = this._getDifference(this.originalEditedObj, this.editedItem);
+            changes = _.values(dataChanges);
+            changesNotEmpty = changes.some(value => value !== undefined);
+        }
+
+        if (!changesNotEmpty) {
+            this.fire('toast', {text: 'You must change at least one field'});
+            return false;
+        }
+
+        if (this.editedItem && this.editedItem._delete) { return true; }
+        let elements = Polymer.dom(this.root).querySelectorAll('.validate-input'),
+            valid = true;
+
+        Array.prototype.forEach.call(elements, (element) => {
+            if (element.required && !element.validate()) {
+                element.invalid = 'This field is required';
+                element.errorMessage = 'This field is required';
+                valid = false;
+            }
+        });
+
+        return valid;
+    },
+
+    _getDifference: function(original = {}, edited = {}) {
         let paths = ['implementing_partner.id', 'date', 'section.id', 'locations', 'additional_information', '_delete'];
         let optionsPaths = ['partnership.id', 'cp_output.id'];
         let allPaths = paths.concat(optionsPaths);
 
-        let originalEditedObj = this.addDialog ? {} : this.originalEditedObj;
-        let originalData = _.pick(originalEditedObj, allPaths);
-        let currentData = _.pick(this.editedItem, paths);
+        let originalData = _.pick(original, allPaths);
+        let currentData = _.pick(edited, paths);
         let optionsData = {};
         let changedData = {};
 
@@ -396,7 +440,7 @@ Polymer({
         let additionalInformation = _.get(changedData, 'additional_information');
         let date = _.get(changedData, 'date') || undefined;
         let _delete = _.get(changedData, '_delete');
-        let locations = _.isEqual(originalData.locations, currentData.locations) ? [] : (currentData.locations || []);
+        let locations = _.isEqual(original.locations, currentData.locations) ? [] : (currentData.locations || []);
 
         locations = locations.map((location) => {
             return location && location.id;
@@ -417,11 +461,18 @@ Polymer({
 
     getActivitiesData: function() {
         if (!this.dialogOpened) { return null; }
-        let data = this._getData();
+        let data;
+
+        if (this.addDialog || this.copyDialog) {
+            data = this._getDifference({}, this.editedItem);
+        } else {
+            data = this._getDifference(this.originalEditedObj, this.editedItem);
+        }
+
         let dataValues = _.values(data);
         let dataNotEmpty = dataValues.some(value => value !== undefined);
 
-        if (dataNotEmpty && !this.addDialog) {
+        if (!this.addDialog && !this.copyDialog) {
             data.id = _.get(this.editedItem, 'id');
         }
 
