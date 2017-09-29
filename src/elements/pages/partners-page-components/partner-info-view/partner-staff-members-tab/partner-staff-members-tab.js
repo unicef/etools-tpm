@@ -47,32 +47,32 @@ Polymer({
             value: function() {
                 return [
                     {
-                        'size': 19,
+                        'size': 20,
                         'label': 'Position',
                         'labelPath': 'user.profile.job_title',
                         'name': 'user.profile.job_title'
                     }, {
-                        'size': 19,
+                        'size': 20,
                         'label': 'First Name',
                         'labelPath': 'user.first_name',
                         'name': 'user.first_name'
                     }, {
-                        'size': 19,
+                        'size': 20,
                         'label': 'Last Name',
                         'labelPath': 'user.last_name',
                         'name': 'user.last_name'
                     }, {
-                        'size': 19,
+                        'size': 20,
                         'label': 'Phone Number',
                         'labelPath': 'user.profile.phone_number',
                         'name': 'user.profile.phone_number'
                     }, {
-                        'size': 19,
+                        'size': 20,
                         'label': 'E-mail Address',
                         'labelPath': 'user.email',
                         'name': 'user.email'
                     }, {
-                        'size': 5,
+                        'size': '50px',
                         'label': 'Active',
                         'labelPath': 'user.is_active',
                         'icon': 'check',
@@ -80,7 +80,7 @@ Polymer({
                         'name': 'user.is_active'
                     },
                     {
-                        'size': '60px',
+                        'size': '70px',
                         'label': 'Notify',
                         'labelPath': 'receive_tpm_notifications',
                         'icon': 'check',
