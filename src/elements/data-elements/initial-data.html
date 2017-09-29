@@ -146,7 +146,8 @@
                     if (!detail) {
                         this._organisationsError();
                     }
-                    this._setData('partnerOrganisations', detail);
+                    let partnerOrganisations = _.sortBy(detail, ['name']);
+                    this._setData('partnerOrganisations', partnerOrganisations);
                     dataLoaded.organizations = true;
                     this._allDataLoaded();
                 },
