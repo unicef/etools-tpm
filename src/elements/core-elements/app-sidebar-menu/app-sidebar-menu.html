@@ -21,7 +21,7 @@
                 <template is="dom-if" if="{{user.id}}">
                     <side-bar-item
                             view="partners"
-                            name="Third Party Monitors"
+                            name="[[setPartnersText(user)]]"
                             icon="social:{{setPartnersIcon(user)}}"
                             side-bar-link="{{setPartnersLink(user)}}">
                     </side-bar-item>
