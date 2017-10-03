@@ -1,0 +1,37 @@
+<!--import [polymer, lodash]-->
+
+<script>
+    'use strict';
+
+    window.TPMBehaviors = window.TPMBehaviors || {};
+    TPMBehaviors.RouterBehaviorImpl = {
+        _routeConfig: function() {
+            if (!this.route || !~this.route.prefix.indexOf(this.pagePrefix) || ~this.route.prefix.indexOf('/list')) {
+                return;
+            }
+            let tab = this.routeData ? this.routeData.tab : route.path.split('/')[1];
+            if (tab === '' || _.isUndefined(tab)) {
+                this.set('route.path', '/details');
+            } else if (!_.includes(this.tabsList, tab)) {
+                this.fire('404');
+            }
+        },
+
+        _checkAvailableTab: function (permissionBase, route) {
+            if (!route || !permissionBase) {
+                return;
+            }
+            let tab = route.path.split('/')[1];
+            _.each(this.tabsListExt, (tabExt) => {
+                if (tabExt.name === tab && !this._showTab(permissionBase, tabExt.path)) {
+                    this.set('route.path', '/details');
+                    return false;
+                }
+            });
+        },
+    };
+
+    TPMBehaviors.RouterBehavior = [
+        TPMBehaviors.RouterBehaviorImpl
+    ]
+</script>

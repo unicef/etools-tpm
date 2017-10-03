@@ -9,10 +9,36 @@ Polymer({
         TPMBehaviors.PermissionController,
         TPMBehaviors.TextareaMaxRowsBehavior,
         TPMBehaviors.CommonMethodsBehavior,
-        TPMBehaviors.UserController
+        TPMBehaviors.UserController,
+        TPMBehaviors.RouterBehavior
     ],
 
     properties: {
+        tabsList: {
+            type: Array,
+            value: function() {
+                return ['details', 'report', 'action-points', 'attachments'];
+            }
+        },
+        tabsListExt: {
+            type: Array,
+            value: function() {
+                return [
+                    {
+                        'name': 'report',
+                        'path': 'tpm_activities.report_attachments'
+                    },
+                    {
+                        'name': 'action-points',
+                        'path': 'action_points'
+                    }
+                ];
+            }
+        },
+        pagePrefix: {
+            type: String,
+            value: '/visits'
+        },
         visit: {
             type: Object,
             notify: true
@@ -85,6 +111,8 @@ Polymer({
 
     observers: [
         '_setPermissionBase(visit.id)',
+        '_routeConfig(route)',
+        '_checkAvailableTab(permissionBase, route)',
         'resetDialog(dialogOpened)',
         'resetApprovalDialog(approvalDialog)',
         '_createActivitiesId(visit.tpm_activities)',
