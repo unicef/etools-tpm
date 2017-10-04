@@ -43,6 +43,11 @@ Polymer({
 
     },
 
+    _resetFieldError: function(event) {
+        if (!event || !event.currentTarget) { return false; }
+        event.currentTarget.invalid = false;
+    },
+
     _visitLoad: function(visit) {
         if (visit && visit.tpm_partner && visit.tpm_partner.id) {
             this.partnerStaffUrl = this.getEndpoint('staffMembers', {id: visit.tpm_partner.id}).url;
