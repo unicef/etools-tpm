@@ -8,6 +8,7 @@ Polymer({
         TPMBehaviors.StaticDataController,
         TPMBehaviors.PermissionController,
         TPMBehaviors.CommonMethodsBehavior,
+        TPMBehaviors.RouterBehavior
     ],
 
     properties: {
@@ -23,6 +24,10 @@ Polymer({
             value: function() {
                 return ['details', 'attachments'];
             }
+        },
+        pagePrefix: {
+            type: String,
+            value: '/partners'
         },
     },
 
@@ -40,17 +45,6 @@ Polymer({
     ready: function() {
         this.partnerFileTypes = this.getData('partner_attachments_types');
         this.statuses = this.getData('partner_statuses');
-    },
-    _routeConfig: function(route) {
-        if (!this.route || !~this.route.prefix.indexOf('/partners')) {
-            return;
-        }
-        let tab = this.routeData ? this.routeData.tab : route.path.split('/')[1];
-        if (tab === '' || _.isUndefined(tab)) {
-            this.set('route.path', '/details');
-        } else if (!_.includes(this.tabsList, tab)) {
-            this.fire('404');
-        }
     },
 
     _setPermissionBase: function(id) {
