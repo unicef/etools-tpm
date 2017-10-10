@@ -83,7 +83,6 @@
                                          on-tap="_resetFieldError"
                                          on-blur="_requestVendor">
                             </paper-input>
-                            <paper-tooltip offset="0">[[data.vendor_number]]</paper-tooltip>
                             <etools-loading active="{{vendorRequestInProcess}}" no-overlay loading-text="" class="po-loading"></etools-loading>
                         </div>
 
@@ -133,7 +132,6 @@
                                     placeholder="[[getPlaceholderText('phone_number', basePermissionPath)]]">
                                 <iron-icon prefix icon="communication:phone"></iron-icon>
                             </paper-input>
-                            <paper-tooltip offset="0">[[data.phone_number]]</paper-tooltip>
                         </div>
 
                         <div class="input-container input-container-ms">
@@ -154,7 +152,6 @@
                                     placeholder="[[getPlaceholderText('email', basePermissionPath)]]">
                                 <iron-icon prefix icon="communication:email"></iron-icon>
                             </paper-input>
-                            <paper-tooltip offset="0">[[data.email]]</paper-tooltip>
                         </div>
                     </div>
                 </div>

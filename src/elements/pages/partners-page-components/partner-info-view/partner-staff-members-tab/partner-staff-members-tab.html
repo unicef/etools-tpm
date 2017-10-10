@@ -45,7 +45,6 @@
                                  placeholder="Search">
                         <iron-icon class="panel-button" prefix icon="search"></iron-icon>
                     </paper-input>
-                    <paper-tooltip offset="0">[[searchString]]</paper-tooltip>
                 </div>
             </div>
             <div class="panel-content group">
@@ -119,7 +118,6 @@
                                          error-message="{{errors.user.email}}">
                                 <iron-icon prefix icon="communication:email"></iron-icon>
                             </paper-input>
-                            <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.email)]]</paper-tooltip>
                             <etools-loading active="{{emailChecking}}" no-overlay loading-text="" class="email-loading"></etools-loading>
                         </div>
 
@@ -138,7 +136,6 @@
                                          on-focus="_resetFieldError"
                                          on-tap="_resetFieldError">
                             </paper-input>
-                            <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.first_name)]]</paper-tooltip>
                         </div>
                         <div class="input-container">
                             <!-- Last Name -->
@@ -155,7 +152,6 @@
                                          on-focus="_resetFieldError"
                                          on-tap="_resetFieldError">
                             </paper-input>
-                            <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.last_name)]]</paper-tooltip>
                         </div>
                     </div>
                     <div class="input-container">
@@ -173,7 +169,6 @@
                                      invalid="{{errors.profile.job_title}}"
                                      error-message="{{errors.profile.job_title}}">
                         </paper-input>
-                        <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.profile.job_title)]]</paper-tooltip>
                     </div>
                     <div class="row-h group">
                         <div class="input-container">
@@ -191,10 +186,7 @@
                                          required="{{_setRequired('user.profile.phone_number', basePermissionPath)}}">
                                 <iron-icon prefix icon="communication:phone"></iron-icon>
                             </paper-input>
-                            <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.profile.phone_number)]]</paper-tooltip>
                         </div>
-
-
                     </div>
 
                     <div class="row-h group">
