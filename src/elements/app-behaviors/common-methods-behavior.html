@@ -108,9 +108,12 @@
         },
 
         getPartnerAddress: function(partner) {
-            if (!partner) { return; }
-            let addressItems = [partner.country, partner.city, partner.postal_code, partner.street_address];
-            return addressItems.filter(val => val).join(', ');
+            if (!partner) { return ''; }
+
+            let address = partner.street_address || partner.address;
+            return [address, partner.postal_code, partner.city, partner.country]
+                            .filter((info) => !!info)
+                            .join(', ');
         },
 
         _errorOccurred: function(errorObject) {
