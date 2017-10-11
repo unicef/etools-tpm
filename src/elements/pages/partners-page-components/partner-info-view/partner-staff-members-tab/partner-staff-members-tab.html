@@ -138,7 +138,6 @@
                                          on-focus="_resetFieldError"
                                          on-tap="_resetFieldError">
                             </paper-input>
-                            <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.first_name)]]</paper-tooltip>
                         </div>
                         <div class="input-container">
                             <!-- Last Name -->
@@ -155,7 +154,6 @@
                                          on-focus="_resetFieldError"
                                          on-tap="_resetFieldError">
                             </paper-input>
-                            <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.last_name)]]</paper-tooltip>
                         </div>
                     </div>
                     <div class="input-container">
@@ -191,10 +189,7 @@
                                          required="{{_setRequired('user.profile.phone_number', basePermissionPath)}}">
                                 <iron-icon prefix icon="communication:phone"></iron-icon>
                             </paper-input>
-                            <paper-tooltip offset="0">[[_getTitleValue(editedItem.user.profile.phone_number)]]</paper-tooltip>
                         </div>
-
-
                     </div>
 
                     <div class="row-h group">

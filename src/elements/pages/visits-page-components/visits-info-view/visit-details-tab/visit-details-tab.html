@@ -35,7 +35,7 @@
                                  on-tap="_resetFieldError"
                                  required$="[[_setRequired('tpm_partner.name', permissionBase)]]"
                                  disabled$="[[isReadOnly('tpm_partner.name', permissionBase)]]"></paper-input>
-                    <paper-tooltip offset="0">[[visit.reference_number]]</paper-tooltip>
+                    <paper-tooltip offset="0">[[visit.tpm_partner.name]]</paper-tooltip>
                 </div>
                 <div class="input-container">
                     <!-- Dates of Visit -->
@@ -51,6 +51,7 @@
                                 icon="date-range">
                         </iron-icon>
                     </paper-input>
+                    <paper-tooltip offset="0">[[setVisitDates(visit.start_date, visit.end_date)]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -76,7 +77,6 @@
                             multi
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
-                    <paper-tooltip offset="0">[[getTooltipText(selectedFocalPoints, unicefUsersList, 'name')]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -103,7 +103,6 @@
                             hide-search
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
-                    <paper-tooltip offset="0">[[getTooltipText(selectedOfficers, officesList, 'name')]]</paper-tooltip>
                 </div>
             </div>
             <div class="row-h group">
@@ -130,7 +129,6 @@
                             hide-search
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
-                    <paper-tooltip offset="0">[[getTooltipText(selectedTpms, partners, 'name')]]</paper-tooltip>
                 </div>
             </div>
         </etools-content-panel>
