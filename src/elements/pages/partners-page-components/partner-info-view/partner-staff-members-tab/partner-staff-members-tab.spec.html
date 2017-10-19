@@ -50,22 +50,6 @@
             myEl.updateStyles.restore();
         });
 
-        it('method removeStaff sets requestInProcess to true and calls set method', function() {
-            myEl.requestInProcess = false;
-            sinon.stub(myEl, 'set');
-            myEl.editedIndex = 666;
-            myEl.editedItem = {id: 'test'};
-
-            myEl.removeStaff();
-
-            assert.isTrue(myEl.requestInProcess);
-            assert.isTrue(myEl.set.called);
-            assert.isTrue(_.isEqual(myEl.set.args[0][0], 'newData'));
-            assert.isTrue(_.isEqual(myEl.set.args[0][1], {method: 'DELETE', data: {}, staffIndex: myEl.editedIndex, id: `${myEl.editedItem.id}/`}));
-
-            myEl.set.restore();
-        });
-
         describe('method _staffLength', function() {
             it('returns second argument or 0 if third argument is true', function() {
                 assert.equal(myEl._staffLength(false, false, true), 0);
@@ -203,11 +187,6 @@
                 myEl._staffUpdated({}, {action: 'post', data: {}});
                 assert.isTrue(myEl.splice.calledOnce);
                 assert.isTrue(myEl.set.calledTwice);
-
-                myEl._staffUpdated({}, {action: 'delete', data: {}});
-                assert.isTrue(myEl.splice.calledOnce);
-                assert.isTrue(myEl.set.calledThrice);
-                assert.isTrue(myEl.resetDialog.calledThrice);
 
                 myEl.set.restore();
                 myEl.splice.restore();
