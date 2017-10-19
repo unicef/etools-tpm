@@ -67,7 +67,6 @@
                             no-animation>
                         <div slot="hover" class="edit-icon-slot" hidden$="[[!_canBeChanged(basePermissionPath)]]">
                             <paper-icon-button icon="icons:create" class="edit-icon" on-tap="openEditDialog"></paper-icon-button>
-                            <paper-icon-button icon="icons:delete" class="edit-icon" on-tap="openDeleteDialog"></paper-icon-button>
                         </div>
                     </list-element>
                 </template>
@@ -204,16 +203,6 @@
                             </etools-checkable-input>
                         </div>
 
-                        <!--receive notification-->
-                        <div class="staff-check-box notify-box input-container input-container-m">
-                            <etools-checkable-input checked="{{editedItem.receive_tpm_notifications}}"
-                                                    label="[[getLabel('receive_tpm_notifications', basePermissionPath)]]"
-                                                    disabled="{{requestInProcess}}"
-                                                    readonly$="{{requestInProcess}}"
-                                                    type="checkbox"
-                                                    label-alignment="right">
-                            </etools-checkable-input>
-                        </div>
                     </div>
 
                 </div>

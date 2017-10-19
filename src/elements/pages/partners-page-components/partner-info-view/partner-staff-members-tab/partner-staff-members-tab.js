@@ -37,8 +37,7 @@ Polymer({
                             phone_number: ''
                         },
                         is_active: false
-                    },
-                    receive_tpm_notifications: false
+                    }
                 };
             }
         },
@@ -78,15 +77,6 @@ Polymer({
                         'icon': 'check',
                         'align': 'center',
                         'name': 'user.is_active'
-                    },
-                    {
-                        'size': '70px',
-                        'label': 'Notify',
-                        'labelPath': 'receive_tpm_notifications',
-                        'icon': 'check',
-                        'align': 'center',
-                        'class': 'overflow-visible',
-                        'name': 'receive_tpm_notifications'
                     }
                 ];
             }
@@ -103,7 +93,7 @@ Polymer({
             type: Object,
             value: function() {
                 return {
-                    title: 'Edit Staff Member'
+                    title: 'Edit TPM Contact'
                 };
             }
         },
@@ -141,7 +131,6 @@ Polymer({
 
     listeners: {
         'dialog-confirmed': '_addStaffFromDialog',
-        'delete-confirmed': 'removeStaff',
         'staff-updated': '_staffUpdated'
     },
 
@@ -288,16 +277,6 @@ Polymer({
         }
     },
 
-    removeStaff: function() {
-        this.requestInProcess = true;
-        this.set('newData', {
-            method: 'DELETE',
-            data: {},
-            staffIndex: this.editedIndex,
-            id: `${this.editedItem.id}/`
-        });
-    },
-
     _staffUpdated: function(event, details) {
         if (!details) { throw 'Detail are not provided!'; }
         if (details.error) {
@@ -310,12 +289,6 @@ Polymer({
         } else if (details.action === 'post') {
             this.set('listPage', 0);
             this.set('listPage', 1);
-        } else if (details.action === 'delete') {
-            let last = this.dataItems.length === 1 ? 1 : 0;
-            this.set('listQueries', {
-                page_size: this.listSize,
-                page: this.listPage - last || 1
-            });
         }
         this.requestInProcess = false;
         this.dialogOpened = false;
@@ -330,10 +303,10 @@ Polymer({
         this.requestInProcess = false;
         if (_.isString(error)) {
             let text = !!~error.indexOf('required') ? 'Please, select at least one staff member.' : error;
-            this.fire('toast', {text: `Staff Members: ${text}`});
+            this.fire('toast', {text: `TPM Contacts: ${text}`});
         }
         if (nonField) {
-            this.fire('toast', {text: `Staff Members: ${nonField}`});
+            this.fire('toast', {text: `TPM Contacts: ${nonField}`});
         }
     },
 
