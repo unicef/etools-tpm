@@ -8,7 +8,8 @@ Polymer({
         TPMBehaviors.DateBehavior,
         TPMBehaviors.StaticDataController,
         TPMBehaviors.PermissionController,
-        TPMBehaviors.CommonMethodsBehavior
+        TPMBehaviors.CommonMethodsBehavior,
+        TPMBehaviors.TextareaMaxRowsBehavior,
     ],
 
     properties: {
@@ -75,10 +76,19 @@ Polymer({
             offices: this.selectedOfficers || [],
             tpm_partner_focal_points: this.selectedTpms || []
         };
-        return _.pickBy(data, (value, key) => {
+        let changedData = _.pickBy(data, (value, key) => {
             let original = (this.originalData[key] || []).map((data) => `${data.id}`);
             return !_.isEqual(original, value);
         });
+
+        let oldVisitInformation = _.get(this.originalData, 'visit_information');
+        let visitInformation = _.get(this.visit, 'visit_information');
+
+        if (!_.isEqual(visitInformation, oldVisitInformation)) {
+            changedData.visit_information = visitInformation;
+        }
+
+        return changedData;
     },
 
     setVisitDates: function(start, end) {

@@ -1,6 +1,6 @@
 <!--import [polymer, etools-content-panel, lodash, paper-input, etools-searchable-multiselection-menu, date-behavior]-->
 <!--import [module-styles, tab-layout-styles, tab-inputs-styles, permission-controller, static-data-behavior,
-            common-methods-behavior]-->
+            common-methods-behavior, textarea-max-rows-behavior]-->
 
 <dom-module id="visit-details-tab">
     <template>
@@ -129,6 +129,27 @@
                             hide-search
                             no-title-attr>
                     </etools-searchable-multiselection-menu>
+                </div>
+            </div>
+
+            <div class="row-h group">
+                <div class="input-container input-container-l">
+                    <!-- Visit information -->
+                    <paper-textarea
+                            class$="disabled-as-readonly validate-input [[_setRequired('visit_information', permissionBase)]]"
+                            value="{{visit.visit_information}}"
+                            label="[[getLabel('visit_information', permissionBase)]]"
+                            placeholder="[[getPlaceholderText('visit_information', permissionBase)]]"
+                            required$="[[_setRequired('visit_information', permissionBase)]]"
+                            disabled$="[[isReadOnly('visit_information', permissionBase)]]"
+                            readonly$="[[isReadOnly('visit_information', permissionBase)]]"
+                            max-rows="4"
+                            invalid$="{{errors.visit_information}}"
+                            error-message="{{errors.visit_information}}"
+                            on-focus="_resetFieldError"
+                            on-tap="_resetFieldError"
+                            no-title-attr>
+                    </paper-textarea>
                 </div>
             </div>
         </etools-content-panel>
