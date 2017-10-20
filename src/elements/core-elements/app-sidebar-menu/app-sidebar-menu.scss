@@ -14,6 +14,7 @@
         color: white;
         border-bottom: 1px solid var(--dark-divider-color);
         height: 59px;
+        padding: 0;
         font-size: 16px;
         text-transform: uppercase;
 
@@ -26,6 +27,10 @@
             width: 55%;
             margin: auto;
             cursor: pointer;
+        }
+
+        [main-title] {
+            display: none;
         }
     }
 
@@ -59,6 +64,7 @@
     }
 
     .secondary-header {
+        display: none;
         color: var(--primary-text-color);
         height: 60px;
         line-height: 60px;
@@ -68,21 +74,24 @@
     }
 }
 
-:host(:not(.opened)) {
-    app-toolbar {
-        padding: 0;
+:host([opened]) {
+    .menu-header {
+        padding: 0 16px;
+
+        #close-drawer {
+            display: initial;
+        }
+
+        img {
+            display: none;
+        }
 
         [main-title] {
-            display: none;
+            display: block;
         }
     }
 
-    .secondary-header { display: none; }
-}
-
-:host(.opened) {
-    app-toolbar {
-        #close-drawer { display: initial; }
-        img { display: none; }
+    .secondary-header {
+        display: block;
     }
 }
