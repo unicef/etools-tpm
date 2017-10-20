@@ -1,10 +1,6 @@
 Polymer({
     is: 'multi-notification-item',
     properties: {
-        duration: {
-            type: Number,
-            value: 3000
-        },
         opened: {
             type: Boolean,
             observer: '_openedChanged'
@@ -37,7 +33,6 @@ Polymer({
     },
     _openedChanged: function(opened) {
         if (opened) {
-            this.async(this.close, this.duration);
             this._renderOpened();
         } else {
             this._renderClosed();
