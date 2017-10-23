@@ -117,7 +117,7 @@
                         </visit-activity-tab>
                     </div>
 
-                    <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]">
+                    <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]" restamp>
                         <div name="report">
                             <assign-attachments
                                     id="report"
@@ -134,7 +134,7 @@
                         </div>
                     </template>
 
-                    <template is="dom-if" if="[[_showTab(permissionBase, 'action_points')]]">
+                    <template is="dom-if" if="[[_showTab(permissionBase, 'action_points')]]" restamp>
                         <div name="action-points">
                           <action-points
                               id="actionPoints"
