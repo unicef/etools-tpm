@@ -168,7 +168,7 @@ Polymer({
     },
     _setExportLinks: function(partner) {
         return [{
-            url: this.getEndpoint('partnerDetails', {id: partner.id}).url + '?format=csv'
+            url: this.getEndpoint('partnerExport', {id: partner.id}).url
         }];
     }
 
