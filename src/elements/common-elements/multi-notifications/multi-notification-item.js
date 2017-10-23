@@ -1,10 +1,6 @@
 Polymer({
     is: 'multi-notification-item',
     properties: {
-        duration: {
-            type: Number,
-            value: 3000
-        },
         opened: {
             type: Boolean,
             observer: '_openedChanged'
@@ -16,7 +12,6 @@ Polymer({
     },
     listeners: {
         'transitionend': '_onTransitionEnd',
-        'move-up': '_moveUp'
     },
     _onTransitionEnd: function(e) {
         if (e && e.target === this && e.propertyName === 'opacity') {
@@ -37,7 +32,6 @@ Polymer({
     },
     _openedChanged: function(opened) {
         if (opened) {
-            this.async(this.close, this.duration);
             this._renderOpened();
         } else {
             this._renderClosed();
@@ -46,13 +40,6 @@ Polymer({
     close: function() {
         this.opened = false;
     },
-    _moveUp: function() {
-        let m = this;
-        requestAnimationFrame(() => {
-            m.offset = !m.offset && m.offset !== 0 ? 0 : m.offset + 70;
-            this.transform(`translateY(-${m.offset}px)`);
-        });
-    }
 
     /**
      * Fired when notification should be moved up
