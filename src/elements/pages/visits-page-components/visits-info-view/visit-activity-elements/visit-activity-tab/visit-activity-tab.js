@@ -97,7 +97,7 @@ Polymer({
             }, {
                 'size': 25,
                 'label': 'Partnership',
-                'labelPath': 'tpm_activities.partnership.title',
+                'labelPath': 'tpm_activities.partnership',
                 'path': 'partnership.title'
             }, {
                 'size': 25,
