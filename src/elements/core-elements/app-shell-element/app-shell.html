@@ -24,10 +24,10 @@
 
         <etools-loading id="global-loading" absolute></etools-loading>
 
-        <app-drawer-layout id="layout" opened-when-narrow force-narrow narrow="{{narrow}}">
+        <app-drawer-layout id="layout" opened-when-narrow force-narrow narrow="{{narrow}}" opened>
             <!-- Drawer content -->
             <app-drawer id="drawer" transition-duration="350" disable-swipe opened>
-                <app-sidebar-menu class="opened" page="[[page]]" user="[[user]]"></app-sidebar-menu>
+                <app-sidebar-menu id="appSidebar" page="[[page]]" user="[[user]]" opened></app-sidebar-menu>
             </app-drawer>
 
             <!-- Main content -->

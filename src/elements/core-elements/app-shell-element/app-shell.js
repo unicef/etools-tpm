@@ -10,6 +10,10 @@ Polymer({
     ],
 
     properties: {
+        sidebarOpened: {
+            type: Boolean,
+            value: true
+        },
 
         page: {
             type: String,
@@ -65,24 +69,12 @@ Polymer({
     },
 
     toggleDrawer: function() {
-        let isClosed = !this.$.drawer.opened;
-        let drawerWidth;
+        this.sidebarOpened = !this.sidebarOpened;
 
-        if (isClosed) {
-            drawerWidth = '220px';
-        } else {
-            drawerWidth = '70px';
-        }
-
-        this.$.drawer.customStyle['--app-drawer-width'] = drawerWidth;
+        this.$.layout.toggleAttribute('opened', this.sidebarOpened);
+        this.$.drawer.toggleAttribute('opened', this.sidebarOpened);
+        this.$.appSidebar.toggleAttribute('opened', this.sidebarOpened);
         this.$.drawer.updateStyles();
-
-        this.$.layout.style.paddingLeft = drawerWidth;
-        this.$.header.style.paddingLeft = drawerWidth;
-
-        this.$.drawer.querySelector('app-sidebar-menu').toggleClass('opened', isClosed);
-        this.$.drawer.toggleClass('opened', isClosed);
-        this.$.drawer.toggleAttribute('opened', isClosed);
     },
 
     queueToast: function(e, detail) {
