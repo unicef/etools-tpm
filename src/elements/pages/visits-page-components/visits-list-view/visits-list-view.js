@@ -245,6 +245,9 @@
             },{
                 name: 'Activities Level',
                 url: this.getEndpoint('visitsList').url + 'activities/export/'
+            },{
+                name: 'Visit Level',
+                url: this.getEndpoint('visitsList').url + 'export/'
             }];
         }
     });
