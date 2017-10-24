@@ -23,7 +23,11 @@ Polymer({
     ],
 
     _routeConfig: function(view) {
-        if (!this.route || !~this.route.prefix.indexOf('/partners')) { return; }
+        if (!this.route || !~this.route.prefix.indexOf('/partners')) {
+            this.resetLastView();
+            return;
+        }
+
         if (view === 'list' && !this.isTpmUser()) {
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
@@ -38,6 +42,15 @@ Polymer({
         }  else {
             this.fire('404');
         }
+
+        if (view !== this.lastView) {
+            this.fire('toast', {reset: true});
+        }
+        this.lastView = view;
+    },
+
+    resetLastView: function() {
+        if (this.lastView) { this.lastView = null; }
     },
 
     _configListParams: function() {

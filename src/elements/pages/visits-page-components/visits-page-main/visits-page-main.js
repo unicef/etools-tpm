@@ -36,7 +36,11 @@ Polymer({
     ],
 
     _routeConfig: function(view) {
-        if (!this.route || !~this.route.prefix.indexOf('/visits')) { return; }
+        if (!this.route || !~this.route.prefix.indexOf('/visits')) {
+            this.resetLastView();
+            return;
+        }
+
         if (view === 'list') {
             let queries = this._configListParams(this.initiation++);
             this._setVisitsListQueries(queries);
@@ -50,6 +54,15 @@ Polymer({
             this.clearQueries();
             this.fire('404');
         }
+
+        if (view !== this.lastView) {
+            this.fire('toast', {reset: true});
+        }
+        this.lastView = view;
+    },
+
+    resetLastView: function() {
+        if (this.lastView) { this.lastView = null; }
     },
 
     _configListParams: function(noNotify) {

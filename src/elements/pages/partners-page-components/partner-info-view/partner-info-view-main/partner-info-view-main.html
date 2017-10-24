@@ -84,23 +84,6 @@
                            </div>
                        </div>
 
-                       <div class$="status-container [[partner.status]]">
-                           <div class="status-icon">
-                                <span class="icon-wrapper">
-                                    <iron-icon icon="check"></iron-icon>
-                                    <iron-icon icon="cancel"></iron-icon>
-                                    <iron-icon icon="create"></iron-icon>
-                                </span>
-                           </div>
-
-                           <div class="status">
-                               <span class="status-header">[[_setStatusName(partner.status, statuses)]]</span>
-                               <span class="status-date">
-                                    {{_getFormattedDate(partner.status_date)}}
-                               </span>
-                           </div>
-                       </div>
-
                        <action-buttons actions="[[getActions(permissionBase)]]"></action-buttons>
                    </etools-content-panel>
                </div>
