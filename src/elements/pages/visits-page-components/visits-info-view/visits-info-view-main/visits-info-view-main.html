@@ -19,7 +19,7 @@
                                    base-permission-path="{{permissionBase}}"></update-visit-details-data>
 
         <pages-header-element download-letter-url="[[_setLetterLink(visit)]]"
-                              page-title="Assign TPM visit"></pages-header-element>
+                              page-title="[[setVisitTitle(visit.reference_number)]]"></pages-header-element>
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                 <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
@@ -32,7 +32,7 @@
                     <paper-tab name="action-points"><span class="tab-content">Action Points</span></paper-tab>
                 </template>
 
-                <paper-tab name="attachments"><span class="tab-content">Attachments</span></paper-tab>
+                <paper-tab name="attachments"><span class="tab-content">Related Documents</span></paper-tab>
             </paper-tabs>
         </div>
 
@@ -119,6 +119,22 @@
 
                     <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]" restamp>
                         <div name="report">
+                            <file-attachments-tab
+                                    id="simpleAttachments"
+                                    tab-title="[[getLabel('report_attachments', permissionBase)]]"
+                                    base-permission-path="{{permissionBase}}"
+                                    main-property="report_attachments"
+                                    error-object="{{errorObject}}"
+                                    data-items="[[visit.report_attachments]]"
+                                    file-types="[[simpleFileTypes]]"
+                                    file-types-label="[[getLabel('report_attachments.file_type', permissionBase)]]"
+                                    readonly="[[_attachmentsReadonly(permissionBase, 'report_attachments')]]"
+                                    file-type-required
+                                    allow-download
+                                    allow-edit
+                                    multiple>
+                            </file-attachments-tab>
+
                             <assign-attachments
                                     id="report"
                                     base-permission-path="{{permissionBase}}"
@@ -160,24 +176,6 @@
                                 columns="[[attachmentsColumns]]"
                                 file-types="[[visitFileTypes]]">
                         </assign-attachments>
-
-                        <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]">
-                            <file-attachments-tab
-                                    id="simpleAttachments"
-                                    tab-title="[[getLabel('report_attachments', permissionBase)]]"
-                                    base-permission-path="{{permissionBase}}"
-                                    main-property="report_attachments"
-                                    error-object="{{errorObject}}"
-                                    data-items="[[visit.report_attachments]]"
-                                    file-types="[[simpleFileTypes]]"
-                                    file-types-label="[[getLabel('report_attachments.file_type', permissionBase)]]"
-                                    readonly="[[_attachmentsReadonly(permissionBase, 'report_attachments')]]"
-                                    file-type-required
-                                    allow-download
-                                    allow-edit
-                                    multiple>
-                            </file-attachments-tab>
-                        </template>
                     </div>
                 </iron-pages>
             </div>

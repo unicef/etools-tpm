@@ -124,7 +124,7 @@
         _updateHeadings: function(fileTypeRequired) {
             let mainProperty = this.mainProperty;
             let headings = [{
-                'size': '100px',
+                'size': '150px',
                 'name': 'date',
                 'label': 'Date Uploaded',
                 'labelPath': `${mainProperty}.created`,
