@@ -400,6 +400,10 @@ Polymer({
         if (visitAccepted) {
             this.fire('toast', {text: 'Visit letter is generated. You can download it from top right corner at any time.'});
         }
+    },
+
+    setVisitTitle: function(number) {
+        return number || 'Assign TPM Visit';
     }
 
 });
