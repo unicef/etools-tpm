@@ -223,8 +223,12 @@
 
         addNewVisit: function() {
             if (!this.$.partnerInput.validate()) { return; }
-            this.requestInProcess = true;
-            this.newPartnerId = this.partnerOrganisation.id;
+            let newPartnerId = this.get('partnerOrganisation.id');
+
+            if (newPartnerId || newPartnerId === 0) {
+                this.newPartnerId = newPartnerId;
+                this.requestInProcess = true;
+            }
         },
 
         visitCreated: function(event, details) {
