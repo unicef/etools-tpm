@@ -38,6 +38,7 @@
         <partners-list-data
                 id="listData"
                 partners-list="{{partnersList}}"
+                list-length="{{listLength}}"
                 request-queries="[[requestQueries]]"
                 without-pagination="[[withoutPagination]]">
         </partners-list-data>
@@ -50,14 +51,13 @@
         </pages-header-element>
 
         <list-tab-main
-                header-title="Vendors"
+                header-title="results to show"
                 data="[[partnersList]]"
+                list-length="[[listLength]]"
                 headings="[[listHeadings]]"
                 base-permission-path="[[basePermissionPath]]"
                 query-params="{{queryParams}}"
-                no-additional
-                without-pagination
-                no-table-title>
+                no-additional>
         </list-tab-main>
 
         <dialog-element opened="{{newVendorOpened}}" dialog-title="Add New Vendor" confirm-btn-text="Add" request-in-process="[[requestInProcess]]">

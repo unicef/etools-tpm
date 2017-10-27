@@ -57,6 +57,7 @@ Polymer({
         let queriesUpdates = {},
             queries = this.parseQueries();
 
+        if (!queries.page_size) { queriesUpdates.page_size = '10'; }
         if (!queries.ordering) { queriesUpdates.ordering = 'vendor_number'; }
 
         if (!this.lastParams) {
