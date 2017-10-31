@@ -11,36 +11,48 @@
         <app-route
                 route="{{route}}"
                 pattern="/:tab"
-                data="{{routeData}}"></app-route>
+                data="{{routeData}}">
+        </app-route>
 
-        <update-partner-details-data new-partner-details="{{newPartnerDetails}}" partner="{{partner}}"
-                                     error-object="{{errorObject}}" base-permission-path="{{permissionBase}}"></update-partner-details-data>
+        <update-partner-details-data
+                new-partner-details="{{newPartnerDetails}}"
+                partner="{{partner}}"
+                error-object="{{errorObject}}"
+                base-permission-path="{{permissionBase}}">
+        </update-partner-details-data>
 
-        <pages-header-element export-links="[[_setExportLinks(partner)]]"
-                              page-title="[[partner.name]]"></pages-header-element>
+        <pages-header-element
+                export-links="[[_setExportLinks(partner)]]"
+                page-title="[[partner.name]]">
+        </pages-header-element>
+
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                 <paper-tab name="details" class="details-tab"><span class="tab-content">Partner details</span></paper-tab>
                 <paper-tab name="attachments" class="attachments-tab"><span class="tab-content">Attachments</span></paper-tab>
             </paper-tabs>
         </div>
+
         <div class$="view-container [[_setContainerClass(permissionBase)]]">
             <div id="pageContent">
-                <iron-pages id="info-tabs"
-                            selected="{{routeData.tab}}"
-                            attr-for-selected="name">
-
+                <iron-pages
+                        id="info-tabs"
+                        selected="{{routeData.tab}}"
+                        attr-for-selected="name">
                     <div name="details">
-                        <partner-details-tab id="partnerDetails"
-                                             error-object="{{errorObject}}"
-                                             base-permission-path="{{permissionBase}}"
-                                             partner="[[partner]]"></partner-details-tab>
+                        <partner-details-tab
+                                id="partnerDetails"
+                                error-object="{{errorObject}}"
+                                base-permission-path="{{permissionBase}}"
+                                partner="[[partner]]">
+                        </partner-details-tab>
 
-
-                        <partner-staff-members-tab id="staffMembers"
-                                                   permission-base="[[permissionBase]]"
-                                                   partner-id="{{partner.id}}"
-                                                   data-items="{{partner.staff_members}}"></partner-staff-members-tab>
+                        <partner-staff-members-tab
+                                id="staffMembers"
+                                permission-base="[[permissionBase]]"
+                                partner-id="{{partner.id}}"
+                                data-items="{{partner.staff_members}}">
+                        </partner-staff-members-tab>
                     </div>
 
                     <div name="attachments">
@@ -60,15 +72,12 @@
                                 multiple>
                         </file-attachments-tab>
                     </div>
-
                 </iron-pages>
-
             </div>
 
            <template is="dom-if" if="[[!_hideActions(permissionBase)]]" restamp>
                <div id="sidebar">
                    <etools-content-panel panel-title="Actions" class="actions-tab">
-
                        <div class$="status-container vision-container [[visionStatus]]">
                            <div class="status-icon">
                                 <span class="icon-wrapper">
@@ -89,7 +98,6 @@
                </div>
            </template>
         </div>
-
     </template>
 
     <!-- inject scripts './partner-info-view-main.js'-->

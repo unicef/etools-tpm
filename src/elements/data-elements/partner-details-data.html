@@ -1,23 +1,24 @@
-<!--import [polymer, etools-ajax, lodash, permission-controller, last-created-behavior]-->
+<!--import [polymer, etools-ajax, lodash]-->
+<!--import [permission-controller, last-created-behavior]-->
 
 <dom-module id="partner-details-data">
-
     <template>
+        <etools-ajax
+                url="[[url]]"
+                on-success="_handleDataResponse"
+                on-fail="_handleError">
+        </etools-ajax>
 
-        <etools-ajax url="[[url]]"
-                     on-success="_handleDataResponse"
-                     on-fail="_handleError"></etools-ajax>
-
-        <etools-ajax method="OPTIONS"
-                     url="[[optionsUrl]]"
-                     on-success="_handleOptionsResponse"
-                     on-fail="_handleOptionsResponse"></etools-ajax>
+        <etools-ajax
+                method="OPTIONS"
+                url="[[optionsUrl]]"
+                on-success="_handleOptionsResponse"
+                on-fail="_handleOptionsResponse">
+        </etools-ajax>
     </template>
 
     <script>
-
         Polymer({
-
             is: 'partner-details-data',
 
             behaviors: [
@@ -114,9 +115,6 @@
                 this.fire('global-loading', {message: 'Loading partner data...', active: true, type: 'partner-details'});
                 this.url = this.getEndpoint('partnerDetails', {id: id}).url;
             }
-
         });
-
     </script>
-
 </dom-module>

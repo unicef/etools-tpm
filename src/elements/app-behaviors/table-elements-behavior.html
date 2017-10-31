@@ -1,4 +1,5 @@
-<!--import [polymer, lodash, error-handler-behavior]-->
+<!--import [polymer, lodash]-->
+<!--import [error-handler-behavior]-->
 
 <script>
     'use strict';
@@ -240,7 +241,6 @@
             let refactoredData = this.dialogOpened ? this.refactorErrorObject(errorData)[0] : this.refactorErrorObject(errorData);
             this.set('errors', refactoredData);
         }
-
     };
 
     TPMBehaviors.TableElementsBehavior = [
@@ -248,5 +248,4 @@
         TPMBehaviors.PermissionController,
         TPMBehaviors.ErrorHandlerBehavior
     ];
-
 </script>

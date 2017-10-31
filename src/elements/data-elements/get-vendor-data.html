@@ -1,18 +1,17 @@
-<!--import [polymer, etools-ajax, lodash, etools-app-config, permission-controller, last-created-behavior]-->
+<!--import [polymer, etools-ajax, lodash]-->
+<!--import [etools-app-config, permission-controller, last-created-behavior]-->
 
 <dom-module id="get-vendor-data">
-
     <template>
-
-        <etools-ajax url="[[url]]"
-                     on-success="_handleResponse"
-                     on-fail="_handleError"></etools-ajax>
+        <etools-ajax
+                url="[[url]]"
+                on-success="_handleResponse"
+                on-fail="_handleError">
+        </etools-ajax>
     </template>
 
     <script>
-
         Polymer({
-
             is: 'get-vendor-data',
 
             behaviors: [
@@ -65,9 +64,6 @@
                 }
                 this.url = this.getEndpoint('syncVendorData', {id: vendorNumber}).url;
             }
-
         });
-
     </script>
-
 </dom-module>

@@ -30,19 +30,22 @@
                 </etools-loading>
 
                 <!--Confirm button-->
-                <paper-button autofocus class="btn-confirm right"
-                              delete-btn$="[[deleteDialog]]"
-                              on-tap="confirmDialog"
-                              raised
-                              autofocus$="[[autofocus]]"
-                              disabled="{{requestInProcess}}">[[confirmBtnText]]</paper-button>
+                <paper-button
+                        autofocus class="btn-confirm right"
+                        delete-btn$="[[deleteDialog]]"
+                        on-tap="confirmDialog"
+                        raised
+                        autofocus$="[[autofocus]]"
+                        disabled="{{requestInProcess}}">[[confirmBtnText]]
+                </paper-button>
 
                 <!--Cancel button-->
-                <paper-button dialog-dismiss$="{{_setDialogDismiss(requestInProcess, confirmDialogOpened)}}"
-                              class="btn-cancel right"
-                              disabled="{{requestInProcess}}"
-                              on-tap="cancelDialog">[[cancelBtnText]]</paper-button>
-
+                <paper-button
+                        dialog-dismiss$="{{_setDialogDismiss(requestInProcess, confirmDialogOpened)}}"
+                        class="btn-cancel right"
+                        disabled="{{requestInProcess}}"
+                        on-tap="cancelDialog">[[cancelBtnText]]
+                </paper-button>
             </div>
         </paper-dialog>
     </template>
@@ -52,10 +55,12 @@
 
         Polymer({
             is: 'dialog-element',
+
             behaviors: [
                 Polymer.NeonAnimationRunnerBehavior,
                 TPMBehaviors.PerfectScrollbarBehavior
             ],
+
             properties: {
                 dialogTitle: {
                     type: String,
@@ -98,9 +103,11 @@
                     value: false
                 }
             },
+
             _setDialogDismiss: function(requestInProcess, confirmDialogOpened) {
                 return !requestInProcess && !confirmDialogOpened;
             },
+
             confirmDialog: function() {
                 if (this.deleteDialog) {
                     this.fire('delete-confirmed', {dialogName: this.dialogName});
@@ -108,9 +115,11 @@
                     this.fire('dialog-confirmed', {dialogName: this.dialogName});
                 }
             },
+
             cancelDialog: function() {
                 this.fire('dialog-cancelled', {dialogName: this.dialogName});
             },
+
             _openedChanged: function(opened) {
                 if (!opened && this.requestInProcess) {
                     this.opened = true;
@@ -120,6 +129,7 @@
                     Ps.update(this.$.scrollbarContainer);
                 }
             },
+
             _stopPropagation: function(event) {
                 event.stopImmediatePropagation();
             },

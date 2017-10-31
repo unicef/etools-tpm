@@ -1,12 +1,12 @@
-<!--import [polymer, app-route/app-location, app-route, app-layout, app-main-header, app-sidebar-menu, page-footer, paper-icon-button,
+<!--import [polymer, app-route/app-location, app-route, app-layout, paper-icon-button,
              paper-toast, paper-material, iron-selector, iron-pages, iron-collapse, iron-icons, iron-icons/social-icons,
-             etools-loading/etools-loading-behavior, permission-controller, iron-icons/maps-icons, multi-notification-list]-->
+             etools-loading/etools-loading-behavior, iron-icons/maps-icons]-->
 
-<!--import [etools-app-config, countries-data, side-bar-item, countries-dropdown, initial-data, user-controller]-->
-<!--import [shared-styles, page-layout-styles, app-theme]-->
+<!--import [etools-app-config, countries-data, side-bar-item, countries-dropdown, initial-data, user-controller,
+            shared-styles, page-layout-styles, app-theme, permission-controller, multi-notification-list,
+            app-main-header, app-sidebar-menu, page-footer]-->
 
 <dom-module id="app-shell">
-
     <template>
         <!-- inject styles './app-shell.scss'-->
         <style include="page-layout-styles shared-styles"></style>
@@ -20,7 +20,8 @@
                 pattern="[[baseUrl]]:page"
                 data="{{routeData}}"
                 query-params="{{queryParams}}"
-                tail="{{subroute}}"></app-route>
+                tail="{{subroute}}">
+        </app-route>
 
         <etools-loading id="global-loading" absolute></etools-loading>
 
@@ -34,29 +35,33 @@
             <app-header id="header" fixed shadow>
                 <app-main-header user="[[user]]"></app-main-header>
             </app-header>
-            <iron-pages id="pages"
-                        selected="[[page]]"
-                        attr-for-selected="name"
-                        fallback-selection="not-found"
-                        role="main">
-                <partners-page-main name="partners"
-                                    id="partners"
-                                    route="{{subroute}}"
-                                    query-params="{{queryParams}}"></partners-page-main>
 
-                <visits-page-main name="visits"
-                                  id="visits"
-                                  route="{{subroute}}"
-                                  query-params="{{queryParams}}"></visits-page-main>
+            <iron-pages
+                    id="pages"
+                    selected="[[page]]"
+                    attr-for-selected="name"
+                    fallback-selection="not-found"
+                    role="main">
+                <partners-page-main
+                        name="partners"
+                        id="partners"
+                        route="{{subroute}}"
+                        query-params="{{queryParams}}">
+                </partners-page-main>
+
+                <visits-page-main
+                        name="visits"
+                        id="visits"
+                        route="{{subroute}}"
+                        query-params="{{queryParams}}">
+                </visits-page-main>
 
                 <not-found-page-view name="not-found" id="not-found"></not-found-page-view>
             </iron-pages>
 
             <multi-notification-list></multi-notification-list>
         </app-drawer-layout>
-
     </template>
 
     <!-- inject scripts './app-shell.js'-->
-
 </dom-module>

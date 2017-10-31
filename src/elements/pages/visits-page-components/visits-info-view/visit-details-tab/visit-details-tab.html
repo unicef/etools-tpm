@@ -7,36 +7,45 @@
         <style include="tab-inputs-styles tab-layout-styles module-styles">
         </style>
 
-        <etools-ajax method="GET"
-                     url="{{partnerStaffUrl}}"
-                     on-success="_partnersLoad"
-                     on-fail="_partnersLoadError"></etools-ajax>
+        <etools-ajax
+                method="GET"
+                url="{{partnerStaffUrl}}"
+                on-success="_partnersLoad"
+                on-fail="_partnersLoadError">
+        </etools-ajax>
 
         <etools-content-panel panel-title="{{getLabel('visit_information', permissionBase)}}">
             <div class="row-h group">
                 <div class="input-container">
                     <!-- Reference Number -->
-                    <paper-input label="{{getLabel('reference_number', permissionBase)}}"
-                                 value="{{visit.reference_number}}"
-                                 placeholder="{{getPlaceholderText('reference_number', permissionBase)}}"
-                                 class="without-border"
-                                 disabled readonly></paper-input>
+                    <paper-input
+                            class="without-border"
+                            value="{{visit.reference_number}}"
+                            label="{{getLabel('reference_number', permissionBase)}}"
+                            placeholder="{{getPlaceholderText('reference_number', permissionBase)}}"
+                            disabled
+                            readonly>
+                    </paper-input>
                     <paper-tooltip offset="0">[[visit.reference_number]]</paper-tooltip>
                 </div>
+
                 <div class="input-container">
                     <!-- Vendor Name -->
-                    <paper-input label="{{getLabel('tpm_partner.name', permissionBase)}}"
-                                 value="{{visit.tpm_partner.name}}"
-                                 placeholder="{{getPlaceholderText('tpm_partner.name', permissionBase)}}"
-                                 class$="disabled-as-readonly [[_setRequired('tpm_partner.name', permissionBase)]]"
-                                 invalid="{{_checkInvalid(errors.tpm_partner.name)}}"
-                                 error-message="{{errors.tpm_partner.name}}"
-                                 on-focus="_resetFieldError"
-                                 on-tap="_resetFieldError"
-                                 required$="[[_setRequired('tpm_partner.name', permissionBase)]]"
-                                 disabled$="[[isReadOnly('tpm_partner.name', permissionBase)]]"></paper-input>
+                    <paper-input
+                            class$="disabled-as-readonly [[_setRequired('tpm_partner.name', permissionBase)]]"
+                            value="{{visit.tpm_partner.name}}"
+                            label="{{getLabel('tpm_partner.name', permissionBase)}}"
+                            placeholder="{{getPlaceholderText('tpm_partner.name', permissionBase)}}"
+                            required$="[[_setRequired('tpm_partner.name', permissionBase)]]"
+                            disabled$="[[isReadOnly('tpm_partner.name', permissionBase)]]"
+                            invalid="{{_checkInvalid(errors.tpm_partner.name)}}"
+                            error-message="{{errors.tpm_partner.name}}"
+                            on-focus="_resetFieldError"
+                            on-tap="_resetFieldError">
+                    </paper-input>
                     <paper-tooltip offset="0">[[visit.tpm_partner.name]]</paper-tooltip>
                 </div>
+
                 <div class="input-container">
                     <!-- Dates of Visit -->
                     <paper-input
@@ -54,10 +63,12 @@
                     <paper-tooltip offset="0">[[setVisitDates(visit.start_date, visit.end_date)]]</paper-tooltip>
                 </div>
             </div>
+
             <div class="row-h group">
                 <div class="input-container input-container-l">
                     <etools-searchable-multiselection-menu
                             class$="disabled-as-readonly validate-input [[_setRequired('unicef_focal_points', permissionBase)]] fua-description"
+                            value="{{visit.unicef_focal_points}}"
                             label="[[getLabel('unicef_focal_points', permissionBase)]]"
                             placeholder="[[getPlaceholderText('unicef_focal_points', permissionBase)]]"
                             options="[[unicefUsersList]]"
@@ -65,7 +76,6 @@
                             option-label="name"
                             option-value="id"
                             selected-values="{{selectedFocalPoints}}"
-                            value="{{visit.unicef_focal_points}}"
                             required$="[[_setRequired('unicef_focal_points', permissionBase)]]"
                             disabled$="[[isReadOnly('unicef_focal_points', permissionBase)]]"
                             readonly$="[[isReadOnly('unicef_focal_points', permissionBase)]]"
@@ -79,10 +89,12 @@
                     </etools-searchable-multiselection-menu>
                 </div>
             </div>
+
             <div class="row-h group">
                 <div class="input-container input-container-l">
                     <etools-searchable-multiselection-menu
                             class$="disabled-as-readonly validate-input [[_setRequired('offices', permissionBase)]] fua-description"
+                            value="{{visit.offices}}"
                             label="[[getLabel('offices', permissionBase)]]"
                             placeholder="[[getPlaceholderText('offices', permissionBase)]]"
                             options="[[officesList]]"
@@ -90,7 +102,6 @@
                             option-label="name"
                             option-value="id"
                             selected-values="{{selectedOfficers}}"
-                            value="{{visit.offices}}"
                             required$="[[_setRequired('offices', permissionBase)]]"
                             disabled$="[[isReadOnly('offices', permissionBase)]]"
                             readonly$="[[isReadOnly('offices', permissionBase)]]"
@@ -105,10 +116,12 @@
                     </etools-searchable-multiselection-menu>
                 </div>
             </div>
+
             <div class="row-h group">
                 <div class="input-container input-container-l">
                     <etools-searchable-multiselection-menu
                             class$="disabled-as-readonly validate-input [[_setRequired('tpm_partner_focal_points', permissionBase)]] fua-description"
+                            value="[[setSelectedTpms(visit.tpm_partner_focal_points)]]"
                             label="[[getLabel('tpm_partner_focal_points', permissionBase)]]"
                             placeholder="[[getPlaceholderText('tpm_partner_focal_points', permissionBase)]]"
                             options="[[partners]]"
@@ -116,7 +129,6 @@
                             option-label="name"
                             option-value="id"
                             selected-values="{{selectedTpms}}"
-                            value="[[setSelectedTpms(visit.tpm_partner_focal_points)]]"
                             required$="[[_setRequired('tpm_partner_focal_points', permissionBase)]]"
                             disabled$="[[isReadOnly('tpm_partner_focal_points', permissionBase)]]"
                             readonly$="[[isReadOnly('tpm_partner_focal_points', permissionBase)]]"
@@ -154,5 +166,6 @@
             </div>
         </etools-content-panel>
     </template>
+
     <!-- inject scripts './visit-details-tab.js'-->
 </dom-module>

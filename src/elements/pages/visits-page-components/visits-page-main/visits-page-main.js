@@ -30,6 +30,7 @@ Polymer({
             }
         }
     },
+
     observers: [
         '_routeConfig(routeData.view)',
         '_visitLoaded(visitDetails)'
@@ -106,5 +107,4 @@ Polymer({
         if (!visitDetails) { return; }
         this._setOriginalData(_.cloneDeep(visitDetails));
     }
-
 });

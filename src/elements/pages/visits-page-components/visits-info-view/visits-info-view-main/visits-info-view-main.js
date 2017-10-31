@@ -218,6 +218,7 @@ Polymer({
         };
     },
     /* jshint ignore:end */
+
     validateVisit: function() {
         return true;
     },
@@ -405,5 +406,4 @@ Polymer({
     setVisitTitle: function(number) {
         return number || 'Assign TPM Visit';
     }
-
 });

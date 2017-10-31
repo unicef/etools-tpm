@@ -2,6 +2,7 @@
 
 Polymer({
     is: 'pages-header-element',
+
     properties: {
         title: String,
         showAddButton: {
@@ -52,6 +53,7 @@ Polymer({
             value: ''
         }
     },
+
     behaviors: [
         etoolsAppConfig.globals
     ],
@@ -59,9 +61,11 @@ Polymer({
     attached: function() {
         this.baseUrl = this.basePath;
     },
+
     _toggleOpened: function() {
         this.$.dropdownMenu.select(null);
     },
+
     _hideAddButton: function(show) {
         return !show;
     },
@@ -96,5 +100,4 @@ Polymer({
     downloadLetter: function() {
         window.open(this.downloadLetterUrl, '_blank');
     }
-
 });

@@ -1,10 +1,10 @@
-<!--import [polymer, paper-card, shared-styles, module-styles, iron-flex-layout,list-header,list-element, list-pagination, query-params-controller]-->
+<!--import [polymer, paper-card, iron-flex-layout]-->
+<!--import [shared-styles, module-styles, list-header, list-element, list-pagination, query-params-controller]-->
 
 <dom-module id="list-tab-main">
     <template>
         <style include="shared-styles module-styles iron-flex"></style>
         <!-- inject styles './list-tab-main.scss'-->
-
 
         <paper-card class="data-table">
             <template is="dom-if" if="[[!_isTableTitle(noTableTitle, withoutPagination)]]" restamp>
@@ -23,7 +23,12 @@
                     base-permission-path="[[basePermissionPath]]">
             </list-header>
 
-            <template id="list-elements" is="dom-repeat" items="[[data]]" initial-count="10"  on-dom-change="_listDataChanged">
+            <template
+                    id="list-elements"
+                    is="dom-repeat"
+                    items="[[data]]"
+                    initial-count="10"
+                    on-dom-change="_listDataChanged">
                 <list-element
                         class="list-element"
                         data="[[item]]"
@@ -55,9 +60,7 @@
                         showing-results="{{showingResults}}">
                 </list-pagination>
             </template>
-
         </paper-card>
-
     </template>
 
     <!-- inject scripts './list-tab-main.js'-->

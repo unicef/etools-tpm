@@ -1,6 +1,6 @@
-<!--import [etools-content-panel, lodash, paper-icon-button] -->
+<!--import [etools-content-panel, lodash, paper-icon-button, paper-input/paper-textarea] -->
 
-<!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, paper-input/paper-textarea,
+<!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header,
             list-element, common-methods-behavior, dialog-element, date-behavior,
             static-data-behavior, common-methods-behavior, table-elements-behavior, textarea-max-rows-behavior] -->
 
@@ -23,11 +23,13 @@
                     <paper-tooltip offset="0">Add</paper-tooltip>
                 </div>
             </div>
+
             <list-header
                   no-ordered
                   data="[[columns]]"
                   base-permission-path="[[basePermissionPath]]">
             </list-header>
+
             <template is="dom-repeat" items="[[dataItems]]" filter="_showItems">
                   <list-element
                         class="list-element"
@@ -39,12 +41,14 @@
                         <div slot="custom">
                             [[getStatusDisplayName(item.status)]]
                         </div>
+
                         <div slot="hover" class="edit-icon-slot" hidden$="[[!_canBeChanged(basePermissionPath)]]">
                             <paper-icon-button icon="icons:create" class="edit-icon" on-tap="openEditDialog"></paper-icon-button>
                             <paper-icon-button icon="icons:delete" class="edit-icon" on-tap="openDeleteDialog"></paper-icon-button>
                         </div>
                   </list-element>
             </template>
+
             <template is="dom-if" if="[[!dataItems.length]]">
                 <list-element
                         class="list-element"
@@ -53,6 +57,7 @@
                         no-animation>
                 </list-element>
             </template>
+
             <dialog-element
                     opened="{{dialogOpened}}"
                     delete-dialog="[[deleteDialog]]"
@@ -65,9 +70,9 @@
                             <div class="input-container input-container-l">
                                 <paper-textarea
                                     class$="disabled-as-readonly validate-input [[_setRequired('action_points.description', basePermissionPath)]]"
+                                    value="{{editedItem.description}}"
                                     label="{{getLabel('action_points.description', basePermissionPath)}}"
                                     placeholder="{{getPlaceholderText('action_points.description', basePermissionPath)}}"
-                                    value="{{editedItem.description}}"
                                     required$="[[_setRequired('action_points.description', basePermissionPath)]]"
                                     disabled$="[[isReadOnly('action_points.description', basePermissionPath)]]"
                                     readonly$="[[isReadOnly('action_points.description', basePermissionPath)]]"
@@ -79,6 +84,7 @@
                                 </paper-textarea>
                             </div>
                         </div>
+
                         <div class="row-h group">
                             <div class="input-container">
                                 <etools-searchable-multiselection-menu
@@ -103,6 +109,7 @@
                                 </etools-searchable-multiselection-menu>
                                 <paper-tooltip offset="0">[[getTooltipText(selectedPersonResponsible, usersList, 'name')]]</paper-tooltip>
                             </div>
+
                             <div class="input-container">
                                 <paper-input
                                         class$="disabled-as-readonly validate-input [[_setRequired('action_points.due_date', basePermissionPath)]]"
@@ -130,16 +137,17 @@
                                     </etools-datepicker>
                                 </paper-input>
                             </div>
+
                             <div class="input-container">
                                 <etools-searchable-multiselection-menu
                                         class$="disabled-as-readonly validate-input [[_setRequired('action_points.status', basePermissionPath)]]"
-                                        selected="{{editedItem.status}}"
                                         label="[[getLabel('action_points.status', basePermissionPath)]]"
                                         placeholder="[[getPlaceholderText('action_points.status', basePermissionPath)]]"
                                         options="[[statuses]]"
                                         custom-object-options
                                         option-label="display_name"
                                         option-value="value"
+                                        selected="{{editedItem.status}}"
                                         update-selected
                                         required="[[_setRequired('action_points.status', basePermissionPath)]]"
                                         disabled$="[[isReadOnly('action_points.status', basePermissionPath)]]"
@@ -153,22 +161,25 @@
                                         no-title-attr>
                                 </etools-searchable-multiselection-menu>
                             </div>
-                    </div>
-                    <div class="row-h group">
-                        <div class="input-container input-container-l">
-                            <paper-textarea class$="disabled-as-readonly [[_setRequired('action_points.comments', basePermissionPath)]]"
-                                            value="{{editedItem.comments}}"
-                                            label="{{getLabel('action_points.comments', basePermissionPath)}}"
-                                            placeholder="{{getPlaceholderText('action_points.comments', basePermissionPath)}}"
-                                            required$="[[_setRequired('action_points.comments', basePermissionPath)]]"
-                                            disabled$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
-                                            readonly$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
-                                            max-rows="4"
-                                            invalid="{{_checkInvalid(errors.action_points.comments)}}"
-                                            error-message="{{errors.action_points.comments}}"
-                                            on-focus="_resetFieldError"
-                                            on-tap="_resetFieldError">
-                            </paper-textarea>
+                        </div>
+
+                        <div class="row-h group">
+                            <div class="input-container input-container-l">
+                                <paper-textarea
+                                        class$="disabled-as-readonly [[_setRequired('action_points.comments', basePermissionPath)]]"
+                                        value="{{editedItem.comments}}"
+                                        label="{{getLabel('action_points.comments', basePermissionPath)}}"
+                                        placeholder="{{getPlaceholderText('action_points.comments', basePermissionPath)}}"
+                                        required$="[[_setRequired('action_points.comments', basePermissionPath)]]"
+                                        disabled$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
+                                        readonly$="[[isReadOnly('action_points.comments', basePermissionPath)]]"
+                                        max-rows="4"
+                                        invalid="{{_checkInvalid(errors.action_points.comments)}}"
+                                        error-message="{{errors.action_points.comments}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError">
+                                </paper-textarea>
+                            </div>
                         </div>
                     </div>
                 </div>

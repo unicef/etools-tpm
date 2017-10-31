@@ -3,11 +3,8 @@
 <!--import [etools-app-config, etools-app-selector, countries-dropdown, user-dropdown, shared-styles, app-icons]-->
 
 <dom-module id="app-main-header">
-
   <template>
-
     <style include="shared-styles">
-
       app-toolbar {
         background-color: #233944;
         padding: 0 8px 0 0;
@@ -76,18 +73,18 @@
 
         <etools-page-refresh id="refresh"></etools-page-refresh>
       </div>
-
     </app-toolbar>
-
   </template>
 
   <script>
     (function() {
       Polymer({
         is: 'app-main-header',
+
         behaviors: [
           etoolsAppConfig.globals
         ],
+
         properties: {
           user: {
             type: Object
@@ -131,12 +128,15 @@
             }
           }
         },
+
         listeners: {
           'main_refresh': '_refresh_page'
         },
+
         openDrawer: function() {
           this.fire('drawer');
         },
+
         _refresh_page: function(event) {
           event.stopImmediatePropagation();
           this.$.refresh.refresh();
@@ -144,5 +144,4 @@
       });
     })();
   </script>
-
 </dom-module>

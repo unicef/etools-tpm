@@ -1,11 +1,11 @@
 'use strict';
 
 (function() {
-
     const editableProperties = ['email', 'phone_number'];
 
     Polymer({
         is: 'partner-details-tab',
+
         behaviors: [
             TPMBehaviors.PermissionController,
             TPMBehaviors.CommonMethodsBehavior,
@@ -80,5 +80,4 @@
             return _.isEmpty(data) ? null : data;
         },
     });
-
 })();

@@ -1,23 +1,24 @@
-<!--import [polymer, etools-ajax, lodash, permission-controller, last-created-behavior]-->
+<!--import [polymer, etools-ajax, lodash]-->
+<!--import [permission-controller, last-created-behavior]-->
 
 <dom-module id="visit-info-data">
-
     <template>
+        <etools-ajax
+                endpoint="[[visitEndpoint]]"
+                on-success="_handleDataResponse"
+                on-fail="_handleError">
+        </etools-ajax>
 
-        <etools-ajax endpoint="[[visitEndpoint]]"
-                     on-success="_handleDataResponse"
-                     on-fail="_handleError"></etools-ajax>
-
-        <etools-ajax method="OPTIONS"
-                     url="[[optionsUrl]]"
-                     on-success="_handleOptionsResponse"
-                     on-fail="_handleOptionsResponse"></etools-ajax>
+        <etools-ajax
+                method="OPTIONS"
+                url="[[optionsUrl]]"
+                on-success="_handleOptionsResponse"
+                on-fail="_handleOptionsResponse">
+        </etools-ajax>
     </template>
 
     <script>
-
         Polymer({
-
             is: 'visit-info-data',
 
             behaviors: [
@@ -111,9 +112,6 @@
 
                 this.visitEndpoint = endpoint;
             }
-
         });
-
     </script>
-
 </dom-module>

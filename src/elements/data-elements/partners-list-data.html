@@ -1,22 +1,19 @@
-<!--import [polymer, etools-ajax, query-params-controller, etools-app-config]-->
+<!--import [polymer, etools-ajax]-->
+<!--import [query-params-controller, etools-app-config]-->
 
 <dom-module id="partners-list-data">
-
     <template>
-
         <etools-ajax
                 endpoint="[[endpoint]]"
                 on-success="_partnersLoaded"
                 on-fail="_responseError">
         </etools-ajax>
-
     </template>
 
     <script>
-
         Polymer({
-
             is: 'partners-list-data',
+
             behaviors: [
                 etoolsAppConfig.globals,
                 TPMBehaviors.QueryParamsController
@@ -33,7 +30,7 @@
                 },
                 lastOrder: {
                     type: String
-                },
+                }
             },
 
             observers: [
@@ -83,7 +80,5 @@
                 this.fire('global-loading', {type: 'partners-list'});
             },
         });
-
     </script>
-
 </dom-module>

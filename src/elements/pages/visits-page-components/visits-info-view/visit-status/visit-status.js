@@ -115,5 +115,4 @@ Polymer({
         });
         return lastActiveIndex;
     }
-
 });

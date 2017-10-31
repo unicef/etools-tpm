@@ -22,9 +22,11 @@ Polymer({
             value: false
         }
     },
+
     observers: [
         '_setRightPadding(data.*)'
     ],
+
     _setRightPadding: function() {
         if (!this.data) { return; }
         let rightPadding = 0;
@@ -39,6 +41,7 @@ Polymer({
 
         this.paddingRight = `${rightPadding}px`;
     },
+
     _changeOrder: function(event) {
         if (this.noOrdered) { return; }
         let item = event && event.model && event.model.item;

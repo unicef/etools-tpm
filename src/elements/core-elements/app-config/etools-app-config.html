@@ -6,7 +6,6 @@ App global configuration
 <script>
     'use strict';
 
-
     var etoolsCustomDexieDb = new Dexie('TPM');
     etoolsCustomDexieDb.version(1).stores({
         collectionsList: '&name, expire',
@@ -15,7 +14,6 @@ App global configuration
     });
 
     var etoolsAppConfig = {
-
         // app endpoints
         endpoints: {
             partnerDetails: {
@@ -94,6 +92,7 @@ App global configuration
                 url: '/api/offices/'
             },
         },
+
         localEndpoints: {
             partnerDetails: {
                 template: '/data/partner-details.json?id="<%=id%>"'
@@ -119,8 +118,6 @@ App global configuration
 
         globals: {
             // globals
-
-
             baseSite: window.location.origin,
             basePath: (window.location.port === '8080') ? '/' : '/tpm/',
             serverBackend: (window.location.port !== '8080'),
@@ -151,7 +148,5 @@ App global configuration
                 return this.basePath + path;
             }
         }
-
     };
-
 </script>

@@ -2,11 +2,13 @@
 
 Polymer({
     is: 'partners-page-main',
+
     behaviors: [
         TPMBehaviors.QueryParamsController,
         TPMBehaviors.UserController,
         TPMBehaviors.PermissionController
     ],
+
     properties: {
         queryParams: {
             type: Object,
@@ -18,6 +20,7 @@ Polymer({
             value: true
         }
     },
+
     observers: [
         '_routeConfig(routeData.view)'
     ],
@@ -70,6 +73,7 @@ Polymer({
         }, 100);
         return this.parseQueries();
     },
+
     _queryParamsChanged: function() {
         if (!~this.route.prefix.indexOf('/partners') || !this.routeData) { return; }
         if (this.routeData.view === 'list') {
@@ -81,6 +85,7 @@ Polymer({
             }, 100);
         }
     },
+
     _setPartnersListQueries: function(queries) {
         if (!_.isEmpty(queries) && (!this.partnersListQueries || !_.isEqual(this.partnersListQueries, queries))) {
             this.partnersListQueries = queries;

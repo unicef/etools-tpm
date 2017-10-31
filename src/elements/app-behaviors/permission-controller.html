@@ -1,4 +1,5 @@
 <!--import [lodash]-->
+
 <script>
     'use strict';
     (function () {
@@ -6,7 +7,6 @@
 
         window.TPMBehaviors = window.TPMBehaviors || {};
         window.TPMBehaviors.PermissionController = {
-
             _addToCollection: function(collectionName, data) {
                 //check arguments
                 if (!collectionName || !data) {
@@ -170,9 +170,6 @@
 
                 return collection && collection.allowed_actions || null;
             }
-
         };
     })()
-
-
 </script>

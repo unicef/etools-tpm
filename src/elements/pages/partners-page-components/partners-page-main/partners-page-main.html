@@ -1,7 +1,7 @@
-<!--import [polymer, paper-tabs, paper-input]-->
+<!--import [polymer, paper-tabs, paper-input, lodash]-->
 
 <!--import [page-layout-styles, shared-styles, pages-header-element, module-styles, user-controller,
-             partner-info-view-main, query-params-controller, permission-controller, partner-details-data, lodash]-->
+             partner-info-view-main, query-params-controller, permission-controller, partner-details-data]-->
 
 <dom-module id="partners-page-main">
     <template>
@@ -11,13 +11,13 @@
                 display: block;
             }
         </style>
+
         <app-route
                 route="{{route}}"
                 pattern="/:view"
                 data="{{routeData}}"
                 tail="{{subroute}}">
         </app-route>
-
 
         <partner-details-data
                 partner-details="{{partnerDetails}}"
@@ -30,7 +30,6 @@
                 selected="{{view}}"
                 attr-for-selected="name"
                 role="main">
-
                 <partners-list-view
                         id="partnersList"
                         name="list"
@@ -44,7 +43,6 @@
                         route="{{subroute}}"
                         partner="{{partnerDetails}}">
                 </partner-info-view-main>
-
         </iron-pages>
     </template>
 

@@ -7,6 +7,7 @@ Polymer({
         TPMBehaviors.TableElementsBehavior,
         TPMBehaviors.CommonMethodsBehavior
     ],
+
     properties: {
         basePermissionPath: {
             type: String
@@ -334,5 +335,4 @@ Polymer({
         let title = this.getFieldAttribute(`${basePermissionPath}.staff_members`, 'label', 'GET');
         return `${title} (${this._staffLength(datalength, dataItems, searchQuery)})`;
     }
-
 });

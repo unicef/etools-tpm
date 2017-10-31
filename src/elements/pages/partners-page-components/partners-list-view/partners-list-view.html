@@ -1,7 +1,7 @@
-<!--import [polymer, module-styles, page-layout-styles, tab-inputs-styles, shared-styles, list-tab-main, dialog-element,
-            search-and-filter, partners-list-data, pages-header-element, permission-controller, app-route/app-location,
-            static-data-behavior, common-methods-behavior, get-vendor-data, update-vendor-data, etools-app-config,
-            paper-tooltip]-->
+<!--import [polymer, app-route/app-location, paper-tooltip]-->
+<!--import [module-styles, page-layout-styles, tab-inputs-styles, shared-styles, list-tab-main, dialog-element,
+            search-and-filter, partners-list-data, pages-header-element, permission-controller,
+            static-data-behavior, common-methods-behavior, get-vendor-data, update-vendor-data, etools-app-config]-->
 
 <dom-module id="partners-list-view">
     <template>
@@ -28,6 +28,7 @@
         <app-location path="{{path}}"></app-location>
 
         <get-vendor-data vendor="{{data}}" original-data="{{originalData}}" vendor-number="{{vendorNumber}}"></get-vendor-data>
+
         <update-vendor-data
                 vendor="{{data}}"
                 update-data="{{updateData}}"
@@ -66,34 +67,37 @@
                     <div class="row-h group">
                         <div class="input-container input-container-ms">
                             <!-- Vendor Number -->
-                            <paper-input label="[[getLabel('vendor_number', basePermissionPath)]]"
-                                         id="vendorNumber"
-                                         field="vendor_number"
-                                         maxlength="30"
-                                         class$="disabled-as-readonly [[_setRequired('vendor_number', basePermissionPath)]]"
-                                         value="{{data.vendor_number}}"
-                                         allowed-pattern="[\d]"
-                                         placeholder="[[getPlaceholderText('vendor_number', basePermissionPath)]]"
-                                         invalid$="{{_checkInvalid(errors.vendor_number)}}"
-                                         error-message="{{errors.vendor_number}}"
-                                         required$="[[_setRequired('vendor_number', basePermissionPath)]]"
-                                         disabled$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
-                                         readonly$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
-                                         on-focus="_resetFieldError"
-                                         on-tap="_resetFieldError"
-                                         on-keyup="vendorNumberKeyEvent"
-                                         on-blur="_requestVendor">
+                            <paper-input
+                                    id="vendorNumber"
+                                    class$="disabled-as-readonly [[_setRequired('vendor_number', basePermissionPath)]]"
+                                    field="vendor_number"
+                                    value="{{data.vendor_number}}"
+                                    allowed-pattern="[\d]"
+                                    label="[[getLabel('vendor_number', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('vendor_number', basePermissionPath)]]"
+                                    required$="[[_setRequired('vendor_number', basePermissionPath)]]"
+                                    disabled$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
+                                    readonly$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
+                                    maxlength="30"
+                                    invalid$="{{_checkInvalid(errors.vendor_number)}}"
+                                    error-message="{{errors.vendor_number}}"
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError"
+                                    on-keyup="vendorNumberKeyEvent"
+                                    on-blur="_requestVendor">
                             </paper-input>
                             <etools-loading active="{{vendorRequestInProcess}}" no-overlay loading-text="" class="po-loading"></etools-loading>
                         </div>
 
                         <div class="input-container input-container-ms">
                             <!-- TPM Partner -->
-                            <paper-input label="[[getLabel('name', basePermissionPath)]]"
-                                         class$="without-border [[_setReadonlyFieldClass(data)]]"
-                                         disabled readonly
-                                         value="[[data.name]]"
-                                         placeholder="[[getReadonlyPlaceholder(data)]]">
+                            <paper-input
+                                    class$="without-border [[_setReadonlyFieldClass(data)]]"
+                                    value="[[data.name]]"
+                                    label="[[getLabel('name', basePermissionPath)]]"
+                                    placeholder="[[getReadonlyPlaceholder(data)]]"
+                                    disabled
+                                    readonly>
                             </paper-input>
                             <paper-tooltip offset="0">[[data.name]]</paper-tooltip>
                         </div>
@@ -102,11 +106,13 @@
                     <div class="row-h group">
                         <div class="input-container input-container-l">
                             <!-- Partner Address -->
-                            <paper-input label="[[getLabel('street_address', basePermissionPath)]]"
-                                         class$="without-border [[_setReadonlyFieldClass(data)]]"
-                                         disabled readonly
-                                         value="[[getPartnerAddress(data)]]"
-                                         placeholder="[[getReadonlyPlaceholder(data)]]">
+                            <paper-input
+                                    class$="without-border [[_setReadonlyFieldClass(data)]]"
+                                    value="[[getPartnerAddress(data)]]"
+                                    label="[[getLabel('street_address', basePermissionPath)]]"
+                                    placeholder="[[getReadonlyPlaceholder(data)]]"
+                                    disabled
+                                    readonly>
                             </paper-input>
                             <paper-tooltip offset="0">[[getPartnerAddress(data)]]</paper-tooltip>
                         </div>
@@ -117,20 +123,20 @@
                             <!-- Phone Number -->
                             <paper-input
                                     id="phoneInput"
-                                    label="[[getLabel('phone_number', basePermissionPath)]]"
                                     class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
                                     field="phone_number"
+                                    value="{{data.phone_number}}"
                                     allowed-pattern="[\d\s-]"
-                                    maxlength="20"
+                                    label="[[getLabel('phone_number', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('phone_number', basePermissionPath)]]"
                                     required$="[[_setRequired('phone_number', basePermissionPath, requestInProcess)]]"
                                     disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
                                     readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
-                                    value="{{data.phone_number}}"
-                                    on-focus="_resetFieldError"
-                                    on-tap="_resetFieldError"
+                                    maxlength="20"
                                     invalid$="{{errors.phone_number}}"
                                     error-message="{{errors.phone_number}}"
-                                    placeholder="[[getPlaceholderText('phone_number', basePermissionPath)]]">
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError">
                                 <iron-icon prefix icon="communication:phone"></iron-icon>
                             </paper-input>
                         </div>
@@ -139,18 +145,18 @@
                             <!-- E-mail address -->
                             <paper-input
                                     id="emailInput"
-                                    label$="[[getLabel('email', basePermissionPath)]]"
                                     class$="disabled-as-readonly [[_setRequired('email', basePermissionPath)]]"
                                     field="email"
+                                    value="{{data.email}}"
+                                    label$="[[getLabel('email', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('email', basePermissionPath)]]"
                                     required$="[[_setRequired('email', basePermissionPath, requestInProcess)]]"
                                     disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
                                     readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
-                                    value="{{data.email}}"
-                                    on-focus="_resetFieldError"
-                                    on-tap="_resetFieldError"
                                     invalid$="{{errors.email}}"
                                     error-message="{{errors.email}}"
-                                    placeholder="[[getPlaceholderText('email', basePermissionPath)]]">
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError">
                                 <iron-icon prefix icon="communication:email"></iron-icon>
                             </paper-input>
                             <paper-tooltip offset="0">[[data.email]]</paper-tooltip>

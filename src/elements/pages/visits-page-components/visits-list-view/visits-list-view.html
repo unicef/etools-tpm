@@ -1,7 +1,7 @@
-<!--import [polymer]-->
+<!--import [polymer, app-route/app-location]-->
 <!--import [module-styles, page-layout-styles, shared-styles, list-tab-main, static-data-behavior, search-and-filter,
             dialog-element, create-visit, visits-list-data, pages-header-element, permission-controller, user-controller,
-            tab-inputs-styles, etools-app-config, common-methods-behavior, app-route/app-location, last-created-behavior]-->
+            tab-inputs-styles, etools-app-config, common-methods-behavior, last-created-behavior]-->
 
 <dom-module id="visits-list-view">
     <template>
@@ -63,16 +63,15 @@
                 request-in-process="[[requestInProcess]]"
                 dialog-title="Add new Visit"
                 confirm-btn-text="Add">
-
             <div class="row-h repeatable-item-container" without-line>
                 <!-- TPM Vendor -->
                 <etools-searchable-multiselection-menu
                         id="partnerInput"
-                        options="[[partnerOrganisations]]"
                         class="disabled-as-readonly validate-input required"
                         value="{{partnerOrganisation}}"
                         label="[[getLabel('tpm_partner', 'new_visit')]]"
                         placeholder="[[getPlaceholderText('tpm_partner', 'new_visit')]]"
+                        options="[[partnerOrganisations]]"
                         custom-object-options
                         option-value="id"
                         option-label="name"
