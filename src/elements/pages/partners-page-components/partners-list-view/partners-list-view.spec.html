@@ -394,6 +394,24 @@
             });
         });
 
+        describe('method reloadPartnersList()', function () {
+            it('sets requestQueries.reload to true if updateData is defined', function () {
+                myEl.requestQueries = {};
+                myEl.updateData = {};
+                assert.isUndefined(myEl.requestQueries.reload);
+                myEl.reloadPartnersList();
+                assert.isTrue(myEl.requestQueries.reload);
+            });
+
+            it('not sets requestQueries.reload if updateData is null', function () {
+                myEl.requestQueries = {};
+                myEl.updateData = null;
+                assert.isUndefined(myEl.requestQueries.reload);
+                myEl.reloadPartnersList();
+                assert.isUndefined(myEl.requestQueries.reload);
+            });
+        });
+
         describe('method openVendorDetails()', function () {
             it('redirects to the Vendor Details page', function () {
                 let id = 1;
