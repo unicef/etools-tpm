@@ -81,6 +81,7 @@
                                          readonly$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
                                          on-focus="_resetFieldError"
                                          on-tap="_resetFieldError"
+                                         on-keyup="vendorNumberKeyEvent"
                                          on-blur="_requestVendor">
                             </paper-input>
                             <etools-loading active="{{vendorRequestInProcess}}" no-overlay loading-text="" class="po-loading"></etools-loading>

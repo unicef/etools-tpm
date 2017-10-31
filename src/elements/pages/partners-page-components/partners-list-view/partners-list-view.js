@@ -99,6 +99,13 @@
             return vendorNumberValid && phoneInputValid && emailInputValid;
         },
 
+        vendorNumberKeyEvent: function(event) {
+            let vendorNumber = this.get('data.vendor_number') || '';
+            if (event.keyCode === 13 || vendorNumber.length === 10) {
+                this._requestVendor(event);
+            }
+        },
+
         _requestVendor: function(event) {
             if (this.vendorRequestInProcess) { return false; }
 
