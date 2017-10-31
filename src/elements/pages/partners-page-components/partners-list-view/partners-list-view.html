@@ -51,6 +51,13 @@
                 page-title="Third Party Monitors">
         </pages-header-element>
 
+        <search-and-filter
+                id="filters"
+                search-label="Search Vendor # or TPM"
+                query-params="{{queryParams}}"
+                search-params="[[searchParams]]">
+        </search-and-filter>
+
         <list-tab-main
                 header-title="results to show"
                 data="[[partnersList]]"

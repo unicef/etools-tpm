@@ -28,8 +28,9 @@
                 requestQueries: {
                     type: Object
                 },
-                lastOrder: {
-                    type: String
+                lastState: {
+                    type: Object,
+                    value: {}
                 },
                 listLength: {
                     type: Number,
@@ -42,7 +43,7 @@
             ],
 
             _partnersLoaded: function(e, detail) {
-                if (!detail) {
+                if (!detail || !detail.results || detail.count === undefined) {
                     this._responseError(e, detail);
                     return;
                 }
@@ -55,10 +56,9 @@
             },
 
             getPartnersList: function() {
-                let newOrder = this.requestQueries && this.requestQueries.ordering;
-                let reloadRequired = !this.lastOrder || (newOrder !== this.lastOrder) || this.requestQueries.reload;
+                let reloadRequired = this.reloadRequired() || this.requestQueries.reload;
 
-                this.lastOrder = newOrder;
+                this.lastState = _.cloneDeep(this.requestQueries);
 
                 if (!reloadRequired) {
                     //not reload the page
@@ -74,7 +74,23 @@
                     endpoint.url += `&reload=${new Date().getTime()}`;
                 }
 
+                endpoint.url = endpoint.url.replace(/[&?]{1}/, '?');
                 this.endpoint = endpoint;
+            },
+
+            reloadRequired: function () {
+                let lastKeys = _.keys(this.lastState);
+                let requestQueriesKeys = _.keys(this.requestQueries);
+                let queriesKeys = lastKeys.concat(requestQueriesKeys);
+
+                queriesKeys = _.uniq(queriesKeys);
+                _.pull(queriesKeys, 'reload');
+
+                return queriesKeys.some((key) => {
+                    let lastValue = this.lastState[key];
+                    let newValue = this.requestQueries[key];
+                    return lastValue !== newValue;
+                });
             },
 
             _responseError: function(e, detail) {
@@ -82,8 +98,15 @@
                     detail.request.detail.request && detail.request.detail.request.xhr;
                 let {status, response} = responseData || {};
 
+                //wrong page in queries
+                if (status === 404 && this.requestQueries.page !== '1') {
+                    this.updateQueries({page: '1'});
+                    return;
+                }
+
                 this.updateQueries({reload: false});
                 this.fire('global-loading', {type: 'partners-list'});
+                this.fire('toast', {text: 'Page not found.'});
             },
         });
     </script>
