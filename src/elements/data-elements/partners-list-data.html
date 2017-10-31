@@ -30,7 +30,11 @@
                 },
                 lastOrder: {
                     type: String
-                }
+                },
+                listLength: {
+                    type: Number,
+                    notify: true
+                },
             },
 
             observers: [
@@ -44,7 +48,9 @@
                 }
 
                 this._setPartnersList(detail.results);
+                this.listLength = detail.count;
                 this.updateQueries({reload: false});
+
                 this.fire('global-loading', {type: 'partners-list'});
             },
 
