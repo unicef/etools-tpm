@@ -10,12 +10,13 @@
         @apply(--layout-horizontal);
         @apply(--layout-center);
 
-        background-color: var(--module-sec-blue);
+        background-color: #6AB600;
         color: white;
         border-bottom: 1px solid var(--dark-divider-color);
         height: 59px;
         padding: 0;
-        font-size: 16px;
+        font-size: 14px;
+        line-height: 18px;
         text-transform: uppercase;
 
         iron-icon {
