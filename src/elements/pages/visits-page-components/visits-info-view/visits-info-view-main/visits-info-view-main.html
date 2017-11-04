@@ -244,7 +244,7 @@
                     base-permission-path="[[permissionBase]]">
             </list-header>
 
-            <template is="dom-repeat" items="[[visit.tpm_activities]]">
+            <template is="dom-repeat" items="[[visit.tpm_activities]]" filter="_isApplicable">
                 <list-element
                         class="list-element"
                         data="[[item]]"

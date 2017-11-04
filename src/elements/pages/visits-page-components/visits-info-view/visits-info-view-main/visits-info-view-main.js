@@ -390,6 +390,10 @@ Polymer({
         });
     },
 
+    _isApplicable: function(item) {
+        return item && item.pv_applicable;
+    },
+
     _setLetterLink: function(visit) {
         let statuses = ['draft', 'assigned', 'cancelled'];
         if (!visit || !this.isTpmUser() || !!~statuses.indexOf(visit.status)) { return; }
