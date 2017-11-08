@@ -78,28 +78,27 @@
                     <paper-tooltip offset="0">[[_getTitleValue(partner.email)]]</paper-tooltip>
                 </div>
 
-                <paper-input
-                        class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
-                        value="{{partner.phone_number}}"
-                        allowed-pattern="[\d\s-+()]"
-                        label="{{getLabel('phone_number', basePermissionPath)}}"
-                        placeholder="{{getPlaceholderText('phone_number', basePermissionPath)}}"
-                        required$="[[_setRequired('phone_number', basePermissionPath)]]"
-                        disabled$="[[isReadOnly('phone_number', basePermissionPath)]]"
-                        maxlength="{{getMaxLength('phone_number', basePermissionPath)}}"
-                        invalid="{{_checkInvalid(errors.user.profile.phone_number)}}"
-                        error-message="{{errors.user.profile.phone_number}}"
-                        on-focus="_resetFieldError"
-                        on-tap="_resetFieldError">
-                    <iron-icon
-                            hidden="{{!_showPrefix('phone_number', basePermissionPath, partner.phone_number)}}"
-                            prefix
-                            icon="communication:phone">
-                    </iron-icon>
-                </paper-input>
-
                 <div class="input-container">
                     <!-- Telephone number -->
+                    <paper-input
+                            class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
+                            value="{{partner.phone_number}}"
+                            allowed-pattern="[\d\s-+()]"
+                            label="{{getLabel('phone_number', basePermissionPath)}}"
+                            placeholder="{{getPlaceholderText('phone_number', basePermissionPath)}}"
+                            required$="[[_setRequired('phone_number', basePermissionPath)]]"
+                            disabled$="[[isReadOnly('phone_number', basePermissionPath)]]"
+                            maxlength="{{getMaxLength('phone_number', basePermissionPath)}}"
+                            invalid="{{_checkInvalid(errors.user.profile.phone_number)}}"
+                            error-message="{{errors.user.profile.phone_number}}"
+                            on-focus="_resetFieldError"
+                            on-tap="_resetFieldError">
+                        <iron-icon
+                                hidden="{{!_showPrefix('phone_number', basePermissionPath, partner.phone_number)}}"
+                                prefix
+                                icon="communication:phone">
+                        </iron-icon>
+                    </paper-input>
                     <paper-tooltip offset="0">[[_getTitleValue(partner.phone_number)]]</paper-tooltip>
                 </div>
             </div>

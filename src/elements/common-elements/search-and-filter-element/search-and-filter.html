@@ -44,21 +44,23 @@
             </div>
 
             <!-- ADD FILTERS -->
-            <div id="add-filter-container">
-                <paper-menu-button horizontal-align="right" vertical-align="top" no-overlap>
-                    <paper-button class="dropdown-trigger">
-                        <iron-icon icon="filter-list" class="filter-list-icon"></iron-icon>
+            <template is="dom-if" if="[[filters.length]]">
+                <div id="add-filter-container">
+                    <paper-menu-button horizontal-align="right" vertical-align="top" no-overlap>
+                        <paper-button class="dropdown-trigger">
+                            <iron-icon icon="filter-list" class="filter-list-icon"></iron-icon>
 
-                        <span class="add-filter-text">ADD FILTER</span>
-                    </paper-button>
+                            <span class="add-filter-text">ADD FILTER</span>
+                        </paper-button>
 
-                    <paper-menu class="dropdown-content">
-                        <template is="dom-repeat" items="[[availableFilters]]">
-                            <paper-item on-click="addFilter"><span class="add-filter--item-name">[[item.name]]</span></paper-item>
-                        </template>
-                    </paper-menu>
-                </paper-menu-button>
-            </div>
+                        <paper-menu class="dropdown-content">
+                            <template is="dom-repeat" items="[[availableFilters]]">
+                                <paper-item on-click="addFilter"><span class="add-filter--item-name">[[item.name]]</span></paper-item>
+                            </template>
+                        </paper-menu>
+                    </paper-menu-button>
+                </div>
+            </template>
         </paper-card>
     </template>
 

@@ -15,9 +15,21 @@ Polymer({
             notify: true,
             observer: '_queryParamsChanged'
         },
+        initiation: {
+            type: Number,
+            value: 0
+        },
         withoutPagination: {
             type: Boolean,
             value: true
+        },
+        visitDetails: Object,
+        originalData: {
+            type: Object,
+            readOnly: true,
+            value: function() {
+                return {};
+            }
         }
     },
 
@@ -32,17 +44,16 @@ Polymer({
         }
 
         if (view === 'list' && !this.isTpmUser()) {
-            let queries = this._configListParams();
+            let queries = this._configListParams(this.initiation++);
             this._setPartnersListQueries(queries);
             this.view = 'list';
+        } else if (!isNaN(+view)) {
+            this.clearQueries();
+            this.partnerId = +view;
         } else if (view === '' || _.isUndefined(view)) {
             this.set('route.path', '/list');
-        } else if (!isNaN(+view)) {
-            this.debounce('clearSearchQueries', () => {
-                this.clearQueries();
-            }, 100);
-            this.partnerId = +view;
         }  else {
+            this.clearQueries();
             this.fire('404');
         }
 
@@ -56,22 +67,24 @@ Polymer({
         if (this.lastView) { this.lastView = null; }
     },
 
-    _configListParams: function() {
+    _configListParams: function(noNotify) {
         let queriesUpdates = {},
             queries = this.parseQueries();
 
         if (!queries.page_size) { queriesUpdates.page_size = '10'; }
         if (!queries.ordering) { queriesUpdates.ordering = 'vendor_number'; }
+        if (!queries.page) { queriesUpdates.page = '1'; }
 
-        if (!this.lastParams) {
-            this.lastParams = _.clone(queries);
-        } else if (!_.isEqual(this.lastParams, queries)) {
+        let page = +queries.page;
+        if (isNaN(page) || (this.lastParams && (queries.page_size !== this.lastParams.page_size || queries.ordering !== this.lastParams.ordering))) {
+            queriesUpdates.page = '1';
+        }
+
+        if (!this.lastParams || !_.isEqual(this.lastParams, queries)) {
             this.lastParams = _.clone(queries);
         }
 
-        this.debounce('updateSearchQueries', () => {
-            this.updateQueries(queriesUpdates, null);
-        }, 100);
+        this.updateQueries(queriesUpdates, null, noNotify);
         return this.parseQueries();
     },
 
@@ -81,9 +94,7 @@ Polymer({
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
-            this.debounce('clearSearchQueries', () => {
-                this.clearQueries();
-            }, 100);
+            this.clearQueries();
         }
     },
 
