@@ -97,11 +97,13 @@ Polymer({
             value: 'Are you sure that you want to delete this Action Point?'
         },
     },
+
     observers: [
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject)',
         'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
     ],
+
     listeners: {
         'dialog-confirmed': '_addItemFromDialog',
         'delete-confirmed': 'removeItem',
@@ -115,10 +117,12 @@ Polymer({
             };
         });
     },
+
     getStatusDisplayName: function(value) {
         let status = _.find(this.statuses, ['value', value]);
         return status ? status.display_name : '–';
     },
+
     getCurrentData: function() {
         if (!this.dialogOpened) { return null; }
         let originalEditedObj = this.addDialog ? {} : this.originalEditedObj;

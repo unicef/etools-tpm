@@ -87,6 +87,13 @@
                 type: Array,
                 value: [
                     {
+                        name: 'TPM Name',
+                        query: 'tpm_partner',
+                        optionValue: 'id',
+                        optionLabel: 'name',
+                        selection: []
+                    },
+                    {
                         name: 'Implementing Partner',
                         query: 'tpm_activities__implementing_partner',
                         optionValue: 'id',
@@ -147,7 +154,10 @@
             }
 
             if (isTpmUser) {
-                //remove IP, section and CP outputs filters
+                //remove TPM Name, IP, section and CP outputs filters
+                let tpmFilterIndex = this._getFilterIndex('tpm_partner');
+                this.filters.splice(tpmFilterIndex, 1);
+
                 let partnerFilterIndex = this._getFilterIndex('tpm_activities__implementing_partner');
                 this.filters.splice(partnerFilterIndex, 1);
 
@@ -177,10 +187,15 @@
         },
 
         setFiltersSelections: function() {
+            let tpmFilterIndex = this._getFilterIndex('tpm_partner');
             let partnerFilterIndex = this._getFilterIndex('tpm_activities__implementing_partner');
             let statusFilterIndex = this._getFilterIndex('status');
             let sectionFilterIndex = this._getFilterIndex('sections');
             let cpFilterIndex = this._getFilterIndex('tpm_activities__cp_output');
+
+            if (tpmFilterIndex !== -1) {
+                this.set(`filters.${tpmFilterIndex}.selection`, this.getData('tpmPartners') || []);
+            }
 
             if (partnerFilterIndex !== -1) {
                 this.set(`filters.${partnerFilterIndex}.selection`, this.getData('partnerOrganisations') || []);
@@ -223,8 +238,12 @@
 
         addNewVisit: function() {
             if (!this.$.partnerInput.validate()) { return; }
-            this.requestInProcess = true;
-            this.newPartnerId = this.partnerOrganisation.id;
+            let newPartnerId = this.get('partnerOrganisation.id');
+
+            if (newPartnerId || newPartnerId === 0) {
+                this.newPartnerId = newPartnerId;
+                this.requestInProcess = true;
+            }
         },
 
         visitCreated: function(event, details) {

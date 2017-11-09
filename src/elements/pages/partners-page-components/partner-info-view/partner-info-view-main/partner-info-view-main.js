@@ -153,5 +153,4 @@ Polymer({
             url: this.getEndpoint('partnerExport', {id: partner.id}).url
         }];
     }
-
 });

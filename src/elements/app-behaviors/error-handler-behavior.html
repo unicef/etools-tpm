@@ -30,11 +30,9 @@
                 let errors = this.refactorErrorObject(errorObj) || {};
                 if (_.isEmpty(errors)) { return null; }
                 let activityError = errors.tpm_activities && errors.tpm_activities[0];
-                if (activityError && activityError.report_attachments) {
+                if (activityError && activityError.report_attachments || errors.report_attachments) {
                     return 'report';
-                } else if (activityError && activityError.attachments ||
-                            errors.report_attachments ||
-                            errors.attachments) {
+                } else if (activityError && activityError.attachments || errors.attachments) {
                     return 'attachments';
                 } else if (errors.action_points) {
                     return 'action-points';

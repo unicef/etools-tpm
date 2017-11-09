@@ -1,5 +1,6 @@
 <!--import [polymer, iron-icons, iron-icons/av-icons, iron-flex-layout, paper-button,
-            etools-content-panel, static-data-behavior, action-buttons]-->
+            etools-content-panel]-->
+<!--import [static-data-behavior, action-buttons]-->
 
 <dom-module id="visit-status">
     <template>
@@ -7,41 +8,37 @@
         <style include="module-styles"></style>
 
         <etools-content-panel panel-title="Status">
-
             <div class="status-list" id="statusList">
-
                 <template is="dom-repeat" items="{{statuses}}" as="status">
-
                     <div hidden$="[[hideStatus(visit.status, status.value)]]">
                         <div class$="status-container [[_getStatusClass(visit, status.value, statuses)]]">
                             <div class="status-icon">
-                            <span class="icon-wrapper">
-                                <span class="status-nr">[[setIndex(status.value, visit.status, statusesIndex)]]</span>
-                                <iron-icon icon="check"></iron-icon>
-                                <iron-icon icon="cancel"></iron-icon>
-                            </span>
+                                <span class="icon-wrapper">
+                                    <span class="status-nr">[[setIndex(status.value, visit.status, statusesIndex)]]</span>
+                                    <iron-icon icon="check"></iron-icon>
+                                    <iron-icon icon="cancel"></iron-icon>
+                                </span>
                             </div>
+
                             <div class="status">
                                 <span class="status-header">[[status.display_name]]</span>
                                 <span class="status-date">
                                 <!--{{_getFormattedDate('partner_contacted_at', engagementData.partner_contacted_at)}}-->
-                            </span>
+                                </span>
                             </div>
                         </div>
 
-                        <div class="divider" hidden$="[[hideDivider(status.value, statuses)]]"><div class="status-divider"></div></div>
+                        <div class="divider" hidden$="[[hideDivider(status.value, statuses)]]">
+                            <div class="status-divider"></div>
+                        </div>
                     </div>
-
                 </template>
             </div>
 
             <div class="actions" hidden$="[[noActionsAllowed(permissionBase)]]">
                 <action-buttons actions="[[getActions(permissionBase)]]"></action-buttons>
             </div>
-
-
         </etools-content-panel>
-
     </template>
 
     <!-- inject scripts './visit-status.js'-->

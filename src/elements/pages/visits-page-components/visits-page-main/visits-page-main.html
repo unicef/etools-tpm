@@ -1,7 +1,6 @@
-<!--import [polymer, iron-pages, app-route, etools-app-config]-->
-
+<!--import [polymer, iron-pages, app-route, etools-app-config, lodash]-->
 <!--import [page-layout-styles, shared-styles,  module-styles, visit-info-data,
-            visits-list-view, visits-info-view-main, query-params-controller, lodash]-->
+            visits-list-view, visits-info-view-main, query-params-controller]-->
 
 <dom-module id="visits-page-main">
     <template>
@@ -14,24 +13,29 @@
                 tail="{{subroute}}">
         </app-route>
 
-        <visit-info-data visit-details="{{visitDetails}}"
-                         visit-id="{{visitId}}"
-                         view="{{view}}"></visit-info-data>
+        <visit-info-data
+                visit-details="{{visitDetails}}"
+                visit-id="{{visitId}}"
+                view="{{view}}">
+        </visit-info-data>
 
-        <iron-pages id="categoryPages"
-                    selected="{{view}}"
-                    attr-for-selected="name"
-                    role="main">
+        <iron-pages
+                id="categoryPages"
+                selected="{{view}}"
+                attr-for-selected="name"
+                role="main">
+            <visits-list-view
+                    name="list"
+                    query-params="{{queryParams}}"
+                    request-queries="[[visitsListQueries]]">
+            </visits-list-view>
 
-            <visits-list-view name="list"
-                              query-params="{{queryParams}}"
-                              request-queries="[[visitsListQueries]]"></visits-list-view>
-
-            <visits-info-view-main name="visit"
-                                   visit="{{visitDetails}}"
-                                   original-data="[[originalData]]"
-                                   route="{{subroute}}"></visits-info-view-main>
-
+            <visits-info-view-main
+                    name="visit"
+                    visit="{{visitDetails}}"
+                    original-data="[[originalData]]"
+                    route="{{subroute}}">
+            </visits-info-view-main>
         </iron-pages>
     </template>
 

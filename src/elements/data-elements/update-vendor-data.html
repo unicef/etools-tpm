@@ -1,21 +1,19 @@
-<!--import [polymer, etools-ajax, etools-app-config, lodash, last-created-behavior]-->
+<!--import [polymer, etools-ajax, lodash]-->
+<!--import [etools-app-config, last-created-behavior]-->
 
 <dom-module id="update-vendor-data">
-
     <template>
-
-        <etools-ajax method="PATCH"
-                     url="{{url}}"
-                     body="{{postData}}"
-                     on-success="_handleResponse"
-                     on-fail="_handleError"></etools-ajax>
-
+        <etools-ajax
+                method="PATCH"
+                url="{{url}}"
+                body="{{postData}}"
+                on-success="_handleResponse"
+                on-fail="_handleError">
+        </etools-ajax>
     </template>
 
     <script>
-
         Polymer({
-
             is: 'update-vendor-data',
 
             behaviors: [
@@ -75,9 +73,6 @@
                 this.set('errors', response);
                 this.fire('vendor-updated', {success: false});
             }
-
         });
-
     </script>
-
 </dom-module>

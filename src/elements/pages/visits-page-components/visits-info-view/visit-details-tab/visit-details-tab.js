@@ -31,7 +31,9 @@ Polymer({
         }
     },
 
-    observers: ['_errorHandler(errorObject)'],
+    observers: [
+        '_errorHandler(errorObject)'
+    ],
 
     ready: function() {
         this.officesList = this.getData('offices');

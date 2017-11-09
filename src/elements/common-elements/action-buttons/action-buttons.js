@@ -1,7 +1,6 @@
 'use strict';
 
 Polymer({
-
     is: 'action-buttons',
 
     properties: {
@@ -80,5 +79,4 @@ Polymer({
     _setActionCode: function(item) {
         return item && (item.code || item);
     }
-
 });

@@ -1,5 +1,4 @@
 Polymer({
-
     is: 'user-dropdown',
 
     behaviors: [
@@ -32,13 +31,8 @@ Polymer({
         window.location.href = window.location.origin + '/' + path + '/';
     },
 
-    _navigateToAdminPage: function() {
-        this._changeLocation('admin');
-    },
-
     _logout: function() {
         this.resetOldUserData();
         this._changeLocation('accounts/logout');
     }
-
 });

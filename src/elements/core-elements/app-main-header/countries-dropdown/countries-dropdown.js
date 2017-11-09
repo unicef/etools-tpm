@@ -1,5 +1,4 @@
 Polymer({
-
     is: 'countries-dropdown',
 
     behaviors: [
@@ -75,5 +74,4 @@ Polymer({
     _showDropdown: function(countries) {
         this.hidden = !countries.length;
     }
-
 });

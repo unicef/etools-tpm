@@ -20,15 +20,15 @@
       }
 
       :host(.iron-selected) #main {
-        background-color: #e8e8e8;
+        background-color: #eeeeee;
       }
 
       :host(.iron-selected) #main:active {
-        background-color: var(--dark-divider-color);
+        background-color: #eeeeee;
       }
 
       :host(.iron-selected:not([nested-nav])) #main > * {
-        color: var(--module-sec-blue);
+        color: #6AB600;
       }
 
       :host(.lighter-item:not([nested-nav])) #main > * {
@@ -93,13 +93,10 @@
       </div>
     </iron-collapse>
     <paper-tooltip offset="-10" position="right">[[name]]</paper-tooltip>
-
   </template>
 
   <script>
-
     Polymer({
-
       is: 'side-bar-item',
 
       properties: {
@@ -117,9 +114,6 @@
         if (this.external) { return '_blank'; }
         return '_self'
       }
-
     });
-
   </script>
-
 </dom-module>

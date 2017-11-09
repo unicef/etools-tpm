@@ -1,5 +1,4 @@
 Polymer({
-
     is: 'app-shell',
 
     behaviors: [
@@ -14,23 +13,19 @@ Polymer({
             type: Boolean,
             value: true
         },
-
         page: {
             type: String,
             reflectToAttribute: true,
             observer: '_pageChanged'
         },
-
         narrow: {
             type: Boolean,
             reflectToAttribute: true
         },
-
         _toast: {
             type: Object,
             value: null
         },
-
         _toastQueue: {
             type: Array,
             value: function() {
@@ -159,5 +154,4 @@ Polymer({
         this.set('route.path', `${this.basePath}${path}`);
         return 'partners';
     }
-
 });

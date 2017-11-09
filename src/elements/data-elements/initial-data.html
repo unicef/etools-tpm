@@ -1,9 +1,8 @@
-<!--import [polymer, etools-ajax, static-data-behavior, user-controller, user-data]-->
+<!--import [polymer, etools-ajax]-->
+<!--import [static-data-behavior, user-controller, user-data]-->
 
 <dom-module id="initial-data">
-
     <template>
-
         <user-data user="{{user}}"></user-data>
 
         <!--tpm partners-->
@@ -14,42 +13,56 @@
                 on-fail="_partnersError">
         </etools-ajax>
 
-        <etools-ajax method="OPTIONS"
-                     url="[[partnersOptionsUrl]]"
-                     on-success="_handlePartnersOptions"
-                     on-fail="_handlePartnersOptions"></etools-ajax>
+        <etools-ajax
+                method="OPTIONS"
+                url="[[partnersOptionsUrl]]"
+                on-success="_handlePartnersOptions"
+                on-fail="_handlePartnersOptions">
+        </etools-ajax>
 
-        <etools-ajax method="OPTIONS"
-                     url="[[visitsOptionsUrl]]"
-                     on-success="_handleVisitsOptions"
-                     on-fail="_handleVisitsOptions"></etools-ajax>
+        <etools-ajax
+                method="OPTIONS"
+                url="[[visitsOptionsUrl]]"
+                on-success="_handleVisitsOptions"
+                on-fail="_handleVisitsOptions">
+        </etools-ajax>
 
         <!--partner organisations-->
-        <etools-ajax endpoint="[[organisationsEndpoint]]"
-                     caching-storage="custom"
-                     dexie-db-collection="partners"
-                     on-success="_organisationsLoaded"
-                     on-fail="_organisationsError"></etools-ajax>
+        <etools-ajax
+                endpoint="[[organisationsEndpoint]]"
+                caching-storage="custom"
+                dexie-db-collection="partners"
+                on-success="_organisationsLoaded"
+                on-fail="_organisationsError">
+        </etools-ajax>
 
         <!--pp/sfa Outputs-->
-        <etools-ajax url="[[outputsEndpoint]]"
-                     on-success="_outputsLoaded"
-                     on-fail="_outputsError"></etools-ajax>
+        <etools-ajax
+                url="[[outputsEndpoint]]"
+                on-success="_outputsLoaded"
+                on-fail="_outputsError">
+        </etools-ajax>
 
         <!--Sections Covered-->
-        <etools-ajax url="[[sectionsEndpoint]]"
-                     on-success="_sectionsLoaded"
-                     on-fail="_sectionsError"></etools-ajax>
+        <etools-ajax
+                url="[[sectionsEndpoint]]"
+                on-success="_sectionsLoaded"
+                on-fail="_sectionsError">
+        </etools-ajax>
 
         <!--Unicef Users-->
-        <etools-ajax url="[[unicefUsersEndpoint]]"
-                     on-success="_unicefUsersLoaded"
-                     on-fail="_unicefUsersError"></etools-ajax>
+        <etools-ajax
+                url="[[unicefUsersEndpoint]]"
+                on-success="_unicefUsersLoaded"
+                on-fail="_unicefUsersError">
+        </etools-ajax>
 
         <!--Offices-->
-        <etools-ajax url="[[officesEndpoint]]"
-                     on-success="_officesLoaded"
-                     on-fail="_officesError"></etools-ajax>
+        <etools-ajax
+                url="[[officesEndpoint]]"
+                on-success="_officesLoaded"
+                on-fail="_officesError">
+        </etools-ajax>
 
         <!--Locations-->
         <etools-ajax
@@ -62,15 +75,14 @@
     </template>
 
     <script>
-
         (function() {
             'use strict';
 
             let dataLoaded = {};
 
             Polymer({
-
                 is: 'initial-data',
+
                 behaviors: [
                     etoolsAppConfig.globals,
                     TPMBehaviors.UserController,
@@ -271,11 +283,7 @@
                     console.error(`Can not load initial data${request ? ': ' + request : ''}`);
                     this.fire('initial-data-loaded');
                 }
-
             });
-
         })();
-
     </script>
-
 </dom-module>

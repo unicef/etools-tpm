@@ -1,8 +1,9 @@
-<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea, iron-icons, paper-button, paper-checkbox]-->
-<!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status, update-visit-details-data, action-points,
-            permission-controller, textarea-max-rows-behavior, tab-inputs-styles, visit-activity-tab, visit-details-tab,
-            file-attachments-tab, assign-attachments, static-data-behavior, common-methods-behavior, list-header, etools-app-config,
-            list-element, router-behavior]-->
+<!--import [polymer, app-route, app-layout, paper-tabs, iron-pages, etools-content-panel, paper-input/paper-textarea,
+            iron-icons, paper-button, paper-checkbox]-->
+<!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status,
+            update-visit-details-data, action-points, permission-controller, textarea-max-rows-behavior,
+            tab-inputs-styles, visit-activity-tab, visit-details-tab, file-attachments-tab, assign-attachments,
+            static-data-behavior, common-methods-behavior, list-header, etools-app-config, list-element, router-behavior]-->
 
 
 <dom-module id="visits-info-view-main">
@@ -11,15 +12,21 @@
         <app-route
                 route="{{route}}"
                 pattern="/:tab"
-                data="{{routeData}}"></app-route>
+                data="{{routeData}}">
+        </app-route>
 
-        <update-visit-details-data visit="{{visit}}"
-                                   new-visit-details="[[newVisitDetails]]"
-                                   error-object="{{errorObject}}"
-                                   base-permission-path="{{permissionBase}}"></update-visit-details-data>
+        <update-visit-details-data
+                visit="{{visit}}"
+                new-visit-details="[[newVisitDetails]]"
+                error-object="{{errorObject}}"
+                base-permission-path="{{permissionBase}}">
+        </update-visit-details-data>
 
-        <pages-header-element download-letter-url="[[_setLetterLink(visit)]]"
-                              page-title="[[setVisitTitle(visit.reference_number)]]"></pages-header-element>
+        <pages-header-element
+                download-letter-url="[[_setLetterLink(visit)]]"
+                page-title="[[setVisitTitle(visit.reference_number)]]">
+        </pages-header-element>
+
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                 <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
@@ -38,7 +45,6 @@
 
         <div class="view-container">
             <div id="pageContent">
-
                 <template is="dom-if" if="{{_showRejectionReason(visit)}}">
                     <etools-content-panel class="cancellation-tab" panel-title="">
                         <div class="group">
@@ -65,13 +71,17 @@
                                 <div class="cancellation-title">REQUEST FOR MORE INFORMATION</div>
                                 <div class="cancellation-text">[[comments.0.reject_reason]]</div>
 
-                                <paper-button on-tap="openCommentsDialog" hidden$="[[!showOldComments(comments)]]">View more Comments</paper-button>
+                                <paper-button
+                                        on-tap="openCommentsDialog"
+                                        hidden$="[[!showOldComments(comments)]]">View more Comments
+                                </paper-button>
                             </div>
                         </etools-content-panel>
 
-                        <dialog-element opened="{{commentsDialogOpened}}"
-                                        dialog-title="Comments"
-                                        hide-confirm-btn>
+                        <dialog-element
+                                opened="{{commentsDialogOpened}}"
+                                dialog-title="Comments"
+                                hide-confirm-btn>
                             <div class="messages-block first">
                                 <div class="block-title">Last Comment</div>
                                 <div class="comment-block">
@@ -93,22 +103,21 @@
                                     </template>
                                 </div>
                             </template>
-
                         </dialog-element>
                     </div>
                 </template>
 
-                <iron-pages id="info-tabs"
-                            selected="{{routeData.tab}}"
-                            attr-for-selected="name">
-
+                <iron-pages
+                        id="info-tabs"
+                        selected="{{routeData.tab}}"
+                        attr-for-selected="name">
                     <div name="details">
-                       <visit-details-tab id="visitDetails"
-                                          error-object="{{errorObject}}"
-                                          visit="[[visit]]"
-                                          original-data="[[originalData]]"
-                                          permission-base="[[permissionBase]]"></visit-details-tab>
-
+                       <visit-details-tab
+                               id="visitDetails"
+                               error-object="{{errorObject}}"
+                               visit="[[visit]]"
+                               original-data="[[originalData]]"
+                               permission-base="[[permissionBase]]"></visit-details-tab>
                         <visit-activity-tab
                                 id="visitActivity"
                                 error-object="{{errorObject}}"
@@ -185,22 +194,24 @@
             </div>
         </div>
 
-        <dialog-element opened="{{dialogOpened}}"
-                        dialog-title="{{dialogTitle}}"
-                        delete-dialog="{{isDeleteDialog}}"
-                        confirm-btn-text="{{rejectConfirm}}">
+        <dialog-element
+                opened="{{dialogOpened}}"
+                dialog-title="{{dialogTitle}}"
+                delete-dialog="{{isDeleteDialog}}"
+                confirm-btn-text="{{rejectConfirm}}">
             <div class="row-h repeatable-item-container" without-line>
                 <div class="row-h group">
                     <div class="input-container input-container-l">
-                        <paper-textarea label="[[getLabel('report_reject_comments.reject_reason', permissionBase)]]"
-                                        max-rows="4"
-                                        required
-                                        error-message="This field is required."
-                                        id="rejectionReasonInput"
-                                        class="required"
-                                        on-focus="_resetFieldError"
-                                        on-tap="_resetFieldError"
-                                        placeholder="[[getPlaceholderText('report_reject_comments.reject_reason', permissionBase)]]">
+                        <paper-textarea
+                                id="rejectionReasonInput"
+                                class="required"
+                                label="[[getLabel('report_reject_comments.reject_reason', permissionBase)]]"
+                                placeholder="[[getPlaceholderText('report_reject_comments.reject_reason', permissionBase)]]"
+                                required
+                                max-rows="4"
+                                error-message="This field is required."
+                                on-focus="_resetFieldError"
+                                on-tap="_resetFieldError">
                         </paper-textarea>
                     </div>
                 </div>
@@ -218,14 +229,13 @@
                     </template>
                 </div>
             </template>
-
         </dialog-element>
 
-        <dialog-element opened="{{approvalDialog}}"
-                        approve-popup
-                        dialog-title="Approve Report"
-                        confirm-btn-text="Approve">
-
+        <dialog-element
+                opened="{{approvalDialog}}"
+                approve-popup
+                dialog-title="Approve Report"
+                confirm-btn-text="Approve">
             <list-header
                     id="list-header"
                     no-additional
@@ -234,7 +244,7 @@
                     base-permission-path="[[permissionBase]]">
             </list-header>
 
-            <template is="dom-repeat" items="[[visit.tpm_activities]]">
+            <template is="dom-repeat" items="[[visit.tpm_activities]]" filter="_isApplicable">
                 <list-element
                         class="list-element"
                         data="[[item]]"
@@ -253,13 +263,14 @@
             <div class="row-h repeatable-item-container" without-line>
                 <div class="row-h group">
                     <div class="input-container input-container-l">
-                        <paper-textarea label="[[getLabel('approval_comment', permissionBase)]]"
-                                        value="{{approvalComment}}"
-                                        max-rows="4"
-                                        id="approveComments"
-                                        on-focus="_resetFieldError"
-                                        on-tap="_resetFieldError"
-                                        placeholder="Enter [[getLabel('approval_comment', permissionBase)]]">
+                        <paper-textarea
+                                id="approveComments"
+                                value="{{approvalComment}}"
+                                label="[[getLabel('approval_comment', permissionBase)]]"
+                                placeholder="Enter [[getLabel('approval_comment', permissionBase)]]"
+                                max-rows="4"
+                                on-focus="_resetFieldError"
+                                on-tap="_resetFieldError">
                         </paper-textarea>
                     </div>
                 </div>
@@ -273,9 +284,7 @@
                     </div>
                 </div>
             </div>
-
         </dialog-element>
-
     </template>
 
     <!-- inject scripts './visits-info-view-main.js'-->

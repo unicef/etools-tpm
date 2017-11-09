@@ -218,6 +218,7 @@ Polymer({
         };
     },
     /* jshint ignore:end */
+
     validateVisit: function() {
         return true;
     },
@@ -389,6 +390,10 @@ Polymer({
         });
     },
 
+    _isApplicable: function(item) {
+        return item && item.pv_applicable;
+    },
+
     _setLetterLink: function(visit) {
         let statuses = ['draft', 'assigned', 'cancelled'];
         if (!visit || !this.isTpmUser() || !!~statuses.indexOf(visit.status)) { return; }
@@ -405,5 +410,4 @@ Polymer({
     setVisitTitle: function(number) {
         return number || 'Assign TPM Visit';
     }
-
 });

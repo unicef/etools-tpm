@@ -5,6 +5,7 @@
         <style>
             :host {
                 display: block;
+                overflow: auto;
                 position: relative;
                 bottom: 15px;
                 left: 15px;
@@ -30,7 +31,13 @@
                 opacity: 1;
             }
 
+            span {
+                float: left;
+                line-height: 41px;
+            }
+
             paper-button {
+                float: right;
                 color: #0099FF;
             }
         </style>
@@ -38,5 +45,6 @@
         <span>{{text}}</span>
         <paper-button on-tap="close">OK</paper-button>
     </template>
+
     <!--inject scripts './multi-notification-item.js'-->
 </dom-module>
