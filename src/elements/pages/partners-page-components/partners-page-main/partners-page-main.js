@@ -48,7 +48,9 @@ Polymer({
             this._setPartnersListQueries(queries);
             this.view = 'list';
         } else if (!isNaN(+view)) {
-            this.clearQueries();
+            this.debounce('clearSearchQueries', () => {
+                this.clearQueries();
+            });
             this.partnerId = +view;
         } else if (view === '' || _.isUndefined(view)) {
             this.set('route.path', '/list');
@@ -94,7 +96,9 @@ Polymer({
             let queries = this._configListParams();
             this._setPartnersListQueries(queries);
         } else if (!isNaN(+this.routeData.view)) {
-            this.clearQueries();
+            this.debounce('clearSearchQueries', () => {
+                this.clearQueries();
+            });
         }
     },
 
