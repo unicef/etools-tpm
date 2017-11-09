@@ -202,9 +202,7 @@ Polymer({
 
         let itemsInfo = [];
         let itemsHtml = [];
-        let count = 1;
-        let indexRequired = false;
-        let style = ' style="overflow: hidden; text-overflow: ellipsis;"';
+        let styleAttribute = 'style="overflow: hidden; text-overflow: ellipsis;"';
         let value;
 
         items.forEach((item) => {
@@ -214,10 +212,8 @@ Polymer({
             }
         });
 
-        indexRequired = itemsInfo.length > 1;
-
         itemsInfo.forEach((name) => {
-            value = indexRequired ? `<div ${style}>${count++}. ${name}</div>` : `<div ${style}>${name}</div>`;
+            value = `<div ${styleAttribute}>${name}</div>`;
             itemsHtml.push(value);
         });
 
