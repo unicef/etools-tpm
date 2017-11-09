@@ -33,6 +33,7 @@
                 if (lineHeightPx) {
                     let maxHeight = maxRows * lineHeightPx + 5;
                     textareaAutogrow.style.maxHeight = `${maxHeight}px`;
+                    textareaAutogrow.textarea.style.overflow = 'auto';
                 }
             });
         }
