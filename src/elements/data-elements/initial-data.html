@@ -36,11 +36,25 @@
                 on-fail="_organisationsError">
         </etools-ajax>
 
-        <!--pp/sfa Outputs-->
+        <!-- filter TP-->
         <etools-ajax
-                url="[[outputsEndpoint]]"
-                on-success="_outputsLoaded"
-                on-fail="_outputsError">
+                url="[[filterIPUrl]]"
+                on-success="_filterIPLoaded"
+                on-fail="_filterIPError">
+        </etools-ajax>
+
+        <!-- filter Sections-->
+        <etools-ajax
+                url="[[filterSectionsUrl]]"
+                on-success="_filterSectionsLoaded"
+                on-fail="_filterSectionsError">
+        </etools-ajax>
+
+        <!-- filter CP Outputs-->
+        <etools-ajax
+                url="[[filterCpOutputsUrl]]"
+                on-success="_filterOutputsLoaded"
+                on-fail="_filterOutputsError">
         </etools-ajax>
 
         <!--Sections Covered-->
@@ -106,11 +120,14 @@
                     if (!this.isTpmUser()) {
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
-                        this.outputsEndpoint = this.getEndpoint('cpOutputs').url;
                         this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
                         this.officesEndpoint = this.getEndpoint('offices').url;
                     }
+
+                    this.filterIPUrl = this.getEndpoint('filterIP').url;
+                    this.filterSectionsUrl = this.getEndpoint('filterSections').url;
+                    this.filterCpOutputsUrl = this.getEndpoint('filterCpOutputs').url;
 
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this.partnersUrl = this.getEndpoint('partnersList').url;
@@ -121,7 +138,8 @@
                 _allDataLoaded: function() {
                     let tpmUser = this.isTpmUser();
                     if (dataLoaded.visitsOptions && dataLoaded.partners &&
-                        (tpmUser || (dataLoaded.partnersOptions && dataLoaded.organizations && dataLoaded.outputs &&
+                        (tpmUser || (dataLoaded.partnersOptions && dataLoaded.organizations &&
+                        dataLoaded.filterIP && dataLoaded.filterSections && dataLoaded.filterCpOutputs &&
                         dataLoaded.sections && dataLoaded.unicefUsers && dataLoaded.offices))) {
                         this.fire('initial-data-loaded');
                     }
@@ -164,12 +182,33 @@
                     this._allDataLoaded();
                 },
 
-                _outputsLoaded: function(data, detail) {
+                _filterIPLoaded: function (data, detail) {
                     if (!detail) {
-                        this._outputsError();
+                        this._filterIPError();
                     }
-                    this._setData('cpOutputs', detail);
-                    dataLoaded.outputs = true;
+
+                    this._setData('filterIP', detail);
+                    dataLoaded.filterIP = true;
+                    this._allDataLoaded();
+                },
+
+                _filterSectionsLoaded: function (data, detail) {
+                    if (!detail) {
+                        this._filterSectionsError();
+                    }
+
+                    this._setData('filterSections', detail);
+                    dataLoaded.filterSections = true;
+                    this._allDataLoaded();
+                },
+
+                _filterOutputsLoaded: function(data, detail) {
+                    if (!detail) {
+                        this._filterOutputsError();
+                    }
+
+                    this._setData('filterCpOutputs', detail);
+                    dataLoaded.filterCpOutputs = true;
                     this._allDataLoaded();
                 },
 
@@ -259,8 +298,16 @@
                     this._responseError('partner organisations');
                 },
 
-                _outputsError: function() {
-                    this._responseError('cpOutputs');
+                _filterIPError: function() {
+                    this._responseError('Implementing Partners');
+                },
+
+                _filterSectionsError: function() {
+                    this._responseError('Sections');
+                },
+
+                _filterOutputsError: function() {
+                    this._responseError('CP Outputs');
                 },
 
                 _sectionsError: function() {

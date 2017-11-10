@@ -53,14 +53,22 @@ App global configuration
                 exp: 2 * 60 * 60 * 1000, // 2h
                 cachingKey: 'partners'
             },
+            filterIP: {
+                url: '/api/tpm/visits/activities/implementing-partners/',
+                exp: 2 * 60 * 60 * 1000, // 2h
+                cachingKey: 'partners'
+            },
+            filterSections: {
+                url: '/api/tpm/visits/activities/sections/'
+            },
+            filterCpOutputs: {
+                url: '/api/tpm/visits/activities/cp-outputs/'
+            },
             partnerOrganisationDetails: {
                 template: '/api/v2/partners/<%=id%>/'
             },
             partnershipDetails: {
                 template: '/api/v2/interventions/<%=id%>/'
-            },
-            cpOutputs: {
-                template: '/api/reports/results/'
             },
             cpOutputsV2: {
                 url: '/api/v2/reports/results/'

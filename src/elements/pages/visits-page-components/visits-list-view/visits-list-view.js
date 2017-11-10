@@ -154,18 +154,9 @@
             }
 
             if (isTpmUser) {
-                //remove TPM Name, IP, section and CP outputs filters
+                //remove TPM Name filter
                 let tpmFilterIndex = this._getFilterIndex('tpm_partner');
                 this.filters.splice(tpmFilterIndex, 1);
-
-                let partnerFilterIndex = this._getFilterIndex('tpm_activities__implementing_partner');
-                this.filters.splice(partnerFilterIndex, 1);
-
-                let sectionFilterIndex = this._getFilterIndex('sections');
-                this.filters.splice(sectionFilterIndex, 1);
-
-                let cpFilterIndex = this._getFilterIndex('tpm_activities__cp_output');
-                this.filters.splice(cpFilterIndex, 1);
 
                 //remove TPM name column
                 let partnerHeadingIndex = this.listHeadings.findIndex((heading) => {
@@ -187,30 +178,25 @@
         },
 
         setFiltersSelections: function() {
-            let tpmFilterIndex = this._getFilterIndex('tpm_partner');
-            let partnerFilterIndex = this._getFilterIndex('tpm_activities__implementing_partner');
-            let statusFilterIndex = this._getFilterIndex('status');
-            let sectionFilterIndex = this._getFilterIndex('sections');
-            let cpFilterIndex = this._getFilterIndex('tpm_activities__cp_output');
+            let queryAndKeyPairs = [
+                {query: 'tpm_partner', dataKey: 'tpmPartners'},
+                {query: 'tpm_activities__implementing_partner', dataKey: 'filterIP'},
+                {query: 'status', dataKey: 'statuses'},
+                {query: 'sections', dataKey: 'filterSections'},
+                {query: 'tpm_activities__cp_output', dataKey: 'sdffilterCpOutputsew'},
+            ];
 
-            if (tpmFilterIndex !== -1) {
-                this.set(`filters.${tpmFilterIndex}.selection`, this.getData('tpmPartners') || []);
-            }
+            queryAndKeyPairs.forEach((pair) => {
+                let filterIndex = this._getFilterIndex(pair.query);
+                let data = this.getData(pair.dataKey) || [];
+                this.setFilterSelection(filterIndex, data);
+            });
+        },
 
-            if (partnerFilterIndex !== -1) {
-                this.set(`filters.${partnerFilterIndex}.selection`, this.getData('partnerOrganisations') || []);
-            }
-
-            if (statusFilterIndex !== -1) {
-                this.set(`filters.${statusFilterIndex}.selection`, this.getData('statuses') || []);
-            }
-
-            if (sectionFilterIndex !== -1) {
-                this.set(`filters.${sectionFilterIndex}.selection`, this.getData('sections') || []);
-            }
-
-            if (cpFilterIndex !== -1) {
-                this.set(`filters.${cpFilterIndex}.selection`, this.getData('cpOutputs') || []);
+        setFilterSelection: function(filterIndex, data) {
+            if (filterIndex !== undefined && filterIndex !== -1) {
+                this.set(`filters.${filterIndex}.selection`, data);
+                return true;
             }
         },
 
