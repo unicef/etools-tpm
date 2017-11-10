@@ -98,7 +98,7 @@ Polymer({
                     'path': 'partnership.title'
                 }, {
                     'size': '150px',
-                    'label': 'Programmatic Visit',
+                    'label': 'HACT Programmatic Visit',
                     'custom': true,
                     'property': true,
                     'class': 'overflow-visible',
