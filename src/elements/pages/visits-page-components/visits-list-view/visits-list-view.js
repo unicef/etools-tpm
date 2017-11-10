@@ -183,7 +183,7 @@
                 {query: 'tpm_activities__implementing_partner', dataKey: 'filterIP'},
                 {query: 'status', dataKey: 'statuses'},
                 {query: 'sections', dataKey: 'filterSections'},
-                {query: 'tpm_activities__cp_output', dataKey: 'sdffilterCpOutputsew'},
+                {query: 'tpm_activities__cp_output', dataKey: 'filterCpOutputs'},
             ];
 
             queryAndKeyPairs.forEach((pair) => {
