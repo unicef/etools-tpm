@@ -71,7 +71,7 @@ Polymer({
             queries = this.parseQueries();
 
         if (!queries.page_size) { queriesUpdates.page_size = '10'; }
-        if (!queries.ordering) { queriesUpdates.ordering = 'reference_number'; }
+        if (!queries.ordering) { queriesUpdates.ordering = '-reference_number'; }
         if (!queries.page) { queriesUpdates.page = '1'; }
 
         let page = +queries.page;
