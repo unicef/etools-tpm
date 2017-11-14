@@ -38,6 +38,16 @@
             this.set('errors', _.clone(this.refactorErrorObject(errorData)));
         },
 
+        resetValidationErrors: function() {
+            this.set('errors', {});
+
+            let elements = Polymer.dom(this.root).querySelectorAll('.validate-input');
+            _.each(elements, element => {
+                element.errorMessage = '';
+                element.invalid = false;
+            });
+        },
+
         _complexErrorHandler: function(errorData) {
             this.requestInProcess = false;
             if (!errorData) { return false; }

@@ -6,6 +6,7 @@
     window.TPMBehaviors = window.TPMBehaviors || {};
     window.TPMBehaviors.UpdateDataBehaviorImpl = {
         _handleResponse: function (event, details) {
+            this.errorObject = {};
             if (this.method === 'POST') {
                 this.lastData = details;
                 this._finishPostResponse(this.postRequest);

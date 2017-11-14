@@ -32,6 +32,7 @@ Polymer({
     },
 
     observers: [
+        'resetValidationErrors(permissionBase)',
         '_errorHandler(errorObject)'
     ],
 
@@ -43,7 +44,6 @@ Polymer({
                 name: `${user.first_name} ${user.last_name}`
             };
         });
-
     },
 
     _resetFieldError: function(event) {
