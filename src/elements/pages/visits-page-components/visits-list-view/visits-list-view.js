@@ -110,7 +110,7 @@
                     },
                     {
                         name: 'Section',
-                        query: 'sections',
+                        query: 'tpm_activities__section',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
@@ -140,9 +140,25 @@
             'dialog-confirmed': 'addNewVisit'
         },
 
+        attached: function() {
+            document.addEventListener('visit-filters-updated', this._visitFiltersUpdated.bind(this));
+        },
+
+        detached: function() {
+            document.removeEventListener('visit-filters-updated', this._visitFiltersUpdated);
+        },
+
         ready: function() {
             this.setupFiltersAndHeadings();
+        },
+
+        _visitFiltersUpdated: function() {
+            let filtersElement = this.$.filters;
             this.setFiltersSelections();
+
+            if (filtersElement) {
+                filtersElement._reloadFilters();
+            }
         },
 
         setupFiltersAndHeadings: function() {
@@ -182,7 +198,7 @@
                 {query: 'tpm_partner', dataKey: 'tpmPartners'},
                 {query: 'tpm_activities__implementing_partner', dataKey: 'filterIP'},
                 {query: 'status', dataKey: 'statuses'},
-                {query: 'sections', dataKey: 'filterSections'},
+                {query: 'tpm_activities__section', dataKey: 'filterSections'},
                 {query: 'tpm_activities__cp_output', dataKey: 'filterCpOutputs'},
             ];
 
