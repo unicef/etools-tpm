@@ -81,7 +81,7 @@
             reloadRequired: function () {
                 let lastKeys = _.keys(this.lastState);
                 let requestQueriesKeys = _.keys(this.requestQueries);
-                let filtersKeys = ['tpm_partner', 'tpm_activities__implementing_partner', 'status', 'sections', 'tpm_activities__cp_output'];
+                let filtersKeys = ['tpm_partner', 'tpm_activities__implementing_partner', 'status', 'tpm_activities__section', 'tpm_activities__cp_output'];
                 let queriesKeys = lastKeys.concat(requestQueriesKeys);
 
                 queriesKeys = _.uniq(queriesKeys);

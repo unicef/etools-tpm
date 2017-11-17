@@ -110,10 +110,12 @@
 
                 attached: function() {
                     document.addEventListener('reload-tpm-partners', this._reloadTpmPartners.bind(this));
+                    document.addEventListener('update-visit-filters', this._updateVisitFilters.bind(this));
                 },
 
                 detached: function() {
                     document.removeEventListener('reload-tpm-partners', this._reloadTpmPartners);
+                    document.removeEventListener('update-visit-filters', this._updateVisitFilters);
                 },
 
                 loadStaticData: function () {
@@ -125,10 +127,6 @@
                         this.officesEndpoint = this.getEndpoint('offices').url;
                     }
 
-                    this.filterIPUrl = this.getEndpoint('filterIP').url;
-                    this.filterSectionsUrl = this.getEndpoint('filterSections').url;
-                    this.filterCpOutputsUrl = this.getEndpoint('filterCpOutputs').url;
-
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this.partnersUrl = this.getEndpoint('partnersList').url;
                     this.locationsEndpoint = this.getEndpoint('locations');
@@ -139,10 +137,38 @@
                     let tpmUser = this.isTpmUser();
                     if (dataLoaded.visitsOptions && dataLoaded.partners &&
                         (tpmUser || (dataLoaded.partnersOptions && dataLoaded.organizations &&
-                        dataLoaded.filterIP && dataLoaded.filterSections && dataLoaded.filterCpOutputs &&
                         dataLoaded.sections && dataLoaded.unicefUsers && dataLoaded.offices))) {
                         this.fire('initial-data-loaded');
                     }
+                },
+
+                _filtersDataLoaded: function() {
+                    if (dataLoaded.filterIP && dataLoaded.filterSections && dataLoaded.filterCpOutputs) {
+                        this._triggerGlobalEvent('visit-filters-updated');
+
+                        dataLoaded.filters = true;
+                        dataLoaded.filterIP = false;
+                        dataLoaded.filterSections = false;
+                        dataLoaded.filterCpOutputs = false;
+                    }
+                },
+
+                _triggerGlobalEvent: function(eventName, data) {
+                    let detail = {detail: data};
+                    let event = new CustomEvent(eventName, detail);
+                    document.dispatchEvent(event);
+                },
+
+                _reloadTpmPartners: function() {
+                    this.partnersUrl = this.getEndpoint('partnersList').url + `?reload=${new Date().getTime()}`;
+                },
+
+                _updateVisitFilters: function() {
+                    let time = new Date().getTime();
+
+                    this.filterIPUrl = this.getEndpoint('filterIP').url + `?reload=${time}`;
+                    this.filterSectionsUrl = this.getEndpoint('filterSections').url + `?reload=${time}`;
+                    this.filterCpOutputsUrl = this.getEndpoint('filterCpOutputs').url + `?reload=${time}`;
                 },
 
                 _partnersLoaded: function(data, detail) {
@@ -168,10 +194,6 @@
                     this._allDataLoaded();
                 },
 
-                _reloadTpmPartners: function() {
-                    this.partnersUrl = this.getEndpoint('partnersList').url + `?reload=${new Date().getTime()}`;
-                },
-
                 _organisationsLoaded: function(data, detail) {
                     if (!detail) {
                         this._organisationsError();
@@ -187,9 +209,13 @@
                         this._filterIPError();
                     }
 
-                    this._setData('filterIP', detail);
+                    if (dataLoaded.filters) {
+                        this._updateData('filterIP', detail);
+                    } else {
+                        this._setData('filterIP', detail);
+                    }
                     dataLoaded.filterIP = true;
-                    this._allDataLoaded();
+                    this._filtersDataLoaded();
                 },
 
                 _filterSectionsLoaded: function (data, detail) {
@@ -197,9 +223,13 @@
                         this._filterSectionsError();
                     }
 
-                    this._setData('filterSections', detail);
+                    if (dataLoaded.filters) {
+                        this._updateData('filterSections', detail);
+                    } else {
+                        this._setData('filterSections', detail);
+                    }
                     dataLoaded.filterSections = true;
-                    this._allDataLoaded();
+                    this._filtersDataLoaded();
                 },
 
                 _filterOutputsLoaded: function(data, detail) {
@@ -207,9 +237,13 @@
                         this._filterOutputsError();
                     }
 
-                    this._setData('filterCpOutputs', detail);
+                    if (dataLoaded.filters) {
+                        this._updateData('filterCpOutputs', detail);
+                    } else {
+                        this._setData('filterCpOutputs', detail);
+                    }
                     dataLoaded.filterCpOutputs = true;
-                    this._allDataLoaded();
+                    this._filtersDataLoaded();
                 },
 
                 _handleVisitsOptions: function(data, detail) {

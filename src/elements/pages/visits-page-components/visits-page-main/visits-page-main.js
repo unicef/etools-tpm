@@ -45,6 +45,7 @@ Polymer({
         if (view === 'list') {
             let queries = this._configListParams(this.initiation++);
             this._setVisitsListQueries(queries);
+            this._fireUpdateVisitFilters();
             this.view = 'list';
         } else if (!isNaN(+view)) {
             this.clearQueries();
@@ -64,6 +65,12 @@ Polymer({
 
     resetLastView: function() {
         if (this.lastView) { this.lastView = null; }
+    },
+
+    _fireUpdateVisitFilters: function() {
+        this.debounce('updateVisitFiltersDebouncer', () => {
+            document.dispatchEvent(new CustomEvent('update-visit-filters'));
+        }, 100);
     },
 
     _configListParams: function(noNotify) {
