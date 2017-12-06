@@ -6,6 +6,7 @@
     window.TPMBehaviors = window.TPMBehaviors || {};
     TPMBehaviors.TextareaMaxRowsBehavior = {
         attached: function() {
+            Polymer.dom.flush();
             let paperTextareas = Polymer.dom(this.root).querySelectorAll('paper-textarea') || [];
 
             paperTextareas.forEach((paperTextarea) => {
@@ -33,8 +34,8 @@
                 if (lineHeightPx) {
                     let maxHeight = maxRows * lineHeightPx + 5;
                     textareaAutogrow.style.maxHeight = `${maxHeight}px`;
-                    textareaAutogrow.textarea.style.overflow = 'auto';
                 }
+                textareaAutogrow.textarea.style.overflow = 'auto';
             });
         }
     };
