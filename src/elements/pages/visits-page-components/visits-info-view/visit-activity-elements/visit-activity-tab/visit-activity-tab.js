@@ -122,8 +122,13 @@ Polymer({
                     'path': 'section.name',
                 }, {
                     'size': 100,
-                    'name': 'array',
+                    'name': 'styled_array',
                     'property': 'name',
+                    'options': {
+                        'delimiter': '[',
+                        'style': 'font-weight: 500;',
+                    },
+                    'html': 'true',
                     'label': 'Locations',
                     'labelPath': 'tpm_activities.locations',
                     'path': 'locations',

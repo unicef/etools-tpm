@@ -139,11 +139,13 @@ Polymer({
         } else if (item.name === 'percents') {
             value = this._refactorPercents(value);
         } else if (item.name === 'array') {
-            value = this._refactorArray(value, item.property);
+            value = this._arrayWithDelimiter(value, item.property, item.delimiter);
         } else if (item.name === 'ordered_list') {
-            value = this._refactorOrderedList(value, item.property);
+            value = this._arrayAsColumn(value, item.property);
         } else if (item.name === 'files') {
             value = this._refactorFilesLinks(value, item.property);
+        } else if (item.name === 'styled_array') {
+            value = this._arrayAsColumnWithHighlight(value, item.property, item.options);
         }
 
         if (bool) {
@@ -179,45 +181,57 @@ Polymer({
         return regexp.test(value) ? `${value}%` : null;
     },
 
-    _refactorArray: function(array, property) {
-        let isValidArgs = (array instanceof Array) && property && (typeof property === 'string');
-        if (!isValidArgs) { return null; }
+    _getPropertyStringValues: function(array, property) {
+        let isValidArgs = Array.isArray(array) && property && (typeof property === 'string');
+        if (!isValidArgs) { return []; }
 
-        let stringValues = [];
         let value;
-
-        array.forEach((object) => {
-            value = object[property];
-            if (value && (typeof value === 'string')) {
-                stringValues.push(value);
-            }
+        let propertyValues = array.map((item) => {
+            value = item && item[property];
+            return (typeof value === 'string') ? value : undefined;
         });
+        propertyValues = propertyValues.filter(item => item);
 
-        return stringValues.length ? stringValues.join('; ') : null;
+        return propertyValues;
     },
 
-    _refactorOrderedList: function(items, property) {
-        let isValidArgs = (items instanceof Array) && property && (typeof property === 'string');
-        if (!isValidArgs) { return '--'; }
+    _arrayWithDelimiter: function(array, property, delimiter = '; ') {
+        let propertyValues = this._getPropertyStringValues(array, property);
+        return propertyValues.length ? propertyValues.join(delimiter) : null;
+    },
 
-        let itemsInfo = [];
-        let itemsHtml = [];
-        let styleAttribute = 'style="overflow: hidden; text-overflow: ellipsis;"';
-        let value;
+    _arrayAsColumn: function(array, property) {
+        let styleAttribute = 'style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"';
+        let propertyValues = this._getPropertyStringValues(array, property);
+        let html = propertyValues.map((value) => {
+            return `<div ${styleAttribute}>${value}</div>`;
+        });
 
-        items.forEach((item) => {
-            value = item[property];
-            if (value && (typeof value === 'string')) {
-                itemsInfo.push(value);
+        return html.length ? html.join('\n') : '--';
+    },
+
+    _arrayAsColumnWithHighlight: function(array, property, options = {delimiter: undefined, style: ''}) {
+        let styleAttribute = 'style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"';
+        let propertyValues = this._getPropertyStringValues(array, property);
+
+        let splittedValue;
+        let splittedValues = propertyValues.map((item) => {
+            splittedValue = item.split(options.delimiter);
+            if (splittedValue.length > 1) {
+                splittedValue[1] = options.delimiter + splittedValue[1];
+            } else {
+                splittedValue.push('');
             }
+            return splittedValue;
         });
 
-        itemsInfo.forEach((name) => {
-            value = `<div ${styleAttribute}>${name}</div>`;
-            itemsHtml.push(value);
+        let html = splittedValues.map((splittedValue) => {
+            return `<div ${styleAttribute}>
+                        <span style="${options.style}">${splittedValue[0]}</span>
+                        <span>${splittedValue[1]}</span>
+                    </div>`;
         });
-
-        return itemsHtml.length ? itemsHtml.join('\n') : '--';
+        return html.length ? html.join('\n') : '--';
     },
 
     _refactorFilesLinks: function(files, property) {
