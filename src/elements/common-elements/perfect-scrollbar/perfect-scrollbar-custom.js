@@ -771,7 +771,7 @@ function bindMouseWheelHandler(element, i) {
 
     var target = e && e.target || {};
     var targetScrollable = (target.tagName === 'ETOOLS-SEARCHABLE-MULTISELECTION-MENU' && target.dropdownOpened)
-        || target.tagName === 'PAPER-TEXTAREA';
+        || target.tagName === 'PAPER-TEXTAREA' || target.tagName === 'LIST-ELEMENT';
     if (!targetScrollable) {
       e.stopPropagation();
       e.preventDefault();

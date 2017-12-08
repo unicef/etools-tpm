@@ -8,7 +8,12 @@
 
 <dom-module id="visits-info-view-main">
     <template>
-        <style include="shared-styles module-styles main-page-styles tab-inputs-styles"></style>
+        <style include="shared-styles module-styles main-page-styles tab-inputs-styles">
+            .list-wrapper {
+                max-height: 40vh;
+                overflow: auto;
+            }
+        </style>
         <app-route
                 route="{{route}}"
                 pattern="/:tab"
@@ -236,29 +241,33 @@
                 approve-popup
                 dialog-title="Approve Report"
                 confirm-btn-text="Approve">
-            <list-header
-                    id="list-header"
-                    no-additional
-                    no-ordered
-                    data="[[columns]]"
-                    base-permission-path="[[permissionBase]]">
-            </list-header>
-
-            <template is="dom-repeat" items="[[visit.tpm_activities]]" filter="_isApplicable">
-                <list-element
-                        class="list-element"
-                        data="[[item]]"
-                        base-permission-path="[[permissionBase]]"
-                        headings="[[columns]]"
+            <div class="list-wrapper">
+                <list-header
+                        id="list-header"
                         no-additional
                         no-ordered
-                        multiline
-                        no-animation>
-                    <div slot="custom" style="overflow: visible;">
-                        <paper-checkbox activity-id$="[[item.id]]" class="programmatic-visit"></paper-checkbox>
-                    </div>
-                </list-element>
-            </template>
+                        data="[[columns]]"
+                        base-permission-path="[[permissionBase]]">
+                </list-header>
+
+                <template is="dom-repeat" items="[[visit.tpm_activities]]" filter="_isApplicable">
+                    <list-element
+                            class="list-element"
+                            data="[[item]]"
+                            base-permission-path="[[permissionBase]]"
+                            headings="[[columns]]"
+                            details="[[details]]"
+                            has-collapse
+                            no-ordered
+                            multiline
+                            notify-content-resize
+                            no-animation>
+                        <div slot="custom" style="overflow: visible;">
+                            <paper-checkbox activity-id$="[[item.id]]" class="programmatic-visit"></paper-checkbox>
+                        </div>
+                    </list-element>
+                </template>
+            </div>
 
             <div class="row-h repeatable-item-container" without-line>
                 <div class="row-h group">

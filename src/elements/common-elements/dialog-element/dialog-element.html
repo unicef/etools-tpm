@@ -61,6 +61,10 @@
                 TPMBehaviors.PerfectScrollbarBehavior
             ],
 
+            listeners: {
+                'content-resize': 'notifyResize'
+            },
+
             properties: {
                 dialogTitle: {
                     type: String,
@@ -136,6 +140,9 @@
 
             notifyResize: function () {
                 this.$.dialog.notifyResize();
+                this.async(() => {
+                    this.$.dialog.refit();
+                }, 200);
             },
         });
     </script>
