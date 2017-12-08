@@ -140,7 +140,7 @@
 
             notifyResize: function () {
                 this.$.dialog.notifyResize();
-                this.async(() => {
+                this.debounce('dialogRefitDebouncer', () => {
                     this.$.dialog.refit();
                 }, 200);
             },
