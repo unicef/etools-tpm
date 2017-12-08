@@ -95,7 +95,7 @@
                     },
                     {
                         name: 'Implementing Partner',
-                        query: 'tpm_activities__implementing_partner',
+                        query: 'tpm_activities__partner',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
@@ -196,7 +196,7 @@
         setFiltersSelections: function() {
             let queryAndKeyPairs = [
                 {query: 'tpm_partner', dataKey: 'tpmPartners'},
-                {query: 'tpm_activities__implementing_partner', dataKey: 'filterIP'},
+                {query: 'tpm_activities__partner', dataKey: 'filterIP'},
                 {query: 'status', dataKey: 'statuses'},
                 {query: 'tpm_activities__section', dataKey: 'filterSections'},
                 {query: 'tpm_activities__cp_output', dataKey: 'filterCpOutputs'},

@@ -22,7 +22,7 @@ Polymer({
                 return {};
             }
         },
-        partnership: {
+        intervention: {
             type: Object,
             value: function() {
                 return {};
@@ -38,11 +38,11 @@ Polymer({
             type: Object,
             value: function() {
                 return {
-                    implementing_partner: {
+                    partner: {
                         id: null,
                         name: '',
                     },
-                    partnership: {
+                    intervention: {
                         id: null,
                         title: '',
                     },
@@ -61,7 +61,7 @@ Polymer({
             type: Object,
             value: function() {
                 return {
-                    partnership: null,
+                    intervention: null,
                     cp_output: null,
                 };
             },
@@ -70,7 +70,7 @@ Polymer({
             type: Boolean,
             value: false,
         },
-        partnershipRequestInProcess: {
+        interventionRequestInProcess: {
             type: Boolean,
             value: false,
         },
@@ -92,13 +92,13 @@ Polymer({
             },{
                 'size': 25,
                 'label': 'Implementing Partner',
-                'labelPath': 'tpm_activities.implementing_partner',
-                'path': 'implementing_partner.name'
+                'labelPath': 'tpm_activities.partner',
+                'path': 'partner.name'
             }, {
                 'size': 25,
                 'label': 'Partnership',
-                'labelPath': 'tpm_activities.partnership',
-                'path': 'partnership.title'
+                'labelPath': 'tpm_activities.intervention',
+                'path': 'intervention.title'
             }, {
                 'size': 25,
                 'label': 'CP Output',
@@ -161,19 +161,19 @@ Polymer({
         'dialog-confirmed': '_addItemFromDialog',
         'delete-confirmed': 'removeItem',
         'partner-loaded': '_partnerLoaded',
-        'partnership-loaded': '_partnershipLoaded',
+        'intervention-loaded': '_interventionLoaded',
         'cp-outputs-loaded': '_cpOutputsLoaded',
     },
 
     observers: [
-        '_setSomeRequestInProcess(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess)',
-        '_requestPartner(editedItem.implementing_partner.id)',
-        '_requestPartnership(optionsModel.partnership.id)',
+        '_setSomeRequestInProcess(requestInProcess, partnerRequestInProcess, interventionRequestInProcess, cpRequestInProcess)',
+        '_requestPartner(editedItem.partner.id)',
+        '_requestPartnership(optionsModel.intervention.id)',
         'resetDialog(dialogOpened)',
         '_errorHandler(errorObject.tpm_activities)',
         'updateStyles(basePermissionPath, someRequestInProcess, editedItem.*, optionsModel.*)',
         'notifyDialogResize("activityDialog", editedItem.*, optionsModel.*)',
-        '_setPartnershipValue(partner.interventions, editedItem.partnership)',
+        '_setPartnershipValue(partner.interventions, editedItem.intervention)',
         '_setCpValue(cpOutputs, editedItem.cp_output)',
     ],
 
@@ -185,8 +185,8 @@ Polymer({
         document.addEventListener('locations-loaded', this._updateLocations.bind(this));
     },
 
-    _setSomeRequestInProcess: function(requestInProcess, partnerRequestInProcess, partnershipRequestInProcess, cpRequestInProcess) {
-        this.someRequestInProcess = requestInProcess || partnerRequestInProcess || partnershipRequestInProcess || cpRequestInProcess;
+    _setSomeRequestInProcess: function(requestInProcess, partnerRequestInProcess, interventionRequestInProcess, cpRequestInProcess) {
+        this.someRequestInProcess = requestInProcess || partnerRequestInProcess || interventionRequestInProcess || cpRequestInProcess;
     },
 
     _getActivitiesLength: function(dataItemsLength) {
@@ -195,7 +195,7 @@ Polymer({
 
     _canBeChanged: function(basePermissionPath) {
         let fields = [
-            'tpm_activities.implementing_partner', 'tpm_activities.partnership',
+            'tpm_activities.partner', 'tpm_activities.intervention',
             'tpm_activities.cp_output', 'tpm_activities.section', 'tpm_activities.date',
             'tpm_activities.locations', 'tpm_activities.additional_information'
         ];
@@ -205,11 +205,11 @@ Polymer({
         });
     },
 
-    _isReadOnly: function(field, partner, partnership, someRequestInProcess, basePermissionPath) {
+    _isReadOnly: function(field, partner, intervention, someRequestInProcess, basePermissionPath) {
         let fieldReadonly = this.isReadOnly(field, basePermissionPath);
         let partnerDefined = partner && (partner.id || partner.id === 0) || partner === 'true';
-        let partnershipDefined = partnership && (partnership.id || partnership.id === 0) || partnership === 'true';
-        return fieldReadonly || !partnerDefined || !partnershipDefined || someRequestInProcess;
+        let interventionDefined = intervention && (intervention.id || intervention.id === 0) || intervention === 'true';
+        return fieldReadonly || !partnerDefined || !interventionDefined || someRequestInProcess;
     },
 
     _updateLocations: function() {
@@ -223,7 +223,7 @@ Polymer({
             });
             if (optionsContainsPartnership) {
                 this.async(() => {
-                    this.set('optionsModel.partnership', value);
+                    this.set('optionsModel.intervention', value);
                 }, 200);
             }
         }
@@ -247,8 +247,8 @@ Polymer({
         this.lastPartnerId = partnerId;
 
         if (!this.editDialogOpened) {
-            this.set('partnership', null);
-            this.set('optionsModel.partnership', null);
+            this.set('intervention', null);
+            this.set('optionsModel.intervention', null);
             this.set('partner.interventions', []);
 
             this.set('optionsModel.cp_output', null);
@@ -270,24 +270,24 @@ Polymer({
         }
     },
 
-    _requestPartnership: function(partnershipId) {
-        if (this.partnershipRequestInProcess || this.lastPartnershipId === partnershipId) { return; }
-        this.lastPartnershipId = partnershipId;
+    _requestPartnership: function(interventionId) {
+        if (this.interventionRequestInProcess || this.lastPartnershipId === interventionId) { return; }
+        this.lastPartnershipId = interventionId;
 
         if (!this.editDialogOpened) {
             this.set('optionsModel.cp_output', null);
             this.set('cpOutputs', []);
         }
 
-        if (!partnershipId && partnershipId !== 0) { return; }
+        if (!interventionId && interventionId !== 0) { return; }
 
-        this.partnershipRequestInProcess = true;
-        this.partnershipId = partnershipId;
+        this.interventionRequestInProcess = true;
+        this.interventionId = interventionId;
         return true;
     },
 
-    _partnershipLoaded: function(event, details) {
-        this.partnershipRequestInProcess = false;
+    _interventionLoaded: function(event, details) {
+        this.interventionRequestInProcess = false;
         this._updateCpOutputs();
 
         if (this.editDialogOpened && !details.success) {
@@ -296,7 +296,7 @@ Polymer({
     },
 
     _updateCpOutputs: function() {
-        let resultLinks = this.get('partnership.result_links');
+        let resultLinks = this.get('intervention.result_links');
         if (!(resultLinks instanceof Array)) { return; }
 
         let cpIds = [];
@@ -406,8 +406,8 @@ Polymer({
     },
 
     _getDifference: function(original = {}, edited = {}) {
-        let paths = ['implementing_partner.id', 'date', 'section.id', 'locations', 'additional_information', '_delete'];
-        let optionsPaths = ['partnership.id', 'cp_output.id'];
+        let paths = ['partner.id', 'date', 'section.id', 'locations', 'additional_information', '_delete'];
+        let optionsPaths = ['intervention.id', 'cp_output.id'];
         let allPaths = paths.concat(optionsPaths);
 
         let originalData = _.pick(original, allPaths);
@@ -433,8 +433,8 @@ Polymer({
             }
         });
 
-        let implementingPartner = _.get(changedData, 'implementing_partner.id') || undefined;
-        let partnership = _.get(changedData, 'partnership.id') || undefined;
+        let implementingPartner = _.get(changedData, 'partner.id') || undefined;
+        let intervention = _.get(changedData, 'intervention.id') || undefined;
         let cpOutput = _.get(changedData, 'cp_output.id') || undefined;
         let section = _.get(changedData, 'section.id');
         let additionalInformation = _.get(changedData, 'additional_information');
@@ -448,8 +448,8 @@ Polymer({
         locations = locations.length ? locations : undefined;
 
         return {
-            implementing_partner: implementingPartner,
-            partnership,
+            partner: implementingPartner,
+            intervention,
             cp_output: cpOutput,
             section,
             additional_information: additionalInformation,

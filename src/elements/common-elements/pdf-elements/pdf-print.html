@@ -280,8 +280,8 @@
                               table: {
                                 widths: innerTableVars.innerWidths,
                                 body: [
-                                  innerColumnGen('Partnership', activity.partnership ?
-                                    activity.partnership.label : ''),
+                                  innerColumnGen('Partnership', activity.intervention ?
+                                    activity.intervention.label : ''),
                                   innerColumnGen('Mode of travel', '' + activity.mode_of_travel),
                                   innerColumnGen('Locations', concatManyToMany(activity.locations)),
                                 ]

@@ -1,7 +1,7 @@
 <!--import [polymer, etools-ajax, lodash]-->
 <!--import [etools-app-config]-->
 
-<dom-module id="get-partnership-data">
+<dom-module id="get-intervention-data">
     <template>
         <etools-ajax
                 url="[[url]]"
@@ -12,19 +12,19 @@
 
     <script>
         Polymer({
-            is: 'get-partnership-data',
+            is: 'get-intervention-data',
 
             behaviors: [
                 etoolsAppConfig.globals
             ],
 
             properties: {
-                partnershipId: {
+                interventionId: {
                     type: Number,
                     notify: true,
-                    observer: '_partnershipIdChanged'
+                    observer: '_interventionIdChanged'
                 },
-                partnership: {
+                intervention: {
                     type: Object,
                     notify: true
                 }
@@ -32,27 +32,27 @@
 
             _handleResponse: function (data, detail) {
                 this.lastData = _.clone(data.detail);
-                this.partnership = data.detail;
-                this.fire('partnership-loaded', {success: true});
+                this.intervention = data.detail;
+                this.fire('intervention-loaded', {success: true});
             },
 
             _handleError: function () {
                 this.lastError = true;
-                this.fire('partnership-loaded');
+                this.fire('intervention-loaded');
             },
 
-            _partnershipIdChanged: function(partnershipId) {
-                if (!partnershipId) { return; }
-                if (partnershipId === this.lastNumber) {
-                    this.partnershipId = null;
+            _interventionIdChanged: function(interventionId) {
+                if (!interventionId) { return; }
+                if (interventionId === this.lastNumber) {
+                    this.interventionId = null;
                     this.lastError ? this._handleError() : this._handleResponse({detail: _.clone(this.lastData)});
                     return;
                 }
 
                 this.lastError = false;
-                this.lastNumber = partnershipId;
-                this.url = this.getEndpoint('partnershipDetails', {id: partnershipId}).url;
-                this.partnershipId = null;
+                this.lastNumber = interventionId;
+                this.url = this.getEndpoint('interventionDetails', {id: interventionId}).url;
+                this.interventionId = null;
             }
         });
     </script>
