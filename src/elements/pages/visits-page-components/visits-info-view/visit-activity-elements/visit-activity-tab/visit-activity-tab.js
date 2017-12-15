@@ -219,8 +219,7 @@ Polymer({
     },
 
     _showInterventions: function(IPType) {
-        if (!Array.isArray(this.specialPartnerTypes)) { return true; }
-        return this.specialPartnerTypes.indexOf(IPType) === -1;
+        return IPType && this.specialPartnerTypes.indexOf(IPType) === -1;
     },
 
     _updateLocations: function() {
@@ -274,8 +273,8 @@ Polymer({
     },
 
     _partnerLoaded: function(event, details) {
-        this.partnerRequestInProcess = false;
         this.set('errors', {});
+        this.partnerRequestInProcess = false;
 
         if (this.editDialogOpened && !details.success) {
             this.editDialogOpened = false;
@@ -418,7 +417,7 @@ Polymer({
         let interventionInput = Polymer.dom(this.root).querySelector('#interventionInput');
         let partner = this.get('editedItem.partner');
         let partnerRequiresIntervention = partner && this.specialPartnerTypes.indexOf(partner.partner_type) === -1;
-        if (interventionInput.required && partnerRequiresIntervention && !interventionInput.validate()) {
+        if (interventionInput && interventionInput.required && partnerRequiresIntervention && !interventionInput.validate()) {
             interventionInput.invalid = 'This field is required';
             interventionInput.errorMessage = 'This field is required';
             valid = false;
