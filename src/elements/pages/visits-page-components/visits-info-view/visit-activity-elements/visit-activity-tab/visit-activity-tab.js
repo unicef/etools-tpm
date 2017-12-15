@@ -135,6 +135,10 @@ Polymer({
                 }];
             }
         },
+        specialPartnerTypes: {
+            type: Array,
+            value: ['Bilateral / Multilateral', 'Government'],
+        },
         addDialogTexts: {
             type: Object,
             value: function() {
@@ -208,8 +212,15 @@ Polymer({
     _isReadOnly: function(field, partner, intervention, someRequestInProcess, basePermissionPath) {
         let fieldReadonly = this.isReadOnly(field, basePermissionPath);
         let partnerDefined = partner && (partner.id || partner.id === 0) || partner === 'true';
-        let interventionDefined = intervention && (intervention.id || intervention.id === 0) || intervention === 'true';
+        let partnerRequiresIntervention = partner && this.specialPartnerTypes.indexOf(partner.partner_type) !== -1;
+        let interventionDefined = intervention && (intervention.id || intervention.id === 0) ||
+            intervention === 'true' || partnerRequiresIntervention;
         return fieldReadonly || !partnerDefined || !interventionDefined || someRequestInProcess;
+    },
+
+    _showInterventions: function(IPType) {
+        if (!Array.isArray(this.specialPartnerTypes)) { return true; }
+        return this.specialPartnerTypes.indexOf(IPType) === -1;
     },
 
     _updateLocations: function() {
@@ -264,6 +275,7 @@ Polymer({
 
     _partnerLoaded: function(event, details) {
         this.partnerRequestInProcess = false;
+        this.set('errors', {});
 
         if (this.editDialogOpened && !details.success) {
             this.editDialogOpened = false;
@@ -391,8 +403,8 @@ Polymer({
         }
 
         if (this.editedItem && this.editedItem._delete) { return true; }
-        let elements = Polymer.dom(this.root).querySelectorAll('.validate-input'),
-            valid = true;
+        let elements = Polymer.dom(this.root).querySelectorAll('.validate-input');
+        let valid = true;
 
         Array.prototype.forEach.call(elements, (element) => {
             if (element.required && !element.validate()) {
@@ -401,6 +413,16 @@ Polymer({
                 valid = false;
             }
         });
+
+        // validate PD/SSFA
+        let interventionInput = Polymer.dom(this.root).querySelector('#interventionInput');
+        let partner = this.get('editedItem.partner');
+        let partnerRequiresIntervention = partner && this.specialPartnerTypes.indexOf(partner.partner_type) === -1;
+        if (interventionInput.required && partnerRequiresIntervention && !interventionInput.validate()) {
+            interventionInput.invalid = 'This field is required';
+            interventionInput.errorMessage = 'This field is required';
+            valid = false;
+        }
 
         return valid;
     },

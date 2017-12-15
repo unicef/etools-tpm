@@ -111,11 +111,13 @@
                         </div>
                     </div>
 
+                    <template is="dom-if" if="[[_showInterventions(editedItem.partner.partner_type)]]">
                     <div class="row-h group">
                         <div class="input-container input-container-l">
-                            <!-- Partnership-->
+                            <!-- PD/SSFA -->
                             <etools-searchable-multiselection-menu
-                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.intervention', basePermissionPath)]]"
+                                    id="interventionInput"
+                                    class="disabled-as-readonly required"
                                     value="{{optionsModel.intervention}}"
                                     label="[[getLabel('tpm_activities.intervention', basePermissionPath)]]"
                                     placeholder="[[getPlaceholderText('tpm_activities.intervention', basePermissionPath)]]"
@@ -124,7 +126,7 @@
                                     option-label="title"
                                     option-value="id"
                                     update-selected
-                                    required$="[[_setRequired('tpm_activities.intervention', basePermissionPath)]]"
+                                    required
                                     disabled$="[[_isReadOnly('tpm_activities.intervention', editedItem.partner, 'true', someRequestInProcess, basePermissionPath)]]"
                                     readonly$="[[_isReadOnly('tpm_activities.intervention', editedItem.partner, 'true', someRequestInProcess, basePermissionPath)]]"
                                     invalid="{{errors.intervention}}"
@@ -139,6 +141,7 @@
                             <etools-loading active="{{interventionRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                         </div>
                     </div>
+                    </template>
 
                     <div class="row-h group">
                         <div class="input-container input-container-l">
