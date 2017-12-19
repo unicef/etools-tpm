@@ -111,34 +111,37 @@
                         </div>
                     </div>
 
-                    <div class="row-h group">
-                        <div class="input-container input-container-l">
-                            <!-- Partnership-->
-                            <etools-searchable-multiselection-menu
-                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.intervention', basePermissionPath)]]"
-                                    value="{{optionsModel.intervention}}"
-                                    label="[[getLabel('tpm_activities.intervention', basePermissionPath)]]"
-                                    placeholder="[[getPlaceholderText('tpm_activities.intervention', basePermissionPath)]]"
-                                    options="[[partner.interventions]]"
-                                    custom-object-options
-                                    option-label="title"
-                                    option-value="id"
-                                    update-selected
-                                    required$="[[_setRequired('tpm_activities.intervention', basePermissionPath)]]"
-                                    disabled$="[[_isReadOnly('tpm_activities.intervention', editedItem.partner, 'true', someRequestInProcess, basePermissionPath)]]"
-                                    readonly$="[[_isReadOnly('tpm_activities.intervention', editedItem.partner, 'true', someRequestInProcess, basePermissionPath)]]"
-                                    invalid="{{errors.intervention}}"
-                                    error-message="{{errors.intervention}}"
-                                    on-focus="_resetFieldError"
-                                    on-tap="_resetFieldError"
-                                    dynamic-align
-                                    hide-search
-                                    no-title-attr>
-                            </etools-searchable-multiselection-menu>
-                            <paper-tooltip offset="0">[[optionsModel.intervention.title]]</paper-tooltip>
-                            <etools-loading active="{{interventionRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
+                    <template is="dom-if" if="[[_showInterventions(editedItem.partner.partner_type)]]">
+                        <div class="row-h group">
+                            <div class="input-container input-container-l">
+                                <!-- PD/SSFA -->
+                                <etools-searchable-multiselection-menu
+                                        id="interventionInput"
+                                        class="disabled-as-readonly required"
+                                        value="{{optionsModel.intervention}}"
+                                        label="[[getLabel('tpm_activities.intervention', basePermissionPath)]]"
+                                        placeholder="[[getPlaceholderText('tpm_activities.intervention', basePermissionPath)]]"
+                                        options="[[partner.interventions]]"
+                                        custom-object-options
+                                        option-label="title"
+                                        option-value="id"
+                                        update-selected
+                                        required
+                                        disabled$="[[_isReadOnly('tpm_activities.intervention', editedItem.partner, 'true', someRequestInProcess, basePermissionPath)]]"
+                                        readonly$="[[_isReadOnly('tpm_activities.intervention', editedItem.partner, 'true', someRequestInProcess, basePermissionPath)]]"
+                                        invalid="{{errors.intervention}}"
+                                        error-message="{{errors.intervention}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
+                                        dynamic-align
+                                        hide-search
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                                <paper-tooltip offset="0">[[optionsModel.intervention.title]]</paper-tooltip>
+                                <etools-loading active="{{interventionRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
+                            </div>
                         </div>
-                    </div>
+                    </template>
 
                     <div class="row-h group">
                         <div class="input-container input-container-l">
