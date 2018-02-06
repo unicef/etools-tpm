@@ -250,9 +250,11 @@
                         data="[[item]]"
                         base-permission-path="[[permissionBase]]"
                         headings="[[columns]]"
-                        no-additional
+                        details="[[details]]"
+                        has-collapse
                         no-ordered
                         multiline
+                        notify-content-resize
                         no-animation>
                     <div slot="custom" style="overflow: visible;">
                         <paper-checkbox activity-id$="[[item.id]]" class="programmatic-visit"></paper-checkbox>

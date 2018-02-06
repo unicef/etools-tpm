@@ -45,6 +45,10 @@ Polymer({
             type: Boolean,
             computed: '_computeShowCollapse(details, hasCollapse)'
         },
+        notifyContentResize: {
+            type: Boolean,
+            value: false
+        },
         data: {
             type: Object,
             notify: true
@@ -109,6 +113,9 @@ Polymer({
 
     _toggleRowDetails: function() {
         Polymer.dom(this.root).querySelector('#details').toggle();
+        if (this.notifyContentResize) {
+            this.fire('content-resize');
+        }
     },
 
     _isOneOfType: function(item) {
