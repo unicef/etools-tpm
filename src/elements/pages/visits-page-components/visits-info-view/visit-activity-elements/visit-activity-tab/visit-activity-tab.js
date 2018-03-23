@@ -384,7 +384,7 @@ Polymer({
         let refactoredData = this.dialogOpened ? this.refactorErrorObject(errorData)[0] : this.refactorErrorObject(errorData);
 
         if (typeof refactoredData === 'string') {
-            this.fire('toast', {text: `TPM Activities: ${refactoredData}`});
+            this.fire('toast', {text: `${this.getLabel('tpm_activities', this.basePermissionPath)}: ${refactoredData}`});
         }
 
         this.set('errors', refactoredData);
