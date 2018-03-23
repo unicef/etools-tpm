@@ -111,10 +111,9 @@ Polymer({
 
     ready: function() {
         this.usersList = (this.getData('unicefUsers') || []).map((user) => {
-            return {
-                id: user.id,
-                name: `${user.first_name} ${user.last_name}`
-            };
+            let {first_name: firstName, last_name: lastName, id} = user;
+            let name = firstName || lastName ? `${user.first_name} ${user.last_name}` : 'Unnamed User';
+            return {id, name};
         });
     },
 
