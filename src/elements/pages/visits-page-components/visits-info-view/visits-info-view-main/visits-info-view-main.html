@@ -23,6 +23,7 @@
         </update-visit-details-data>
 
         <pages-header-element
+                export-links="[[_getLinks(visit, permissionBase)]]"
                 download-letter-url="[[_setLetterLink(visit)]]"
                 page-title="[[setVisitTitle(visit.reference_number)]]">
         </pages-header-element>

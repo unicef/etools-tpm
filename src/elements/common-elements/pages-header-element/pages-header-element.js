@@ -94,7 +94,8 @@ Polymer({
     },
 
     _isDropDown: function(exportLinks) {
-        return exportLinks.length > 1;
+        return exportLinks && (exportLinks.length > 1 ||
+            (exportLinks[0] && exportLinks[0].useDropdown));
     },
 
     downloadLetter: function() {
