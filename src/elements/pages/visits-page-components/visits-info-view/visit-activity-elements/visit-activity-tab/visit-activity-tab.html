@@ -84,31 +84,33 @@
             <div class="row-h repeatable-item-container" without-line>
                 <div class="repeatable-item-content">
                     <div class="row-h group">
-                        <div class="input-container input-container-l">
-                            <!-- Implementing Partner -->
-                            <etools-searchable-multiselection-menu
-                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partner', basePermissionPath)]]"
-                                    value="{{editedItem.partner}}"
-                                    label="[[getLabel('tpm_activities.partner', basePermissionPath)]]"
-                                    placeholder="[[getPlaceholderText('tpm_activities.partner', basePermissionPath)]]"
-                                    options="[[partners]]"
-                                    custom-object-options
-                                    option-label="name"
-                                    option-value="id"
-                                    update-selected
-                                    required$="[[_setRequired('tpm_activities.partner', basePermissionPath)]]"
-                                    disabled$="[[_isReadOnly('tpm_activities.partner', 'true', 'true', someRequestInProcess, basePermissionPath)]]"
-                                    readonly$="[[_isReadOnly('tpm_activities.partner', 'true', 'true', someRequestInProcess, basePermissionPath)]]"
-                                    invalid="{{errors.partner}}"
-                                    error-message="{{errors.partner}}"
-                                    on-focus="_resetFieldError"
-                                    on-tap="_resetFieldError"
-                                    dynamic-align
-                                    no-title-attr>
-                            </etools-searchable-multiselection-menu>
-                            <paper-tooltip offset="0">[[editedItem.partner.name]]</paper-tooltip>
-                            <etools-loading active="{{partnerRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
-                        </div>
+                        <template is="dom-if" if="[[dialogOpened]]" restamp>
+                            <div class="input-container input-container-l">
+                                <!-- Implementing Partner -->
+                                <etools-searchable-multiselection-menu
+                                        class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.partner', basePermissionPath)]]"
+                                        value="{{editedItem.partner}}"
+                                        label="[[getLabel('tpm_activities.partner', basePermissionPath)]]"
+                                        placeholder="[[getPlaceholderText('tpm_activities.partner', basePermissionPath)]]"
+                                        options="[[partners]]"
+                                        custom-object-options
+                                        option-label="name"
+                                        option-value="id"
+                                        update-selected
+                                        required$="[[_setRequired('tpm_activities.partner', basePermissionPath)]]"
+                                        disabled$="[[_isReadOnly('tpm_activities.partner', 'true', 'true', someRequestInProcess, basePermissionPath)]]"
+                                        readonly$="[[_isReadOnly('tpm_activities.partner', 'true', 'true', someRequestInProcess, basePermissionPath)]]"
+                                        invalid="{{errors.partner}}"
+                                        error-message="{{errors.partner}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
+                                        dynamic-align
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                                <paper-tooltip offset="0">[[editedItem.partner.name]]</paper-tooltip>
+                                <etools-loading active="{{partnerRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
+                            </div>
+                        </template>
                     </div>
 
                     <template is="dom-if" if="[[_showInterventions(editedItem.partner.partner_type)]]">
