@@ -435,6 +435,6 @@ Polymer({
             name: 'Export Action Points',
             url: this.getEndpoint('visitDetails', {id: visit.id}).url + 'action-points/export/',
             useDropdown: true
-        }]
+        }];
     }
 });
