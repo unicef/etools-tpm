@@ -3,3 +3,10 @@ etools-content-panel {
          padding: 0;
     }'};
 }
+
+etools-searchable-multiselection-menu {
+    --esmm-list-wrapper: #{'{
+        max-height: 180px !important;
+        -ms-overflow-style: auto;
+    }'};
+}

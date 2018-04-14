@@ -6,8 +6,8 @@
 
 <dom-module id="action-points">
     <template>
-        <!-- inject styles './action-points.scss'-->
         <style include="module-styles tab-layout-styles tab-inputs-styles"></style>
+        <!-- inject styles './action-points.scss'-->
 
         <etools-content-panel
                 list
@@ -104,7 +104,7 @@
                                         error-message="{{errors.action_points.person_responsible}}"
                                         on-focus="_resetFieldError"
                                         on-tap="_resetFieldError"
-                                        hide-search
+                                        dynamic-align
                                         no-title-attr>
                                 </etools-searchable-multiselection-menu>
                                 <paper-tooltip offset="0">[[getTooltipText(selectedPersonResponsible, usersList, 'name')]]</paper-tooltip>
