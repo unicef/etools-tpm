@@ -128,7 +128,7 @@
                     }
 
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
-                    this.partnersUrl = this.getEndpoint('partnersList').url;
+                    this.partnersUrl = this.getEndpoint('partnersList').url +  '&page_size=all';
                     this.locationsEndpoint = this.getEndpoint('locations');
                     this._allDataLoaded();
                 },
@@ -171,9 +171,8 @@
                     this.filterCpOutputsUrl = this.getEndpoint('filterCpOutputs').url + `?reload=${time}`;
                 },
 
-                _partnersLoaded: function(data, detail) {
-                    let partners = detail && detail.results,
-                        partnerId = partners && partners[0] && partners[0].id,
+                _partnersLoaded: function(data, partners) {
+                    let partnerId = partners && partners[0] && partners[0].id,
                         tpmUser = this.isTpmUser();
 
                     if (tpmUser && !partnerId) {
