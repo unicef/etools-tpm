@@ -62,8 +62,8 @@ Polymer({
             }, {
                 'size': 40,
                 'label': 'PD/SSFA ToR',
-                'labelPath': 'tpm_activities.partnership',
-                'path': 'partnership.title'
+                'labelPath': 'tpm_activities.intervention',
+                'path': 'intervention.title'
             }, {
                 'size': 10,
                 'name': 'date',
