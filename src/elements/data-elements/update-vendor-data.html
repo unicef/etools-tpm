@@ -19,6 +19,7 @@
             behaviors: [
                 etoolsAppConfig.globals,
                 TPMBehaviors.LastCreatedController,
+                TPMBehaviors.StaticDataController,
             ],
 
             properties: {
@@ -52,6 +53,8 @@
                 let partnerId = detail && detail.id;
                 this._setLastData(detail, `partner_${partnerId}`);
 
+                this.updateStaticData(detail);
+
                 this.vendorUpdating = false;
                 this.fire('vendor-updated', {success: true});
             },
@@ -72,6 +75,26 @@
 
                 this.set('errors', response);
                 this.fire('vendor-updated', {success: false});
+            },
+
+            updateStaticData: function(partner = {}) {
+                let id = partner.id,
+                    partners = this.getData('tpmPartners');
+
+                if (!partners || !id) {
+                    console.warn('Can not update partners static data. Id and partners must be defined');
+                    return;
+                }
+
+                let index = _.findIndex(partners, partner => partner.id === id);
+
+                if (~index) {
+                    partners.splice(index, 1, partner);
+                } else {
+                    partners.push(partner);
+                }
+
+                this._updateData('tpmPartners', partners);
             }
         });
     </script>
