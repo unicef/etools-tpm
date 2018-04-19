@@ -37,7 +37,7 @@ Polymer({
                             job_title: '',
                             phone_number: ''
                         },
-                        is_active: false
+                        is_active: true
                     }
                 };
             }
