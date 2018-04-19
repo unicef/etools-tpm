@@ -53,7 +53,7 @@ Polymer({
 
     _visitLoad: function(visit) {
         if (visit && visit.tpm_partner && visit.tpm_partner.id) {
-            this.partnerStaffUrl = this.getEndpoint('staffMembers', {id: visit.tpm_partner.id}).url;
+            this.partnerStaffUrl = this.getEndpoint('staffMembers', {id: visit.tpm_partner.id}).url + '?user__is_active=true';
         }
     },
 
