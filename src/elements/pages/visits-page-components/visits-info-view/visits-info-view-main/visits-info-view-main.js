@@ -248,9 +248,13 @@ Polymer({
         return data;
     },
 
-    confirmDialog: function() {
+    confirmDialog: function(e, details) {
         if (this.dialogOpened) {
-            this.rejectAction();
+            if (details.dialogName === 'reject') {
+                this.rejectAction();
+            } else if (details.dialogName === 'cancel') {
+                this.cancelVisit();
+            }
         } else {
             this.approveVisit();
         }
@@ -281,10 +285,18 @@ Polymer({
     cancelVisit: function() {
         if (!this.dialogOpened) { return; }
 
+        let data = {};
+        if (this.visit.status !== 'draft') {
+            let input = this.$.rejectionReasonInput;
+            if (!input) { throw 'Can not find input!'; }
+            if (!input.validate()) { return; }
+            data = {reject_comment: input.value};
+        }
+
         this.newVisitDetails = {
             method: 'POST',
             id: this.visit.id,
-            data: {},
+            data: data,
             message: 'Cancel visit...',
             action: 'cancel',
             ignorePatch: true
@@ -349,12 +361,15 @@ Polymer({
         if (type === 'reject') {
             this.dialogTitle = 'Reject Visit';
             this.isDeleteDialog = false;
-            this.rejectLabel = 'Reject Reason';
+            this.rejectField = 'report_reject_comments.reject_reason';
             this.rejectConfirm = 'Continue';
+            this.dialogName = 'reject';
         } else if (type === 'cancel') {
             this.dialogTitle = 'Do you want to cancel this visit?';
+            this.rejectField = 'cancel_comment';
             this.rejectConfirm = 'Continue';
-            this.isDeleteDialog = true;
+            this.dialogName = 'cancel';
+            this.isDeleteDialog = this.visit.status === 'draft';
         } else if (type === 'reject_report') {
             this.isRejectReportDialog = true;
             let title = `Report for ${this.visit.reference_number}`;
