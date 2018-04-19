@@ -197,6 +197,7 @@
 
         <dialog-element
                 opened="{{dialogOpened}}"
+                dialog-name="{{dialogName}}"
                 dialog-title="{{dialogTitle}}"
                 delete-dialog="{{isDeleteDialog}}"
                 confirm-btn-text="{{rejectConfirm}}">
@@ -206,8 +207,8 @@
                         <paper-textarea
                                 id="rejectionReasonInput"
                                 class="required"
-                                label="[[getLabel('report_reject_comments.reject_reason', permissionBase)]]"
-                                placeholder="[[getPlaceholderText('report_reject_comments.reject_reason', permissionBase)]]"
+                                label="[[getLabel(rejectField, permissionBase)]]"
+                                placeholder="[[getPlaceholderText(rejectField, permissionBase)]]"
                                 required
                                 max-rows="4"
                                 error-message="This field is required."
