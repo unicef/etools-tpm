@@ -53,13 +53,13 @@ Polymer({
 
     _visitLoad: function(visit) {
         if (visit && visit.tpm_partner && visit.tpm_partner.id) {
-            this.partnerStaffUrl = this.getEndpoint('staffMembers', {id: visit.tpm_partner.id}).url;
+            this.partnerStaffUrl = this.getEndpoint('staffMembers', {id: visit.tpm_partner.id}).url + '?page_size=all';
         }
     },
 
     _partnersLoad: function(data, details) {
         if (details) {
-            this.partners = details.results.map((partner) => {
+            this.partners = details.map((partner) => {
                 return {
                     id: partner.id,
                     name: `${partner.user.first_name} ${partner.user.last_name}`

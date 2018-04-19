@@ -21,6 +21,21 @@
                 if (!key || !data || !_staticData[key]) { return false; }
                 _staticData[key] = _.cloneDeep(data);
                 return true;
+            },
+
+            updateCollection: function(key, data = {}, trackBy = 'id') {
+                let id = data[trackBy];
+                if (!key || !id || !_staticData[key]) { return null; }
+
+                let index = _.findIndex(_staticData[key], item => item[trackBy] === id);
+
+                if (~index) {
+                    _staticData[key].splice(index, 1, data);
+                } else {
+                    _staticData[key].push(data);
+                }
+
+                return _staticData[key];
             }
         };
     })()
