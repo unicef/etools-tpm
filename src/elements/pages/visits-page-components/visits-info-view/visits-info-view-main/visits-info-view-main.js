@@ -290,7 +290,7 @@ Polymer({
             let input = this.$.rejectionReasonInput;
             if (!input) { throw 'Can not find input!'; }
             if (!input.validate()) { return; }
-            data = {reject_comment: input.value};
+            data = {cancel_comment: input.value};
         }
 
         this.newVisitDetails = {
