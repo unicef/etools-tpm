@@ -84,7 +84,7 @@
             <div class="row-h repeatable-item-container" without-line>
                 <div class="repeatable-item-content">
                     <div class="row-h group">
-                        <template is="dom-if" if="[[dialogOpened]]" restamp>
+                        <!--<template is="dom-if" if="[[dialogOpened]]" restamp>-->
                             <div class="input-container input-container-l">
                                 <!-- Implementing Partner -->
                                 <etools-searchable-multiselection-menu
@@ -110,7 +110,7 @@
                                 <paper-tooltip offset="0">[[editedItem.partner.name]]</paper-tooltip>
                                 <etools-loading active="{{partnerRequestInProcess}}" no-overlay loading-text="" class="loading"></etools-loading>
                             </div>
-                        </template>
+                        <!--</template>-->
                     </div>
 
                     <template is="dom-if" if="[[_showInterventions(editedItem.partner.partner_type)]]">
