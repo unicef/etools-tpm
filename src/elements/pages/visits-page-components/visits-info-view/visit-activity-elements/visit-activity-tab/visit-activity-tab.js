@@ -148,7 +148,7 @@ Polymer({
             type: Object,
             value: function() {
                 return {
-                    title: 'Add Visit Activity'
+                    title: 'Add Visit Task'
                 };
             }
         },
@@ -156,13 +156,13 @@ Polymer({
             type: Object,
             value: function() {
                 return {
-                    title: 'Edit Visit Activity'
+                    title: 'Edit Visit Task'
                 };
             }
         },
-        deleteTitle: {
+        removeDialogTitle: {
             type: String,
-            value: 'Are you sure that you want to delete this visit activity?'
+            value: 'Are you sure that you want to delete this visit task?'
         },
     },
 
