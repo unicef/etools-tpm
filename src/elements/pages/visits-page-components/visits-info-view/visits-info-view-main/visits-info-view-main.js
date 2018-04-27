@@ -249,23 +249,18 @@ Polymer({
     },
 
     confirmDialog: function(e, details) {
-        if (this.dialogOpened) {
-            if (details.dialogName === 'reject') {
-                this.rejectAction();
-            } else if (details.dialogName === 'cancel') {
-                this.cancelVisit();
-            }
+        if (this.dialogOpened && details.dialogName === 'cancel') {
+            this.cancelVisit();
+        } else if (this.dialogOpened) {
+            this.rejectAction();
         } else {
             this.approveVisit();
         }
     },
 
     rejectAction: function() {
-        if (!this.dialogOpened) { return; }
-        let input = this.$.rejectionReasonInput;
-
-        if (!input) { throw 'Can not find input!'; }
-        if (!input.validate()) { return; }
+        let input = this._getRejectionInput();
+        if (!input) { return; }
 
         let isReport = this.visit.status === 'tpm_reported';
 
@@ -283,26 +278,28 @@ Polymer({
     },
 
     cancelVisit: function() {
-        if (!this.dialogOpened) { return; }
-
-        let data = {};
-        if (this.visit.status !== 'draft') {
-            let input = this.$.rejectionReasonInput;
-            if (!input) { throw 'Can not find input!'; }
-            if (!input.validate()) { return; }
-            data = {cancel_comment: input.value};
-        }
+        let input = this._getRejectionInput();
+        if (!input) { return; }
 
         this.newVisitDetails = {
             method: 'POST',
             id: this.visit.id,
-            data: data,
+            data: {cancel_comment: input.value},
             message: 'Cancel visit...',
             action: 'cancel',
             ignorePatch: true
         };
 
         this.dialogOpened = false;
+    },
+
+    _getRejectionInput: function() {
+        if (!this.dialogOpened) { return; }
+        let input = this.$.rejectionReasonInput;
+
+        if (!input) { throw 'Can not find input!'; }
+        if (!input.validate()) { return; }
+        return input;
     },
 
     approveVisit: function() {
@@ -353,23 +350,21 @@ Polymer({
         event.target.invalid = false;
     },
 
-    _showRejectionReason: function(visit) {
-        return visit.status === 'tpm_rejected';
+    _showRejectionReason: function(visit, status) {
+        return visit.status === status;
     },
 
     manageCancellationDialog: function(type) {
         if (type === 'reject') {
             this.dialogTitle = 'Reject Visit';
-            this.isDeleteDialog = false;
-            this.rejectField = 'report_reject_comments.reject_reason';
+            this.rejectField = 'reject_comment';
             this.rejectConfirm = 'Continue';
-            this.dialogName = 'reject';
+            this.dialogName = '';
         } else if (type === 'cancel') {
             this.dialogTitle = 'Do you want to cancel this visit?';
             this.rejectField = 'cancel_comment';
             this.rejectConfirm = 'Continue';
             this.dialogName = 'cancel';
-            this.isDeleteDialog = this.visit.status === 'draft';
         } else if (type === 'reject_report') {
             this.isRejectReportDialog = true;
             let title = `Report for ${this.visit.reference_number}`;
@@ -377,9 +372,12 @@ Polymer({
                 title += `${this.visit.start_date} - ${this.visit.end_date}`;
             }
             this.dialogTitle = title;
+            this.rejectField = 'report_reject_comments.reject_reason';
             this.rejectConfirm = 'Send back to TPM';
-            this.isDeleteDialog = false;
+            this.dialogName = '';
         }
+
+        this.isDeleteDialog = false;
     },
 
     openCommentsDialog: function() {

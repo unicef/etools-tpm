@@ -46,16 +46,29 @@
 
         <div class="view-container">
             <div id="pageContent">
-                <template is="dom-if" if="{{_showRejectionReason(visit)}}">
+                <template is="dom-if" if="{{_showRejectionReason(visit, 'tpm_rejected')}}">
                     <etools-content-panel class="cancellation-tab" panel-title="">
                         <div class="group">
                             <div slot="panel-btns" class="bookmark">
                                 <iron-icon icon="bookmark"></iron-icon>
                             </div>
 
-                            <!--<div class="cancellation-title">[[getLabel('reject_comment', permissionBase)]]</div>-->
-                            <div class="cancellation-title">REJECTION REASON</div>
+                            <div class="cancellation-title">[[getLabel('reject_comment', permissionBase)]]</div>
+                            <!--<div class="cancellation-title">REJECTION REASON</div>-->
                             <div class="cancellation-text">[[visit.reject_comment]]</div>
+                        </div>
+                    </etools-content-panel>
+                </template>
+
+                <template is="dom-if" if="{{_showRejectionReason(visit, 'cancelled')}}">
+                    <etools-content-panel class="cancellation-tab" panel-title="">
+                        <div class="group">
+                            <div slot="panel-btns" class="bookmark">
+                                <iron-icon icon="bookmark"></iron-icon>
+                            </div>
+
+                            <div class="cancellation-title">[[getLabel('cancel_comment', permissionBase)]]</div>
+                            <div class="cancellation-text">[[visit.cancel_comment]]</div>
                         </div>
                     </etools-content-panel>
                 </template>
@@ -68,8 +81,8 @@
                                     <iron-icon icon="bookmark"></iron-icon>
                                 </div>
 
-                                <!--<div class="cancellation-title">[[getLabel('report_reject_comments.reject_reason', permissionBase)]]</div>-->
-                                <div class="cancellation-title">REQUEST FOR MORE INFORMATION</div>
+                                <div class="cancellation-title">[[getLabel('report_reject_comments.reject_reason', permissionBase)]]</div>
+                                <!--<div class="cancellation-title">REQUEST FOR MORE INFORMATION</div>-->
                                 <div class="cancellation-text">[[comments.0.reject_reason]]</div>
 
                                 <paper-button
@@ -208,7 +221,7 @@
                                 id="rejectionReasonInput"
                                 class="required"
                                 label="[[getLabel(rejectField, permissionBase)]]"
-                                placeholder="[[getPlaceholderText(rejectField, permissionBase)]]"
+                                placeholder="Enter [[getLabel(rejectField, permissionBase)]]"
                                 required
                                 max-rows="4"
                                 error-message="This field is required."
