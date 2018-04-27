@@ -51,14 +51,6 @@
                 assert.isTrue(spy.calledOnce);
             });
 
-            it('"dialog-confirmed" event calls updateVendor() method', function () {
-                let spy = sinon.spy(myEl, 'updateVendor');
-
-                assert.isFalse(spy.called);
-                myEl.fire('dialog-confirmed');
-                assert.isTrue(spy.calledOnce);
-            });
-
             it('"vendor-updated" event calls vendorUpdated() method', function () {
                 let spy = sinon.spy(myEl, 'vendorUpdated');
 
