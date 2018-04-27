@@ -54,6 +54,8 @@ Polymer({
                     locations: [],
                     section: null,
                     additional_information: '',
+                    unicef_focal_points: [],
+                    offices: []
                 };
             }
         },
@@ -137,6 +139,24 @@ Polymer({
                     'label': 'Additional information',
                     'labelPath': 'tpm_activities.additional_information',
                     'path': 'additional_information',
+                }, {
+                    'size': 100,
+                    'name': 'array',
+                    'property': 'name',
+                    'delimiter': ' <b>||</b> ',
+                    'html': 'true',
+                    'label': 'Unicef Focal Points',
+                    'labelPath': 'tpm_activities.unicef_focal_points',
+                    'path': 'unicef_focal_points',
+                },{
+                    'size': 100,
+                    'name': 'array',
+                    'property': 'name',
+                    'delimiter': ' <b>||</b> ',
+                    'html': 'true',
+                    'label': 'Offices',
+                    'labelPath': 'tpm_activities.offices',
+                    'path': 'offices',
                 }];
             }
         },
@@ -189,6 +209,13 @@ Polymer({
     ready: function() {
         this.partners = this.getData('partnerOrganisations') || [];
         this.sections = this.getData('sections') || [];
+        this.officesList = this.getData('offices');
+        this.unicefUsersList = (this.getData('unicefUsers') || []).map((user) => {
+            return {
+                id: user.id,
+                name: `${user.first_name} ${user.last_name}`
+            };
+        });
 
         this._updateLocations();
         document.addEventListener('locations-loaded', this._updateLocations.bind(this));
@@ -206,7 +233,8 @@ Polymer({
         let fields = [
             'tpm_activities.partner', 'tpm_activities.intervention',
             'tpm_activities.cp_output', 'tpm_activities.section', 'tpm_activities.date',
-            'tpm_activities.locations', 'tpm_activities.additional_information'
+            'tpm_activities.locations', 'tpm_activities.additional_information',
+            'tpm_activities.offices', 'tpm_activities.unicef_focal_points'
         ];
         //return true if some field can be edited
         return fields.some((field) => {
@@ -432,7 +460,7 @@ Polymer({
     },
 
     _getDifference: function(original = {}, edited = {}) {
-        let paths = ['partner.id', 'date', 'section.id', 'locations', 'additional_information', '_delete'];
+        let paths = ['partner.id', 'date', 'section.id', 'locations', 'additional_information', '_delete', 'offices', 'unicef_focal_points'];
         let optionsPaths = ['intervention.id', 'cp_output.id'];
         let allPaths = paths.concat(optionsPaths);
 
@@ -466,12 +494,10 @@ Polymer({
         let additionalInformation = _.get(changedData, 'additional_information');
         let date = _.get(changedData, 'date') || undefined;
         let _delete = _.get(changedData, '_delete');
-        let locations = _.isEqual(original.locations, currentData.locations) ? [] : (currentData.locations || []);
 
-        locations = locations.map((location) => {
-            return location && location.id;
-        });
-        locations = locations.length ? locations : undefined;
+        let locations = this._processArraysData(original, currentData, 'locations');
+        let unicef_focal_points = this._processArraysData(original, currentData, 'unicef_focal_points');
+        let offices = this._processArraysData(original, currentData, 'offices');
 
         return {
             partner: implementingPartner,
@@ -479,10 +505,14 @@ Polymer({
             cp_output: cpOutput,
             section,
             additional_information: additionalInformation,
-            date,
-            locations,
-            _delete,
+            date, locations, _delete, offices, unicef_focal_points
         };
+    },
+
+    _processArraysData: function(original, current, field) {
+        let data = _.isEqual(original[field], current[field]) ? [] : (current[field] || []);
+        data = data.map((item) => item && item.id);
+        return data.length ? data : undefined;
     },
 
     getActivitiesData: function() {

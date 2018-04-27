@@ -278,6 +278,60 @@
                             </paper-textarea>
                         </div>
                     </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
+                            <etools-searchable-multiselection-menu
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.unicef_focal_points', basePermissionPath)]] fua-description"
+                                    value="{{editedItem.unicef_focal_points}}"
+                                    label="[[getLabel('tpm_activities.unicef_focal_points', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.unicef_focal_points', basePermissionPath)]]"
+                                    options="[[unicefUsersList]]"
+                                    custom-object-options
+                                    option-label="name"
+                                    option-value="id"
+                                    update-selected
+                                    required$="[[_setRequired('tpm_activities.unicef_focal_points', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly('tpm_activities.unicef_focal_points', 'true', 'true', someRequestInProcess, basePermissionPath)]]"
+                                    readonly$="[[_isReadOnly('tpm_activities.unicef_focal_points', 'true', 'true', someRequestInProcess, basePermissionPath)]]"
+                                    invalid="{{errors.unicef_focal_points}}"
+                                    error-message="{{errors.unicef_focal_points}}"
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError"
+                                    dynamic-align
+                                    multi
+                                    no-title-attr>
+                            </etools-searchable-multiselection-menu>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
+                            <etools-searchable-multiselection-menu
+                                    class$="validate-input disabled-as-readonly [[_setRequired('tpm_activities.offices', basePermissionPath)]] fua-description"
+                                    value="{{editedItem.offices}}"
+                                    label="[[getLabel('tpm_activities.offices', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('tpm_activities.offices', basePermissionPath)]]"
+                                    options="[[officesList]]"
+                                    custom-object-options
+                                    option-label="name"
+                                    option-value="id"
+                                    update-selected
+                                    required$="[[_setRequired('tpm_activities.offices', basePermissionPath)]]"
+                                    disabled$="[[_isReadOnly('tpm_activities.offices', 'true', 'true', someRequestInProcess, basePermissionPath))]]"
+                                    readonly$="[[_isReadOnly('tpm_activities.offices', 'true', 'true', someRequestInProcess, basePermissionPath))]]"
+                                    invalid="{{errors.offices}}"
+                                    error-message="{{errors.offices}}"
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError"
+                                    dynamic-align
+                                    multi
+                                    hide-search
+                                    no-title-attr>
+                            </etools-searchable-multiselection-menu>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </dialog-element>

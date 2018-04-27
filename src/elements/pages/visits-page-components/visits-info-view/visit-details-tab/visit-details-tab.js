@@ -37,13 +37,7 @@ Polymer({
     ],
 
     ready: function() {
-        this.officesList = this.getData('offices');
-        this.unicefUsersList = (this.getData('unicefUsers') || []).map((user) => {
-            return {
-                id: user.id,
-                name: `${user.first_name} ${user.last_name}`
-            };
-        });
+
     },
 
     _resetFieldError: function(event) {
