@@ -179,12 +179,8 @@
             if (this.originalData.email !== this.data.email) { updateData.email = this.data.email || null; }
             if (this.originalData.hidden === true) { updateData.hidden = false; }
 
-            if (_.isEqual(updateData, {})) {
-                this.vendorUpdated();
-            } else {
-                this.requestInProcess = true;
-                this.updateData = updateData;
-            }
+            this.requestInProcess = true;
+            this.updateData = updateData;
         },
 
         vendorUpdated: function(event, detail) {
