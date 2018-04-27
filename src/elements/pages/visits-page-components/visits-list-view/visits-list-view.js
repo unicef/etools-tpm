@@ -269,7 +269,7 @@
                 name: 'Locations Level',
                 url: this.getEndpoint('visitsList').url + 'locations/export/'
             },{
-                name: 'Activities Level',
+                name: 'Tasks Level',
                 url: this.getEndpoint('visitsList').url + 'activities/export/'
             },{
                 name: 'Visit Level',
