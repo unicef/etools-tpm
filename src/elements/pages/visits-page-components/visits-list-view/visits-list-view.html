@@ -10,7 +10,7 @@
                 position: relative;
                 display: block;
             }
-
+            .tpm-partner-drd { margin-bottom: 12px; }
             pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
 
             etools-searchable-multiselection-menu {
@@ -21,7 +21,7 @@
             }
         </style>
 
-        <create-visit partner-id="{{newPartnerId}}"></create-visit>
+        <create-visit partner-id="{{newPartnerId}}" error-object="{{errorObject}}"></create-visit>
         <app-location path="{{path}}"></app-location>
 
         <visits-list-data
@@ -63,7 +63,7 @@
                 request-in-process="[[requestInProcess]]"
                 dialog-title="Add new Visit"
                 confirm-btn-text="Add">
-            <div class="row-h repeatable-item-container" without-line>
+            <div class="row-h repeatable-item-container tpm-partner-drd" without-line>
                 <!-- TPM Vendor -->
                 <etools-searchable-multiselection-menu
                         id="partnerInput"
@@ -78,7 +78,8 @@
                         required
                         disabled$="[[requestInProcess]]"
                         readonly$="[[requestInProcess]]"
-                        error-message="This field is required"
+                        error-message="{{errorObject.tpm_partner}}"
+                        invalid="{{errorObject.tpm_partner}}"
                         on-focus="_resetFieldError"
                         on-tap="_resetFieldError"
                         no-title-attr>
