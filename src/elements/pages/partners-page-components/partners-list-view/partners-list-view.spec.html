@@ -306,18 +306,6 @@
                 assert.deepEqual(myEl.updateData, {hidden: false});
             });
 
-            it('calls vendorUpdated() method if data wasn\'t changed', function () {
-                let spy = sinon.spy(myEl, 'vendorUpdated');
-
-                assert.isUndefined(myEl.updateData);
-                assert.isFalse(spy.called);
-
-                myEl.updateVendor();
-
-                assert.isUndefined(myEl.updateData);
-                assert.isTrue(spy.calledOnce);
-            });
-
             it('sets requestInProcess property to true if data was changed', function () {
                 myEl.data.email = 'new_email';
                 myEl.requestInProcess = false;
