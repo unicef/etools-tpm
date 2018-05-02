@@ -64,58 +64,9 @@
                 </div>
             </div>
 
-            <div class="row-h group">
-                <div class="input-container input-container-l">
-                    <etools-searchable-multiselection-menu
-                            class$="disabled-as-readonly validate-input [[_setRequired('unicef_focal_points', permissionBase)]] fua-description"
-                            value="{{visit.unicef_focal_points}}"
-                            label="[[getLabel('unicef_focal_points', permissionBase)]]"
-                            placeholder="[[getPlaceholderText('unicef_focal_points', permissionBase)]]"
-                            options="[[unicefUsersList]]"
-                            custom-object-options
-                            option-label="name"
-                            option-value="id"
-                            selected-values="{{selectedFocalPoints}}"
-                            required$="[[_setRequired('unicef_focal_points', permissionBase)]]"
-                            disabled$="[[isReadOnly('unicef_focal_points', permissionBase)]]"
-                            readonly$="[[isReadOnly('unicef_focal_points', permissionBase)]]"
-                            invalid="{{errors.unicef_focal_points}}"
-                            error-message="{{errors.unicef_focal_points}}"
-                            on-focus="_resetFieldError"
-                            on-tap="_resetFieldError"
-                            dynamic-align
-                            multi
-                            no-title-attr>
-                    </etools-searchable-multiselection-menu>
-                </div>
-            </div>
 
-            <div class="row-h group">
-                <div class="input-container input-container-l">
-                    <etools-searchable-multiselection-menu
-                            class$="disabled-as-readonly validate-input [[_setRequired('offices', permissionBase)]] fua-description"
-                            value="{{visit.offices}}"
-                            label="[[getLabel('offices', permissionBase)]]"
-                            placeholder="[[getPlaceholderText('offices', permissionBase)]]"
-                            options="[[officesList]]"
-                            custom-object-options
-                            option-label="name"
-                            option-value="id"
-                            selected-values="{{selectedOfficers}}"
-                            required$="[[_setRequired('offices', permissionBase)]]"
-                            disabled$="[[isReadOnly('offices', permissionBase)]]"
-                            readonly$="[[isReadOnly('offices', permissionBase)]]"
-                            invalid="{{errors.offices}}"
-                            error-message="{{errors.offices}}"
-                            on-focus="_resetFieldError"
-                            on-tap="_resetFieldError"
-                            dynamic-align
-                            multi
-                            hide-search
-                            no-title-attr>
-                    </etools-searchable-multiselection-menu>
-                </div>
-            </div>
+
+
 
             <div class="row-h group">
                 <div class="input-container input-container-l">
