@@ -51,14 +51,6 @@
                 assert.isTrue(spy.calledOnce);
             });
 
-            it('"dialog-confirmed" event calls updateVendor() method', function () {
-                let spy = sinon.spy(myEl, 'updateVendor');
-
-                assert.isFalse(spy.called);
-                myEl.fire('dialog-confirmed');
-                assert.isTrue(spy.calledOnce);
-            });
-
             it('"vendor-updated" event calls vendorUpdated() method', function () {
                 let spy = sinon.spy(myEl, 'vendorUpdated');
 
@@ -312,18 +304,6 @@
                 assert.isUndefined(myEl.updateData);
                 myEl.updateVendor();
                 assert.deepEqual(myEl.updateData, {hidden: false});
-            });
-
-            it('calls vendorUpdated() method if data wasn\'t changed', function () {
-                let spy = sinon.spy(myEl, 'vendorUpdated');
-
-                assert.isUndefined(myEl.updateData);
-                assert.isFalse(spy.called);
-
-                myEl.updateVendor();
-
-                assert.isUndefined(myEl.updateData);
-                assert.isTrue(spy.calledOnce);
             });
 
             it('sets requestInProcess property to true if data was changed', function () {

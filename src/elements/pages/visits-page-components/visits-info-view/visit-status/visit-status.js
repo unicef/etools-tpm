@@ -64,8 +64,12 @@ Polymer({
     },
 
     hideStatus: function(currentStatus, status) {
-        return (status === 'tpm_accepted' && currentStatus === 'tpm_rejected') ||
-            (status === 'tpm_rejected' && currentStatus !== 'tpm_rejected') ||
+        let acceptedDate = _.get(this, 'visit.date_of_tpm_accepted'),
+            rejectedDate = _.get(this, 'visit.date_of_tpm_rejected'),
+            canceledStatus = currentStatus === 'cancelled';
+
+        return (status === 'tpm_accepted' && (currentStatus === 'tpm_rejected' || (canceledStatus && rejectedDate))) ||
+            (status === 'tpm_rejected' && currentStatus !== 'tpm_rejected' && (!canceledStatus || acceptedDate || !rejectedDate)) ||
             (status === 'tpm_report_rejected' && currentStatus !== 'tpm_report_rejected') ||
             (status === 'cancelled' && currentStatus !== 'cancelled') ||
             (status === 'tpm_reported' && currentStatus === 'tpm_report_rejected') ||

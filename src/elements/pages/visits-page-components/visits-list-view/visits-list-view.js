@@ -244,12 +244,13 @@
         },
 
         addNewVisit: function() {
-            if (!this.$.partnerInput.validate()) { return; }
             let newPartnerId = this.get('partnerOrganisation.id');
 
             if (newPartnerId || newPartnerId === 0) {
                 this.newPartnerId = newPartnerId;
                 this.requestInProcess = true;
+            } else {
+                this.set('errorObject.tpm_partner', 'This field is required')
             }
         },
 
@@ -269,7 +270,7 @@
                 name: 'Locations Level',
                 url: this.getEndpoint('visitsList').url + 'locations/export/'
             },{
-                name: 'Activities Level',
+                name: 'Tasks Level',
                 url: this.getEndpoint('visitsList').url + 'activities/export/'
             },{
                 name: 'Visit Level',
