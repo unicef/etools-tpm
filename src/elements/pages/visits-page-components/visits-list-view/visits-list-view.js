@@ -250,7 +250,7 @@
                 this.newPartnerId = newPartnerId;
                 this.requestInProcess = true;
             } else {
-                this.set('errorObject.tpm_partner', 'This field is required')
+                this.set('errorObject.tpm_partner', 'This field is required');
             }
         },
 
