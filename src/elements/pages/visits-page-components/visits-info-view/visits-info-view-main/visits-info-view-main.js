@@ -144,10 +144,6 @@ Polymer({
         'visit-updated': 'notifyAboutLetter'
     },
 
-    ready: function() {
-        this.visitFileTypes = this.getData('visit_attachments_types') || [];
-    },
-
     _setPermissionBase: function(id) {
         id = +id;
         if (!id && id !== 0) {
@@ -158,6 +154,7 @@ Polymer({
         this.reportFileTypes = this.getChoices(`${this.permissionBase}.tpm_activities.report_attachments.file_type`) || [];
         this.simpleFileTypes = this.getChoices(`${this.permissionBase}.report_attachments.file_type`) || [];
         this.actionPointStatues = this.getChoices(`${this.permissionBase}.action_points.status`) || [];
+        this.visitFileTypes = this.getChoices(`${this.permissionBase}.tpm_activities.attachments.file_type`) || [];
     },
 
     _attachmentsReadonly: function(base, type) {

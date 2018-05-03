@@ -496,7 +496,7 @@ Polymer({
         let _delete = _.get(changedData, '_delete');
 
         let locations = this._processArraysData(original, currentData, 'locations');
-        let unicef_focal_points = this._processArraysData(original, currentData, 'unicef_focal_points');
+        let unicefFocalPoints = this._processArraysData(original, currentData, 'unicef_focal_points');
         let offices = this._processArraysData(original, currentData, 'offices');
 
         return {
@@ -505,7 +505,8 @@ Polymer({
             cp_output: cpOutput,
             section,
             additional_information: additionalInformation,
-            date, locations, _delete, offices, unicef_focal_points
+            date, locations, _delete, offices,
+            unicef_focal_points: unicefFocalPoints
         };
     },
 

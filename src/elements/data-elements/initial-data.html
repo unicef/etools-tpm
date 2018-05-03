@@ -255,13 +255,8 @@
                     this._addToCollection('new_visit', actions);
 
                     let statusesData = this.getChoices('new_visit.status');
-                    let visitAttachmentsTypes = this.getChoices('new_visit.tpm_activities.attachments.file_type');
-
                     if (!statusesData) { console.error('Can not load visit statuses data'); }
-                    if (!visitAttachmentsTypes) { this._responseError('Can not load visit attachments types'); }
-
                     this._setData('statuses', statusesData);
-                    this._setData('visit_attachments_types', visitAttachmentsTypes);
 
                     dataLoaded.visitsOptions = true;
                     this._allDataLoaded();
@@ -275,10 +270,6 @@
                     }
 
                     this._addToCollection('new_partner', actions);
-
-                    let partnerAttachmentsTypes = this.getChoices('new_partner.attachments.file_type');
-                    if (!partnerAttachmentsTypes) { this._responseError('Can not load attachments types'); }
-                    this._setData('partner_attachments_types', partnerAttachmentsTypes);
 
                     dataLoaded.partnersOptions = true;
                     this._allDataLoaded();

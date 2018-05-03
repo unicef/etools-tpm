@@ -43,7 +43,6 @@ Polymer({
     },
 
     ready: function() {
-        this.partnerFileTypes = this.getData('partner_attachments_types');
         this.statuses = this.getData('partner_statuses');
     },
 
@@ -54,6 +53,7 @@ Polymer({
         } else {
             this.permissionBase = `partner_${id}`;
         }
+        this.partnerFileTypes = this.getChoices(`${this.permissionBase}.attachments.file_type`);
     },
 
     _hideActions: function(permissionBase) {
