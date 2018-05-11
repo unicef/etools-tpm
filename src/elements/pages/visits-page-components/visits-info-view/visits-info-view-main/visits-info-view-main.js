@@ -94,8 +94,8 @@ Polymer({
                 }, {
                     'size': 45,
                     'label': 'Partnership',
-                    'labelPath': 'tpm_activities.partnership',
-                    'path': 'partnership.title'
+                    'labelPath': 'tpm_activities.intervention',
+                    'path': 'intervention.title'
                 }, {
                     'size': '150px',
                     'label': 'HACT Programmatic Visit',
