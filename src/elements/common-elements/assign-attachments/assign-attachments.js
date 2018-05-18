@@ -219,7 +219,6 @@ Polymer({
                 id: this.removedFileData.parentId,
                 [this.filesProperty]: [{
                     id: this.removedFileData.fileId,
-                    hyperlink: this.removedFileData.hyperlink,
                     _delete: true,
                 }]
             }];

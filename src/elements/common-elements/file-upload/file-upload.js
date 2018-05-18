@@ -146,7 +146,6 @@
             if (deletedFile && deletedFile.id) {
                 this.deletedFiles.push({
                     id: deletedFile.id,
-                    hyperlink: deletedFile.file,
                     _delete: true,
                 });
             }

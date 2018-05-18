@@ -106,7 +106,6 @@
                 this.fire('delete-assigned-file', {
                     parentId: this.parentId,
                     fileId: item.id,
-                    hyperlink: item.file,
                 });
             }
         },
