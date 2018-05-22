@@ -1,13 +1,13 @@
-<!--import [polymer, etools-ajax]-->
+<!--import [polymer, etools-ajax-sp]-->
 <!--import [query-params-controller, etools-app-config]-->
 
 <dom-module id="partners-list-data">
     <template>
-        <etools-ajax
+        <etools-ajax-sp
                 endpoint="[[endpoint]]"
                 on-success="_partnersLoaded"
                 on-fail="_responseError">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>

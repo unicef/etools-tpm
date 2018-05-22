@@ -1,20 +1,20 @@
-<!--import [polymer, etools-ajax, lodash]-->
+<!--import [polymer, etools-ajax-sp, lodash]-->
 <!--import [permission-controller, last-created-behavior]-->
 
 <dom-module id="partner-details-data">
     <template>
-        <etools-ajax
+        <etools-ajax-sp
                 url="[[url]]"
                 on-success="_handleDataResponse"
                 on-fail="_handleError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
-        <etools-ajax
+        <etools-ajax-sp
                 method="OPTIONS"
                 url="[[optionsUrl]]"
                 on-success="_handleOptionsResponse"
                 on-fail="_handleOptionsResponse">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>

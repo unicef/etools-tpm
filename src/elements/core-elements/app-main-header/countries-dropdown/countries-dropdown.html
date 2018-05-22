@@ -1,17 +1,17 @@
-<!--import [polymer, etools-app-config, paper-dropdown-menu, paper-listbox, paper-item, etools-ajax]-->
+<!--import [polymer, etools-app-config, paper-dropdown-menu, paper-listbox, paper-item, etools-ajax-sp]-->
 
 <dom-module id="countries-dropdown">
   <template>
     <!-- inject styles './../header-styles.scss'-->
 
-    <etools-ajax
+    <etools-ajax-sp
             method="POST"
             url="{{url}}"
             body="{{countryData}}"
             on-success="_handleResponse"
             on-forbidden="_handleError"
             on-fail="_handleError">
-    </etools-ajax>
+    </etools-ajax-sp>
 
     <paper-menu-button
             id="dropdown"

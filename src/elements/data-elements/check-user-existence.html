@@ -1,14 +1,14 @@
-<!--import [polymer, etools-ajax]-->
+<!--import [polymer, etools-ajax-sp]-->
 <!--import [etools-app-config]-->
 
 <dom-module id="check-user-existence">
     <template>
-        <etools-ajax
+        <etools-ajax-sp
                 method="GET"
                 url="{{url}}"
                 on-success="_handleResponse"
                 on-fail="_handleError">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>

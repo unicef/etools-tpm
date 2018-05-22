@@ -1,13 +1,13 @@
-<!--import [polymer, etools-ajax, lodash]-->
+<!--import [polymer, etools-ajax-sp, lodash]-->
 <!--import [etools-app-config]-->
 
 <dom-module id="get-partner-organisation-data">
     <template>
-        <etools-ajax
+        <etools-ajax-sp
                 url="[[url]]"
                 on-success="_handleResponse"
                 on-fail="_handleError">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>

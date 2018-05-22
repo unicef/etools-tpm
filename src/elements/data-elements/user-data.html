@@ -1,16 +1,16 @@
-<!--import [polymer, etools-ajax, lodash]-->
+<!--import [polymer, etools-ajax-sp, lodash]-->
 <!--import [permission-controller, user-controller]-->
 
 <dom-module id="user-data">
     <template>
-        <etools-ajax
+        <etools-ajax-sp
                 endpoint="[[endpoint]]"
                 caching-storage="custom"
                 dexie-db-collection="profile"
                 on-success="_handleResponse"
                 on-forbidden="_forbidden"
                 on-fail="_handleError">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>

@@ -1,23 +1,23 @@
-<!--import [polymer, etools-ajax, lodash]-->
+<!--import [polymer, etools-ajax-sp, lodash]-->
 <!--import [etools-app-config, last-created-behavior]-->
 
 <dom-module id="update-vendor-data">
     <template>
-        <etools-ajax
+        <etools-ajax-sp
                 method="PATCH"
                 url="{{url}}"
                 body="{{postData}}"
                 on-success="_handleResponse"
                 on-fail="_handleError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
-        <etools-ajax
+        <etools-ajax-sp
                 method="POST"
                 url="{{activateUrl}}"
                 body="{{activateData}}"
                 on-success="_handleActivateResponse"
                 on-fail="_handleActivateResponse">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>

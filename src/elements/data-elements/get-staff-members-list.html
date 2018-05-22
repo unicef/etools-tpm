@@ -1,21 +1,21 @@
-<!--import [polymer, etools-ajax, lodash]-->
+<!--import [polymer, etools-ajax-sp, lodash]-->
 <!--import [etools-app-config, permission-controller]-->
 
 <dom-module id="get-staff-members-list">
     <template>
-        <etools-ajax
+        <etools-ajax-sp
                 method="GET"
                 url="{{url}}"
                 on-success="_handleDataResponse"
                 on-fail="_handleError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
-        <etools-ajax
+        <etools-ajax-sp
                 method="OPTIONS"
                 url="[[optionsUrl]]"
                 on-success="_handleOptionsResponse"
                 on-fail="_handleOptionsResponse">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>

@@ -1,22 +1,22 @@
-<!--import [polymer, etools-ajax, lodash]-->
+<!--import [polymer, etools-ajax-sp, lodash]-->
 <!--import [permission-controller, etools-app-config, update-data-behavior]-->
 
 <dom-module id="update-visit-details-data">
     <template>
-        <etools-ajax
+        <etools-ajax-sp
                 method="{{method}}"
                 url="{{url}}"
                 body="{{postData}}"
                 on-success="_handleResponse"
                 on-fail="_handleError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
-        <etools-ajax
+        <etools-ajax-sp
                 method="OPTIONS"
                 url="[[optionsUrl]]"
                 on-success="_handleOptionsResponse"
                 on-fail="_handleOptionsResponse">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>

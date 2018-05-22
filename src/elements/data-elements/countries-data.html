@@ -1,13 +1,13 @@
-<!--import [polymer, etools-ajax]-->
+<!--import [polymer, etools-ajax-sp]-->
 
 <dom-module id="countries-data">
   <template>
-    <etools-ajax
+    <etools-ajax-sp
             id="ajax"
             endpoint="[[endpoint]]"
             on-success="_handleResponse"
             caching-storage="dexie">
-    </etools-ajax>
+    </etools-ajax-sp>
   </template>
 
   <script>

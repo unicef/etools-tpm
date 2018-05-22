@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax]-->
+<!--import [polymer, etools-ajax-sp]-->
 <!--import [static-data-behavior, user-controller, user-data]-->
 
 <dom-module id="initial-data">
@@ -6,86 +6,86 @@
         <user-data user="{{user}}"></user-data>
 
         <!--tpm partners-->
-        <etools-ajax
+        <etools-ajax-sp
                 id="tpmPartners"
                 url="[[partnersUrl]]"
                 on-success="_partnersLoaded"
                 on-fail="_partnersError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
-        <etools-ajax
+        <etools-ajax-sp
                 method="OPTIONS"
                 url="[[partnersOptionsUrl]]"
                 on-success="_handlePartnersOptions"
                 on-fail="_handlePartnersOptions">
-        </etools-ajax>
+        </etools-ajax-sp>
 
-        <etools-ajax
+        <etools-ajax-sp
                 method="OPTIONS"
                 url="[[visitsOptionsUrl]]"
                 on-success="_handleVisitsOptions"
                 on-fail="_handleVisitsOptions">
-        </etools-ajax>
+        </etools-ajax-sp>
 
         <!--partner organisations-->
-        <etools-ajax
+        <etools-ajax-sp
                 endpoint="[[organisationsEndpoint]]"
                 caching-storage="custom"
                 dexie-db-collection="partners"
                 on-success="_organisationsLoaded"
                 on-fail="_organisationsError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
         <!-- filter TP-->
-        <etools-ajax
+        <etools-ajax-sp
                 url="[[filterIPUrl]]"
                 on-success="_filterIPLoaded"
                 on-fail="_filterIPError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
         <!-- filter Sections-->
-        <etools-ajax
+        <etools-ajax-sp
                 url="[[filterSectionsUrl]]"
                 on-success="_filterSectionsLoaded"
                 on-fail="_filterSectionsError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
         <!-- filter CP Outputs-->
-        <etools-ajax
+        <etools-ajax-sp
                 url="[[filterCpOutputsUrl]]"
                 on-success="_filterOutputsLoaded"
                 on-fail="_filterOutputsError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
         <!--Sections Covered-->
-        <etools-ajax
+        <etools-ajax-sp
                 url="[[sectionsEndpoint]]"
                 on-success="_sectionsLoaded"
                 on-fail="_sectionsError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
         <!--Unicef Users-->
-        <etools-ajax
+        <etools-ajax-sp
                 url="[[unicefUsersEndpoint]]"
                 on-success="_unicefUsersLoaded"
                 on-fail="_unicefUsersError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
         <!--Offices-->
-        <etools-ajax
+        <etools-ajax-sp
                 url="[[officesEndpoint]]"
                 on-success="_officesLoaded"
                 on-fail="_officesError">
-        </etools-ajax>
+        </etools-ajax-sp>
 
         <!--Locations-->
-        <etools-ajax
+        <etools-ajax-sp
                 endpoint="[[locationsEndpoint]]"
                 caching-storage="custom"
                 dexie-db-collection="locations"
                 on-success="_locationsLoaded"
                 on-fail="_locationsError">
-        </etools-ajax>
+        </etools-ajax-sp>
     </template>
 
     <script>
