@@ -42,6 +42,7 @@ Polymer({
             this.resetLastView();
             return;
         }
+        if (this.lastView === view) { return; }
 
         if (view === 'list' && !this.isTpmUser()) {
             let queries = this._configListParams(this.initiation++);

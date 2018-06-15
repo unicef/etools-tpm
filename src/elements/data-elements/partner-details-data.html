@@ -15,6 +15,14 @@
                 on-success="_handleOptionsResponse"
                 on-fail="_handleOptionsResponse">
         </etools-ajax-sp>
+
+        <etools-ajax-sp
+                method="OPTIONS"
+                url="[[attachmentsOptionsUrl]]"
+                on-success="_handleAtmOptionsResponse"
+                on-fail="_handleAtmOptionsResponse"
+                on-forbidden="_handleAtmOptionsResponse">
+        </etools-ajax-sp>
     </template>
 
     <script>
@@ -63,8 +71,17 @@
                 this._finishRequests(this.responseData || {});
             },
 
+            _handleAtmOptionsResponse: function(data) {
+                let actions = _.get(data, 'detail.actions', {}),
+                    name = _.get(data, 'detail.name', '');
+                this._addToCollection(`partner_${this.partnerId}_attachments`, actions || {}, name);
+
+                this.requestsCompleted.atmOptions = true;
+                this._finishRequests(this.responseData);
+            },
+
             _finishRequests: function(data) {
-                if (!this.requestsCompleted.data || !this.requestsCompleted.options) { return; }
+                if (!this.requestsCompleted.data || !this.requestsCompleted.options || !this.requestsCompleted.atmOptions) { return; }
 
                 if (data) {
                     let partnerId = data && data.id;
@@ -96,8 +113,11 @@
 
                 if (this.collectionExists(`partner_${id}`)) {
                     this.requestsCompleted.options = true;
+                    this.requestsCompleted.atmOptions = true;
                 } else {
                     this.optionsUrl = this.getEndpoint('partnerDetails', {id: id}).url;
+                    let attachmentsOptionsUrl = this.getEndpoint('partnerDetails', {id: id}).url;
+                    this.attachmentsOptionsUrl = `${attachmentsOptionsUrl}attachments/`;
                 }
 
                 let lastCreated = this.getLastData(id, `partner_${id}`);

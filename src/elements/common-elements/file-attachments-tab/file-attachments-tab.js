@@ -5,32 +5,29 @@
         is: 'file-attachments-tab',
 
         behaviors: [
-            TPMBehaviors.TableElementsBehavior
+            TPMBehaviors.TableElementsBehavior,
+            TPMBehaviors.CommonMethodsBehavior,
         ],
 
         properties: {
-            mainProperty: {
-                type: String
+            dataItems: {
+                type: Array,
+                value: () => []
             },
             itemModel: {
                 type: Object,
                 value: function() {
                     return {
-                        id: undefined,
-                        created: undefined,
                         file: undefined,
                         file_name: undefined,
-                        raw: undefined,
                         file_type: undefined,
-                        display_name: undefined,
                         type: {},
                     };
                 }
             },
             headings: {
                 type: Array,
-                notify: true,
-                value: []
+                value: () => []
             },
             addDialogTexts: {
                 type: Object,
@@ -54,27 +51,9 @@
                 type: String,
                 value: 'Upload File'
             },
-            readonly: {
-                type: Boolean,
-                value: false
-            },
             fileTypes: {
                 type: Array,
-                value: function() {
-                    return [];
-                }
-            },
-            fileTypeRequired: {
-                type: Boolean,
-                value: false
-            },
-            fileTypesLabel: {
-                type: String,
-                value: 'Document Type'
-            },
-            allowEdit: {
-                type: Boolean,
-                value: false
+                value: () => []
             },
             deleteTitle: {
                 type: String,
@@ -83,66 +62,74 @@
         },
 
         listeners: {
-            'dialog-confirmed': '_addItemFromDialog',
-            'delete-confirmed': 'removeItem',
+            'dialog-confirmed': '_sendRequest',
+            'delete-confirmed': '_sendRequest',
+            'attachments-request-completed': '_requestCompleted'
         },
 
         observers: [
+            '_setBasePath(dataBasePath)',
             '_filesChange(dataItems.*, fileTypes.*)',
-            '_updateHeadings(fileTypeRequired, mainProperty)',
+            '_updateHeadings(basePermissionPath)',
             'resetDialog(dialogOpened)',
             '_errorHandler(errorObject)',
-            'updateStyles(requestInProcess, editedItem)',
+            'updateStyles(requestInProcess, editedItem, basePermissionPath)',
         ],
 
+        _setBasePath: function(dataBase) {
+            let base = dataBase ? `${dataBase}_attachments` : '';
+            this.set('basePermissionPath', base);
+            if (base) {
+                let title = this.getFieldAttribute(base, 'title');
+                this.set('tabTitle', title);
+                this.fileTypes = this.getChoices(`${base}.file_type`);
+            }
+        },
+
+        showFileTypes: function(basePath) {
+            return !!basePath && this.collectionExists(`${basePath}.file_type`, 'GET');
+        },
+
         _getFileType: function(fileType) {
-            if (this.fileTypes && this.fileTypes.length > 0) {
-                let type = this.fileTypes.filter(function(type) {
-                    return parseInt(type.value, 10) === parseInt(fileType, 10);
-                })[0];
-                return type || null;
-            }
-            return null;
+            let length = _.get(this, 'fileTypes.length');
+            if (!length) { return; }
+
+            let type = this.fileTypes.find((type) => parseInt(type.value, 10) === parseInt(fileType, 10));
+            return type || null;
         },
 
-        _showAddBtn: function(filesLength, readonly) {
-            if (readonly === true) {
-                return false;
-            }
-
-            if (!this.multiple && filesLength > 0) {
-                return false;
-            }
-
-            return true;
+        isTabReadonly: function(basePath) {
+            let readOnly = !basePath || this.isReadonly(basePath);
+            if (readOnly === null) { readOnly = true; }
+            return readOnly;
         },
 
-        _setRequiredClass: function(required) {
-            return required ? 'required' : '';
+        _showAddBtn: function(filesLength, basePath) {
+            return !this.isTabReadonly(basePath) && (this.multiple || filesLength === 0);
         },
 
-        _updateHeadings: function(fileTypeRequired) {
-            let mainProperty = this.mainProperty;
+        _updateHeadings: function(basePermissionPath) {
             let headings = [{
                 'size': '150px',
                 'name': 'date',
-                'label': 'Date Uploaded',
-                'labelPath': `${mainProperty}.created`,
+                'label': 'Date Uploaded!',
+                'labelPath': `created`,
                 'path': 'created'
             }, {
                 'size': 65,
-                'label': 'File Attachment',
-                'labelPath': `${mainProperty}.file`,
-                'property': 'file_name',
+                'label': 'File Attachment!',
+                'labelPath': `filename`,
+                'property': 'filename',
                 'custom': true,
                 'doNotHide': false
             }];
 
-            if (fileTypeRequired) {
+            let showFileTypes = this.showFileTypes(basePermissionPath);
+            if (showFileTypes) {
                 headings.splice(1, 0, {
                     'size': 35,
-                    'label': 'Document Type',
-                    'labelPath': `${mainProperty}.file_type`,
+                    'label': 'Document Type!',
+                    'labelPath': `file_type`,
                     'path': 'display_name'
                 });
             }
@@ -167,39 +154,17 @@
             let file = files[0];
 
             if (file && file instanceof File) {
-                let blob = new Blob([file]);
-                let url  = URL.createObjectURL(blob);
-
                 this.set('editedItem.file_name', file.name);
-                this.editedItem.raw = file;
-                this.editedItem.file = url;
-                this.editedItem.created = new Date().toISOString();
+                this.editedItem.file = file;
 
                 return !this._fileAlreadySelected();
-            }
-        },
-
-        _setFileType: function(e, detail) {
-            if (detail && detail.selectedValues) {
-                this.editedItem.type = detail.selectedValues;
-                this.editedItem.display_name = detail.selectedValues.display_name;
-                this.editedItem.file_type = detail.selectedValues.value;
             }
         },
 
         _filesChange: function() {
             if (!this.dataItems) { return false; }
 
-            this.dataItems.forEach((file, index) => {
-                if (file.file && file.id && !file.file_name) {
-                    file.file_name = this._getFilenameFromUrl(file.file);
-                }
-
-                if (!file.file_name) {
-                    this.splice('dataItems', index, 1);
-                    return;
-                }
-
+            this.dataItems.forEach((file) => {
                 if (file.file_type !== undefined && !file.display_name) {
                     let type = this._getFileType(file.file_type) || {};
                     file.type = type;
@@ -207,97 +172,58 @@
                 }
             });
 
-            if (!this.multiple) {
-                if (this.dataItems instanceof Array && this.dataItems.length > 1) {
-                    this.set('dataItems', [this.dataItems[0]]);
-                }
+            if (!this.multiple && this.dataItems instanceof Array && this.dataItems.length > 1) {
+                this.set('dataItems', [this.dataItems[0]]);
             }
         },
 
-        _getFilenameFromUrl: function(url) {
-            if (typeof url !== 'string' || url === '') {
-                return;
+        _sendRequest: function() {
+            if (!this.dialogOpened || !this.validate()) { return; }
+
+            this.requestInProcess = true;
+            let attachmentsData, method;
+
+            if (this.deleteDialog) {
+                attachmentsData = {id: this.editedItem.id};
+                method = 'DELETE';
+            } else {
+                attachmentsData = this._getFileData();
+                method = attachmentsData.id? 'PATCH' : 'POST';
             }
 
-            let queriesPos = url.indexOf('?');
-            let slashPos;
-
-            queriesPos = (queriesPos === -1) ? (url.length + 1) : queriesPos;
-            url = url.slice(0, queriesPos);
-            slashPos = url.lastIndexOf('/');
-
-            return url.slice(slashPos + 1);
+            this.requestData = {method, attachmentsData};
         },
 
-        _getUploadedFile: function(fileModel) {
-            return new Promise((resolve, reject) => {
-                let reader = new FileReader();
-                let uploadedFile = {
-                    file_name: fileModel.file_name,
-                    file_type: fileModel.file_type
-                };
+        _getFileData: function() {
+            if (!this.dialogOpened) { return {}; }
+            let {id, file, type} = this.editedItem,
+                data;
 
-                try {
-                    reader.readAsDataURL(fileModel.raw);
-                } catch (error) {
-                    reject(error);
-                }
+            if (id) {
+                data = {id};
+            } else {
+                data = {file}
+            }
 
-                reader.onload = function() {
-                    uploadedFile.file = reader.result;
-                    resolve(uploadedFile);
-                };
+            if (type) {
+                data.file_type = type.value;
+            }
 
-                reader.onerror = function(error) {
-                    reject(error);
-                };
-            });
+            return data;
         },
 
-        getFiles: function() {
-            return new Promise((resolve, reject) => {
-                let files = [];
-                let changedFiles = [];
-
-                if (this.saveWithButton) {
-                    files = this.dataItems || [];
-                } else if (this.editedItem.file || this.editedItem.raw) {
-                    files.push(this.editedItem);
-                }
-
-                let promises = files.map((fileModel) => {
-                    if (fileModel && fileModel.raw) {
-                        return this._getUploadedFile(fileModel);
-                    } else if (!this.saveWithButton) {
-                        changedFiles.push({
-                            id: fileModel.id,
-                            file_type: fileModel.file_type,
-                            _delete: fileModel._delete
-                        });
-                    }
-                });
-
-                promises = promises.filter((promise) => {
-                    return promise !== undefined;
-                });
-
-                Promise.all(promises)
-                    .then((uploadedFiles) => {
-                        uploadedFiles = uploadedFiles.concat(changedFiles);
-                        if (!uploadedFiles.length) { uploadedFiles = null; }
-                        resolve(uploadedFiles);
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            });
+        _requestCompleted: function(event, detail = {}) {
+            this.requestInProcess = false;
+            if (detail.success) {
+                this.dialogOpened = false;
+            }
         },
 
         _fileAlreadySelected: function() {
             if (!this.dataItems) {return false;}
 
             let alreadySelectedIndex = this.dataItems.findIndex((file) => {
-                return file.file_name === this.editedItem.file_name;
+                return file.filename === this.editedItem.file_name;
             });
 
             if (alreadySelectedIndex !== -1) {
@@ -314,14 +240,15 @@
             let editedItem = this.editedItem;
             let valid = true;
 
-            if (this.fileTypeRequired && (!this.fileTypes || !this.fileTypes.length)) {
+            let fileTypeRequired = this._setRequired('file_type', this.basePermissionPath);
+            if (fileTypeRequired && (!this.fileTypes || !this.fileTypes.length)) {
                 this.set('errors.file_type', 'File types are not defined');
                 valid = false;
             } else {
-                this.set('errors.file_type', '');
+                this.set('errors.file_type', false);
             }
 
-            if (this.fileTypeRequired && !dropdown.validate()) {
+            if (fileTypeRequired && !dropdown.validate()) {
                 this.set('errors.file_type', 'This field is required');
                 valid = false;
             }
@@ -330,46 +257,12 @@
                 valid = false;
             }
 
-            if (this.addDialog && (!editedItem.file_name || !editedItem.raw)) {
+            if (this.addDialog && !editedItem.file) {
                 this.set('errors.file', 'File is not selected');
                 valid = false;
             }
 
             return valid;
-        },
-
-        _cutFileName: function(fileName) {
-            if (typeof fileName !== 'string') {
-                return;
-            }
-
-            if (fileName.length <= 20) {
-                return fileName;
-            } else {
-                return fileName.slice(0, 10) + '...' + fileName.slice(-7);
-            }
-        },
-
-        getFilesErrors: function(errors) {
-            if (this.dataItems instanceof Array && errors instanceof Array && errors.length === this.dataItems.length) {
-                let filesErrors = [];
-
-                errors.forEach((error, index) => {
-                    let fileName = this.dataItems[index].file_name;
-                    fileName = this._cutFileName(fileName);
-
-                    if (fileName && typeof error.file === 'string') {
-                        filesErrors.push({
-                            fileName: fileName,
-                            error: error.file
-                        });
-                    }
-                });
-
-                return filesErrors;
-            }
-
-            return [];
         },
 
         _errorHandler: function(errorData) {
@@ -395,6 +288,40 @@
                 filesErrors.forEach((fileError) => {
                     this.fire('toast', {text: `${fileError.fileName}: ${fileError.error}`});
                 });
+            }
+        },
+
+        getFilesErrors: function(errors) {
+            if (this.dataItems instanceof Array && errors instanceof Array && errors.length === this.dataItems.length) {
+                let filesErrors = [];
+
+                errors.forEach((error, index) => {
+                    let fileName = this.dataItems[index].file_name;
+                    fileName = this._cutFileName(fileName);
+
+                    if (fileName && typeof error.file === 'string') {
+                        filesErrors.push({
+                            fileName: fileName,
+                            error: error.file
+                        });
+                    }
+                });
+
+                return filesErrors;
+            }
+
+            return [];
+        },
+
+        _cutFileName: function(fileName) {
+            if (typeof fileName !== 'string') {
+                return;
+            }
+
+            if (fileName.length <= 20) {
+                return fileName;
+            } else {
+                return fileName.slice(0, 10) + '...' + fileName.slice(-7);
             }
         },
     });

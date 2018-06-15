@@ -1,0 +1,53 @@
+<!--import [polymer, etools-ajax-sp, lodash]-->
+<!--import [etools-app-config, permission-controller]-->
+
+<dom-module id="get-attachments">
+    <template>
+        <etools-ajax-sp
+                url="[[url]]"
+                on-success="_handleResponse"
+                on-fail="_handleError">
+        </etools-ajax-sp>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'get-attachments',
+
+            behaviors: [
+                etoolsAppConfig.globals,
+                TPMBehaviors.PermissionController
+            ],
+
+            properties: {
+                baseId: {
+                    type: Number,
+                    notify: true,
+                    observer: '_baseIdChanged'
+                },
+                endpointName: String,
+                attachments: {
+                    type: Array,
+                    notify: true
+                }
+
+            },
+
+            _handleResponse: function (data, detail) {
+                this.attachments = detail && detail.results || [];
+                this.url = null;
+                this.fire('attachments-loaded', {success: true});
+            },
+
+            _handleError: function () {
+                this.fire('attachments-loaded');
+            },
+
+            _baseIdChanged: function(baseId) {
+                if (!baseId) { return; }
+                let atmBaseUrl = this.getEndpoint(this.endpointName, {id: baseId}).url;
+                this.url = `${atmBaseUrl}attachments/`;
+            }
+        });
+    </script>
+</dom-module>

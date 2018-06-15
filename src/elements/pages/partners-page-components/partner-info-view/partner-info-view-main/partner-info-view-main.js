@@ -53,7 +53,6 @@ Polymer({
         } else {
             this.permissionBase = `partner_${id}`;
         }
-        this.partnerFileTypes = this.getChoices(`${this.permissionBase}.attachments.file_type`);
     },
 
     _hideActions: function(permissionBase) {
@@ -63,12 +62,6 @@ Polymer({
 
     _setContainerClass: function(permissionBase) {
         return this._hideActions(permissionBase) ? 'without-sidebar' : '';
-    },
-
-    _attachmentsReadonly: function(base, type) {
-        let readOnly = this.isReadonly(`${base}.${type}`);
-        if (readOnly === null) { readOnly = true; }
-        return readOnly;
     },
 
     _processAction: function(event, details) {
@@ -94,23 +87,16 @@ Polymer({
 
         if (!this.validatePartner()) { return; }
 
-        let attachmentsTab = Polymer.dom(this.root).querySelector('#attachments');
         let data = this.getPartnerData();
-        let promises = [];
-        if (attachmentsTab) { promises[0] = attachmentsTab.getFiles(); }
 
-        Promise.all(promises)
-            .then((uploadedFiles) => {
-                if (uploadedFiles && uploadedFiles[0]) {data.attachments = uploadedFiles[0]; }
-                this.newPartnerDetails = {
-                    method: method,
-                    id: this.partner.id,
-                    data: data,
-                    message: message,
-                    action: details.type,
-                    quietAdding: details.quietAdding
-                };
-            });
+        this.newPartnerDetails = {
+            method: method,
+            id: this.partner.id,
+            data: data,
+            message: message,
+            action: details.type,
+            quietAdding: details.quietAdding
+        };
     },
 
     validatePartner: function() {

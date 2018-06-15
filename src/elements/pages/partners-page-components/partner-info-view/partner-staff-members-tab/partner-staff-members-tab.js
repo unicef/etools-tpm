@@ -139,11 +139,16 @@ Polymer({
         'resetDialog(dialogOpened)',
         '_handleUpdateError(errorObject.staff_members)',
         '_queriesChanged(listSize, listPage, searchQuery)',
-        'updateStyles(emailChecking, basePermissionPath, addDialog)'
+        'updateStyles(emailChecking, basePermissionPath, addDialog)',
+        'resetQueries(partnerId)'
     ],
 
     attached: function() {
         this.$.emailInput.validate = this._validEmailAddress.bind(this, this.$.emailInput);
+        this.resetQueries();
+    },
+
+    resetQueries: function() {
         this.listSize = 10;
         this.listPage = 1;
     },

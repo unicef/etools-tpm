@@ -57,18 +57,9 @@
 
                     <div name="attachments">
                         <file-attachments-tab
-                                id="attachments"
-                                tab-title="[[getLabel('attachments', permissionBase)]]"
-                                base-permission-path="{{permissionBase}}"
-                                main-property="attachments"
-                                error-object="{{errorObject}}"
-                                data-items="[[partner.attachments]]"
-                                file-types="[[partnerFileTypes]]"
-                                file-types-label="[[getLabel('attachments.file_type', permissionBase)]]"
-                                readonly="[[_attachmentsReadonly(permissionBase, 'attachments')]]"
-                                file-type-required
-                                allow-download
-                                allow-edit
+                                data-base-path="[[permissionBase]]"
+                                base-id="[[partner.id]]"
+                                endpoint-name="partnerDetails"
                                 multiple>
                         </file-attachments-tab>
                     </div>

@@ -7,7 +7,7 @@
 
         window.TPMBehaviors = window.TPMBehaviors || {};
         window.TPMBehaviors.PermissionController = {
-            _addToCollection: function(collectionName, data) {
+            _addToCollection: function(collectionName, data, title) {
                 //check arguments
                 if (!collectionName || !data) {
                     console.warn('collectionName and data arguments must be provided!');
@@ -26,6 +26,9 @@
                 if (_permissionCollection[collectionName]) { return false; }
 
                 _permissionCollection[collectionName] = data;
+                if (title) {
+                    _permissionCollection[collectionName].title = title;
+                }
                 this._manageActions(collectionName);
 
                 return true;
