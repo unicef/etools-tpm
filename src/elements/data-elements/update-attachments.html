@@ -42,8 +42,7 @@
                 let {method, attachmentsData} = data;
                 if (!method || !attachmentsData) { return; }
                 this.method = method;
-                let atmBaseUrl = this.getEndpoint(this.endpointName, {id: this.baseId}).url,
-                        url = `${atmBaseUrl}attachments/`;
+                let url = this.getEndpoint(this.endpointName, {id: this.baseId}).url;
 
                 if (attachmentsData.id) { url += `${attachmentsData.id}/` }
 

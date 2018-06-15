@@ -34,7 +34,7 @@
                 return true;
             },
 
-            _updateCollection: function(collectionName, data) {
+            _updateCollection: function(collectionName, data, title) {
                 if (!_permissionCollection[collectionName]) {
                     console.warn(`Collection ${collectionName} does not exist!`);
                     return false;
@@ -45,6 +45,9 @@
                 }
 
                 _permissionCollection[collectionName] = data;
+                if (title) {
+                    _permissionCollection[collectionName].title = title;
+                }
                 this._manageActions(collectionName);
                 return true;
             },

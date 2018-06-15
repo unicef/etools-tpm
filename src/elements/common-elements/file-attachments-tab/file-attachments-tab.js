@@ -58,7 +58,8 @@
             deleteTitle: {
                 type: String,
                 value: 'Are you sure that you want to delete this attachment?'
-            }
+            },
+            errorProperty: String
         },
 
         listeners: {
@@ -99,9 +100,7 @@
         },
 
         isTabReadonly: function(basePath) {
-            let readOnly = !basePath || this.isReadonly(basePath);
-            if (readOnly === null) { readOnly = true; }
-            return readOnly;
+            return !basePath || (!this.collectionExists(`${basePath}.PUT`) && !this.collectionExists(`${basePath}.POST`));
         },
 
         _showAddBtn: function(filesLength, basePath) {
@@ -188,7 +187,7 @@
                 method = 'DELETE';
             } else {
                 attachmentsData = this._getFileData();
-                method = attachmentsData.id? 'PATCH' : 'POST';
+                method = attachmentsData.id ? 'PATCH' : 'POST';
             }
 
             this.requestData = {method, attachmentsData};
@@ -202,7 +201,7 @@
             if (id) {
                 data = {id};
             } else {
-                data = {file}
+                data = {file};
             }
 
             if (type) {
@@ -266,7 +265,7 @@
         },
 
         _errorHandler: function(errorData) {
-            let mainProperty = this.mainProperty;
+            let mainProperty = this.errorProperty;
             this.requestInProcess = false;
             if (!errorData || !errorData[mainProperty]) { return; }
             let refactoredData = this.refactorErrorObject(errorData[mainProperty]);

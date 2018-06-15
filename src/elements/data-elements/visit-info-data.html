@@ -15,6 +15,16 @@
                 on-success="_handleOptionsResponse"
                 on-fail="_handleOptionsResponse">
         </etools-ajax-sp>
+
+        <etools-ajax-sp
+                method="OPTIONS"
+                url="[[reportAtmOptionsUrl]]"
+                data-path-postfix="attachments"
+                data-request-name="reportAtm"
+                on-success="_handleDataOptionsResponse"
+                on-fail="_handleDataOptionsResponse"
+                on-forbidden="_handleDataOptionsResponse">
+        </etools-ajax-sp>
     </template>
 
     <script>
@@ -63,8 +73,22 @@
                 this._finishRequests(this.responseData);
             },
 
+            _handleDataOptionsResponse: function(data) {
+                let actions = _.get(data, 'detail.actions', {}),
+                    name = _.get(data, 'detail.name', ''),
+                    postfix = _.get(data, 'srcElement.dataset.pathPostfix'),
+                    requestName = _.get(data, 'srcElement.dataset.requestName');
+
+                this._addToCollection(`visit_${this.visitId}_${postfix}`, actions || {}, name);
+
+                this.requestsCompleted[requestName] = true;
+                this._finishRequests(this.responseData);
+            },
+
             _finishRequests: function(data) {
-                if (!this.requestsCompleted.data || !this.requestsCompleted.options) { return; }
+                if (!this.requestsCompleted.data ||
+                        !this.requestsCompleted.options ||
+                        !this.requestsCompleted.reportAtm) { return; }
 
                 if (data) {
                     this.visitDetails = data;
@@ -100,8 +124,10 @@
                 this.fire('global-loading', {message: 'Loading visit data...', active: true, type: 'visit-info'});
                 if (this.collectionExists(`visit_${id}`)) {
                     this.requestsCompleted.options = true;
+                    this.requestsCompleted.reportAtm = true;
                 } else {
                     this.optionsUrl = endpoint.url;
+                    this.reportAtmOptionsUrl = this.getEndpoint('reportAttachments', {id: id}).url;
                 }
 
                 let lastCreated = this.getLastData(id, `visit_${id}`);

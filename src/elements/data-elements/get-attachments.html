@@ -45,8 +45,7 @@
 
             _baseIdChanged: function(baseId) {
                 if (!baseId) { return; }
-                let atmBaseUrl = this.getEndpoint(this.endpointName, {id: baseId}).url;
-                this.url = `${atmBaseUrl}attachments/`;
+                this.url = this.getEndpoint(this.endpointName, {id: baseId}).url;
             }
         });
     </script>

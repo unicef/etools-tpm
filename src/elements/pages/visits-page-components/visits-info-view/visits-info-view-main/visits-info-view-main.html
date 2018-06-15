@@ -32,7 +32,7 @@
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
                 <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
 
-                <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]">
+                <template is="dom-if" if="[[_showTab(permissionBase, 'attachments')]]">
                     <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
                 </template>
 
@@ -140,21 +140,14 @@
                         </visit-activity-tab>
                     </div>
 
-                    <template is="dom-if" if="[[_showTab(permissionBase, 'tpm_activities.report_attachments')]]" restamp>
+                    <template is="dom-if" if="[[_showTab(permissionBase, 'attachments')]]" restamp>
                         <div name="report">
                             <file-attachments-tab
-                                    id="simpleAttachments"
-                                    tab-title="[[getLabel('report_attachments', permissionBase)]]"
-                                    base-permission-path="{{permissionBase}}"
-                                    main-property="report_attachments"
+                                    data-base-path="[[permissionBase]]"
                                     error-object="{{errorObject}}"
-                                    data-items="[[visit.report_attachments]]"
-                                    file-types="[[simpleFileTypes]]"
-                                    file-types-label="[[getLabel('report_attachments.file_type', permissionBase)]]"
-                                    readonly="[[_attachmentsReadonly(permissionBase, 'report_attachments')]]"
-                                    file-type-required
-                                    allow-download
-                                    allow-edit
+                                    base-id="[[visit.id]]"
+                                    endpoint-name="reportAttachments"
+                                    error-property="report_attachments"
                                     multiple>
                             </file-attachments-tab>
 
@@ -253,7 +246,6 @@
                 confirm-btn-text="Approve">
             <list-header
                     id="list-header"
-                    no-additional
                     no-ordered
                     data="[[columns]]"
                     base-permission-path="[[permissionBase]]">
