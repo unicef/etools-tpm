@@ -27,6 +27,26 @@
                 on-fail="_handleDataOptionsResponse"
                 on-forbidden="_handleDataOptionsResponse">
         </etools-ajax-sp>
+
+        <etools-ajax-sp
+                method="OPTIONS"
+                url="[[activitiesAtmOptionsUrl]]"
+                data-path-postfix="activities_attachments"
+                data-request-name="activitiesAtm"
+                on-success="_handleDataOptionsResponse"
+                on-fail="_handleDataOptionsResponse"
+                on-forbidden="_handleDataOptionsResponse">
+        </etools-ajax-sp>
+
+        <etools-ajax-sp
+                method="OPTIONS"
+                url="[[activitiesRepAtmOptionsUrl]]"
+                data-path-postfix="activities_report_attachments"
+                data-request-name="activitiesReportAtm"
+                on-success="_handleDataOptionsResponse"
+                on-fail="_handleDataOptionsResponse"
+                on-forbidden="_handleDataOptionsResponse">
+        </etools-ajax-sp>
     </template>
 
     <script>
@@ -97,7 +117,9 @@
 
             _finishOptions: function() {
                 if (!this.optionRequests.options ||
-                    !this.optionRequests.reportAtm ) { return; }
+                    !this.optionRequests.reportAtm ||
+                    !this.optionRequests.activitiesAtm ||
+                    !this.optionRequests.activitiesReportAtm) { return; }
 
                 this.optionRequests = {};
                 this.fire('global-loading', {type: 'update-permissions'});
@@ -108,6 +130,8 @@
                 this.optionsUrl = this.getEndpoint(`visitDetails`, {id: id}).url;
                 this.postRequest = null;
                 this.reportAtmOptionsUrl = this.getEndpoint('reportAttachments', {id: id}).url;
+                this.activitiesAtmOptionsUrl = this.getEndpoint('activitiesAttachments', {id: id}).url;
+                this.activitiesRepAtmOptionsUrl = this.getEndpoint('activitiesReportAttachments', {id: id}).url;
             }
         });
     </script>

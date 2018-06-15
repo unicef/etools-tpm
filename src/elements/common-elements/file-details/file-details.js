@@ -33,63 +33,26 @@
                 type: Array,
                 value: [],
             },
+            parentId: {
+                type: Number,
+                observer: 'updateTable'
+            },
         },
 
-        observers: [
-            '_setFiles(data, filesPath)',
-            '_filesChange(files.*, fileTypes.*)',
-        ],
-
-        _setFiles: function(data, filesPath) {
-            if (data && data[filesPath] && data[filesPath].length) {
-                this.set('files', data[filesPath]);
-            } else {
-                this.set('files', [{}]);
+        getFileType: function(fileType, fileTypes) {
+            if (!Array.isArray(fileTypes) || !fileTypes.length) {
+                return null;
             }
-        },
 
-        _filesChange: function() {
-            if (!Array.isArray(this.files)) { return; }
-
-            this.files.forEach((file) => {
-                if (file.file && file.id && !file.file_name) {
-                    file.file_name = this._getFilenameFromUrl(file.file);
-                }
-
-                if (file.file_type !== undefined && !file.display_name) {
-                    let type = this._getFileType(file.file_type) || {};
-                    file.type = type.display_name;
-                }
+            let type = fileTypes.find(function(type) {
+                return parseInt(type.value, 10) === parseInt(fileType, 10);
             });
-        },
+            return type && type.display_name || '--';
 
-        _getFilenameFromUrl: function(url) {
-            if (typeof url !== 'string' || url === '') {
-                return;
-            }
-
-            let queriesPos = url.indexOf('?');
-            let slashPos;
-
-            queriesPos = (queriesPos === -1) ? (url.length + 1) : queriesPos;
-            url = url.slice(0, queriesPos);
-            slashPos = url.lastIndexOf('/');
-
-            return url.slice(slashPos + 1);
-        },
-
-        _getFileType: function(fileType) {
-            if (Array.isArray(this.fileTypes)) {
-                let type = this.fileTypes.find(function(type) {
-                    return parseInt(type.value, 10) === parseInt(fileType, 10);
-                });
-                return type || null;
-            }
-            return null;
         },
 
         showDeleteBtn: function(item, allowDelete) {
-            return item && item.file_name && allowDelete;
+            return item && item.filename && allowDelete;
         },
 
         getValue: function(value) {
@@ -102,12 +65,18 @@
 
         fireDeleteEvent: function(event) {
             let item = event && event.model && event.model.item;
-            if (item && item.id !== undefined && this.parentId !== undefined) {
-                this.fire('delete-assigned-file', {
-                    parentId: this.parentId,
-                    fileId: item.id,
-                });
+            if (item && item.id) {
+                this.fire('delete-assigned-file', {id: item.id});
             }
         },
+
+        _showAttachment: function(attachment) {
+            return attachment.object_id === this.parentId;
+        },
+
+        updateTable: function() {
+            this.$['attachments-repeat'].render();
+        }
+
     });
 })();

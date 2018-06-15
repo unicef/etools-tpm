@@ -47,31 +47,6 @@ Polymer({
             type: Array,
             computed: 'reverseComments(visit.report_reject_comments)'
         },
-        attachmentsColumns: {
-            type: Array,
-            value: [{
-                'size': 10,
-                'label': 'Activity Id',
-                'labelPath': 'tpm_activities.id',
-                'path': 'unique_id'
-            }, {
-                'size': 40,
-                'label': 'Implementing Partner',
-                'labelPath': 'tpm_activities.partner',
-                'path': 'partner.name'
-            }, {
-                'size': 40,
-                'label': 'PD/SSFA ToR',
-                'labelPath': 'tpm_activities.intervention',
-                'path': 'intervention.title'
-            }, {
-                'size': 10,
-                'name': 'date',
-                'label': 'Date',
-                'labelPath': 'tpm_activities.date',
-                'path': 'date'
-            }]
-        },
         errorObject: {
             type: Object,
             value: function() {
@@ -192,21 +167,15 @@ Polymer({
 
         if (this.actionAllowed(`visit_${this.visit.id}`, 'save') && !this.validateVisit()) { return; }
 
-        let attachmentsTab = Polymer.dom(this.root).querySelector('#attachments');
-        let reportTab = Polymer.dom(this.root).querySelector('#report');
         let visitActivity = this.$.visitActivity;
         let actionPoints = Polymer.dom(this.root).querySelector('#actionPoints');
 
         let data = this.getVisitData();
 
-        let visitAttachments = attachmentsTab && await attachmentsTab.getAttachmentsData();
-        let reportAttachments = reportTab && await reportTab.getAttachmentsData();
         let visitActivityData = visitActivity && await visitActivity.getActivitiesData();
         let actionPointsData = actionPoints && await actionPoints.getTabData();
 
-        if (reportAttachments) { data.tpm_activities = reportAttachments; }
         if (visitActivityData) { data.tpm_activities = visitActivityData; }
-        if (visitAttachments) { data.tpm_activities = visitAttachments; }
         if (actionPointsData) { data.action_points = actionPointsData; }
 
         this.newVisitDetails = {

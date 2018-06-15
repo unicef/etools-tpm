@@ -21,30 +21,30 @@
             </div>
             <!--End Headers-->
 
-            <template is="dom-repeat" items="[[files]]">
+            <template is="dom-repeat" items="[[files]]" filter="_showAttachment" id="attachments-repeat">
                 <div class="row-details-content truncate w15">
                     [[getDate(item)]]
                 </div>
 
                 <div class="row-details-content truncate w20">
-                    [[getValue(item.type)]]
+                    [[getFileType(item.file_type, fileTypes)]]
 
-                    <paper-tooltip hidden$="[[!item.type]]" offset="0">[[getValue(item.type)]]</paper-tooltip>
+                    <paper-tooltip hidden$="[[!item.type]]" offset="0">[[getFileType(item.file_type, fileTypes)]]</paper-tooltip>
                 </div>
 
                 <div class="row-details-content truncate w55">
-                    <template is="dom-if" if="[[item.file_name]]">
+                    <template is="dom-if" if="[[item.filename]]">
                         <iron-icon icon="icons:attachment" class="download-icon"></iron-icon>
 
                         <a href$="[[item.file]]"
-                           download$="[[item.file_name]]"
+                           download$="[[item.filename]]"
                            target="_blank">
-                            [[item.file_name]]
+                            [[item.filename]]
                         </a>
-                        <paper-tooltip offset="0">[[item.file_name]]</paper-tooltip>
+                        <paper-tooltip offset="0">[[item.filename]]</paper-tooltip>
                     </template>
 
-                    <template is="dom-if" if="[[!item.file_name]]">
+                    <template is="dom-if" if="[[!item.filename]]">
                         <span>--</span>
                     </template>
                 </div>

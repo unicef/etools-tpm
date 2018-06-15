@@ -25,6 +25,26 @@
                 on-fail="_handleDataOptionsResponse"
                 on-forbidden="_handleDataOptionsResponse">
         </etools-ajax-sp>
+
+        <etools-ajax-sp
+                method="OPTIONS"
+                url="[[activitiesAtmOptionsUrl]]"
+                data-path-postfix="activities_attachments"
+                data-request-name="activitiesAtm"
+                on-success="_handleDataOptionsResponse"
+                on-fail="_handleDataOptionsResponse"
+                on-forbidden="_handleDataOptionsResponse">
+        </etools-ajax-sp>
+
+        <etools-ajax-sp
+                method="OPTIONS"
+                url="[[activitiesRepAtmOptionsUrl]]"
+                data-path-postfix="activities_report_attachments"
+                data-request-name="activitiesReportAtm"
+                on-success="_handleDataOptionsResponse"
+                on-fail="_handleDataOptionsResponse"
+                on-forbidden="_handleDataOptionsResponse">
+        </etools-ajax-sp>
     </template>
 
     <script>
@@ -88,7 +108,9 @@
             _finishRequests: function(data) {
                 if (!this.requestsCompleted.data ||
                         !this.requestsCompleted.options ||
-                        !this.requestsCompleted.reportAtm) { return; }
+                        !this.requestsCompleted.reportAtm ||
+                        !this.requestsCompleted.activitiesAtm ||
+                        !this.requestsCompleted.activitiesReportAtm) { return; }
 
                 if (data) {
                     this.visitDetails = data;
@@ -125,10 +147,14 @@
                 if (this.collectionExists(`visit_${id}`)) {
                     this.requestsCompleted.options = true;
                     this.requestsCompleted.reportAtm = true;
+                    this.requestsCompleted.activitiesAtm = true;
+                    this.requestsCompleted.activitiesReportAtm = true;
                 } else {
                     this.optionsUrl = endpoint.url;
                     this.reportAtmOptionsUrl = this.getEndpoint('reportAttachments', {id: id}).url;
-                }
+                    this.activitiesAtmOptionsUrl = this.getEndpoint('activitiesAttachments', {id: id}).url;
+                    this.activitiesRepAtmOptionsUrl = this.getEndpoint('activitiesReportAttachments', {id: id}).url;
+               }
 
                 let lastCreated = this.getLastData(id, `visit_${id}`);
                 if (lastCreated) {

@@ -11,33 +11,51 @@ Polymer({
     ],
 
     properties: {
-        basePermissionPath: {
-            type: String,
-        },
-        attachmentsBase: {
-            type: String,
-        },
-        parentProperty: {
-            type: String,
-        },
-        filesProperty: {
-            type: String,
-        },
+        basePermissionPath: String,
+        dataBasePath: String,
+        pathPostfix: String,
         itemModel: {
             type: Object,
             value: function() {
                 return {
-                    file_type: {
-                        value: null,
-                        display_name: '',
-                    },
-                    activity: {
-                        id: null,
-                        name: '',
-                    },
-                    files: [],
+                    file_type: undefined,
+                    activity: undefined,
+                    fileData: {},
                 };
             }
+        },
+        attachmentsColumns: {
+            type: Array,
+            value: [{
+                'size': 10,
+                'label': 'Activity Id!',
+                'labelPath': 'tpm_activities.id',
+                'path': 'unique_id'
+            }, {
+                'size': 40,
+                'label': 'Implementing Partner!',
+                'labelPath': 'tpm_activities.partner',
+                'path': 'partner.name'
+            }, {
+                'size': 40,
+                'label': 'PD/SSFA ToR!',
+                'labelPath': 'tpm_activities.intervention',
+                'path': 'intervention.title'
+            }, {
+                'size': 10,
+                'name': 'date',
+                'label': 'Date!',
+                'labelPath': 'tpm_activities.date',
+                'path': 'date'
+            }]
+        },
+        activities: {
+            type: Array,
+            value: () => []
+        },
+        dataItems: {
+            type: Array,
+            value: () => []
         },
         columns: {
             type: Array,
@@ -48,16 +66,6 @@ Polymer({
             value: [{}],
         },
         fileTypes: {
-            type: Array,
-            value: []
-        },
-        title: {
-            type: String,
-        },
-        dialogDropdownLabel: {
-            type: String,
-        },
-        dropdownOptions: {
             type: Array,
             value: []
         },
@@ -73,28 +81,55 @@ Polymer({
             type: String,
             value: 'Are you sure that you want to delete this file?'
         },
+        dropdownOptions: {
+            type: Array,
+            value: () => []
+        },
     },
 
     listeners: {
-        'dialog-confirmed': '_addItemFromDialog',
-        'delete-confirmed': 'removeItem',
-        'delete-assigned-file': 'deleteAssignedFile'
+        'dialog-confirmed': '_sendRequest',
+        'delete-confirmed': '_sendRequest',
+        'delete-assigned-file': 'deleteAssignedFile',
+        'attachments-request-completed': '_requestCompleted'
     },
 
     observers: [
-        'resetDialog(dialogOpened)',
+        '_setBasePath(dataBasePath, pathPostfix)',
+        '_resetDialog(dialogOpened)',
         '_errorHandler(errorObject)',
-        'updateStyles(attachmentsBase, requestInProcess, editedItem.*)',
-        '_setAttachmentsBase(basePermissionPath, parentProperty, filesProperty)',
+        'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
+        'updateTable(dataItems.*)',
         '_setDropdownOptions(dataItems, columns, dataItems.*)',
     ],
 
-    _setAttachmentsBase: function(basePermissionPath, parentProperty, filesProperty) {
-        this.set('attachmentsBase', `${basePermissionPath}.${parentProperty}.${filesProperty}`);
+    _resetDialog: function(dialogOpened) {
+        if (dialogOpened) { return; }
+        this.set('errors.file', null);
+        this.resetDialog(dialogOpened);
     },
 
-    showActivity: function(item) {
-        return item && item[this.filesProperty] && item[this.filesProperty].length;
+    updateTable: function() {
+        this.$['activity-repeat'].render();
+    },
+
+    _setBasePath: function(dataBase, pathPostfix) {
+        let base = dataBase && pathPostfix ? `${dataBase}_${pathPostfix}` : '';
+        this.set('basePermissionPath', base);
+        if (base) {
+            let title = this.getFieldAttribute(base, 'title');
+            this.set('tabTitle', title);
+            this.fileTypes = this.getChoices(`${base}.file_type`);
+        }
+    },
+
+    isTabReadonly: function(basePath) {
+        return !basePath || (!this.collectionExists(`${basePath}.PUT`) && !this.collectionExists(`${basePath}.POST`));
+    },
+
+    showActivity: function(activityTask) {
+        let id = activityTask && activityTask.id;
+        return id && this.dataItems && _.some(this.dataItems, (attachment) => attachment.object_id === id);
     },
 
     _isReadOnly: function(field, basePermissionPath, inProcess) {
@@ -107,12 +142,48 @@ Polymer({
         return readOnly;
     },
 
-    isAttachmentsEmpty: function(dataItems) {
-        if (!Array.isArray(dataItems) || !dataItems.length) { return true; }
+    _openAddDialog: function() {
+        this.editedItem = _.clone(this.itemModel);
+        this.openAddDialog();
+    },
 
-        return !dataItems.some((item) => {
-            return this.showActivity(item);
-        });
+    _sendRequest: function() {
+        if (!this.dialogOpened || !this.validate()) { return; }
+
+        this.requestInProcess = true;
+        let attachmentsData, method;
+
+        if (this.deleteDialog) {
+            attachmentsData = {id: this.editedItem.id};
+            method = 'DELETE';
+        } else {
+            attachmentsData = this._getFileData();
+            method =  'POST';
+        }
+
+        this.requestData = {method, attachmentsData};
+    },
+
+    _getFileData: function() {
+        if (!this.dialogOpened) { return {}; }
+        let {fileData, file_type: fileType, activity} = this.editedItem,
+            data = {
+                file: fileData.file,
+                object_id: activity
+            };
+
+        if (fileType) {
+            data.file_type = fileType.value;
+        }
+
+        return data;
+    },
+
+    _requestCompleted: function(event, detail = {}) {
+        this.requestInProcess = false;
+        if (detail.success) {
+            this.dialogOpened = false;
+        }
     },
 
     _setDropdownOptions: function(dataItems, columns) {
@@ -193,52 +264,13 @@ Polymer({
 
     deleteAssignedFile: function(event, detail) {
         let item = this.dataItems.find((item) => {
-            return item.id === detail.parentId;
+            return item.id === detail.id;
         });
         let e = {model: {item: item}};
 
         if (item) {
             this.openDeleteDialog(e);
-            this.removedFileData = detail;
-        }
-    },
-
-    removeItem: function() {
-        if (this.editedItem && this.editedItem.id !== undefined) {
             this.editedItem._delete = true;
-            this._addItemFromDialog();
         }
-        this.confirmDialogOpened = false;
-    },
-
-    getAttachmentsData: function() {
-        if (!this.dialogOpened) { return null; }
-
-        if (this.removedFileData && this.editedItem && this.editedItem._delete) {
-            return [{
-                id: this.removedFileData.parentId,
-                [this.filesProperty]: [{
-                    id: this.removedFileData.fileId,
-                    _delete: true,
-                }]
-            }];
-        }
-
-        return new Promise((resolve, reject) => {
-            this.$.fileUpload.getFiles()
-                .then((files) => {
-                    let data = {};
-                    let fileTypeId = _.get(this.editedItem, 'file_type.value');
-
-                    data[this.filesProperty] = files;
-                    _.set(data, `${this.filesProperty}.0.file_type`, fileTypeId);
-                    data.id = _.get(this.editedItem, 'activity.id');
-
-                    resolve([data]);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    },
+    }
 });

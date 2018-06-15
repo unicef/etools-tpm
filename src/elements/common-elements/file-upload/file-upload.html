@@ -6,27 +6,20 @@
         <style include="tab-inputs-styles module-styles"></style>
         <!-- inject styles './file-upload.scss'-->
 
-        <label class="label" hidden$="[[!files.length]]" invalid$="[[files.error]]">[[uploadLabel]]</label>
+        <label class="label" hidden$="[[!fileData.file_name]]" invalid$="[[errors.file]]">[[uploadLabel]]</label>
 
-        <template is="dom-repeat" items="[[files]]">
+        <template is="dom-if" if="[[fileData.file_name]]">
             <paper-input
-                    value="[[_getFileName(item)]]"
-                    title="[[_getFileName(item)]]"
+                    value="[[fileData.file_name]]"
+                    title="[[fileData.file_name]]"
                     no-label-float
                     disabled="[[disabled]]"
                     readonly
-                    invalid$="{{item.error}}"
-                    error-message="{{item.error}}"
+                    invalid$="{{errors.file}}"
+                    error-message="{{errors.file}}"
                     on-change="_resetFieldError"
                     on-tap="_openFileChooser">
                 <iron-icon icon="icons:attachment" prefix></iron-icon>
-
-                <paper-icon-button
-                        suffix
-                        icon="clear"
-                        hidden$="[[_hideDeleteBtn(allowDelete, disabled, readonly)]]"
-                        on-tap="_deleteFile">
-                </paper-icon-button>
             </paper-input>
         </template>
 
@@ -38,7 +31,7 @@
                readonly$="[[readonly]]"
                on-change="_fileSelected">
 
-        <template is="dom-if" if="[[!_hideUploadButton(multiple, readonly, files.length)]]" restamp>
+        <template is="dom-if" if="[[!_hideUploadButton(readonly, fileData)]]" restamp>
             <!-- File Upload -->
             <paper-input-container
                     class="validate-input"
@@ -46,7 +39,7 @@
                     required
                     disabled$="[[disabled]]"
                     readonly$="[[readonly]]"
-                    invalid$="{{files.error}}">
+                    invalid$="{{errors.file}}">
                 <label aria-hidden="true" for="uploadButton">[[uploadLabel]]</label>
 
                 <paper-button id="uploadButton" class="upload-button" on-tap="_openFileChooser">
@@ -54,8 +47,8 @@
                     [[uploadLabel]]
                 </paper-button>
 
-                <template is="dom-if" if="[[files.error]]">
-                    <paper-input-error aria-live="assertive">[[files.error]]</paper-input-error>
+                <template is="dom-if" if="[[errors.file]]">
+                    <paper-input-error aria-live="assertive">[[errors.file]]</paper-input-error>
                 </template>
 
                 <input hidden required>
