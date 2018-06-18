@@ -93,7 +93,7 @@
 
         _getFileType: function(fileType) {
             let length = _.get(this, 'fileTypes.length');
-            if (!length) { return; }
+            if (!length) { return null; }
 
             let type = this.fileTypes.find((type) => parseInt(type.value, 10) === parseInt(fileType, 10));
             return type || null;
