@@ -30,19 +30,19 @@
 
             if (details.action === 'accept') { this.visitAccepted = true; }
 
-            this.optionsUrl = this.getEndpoint(`${this.postfix}Details`, {id: details.id}).url;
-            this.postRequest = null;
+            if (this.setOptionUrls) {
+                this.setOptionUrls(details.id);
+            } else {
+                this.optionsUrl = this.getEndpoint(`${this.postfix}Details`, {id: details.id}).url;
+                this.postRequest = null;
+            }
         },
 
         _handleOptionsResponse: function(event, details) {
             if (this.lastData && details && details.actions) {
                 let collectionName = `${this.postfix}_${this.lastData.id}`;
-
                 this._updateCollection(collectionName, details.actions);
-                this.basePermissionPath = '';
-                this.basePermissionPath = collectionName;
             } else {
-                this.basePermissionPath = 'not_found';
                 this.fire('toast', {text: 'Can not update permissions data. Please reload the page!'});
                 console.error('Can not load permissions');
             }
@@ -58,6 +58,8 @@
             } else {
                 console.error(`Can not update ${this.postfix}. Data is missing`);
             }
+            this.basePermissionPath = '';
+            this.basePermissionPath = `${this.postfix}_${details.id}`;
             this.fire(`${this.postfix}-updated`, {success: true, visitAccepted: this.visitAccepted});
             this.visitAccepted = false;
             if (!this.quietAdding) {

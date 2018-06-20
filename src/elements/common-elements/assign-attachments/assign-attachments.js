@@ -8,6 +8,7 @@ Polymer({
         TPMBehaviors.StaticDataController,
         TPMBehaviors.TableElementsBehavior,
         TPMBehaviors.CommonMethodsBehavior,
+        TPMBehaviors.ActivityToDrD
     ],
 
     properties: {
@@ -184,44 +185,6 @@ Polymer({
         if (detail.success) {
             this.dialogOpened = false;
         }
-    },
-
-    _setDropdownOptions: function(dataItems, columns) {
-        if (!Array.isArray(dataItems) || !Array.isArray(columns)) { return; }
-        let options = [];
-        let fields;
-        let fieldValue;
-
-        dataItems.forEach((item) => {
-            if (!item || !item.id) { return; }
-            fields = [];
-
-            columns.forEach((column) => {
-                fieldValue = _.get(item, column && column.path);
-
-                if (typeof fieldValue === 'string' && fieldValue.length > 20) {
-                    fieldValue = this.truncateLongString(fieldValue);
-                }
-                if (column.name === 'date') {
-                    fieldValue = this.prettyDate(fieldValue);
-                }
-
-                fields.push(fieldValue || '--');
-            });
-
-            options.push({
-                id: item.id,
-                name: fields.join(' / '),
-            });
-        });
-
-        this.set('dropdownOptions', options);
-    },
-
-    truncateLongString: function(value) {
-        if (typeof value !== 'string') { return; }
-        let trimmedValue = value.replace(/^(.{20}[^\s]*).*/, '$1');
-        return (value.length === trimmedValue.length) ? trimmedValue : `${trimmedValue} ...`;
     },
 
     _errorHandler: function(errorData) {

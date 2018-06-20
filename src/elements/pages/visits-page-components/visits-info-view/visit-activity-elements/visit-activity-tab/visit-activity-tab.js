@@ -511,7 +511,12 @@ Polymer({
     },
 
     _processArraysData: function(original, current, field) {
-        let data = _.isEqual(original[field], current[field]) ? [] : (current[field] || []);
+        let isDataEqual = _.isEqualWith(original[field], current[field], (first, second) => {
+            return (!first && !second) ||
+                (first && second && first.length === second.length &&
+                _.every(first, (item, index) => item.id === second[index].id));
+        });
+        let data = isDataEqual ? [] : (current[field] || []);
         data = data.map((item) => item && item.id);
         return data.length ? data : undefined;
     },

@@ -29,7 +29,7 @@
             padding-right: 10px;
             padding-left: 1px;
             box-sizing: border-box;
-            vertical-align: middle;
+            vertical-align: var(--multiline-align, middle);
 
             &:not(.truncate) {
                 padding-right: 0;
@@ -41,6 +41,7 @@
                 font-size: 11px;
             }
 
+            &.caps { text-transform: capitalize;}
             &.right { text-align: right; }
             &.center { text-align: center; }
             &.overflow-visible { overflow: visible; }
@@ -65,7 +66,7 @@
             bottom: 0;
             line-height: 48px;
             opacity: 0;
-            background-color: #eeeeee;
+            background-color: var(--hover-block-bg-color, #eeeeee);
             z-index: 1;
         }
 
