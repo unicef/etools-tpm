@@ -440,7 +440,7 @@ Polymer({
     },
 
     _getLinks: function(visit, permissionBase) {
-        if (!visit || !this._showTab(permissionBase, 'action_points')) { return; }
+        if (!visit || !this._showTab(permissionBase, 'tpm_activities.action_points')) { return; }
         return [{
             name: 'Export Action Points',
             url: this.getEndpoint('visitDetails', {id: visit.id}).url + 'action-points/export/',
