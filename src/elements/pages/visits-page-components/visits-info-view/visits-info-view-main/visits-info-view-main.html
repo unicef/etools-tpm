@@ -36,7 +36,7 @@
                     <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
                 </template>
 
-                <template is="dom-if" if="[[_showTab(permissionBase, 'action_points')]]">
+                <template is="dom-if" if="[[_showAPTab(permissionBase, 'action_points')]]">
                     <paper-tab name="action-points"><span class="tab-content">Action Points</span></paper-tab>
                 </template>
 
@@ -166,7 +166,7 @@
                         </div>
                     </template>
 
-                    <template is="dom-if" if="[[_showTab(permissionBase, 'action_points')]]" restamp>
+                    <template is="dom-if" if="[[_showAPTab(permissionBase, 'action_points')]]" restamp>
                         <div name="action-points">
                           <action-points
                               id="actionPoints"
