@@ -18,6 +18,16 @@
 
         <etools-ajax-sp
                 method="OPTIONS"
+                url="[[apOptionsUrl]]"
+                data-path-postfix="ap"
+                data-request-name="apOptions"
+                on-success="_handleDataOptionsResponse"
+                on-fail="_handleDataOptionsResponse"
+                on-forbidden="_handleDataOptionsResponse">
+        </etools-ajax-sp>
+
+        <etools-ajax-sp
+                method="OPTIONS"
                 url="[[reportAtmOptionsUrl]]"
                 data-path-postfix="attachments"
                 data-request-name="reportAtm"
@@ -106,7 +116,8 @@
             },
 
             _finishRequests: function(data) {
-                if (!this.requestsCompleted.data ||
+                if (!this.requestsCompleted.apOptions ||
+                        !this.requestsCompleted.data ||
                         !this.requestsCompleted.options ||
                         !this.requestsCompleted.reportAtm ||
                         !this.requestsCompleted.activitiesAtm ||
@@ -146,6 +157,7 @@
                 this.fire('global-loading', {message: 'Loading visit data...', active: true, type: 'visit-info'});
                 if (this.collectionExists(`visit_${id}`)) {
                     this.requestsCompleted.options = true;
+                    this.requestsCompleted.apOptions = true;
                     this.requestsCompleted.reportAtm = true;
                     this.requestsCompleted.activitiesAtm = true;
                     this.requestsCompleted.activitiesReportAtm = true;
@@ -154,7 +166,9 @@
                     this.reportAtmOptionsUrl = this.getEndpoint('reportAttachments', {id: id}).url;
                     this.activitiesAtmOptionsUrl = this.getEndpoint('activitiesAttachments', {id: id}).url;
                     this.activitiesRepAtmOptionsUrl = this.getEndpoint('activitiesReportAttachments', {id: id}).url;
-               }
+                    let apBaseUrl = this.getEndpoint('visitDetails', {id: id}).url;
+                    this.apOptionsUrl = `${apBaseUrl}action-points/`;
+                }
 
                 let lastCreated = this.getLastData(id, `visit_${id}`);
                 if (lastCreated) {

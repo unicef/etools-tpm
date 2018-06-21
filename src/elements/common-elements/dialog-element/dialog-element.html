@@ -30,14 +30,16 @@
                 </etools-loading>
 
                 <!--Confirm button-->
-                <paper-button
-                        autofocus class="btn-confirm right"
-                        delete-btn$="[[deleteDialog]]"
-                        on-tap="confirmDialog"
-                        raised
-                        autofocus$="[[autofocus]]"
-                        disabled="{{requestInProcess}}">[[confirmBtnText]]
-                </paper-button>
+                <template is="dom-if" if="[[!hideConfirmBtn]]">
+                    <paper-button
+                            autofocus class="btn-confirm right"
+                            delete-btn$="[[deleteDialog]]"
+                            on-tap="confirmDialog"
+                            raised
+                            autofocus$="[[autofocus]]"
+                            disabled="{{requestInProcess}}">[[confirmBtnText]]
+                    </paper-button>
+                </template>
 
                 <!--Cancel button-->
                 <paper-button

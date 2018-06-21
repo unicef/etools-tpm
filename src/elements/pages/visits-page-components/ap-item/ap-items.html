@@ -1,0 +1,42 @@
+<!--import [lodash, paper-icon-button, etools-checkable-input, paper-button] -->
+
+<!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, list-element] -->
+
+<dom-module id="ap-items">
+    <template>
+        <style include="module-styles tab-layout-styles tab-inputs-styles"></style>
+        <!-- inject styles './ap-items.scss'-->
+
+        <list-header
+                base-permission-path="[[basePermissionPath]]"
+                no-ordered
+                data="[[columns]]">
+        </list-header>
+
+        <template is="dom-repeat" items="[[actionPoints]]" filter="_showAP" id="ap-repeat">
+            <list-element
+                    class="list-element"
+                    data="[[item]]"
+                    headings="[[columns]]"
+                    multiline
+                    no-animation>
+                <div slot="checkbox" class="checkbox">
+                    <paper-checkbox
+                            disabled="disabled"
+                            checked="{{item.high_priority}}"
+                            label="">
+                    </paper-checkbox>
+                </div>
+
+                <div slot="hover" class="edit-icon-slot" hidden$="[[!isEditable(item)]]">
+                    <div class="hover-icons">
+                        <paper-icon-button icon="icons:create" class="edit-icon" on-tap="editAP"></paper-icon-button>
+                    </div>
+                </div>
+            </list-element>
+        </template>
+
+    </template>
+
+    <!-- inject scripts './ap-items.js'-->
+</dom-module>

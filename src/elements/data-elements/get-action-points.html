@@ -1,0 +1,52 @@
+<!--import [polymer, etools-ajax-sp, lodash]-->
+<!--import [etools-app-config, permission-controller]-->
+
+<dom-module id="get-action-points">
+    <template>
+        <etools-ajax-sp
+                url="[[url]]"
+                on-success="_handleResponse"
+                on-fail="_handleError">
+        </etools-ajax-sp>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'get-action-points',
+
+            behaviors: [
+                etoolsAppConfig.globals,
+                TPMBehaviors.PermissionController
+            ],
+
+            properties: {
+                visitId: {
+                    type: Number,
+                    notify: true,
+                    observer: '_visitIdChanged'
+                },
+                actionPoints: {
+                    type: Array,
+                    notify: true
+                }
+
+            },
+
+            _handleResponse: function (data, detail) {
+                this.actionPoints = detail && detail.results || [];
+                this.url = null;
+                this.fire('ap-loaded', {success: true});
+            },
+
+            _handleError: function () {
+                this.fire('ap-loaded');
+            },
+
+            _visitIdChanged: function(visitId) {
+                if (!visitId) { return; }
+                let apBaseUrl = this.getEndpoint('visitDetails', {id: visitId}).url;
+                this.url = `${apBaseUrl}action-points/`;
+            }
+        });
+    </script>
+</dom-module>

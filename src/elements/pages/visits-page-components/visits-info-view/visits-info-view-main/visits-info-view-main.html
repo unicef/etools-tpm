@@ -36,7 +36,7 @@
                     <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
                 </template>
 
-                <template is="dom-if" if="[[_showAPTab(permissionBase, 'action_points')]]">
+                <template is="dom-if" if="[[_showTab(permissionBase, 'ap')]]">
                     <paper-tab name="action-points"><span class="tab-content">Action Points</span></paper-tab>
                 </template>
 
@@ -164,15 +164,12 @@
                         </div>
                     </template>
 
-                    <template is="dom-if" if="[[_showAPTab(permissionBase, 'action_points')]]" restamp>
+                    <template is="dom-if" if="[[_showTab(permissionBase, 'ap')]]" restamp>
                         <div name="action-points">
                           <action-points
-                              id="actionPoints"
-                              base-permission-path="{{permissionBase}}"
-                              data-items=[[visit.action_points]]
-                              title="[[getLabel('action_points', permissionBase)]]"
-                              statuses=[[actionPointStatues]]
-                              error-object="{{errorObject}}">
+                                  visit-id="[[visit.id]]"
+                                  base-visit-path="[[permissionBase]]"
+                                  data-items="[[visit.tpm_activities]]">
                           </action-points>
                         </div>
                     </template>

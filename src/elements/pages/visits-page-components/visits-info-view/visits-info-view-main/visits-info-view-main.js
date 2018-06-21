@@ -364,10 +364,6 @@ Polymer({
         return this.collectionExists(`${permissionBase}_${prefix}.GET`);
     },
 
-    _showAPTab: function(permissionBase, field) {
-        return this.collectionExists(`${permissionBase}.${field}`, 'GET');
-    },
-
     _createActivitiesId: function(activities) {
         if (!activities || !activities.length) { return; }
 
