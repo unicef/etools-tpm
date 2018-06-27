@@ -2,14 +2,14 @@ FROM mhart/alpine-node:7
 RUN apk update
 
 RUN apk add git
-RUN npm install -g bower polymer-cli gulp-cli
+RUN npm install --loglevel verbose -g bower polymer-cli gulp-cli
 
 
 WORKDIR /tmp
 ADD bower.json /tmp/
 ADD package.json /tmp/
 
-RUN npm install
+RUN npm install --loglevel verbose 
 RUN bower --allow-root install
 
 RUN mkdir /code/
