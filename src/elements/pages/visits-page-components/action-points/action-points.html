@@ -211,6 +211,31 @@
                         </div>
 
                         <div class="row-h group">
+                            <div class="input-container input-container-l">
+                                <!-- Section -->
+                                <etools-searchable-multiselection-menu
+                                        class$="disabled-as-readonly validate-input [[_setRequired('section', editedApBase)]] fua-person"
+                                        value="{{editedItem.section}}"
+                                        label="[[getLabel('section', editedApBase)]]"
+                                        placeholder="[[getPlaceholderText('section', editedApBase)]]"
+                                        options="[[sections]]"
+                                        custom-object-options
+                                        option-label="name"
+                                        option-value="id"
+                                        update-selected
+                                        required$="[[_setRequired('section', editedApBase)]]"
+                                        disabled$="{{isReadOnly('section', editedApBase, requestInProcess)}}"
+                                        readonly$="{{isReadOnly('section', editedApBase, requestInProcess)}}"
+                                        invalid="{{errors.section}}"
+                                        error-message="{{errors.section}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                            </div>
+                        </div>
+
+                        <div class="row-h group">
                             <!-- High Priority -->
                             <div class="input-container checkbox-container">
                                 <etools-checkable-input
