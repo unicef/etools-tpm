@@ -92,6 +92,9 @@ App global configuration
             offices: {
                 url: '/api/offices/'
             },
+            actionPoints: {
+                template: '/api/tpm/visits/<%=id%>/activities/<%=activityId%>/action-points/'
+            },
             partnerAttachments: {
                 template: '/api/tpm/partners/<%=id%>/attachments/'
             },
@@ -113,6 +116,8 @@ App global configuration
             serverBackend: (window.location.port !== '8080'),
             //epsPath: (window.location.port !== '8080') ? 'endpoints' : 'localEndpoints',
             epsPath: 'endpoints',
+            stagingDomain: 'etools-staging.unicef.org',
+            productionDomain: 'etools.unicef.org',
 
             // dexie js
             appDexieDb: etoolsCustomDexieDb,
@@ -137,6 +142,16 @@ App global configuration
             getAbsolutePath: function(path) {
                 path = path || '';
                 return this.basePath + path;
+            },
+
+            isProductionServer: function() {
+                let location = window.location.href;
+                return location.indexOf(this.productionDomain) > -1;
+            },
+
+            isStagingServer: function() {
+                let location = window.location.href;
+                return location.indexOf(this.stagingDomain) > -1;
             }
         }
     };
