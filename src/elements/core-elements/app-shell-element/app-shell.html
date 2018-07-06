@@ -1,4 +1,4 @@
-<!--import [polymer, app-route/app-location, app-route, app-layout, paper-icon-button,
+<!--import [polymer, etools-piwik-analytics, app-route/app-location, app-route, app-layout, paper-icon-button,
              paper-toast, paper-material, iron-selector, iron-pages, iron-collapse, iron-icons, iron-icons/social-icons,
              etools-loading/etools-loading-behavior, iron-icons/maps-icons]-->
 
@@ -10,6 +10,11 @@
     <template>
         <!-- inject styles './app-shell.scss'-->
         <style include="page-layout-styles shared-styles"></style>
+
+        <etools-piwik-analytics
+                page="[[subroute.prefix]]"
+                user="[[user]]">
+        </etools-piwik-analytics>
 
         <initial-data></initial-data>
 
