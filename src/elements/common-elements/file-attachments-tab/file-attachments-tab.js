@@ -7,6 +7,7 @@
         behaviors: [
             TPMBehaviors.TableElementsBehavior,
             TPMBehaviors.CommonMethodsBehavior,
+            TPMBehaviors.ErrorHandlerBehavior
         ],
 
         properties: {
@@ -19,7 +20,7 @@
                 value: function() {
                     return {
                         file: undefined,
-                        file_name: undefined,
+                        filename: undefined,
                         file_type: undefined,
                         type: {},
                     };
@@ -72,7 +73,7 @@
             '_setBasePath(dataBasePath)',
             '_filesChange(dataItems.*, fileTypes.*)',
             '_updateHeadings(basePermissionPath)',
-            'resetDialog(dialogOpened)',
+            '_resetDialog(dialogOpened)',
             '_errorHandler(errorObject)',
             'updateStyles(requestInProcess, editedItem, basePermissionPath)',
         ],
@@ -89,6 +90,13 @@
 
         showFileTypes: function(basePath) {
             return !!basePath && this.collectionExists(`${basePath}.file_type`, 'GET');
+        },
+
+        _resetDialog: function(dialogOpened) {
+            if (!dialogOpened) {
+                this.originalEditedObj = null;
+            }
+            this.resetDialog(dialogOpened);
         },
 
         _getFileType: function(fileType) {
@@ -153,7 +161,7 @@
             let file = files[0];
 
             if (file && file instanceof File) {
-                this.set('editedItem.file_name', file.name);
+                this.set('editedItem.filename', file.name);
                 this.editedItem.file = file;
 
                 return !this._fileAlreadySelected();
@@ -190,18 +198,39 @@
                 method = attachmentsData.id ? 'PATCH' : 'POST';
             }
 
+            attachmentsData = method === 'PATCH' ? this._getChanges(attachmentsData) : attachmentsData;
+            if (!attachmentsData) {
+                this._requestCompleted(null, {success: true});
+                return;
+            }
+
             this.requestData = {method, attachmentsData};
         },
 
-        _getFileData: function() {
+        _getChanges: function(attachmentsData) {
+            let original = this.originalEditedObj && this._getFileData(this.originalEditedObj);
+            if (!original) { return attachmentsData; }
+
+            let data = _.pickBy(attachmentsData, (value, key) => original[key] !== value);
+            if (data.file && this._fileAlreadySelected()) {
+                delete data.file;
+            }
+
+            if (_.isEmpty(data)) {
+                return null;
+            } else {
+                data.id = attachmentsData.id;
+                return data;
+            }
+        },
+
+        _getFileData: function(fileData) {
             if (!this.dialogOpened) { return {}; }
-            let {id, file, type} = this.editedItem,
-                data;
+            let {id, file, type} = fileData || this.editedItem,
+                data = {file};
 
             if (id) {
-                data = {id};
-            } else {
-                data = {file};
+                data.id = id;
             }
 
             if (type) {
@@ -222,7 +251,7 @@
             if (!this.dataItems) {return false;}
 
             let alreadySelectedIndex = this.dataItems.findIndex((file) => {
-                return file.filename === this.editedItem.file_name;
+                return file.filename === this.editedItem.filename;
             });
 
             if (alreadySelectedIndex !== -1) {
@@ -295,7 +324,7 @@
                 let filesErrors = [];
 
                 errors.forEach((error, index) => {
-                    let fileName = this.dataItems[index].file_name;
+                    let fileName = this.dataItems[index].filename;
                     fileName = this._cutFileName(fileName);
 
                     if (fileName && typeof error.file === 'string') {
