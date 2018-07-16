@@ -109,6 +109,98 @@
 
                         <div class="row-h group">
                             <div class="input-container input-container-l">
+                                <!-- Description -->
+                                <paper-textarea
+                                        class$="validate-input {{_setRequired('description', editedApBase)}}"
+                                        value="{{editedItem.description}}"
+                                        allowed-pattern="[\d\s]"
+                                        label="[[getLabel('description', editedApBase)]]"
+                                        placeholder="[[getPlaceholderText('description', editedApBase)]]"
+                                        required="{{_setRequired('description', editedApBase)}}"
+                                        disabled="{{isReadOnly('description', editedApBase, requestInProcess)}}"
+                                        readonly$="{{isReadOnly('description', editedApBase, requestInProcess)}}"
+                                        max-rows="4"
+                                        invalid="{{errors.description}}"
+                                        error-message="{{errors.description}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError">
+                                </paper-textarea>
+                            </div>
+                        </div>
+
+                        <div class="row-h group">
+                            <div class="input-container input-container-ms">
+                                <!-- Assigned To -->
+                                <etools-searchable-multiselection-menu
+                                        class$="disabled-as-readonly validate-input [[_setRequired('assigned_to', editedApBase)]] fua-person"
+                                        value="{{editedItem.assigned_to}}"
+                                        label="[[getLabel('assigned_to', editedApBase)]]"
+                                        placeholder="[[getPlaceholderText('assigned_to', editedApBase)]]"
+                                        options="[[usersList]]"
+                                        custom-object-options
+                                        option-label="name"
+                                        option-value="id"
+                                        update-selected
+                                        required$="[[_setRequired('assigned_to', editedApBase)]]"
+                                        disabled$="{{isReadOnly('assigned_to', editedApBase, requestInProcess)}}"
+                                        readonly$="{{isReadOnly('assigned_to', editedApBase, requestInProcess)}}"
+                                        invalid="{{errors.assigned_to}}"
+                                        error-message="{{errors.assigned_to}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                            </div>
+
+                            <div class="input-container input-container-ms">
+                                <!-- Section -->
+                                <etools-searchable-multiselection-menu
+                                        class$="disabled-as-readonly validate-input [[_setRequired('section', editedApBase)]] fua-person"
+                                        value="{{editedItem.section}}"
+                                        label="[[getLabel('section', editedApBase)]]"
+                                        placeholder="[[getPlaceholderText('section', editedApBase)]]"
+                                        options="[[sections]]"
+                                        custom-object-options
+                                        option-label="name"
+                                        option-value="id"
+                                        update-selected
+                                        required$="[[_setRequired('section', editedApBase)]]"
+                                        disabled$="{{isReadOnly('section', editedApBase, requestInProcess)}}"
+                                        readonly$="{{isReadOnly('section', editedApBase, requestInProcess)}}"
+                                        invalid="{{errors.section}}"
+                                        error-message="{{errors.section}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                            </div>
+                        </div>
+
+                        <div class="row-h group">
+                            <div class="input-container input-container-ms">
+                                <!-- Offices -->
+                                <etools-searchable-multiselection-menu
+                                        class$="disabled-as-readonly validate-input [[_setRequired('office', editedApBase)]] fua-person"
+                                        value="{{editedItem.office}}"
+                                        label="[[getLabel('office', editedApBase)]]"
+                                        placeholder="[[getPlaceholderText('office', editedApBase)]]"
+                                        options="[[offices]]"
+                                        custom-object-options
+                                        option-label="name"
+                                        option-value="id"
+                                        update-selected
+                                        required$="[[_setRequired('office', editedApBase)]]"
+                                        disabled$="{{isReadOnly('office', editedApBase, requestInProcess)}}"
+                                        readonly$="{{isReadOnly('office', editedApBase, requestInProcess)}}"
+                                        invalid="{{errors.office}}"
+                                        error-message="{{errors.office}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                            </div>
+
+                            <div class="input-container input-container-40">
                                 <!-- Due Date -->
                                 <paper-input
                                         id="deadlineAction"
@@ -140,99 +232,11 @@
                         </div>
 
                         <div class="row-h group">
-                            <div class="input-container input-container-l">
-                                <!-- Assigned To -->
-                                <etools-searchable-multiselection-menu
-                                        class$="disabled-as-readonly validate-input [[_setRequired('assigned_to', editedApBase)]] fua-person"
-                                        value="{{editedItem.assigned_to}}"
-                                        label="[[getLabel('assigned_to', editedApBase)]]"
-                                        placeholder="[[getPlaceholderText('assigned_to', editedApBase)]]"
-                                        options="[[usersList]]"
-                                        custom-object-options
-                                        option-label="name"
-                                        option-value="id"
-                                        update-selected
-                                        required$="[[_setRequired('assigned_to', editedApBase)]]"
-                                        disabled$="{{isReadOnly('assigned_to', editedApBase, requestInProcess)}}"
-                                        readonly$="{{isReadOnly('assigned_to', editedApBase, requestInProcess)}}"
-                                        invalid="{{errors.assigned_to}}"
-                                        error-message="{{errors.assigned_to}}"
-                                        on-focus="_resetFieldError"
-                                        on-tap="_resetFieldError"
-                                        no-title-attr>
-                                </etools-searchable-multiselection-menu>
-                            </div>
+
                         </div>
 
                         <div class="row-h group">
-                            <div class="input-container input-container-l">
-                                <!-- Description -->
-                                <paper-textarea
-                                        class$="validate-input {{_setRequired('description', editedApBase)}}"
-                                        value="{{editedItem.description}}"
-                                        allowed-pattern="[\d\s]"
-                                        label="[[getLabel('description', editedApBase)]]"
-                                        placeholder="[[getPlaceholderText('description', editedApBase)]]"
-                                        required="{{_setRequired('description', editedApBase)}}"
-                                        disabled="{{isReadOnly('description', editedApBase, requestInProcess)}}"
-                                        readonly$="{{isReadOnly('description', editedApBase, requestInProcess)}}"
-                                        max-rows="4"
-                                        invalid="{{errors.description}}"
-                                        error-message="{{errors.description}}"
-                                        on-focus="_resetFieldError"
-                                        on-tap="_resetFieldError">
-                                </paper-textarea>
-                            </div>
-                        </div>
 
-                        <div class="row-h group">
-                            <div class="input-container input-container-l">
-                                <!-- Offices -->
-                                <etools-searchable-multiselection-menu
-                                        class$="disabled-as-readonly validate-input [[_setRequired('office', editedApBase)]] fua-person"
-                                        value="{{editedItem.office}}"
-                                        label="[[getLabel('office', editedApBase)]]"
-                                        placeholder="[[getPlaceholderText('office', editedApBase)]]"
-                                        options="[[offices]]"
-                                        custom-object-options
-                                        option-label="name"
-                                        option-value="id"
-                                        update-selected
-                                        required$="[[_setRequired('office', editedApBase)]]"
-                                        disabled$="{{isReadOnly('office', editedApBase, requestInProcess)}}"
-                                        readonly$="{{isReadOnly('office', editedApBase, requestInProcess)}}"
-                                        invalid="{{errors.office}}"
-                                        error-message="{{errors.office}}"
-                                        on-focus="_resetFieldError"
-                                        on-tap="_resetFieldError"
-                                        no-title-attr>
-                                </etools-searchable-multiselection-menu>
-                            </div>
-                        </div>
-
-                        <div class="row-h group">
-                            <div class="input-container input-container-l">
-                                <!-- Section -->
-                                <etools-searchable-multiselection-menu
-                                        class$="disabled-as-readonly validate-input [[_setRequired('section', editedApBase)]] fua-person"
-                                        value="{{editedItem.section}}"
-                                        label="[[getLabel('section', editedApBase)]]"
-                                        placeholder="[[getPlaceholderText('section', editedApBase)]]"
-                                        options="[[sections]]"
-                                        custom-object-options
-                                        option-label="name"
-                                        option-value="id"
-                                        update-selected
-                                        required$="[[_setRequired('section', editedApBase)]]"
-                                        disabled$="{{isReadOnly('section', editedApBase, requestInProcess)}}"
-                                        readonly$="{{isReadOnly('section', editedApBase, requestInProcess)}}"
-                                        invalid="{{errors.section}}"
-                                        error-message="{{errors.section}}"
-                                        on-focus="_resetFieldError"
-                                        on-tap="_resetFieldError"
-                                        no-title-attr>
-                                </etools-searchable-multiselection-menu>
-                            </div>
                         </div>
 
                         <div class="row-h group">
