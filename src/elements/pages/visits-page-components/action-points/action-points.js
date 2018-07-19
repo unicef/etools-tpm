@@ -92,6 +92,10 @@ Polymer({
             type: String,
             value: '-reference_number'
         },
+        modelFields: {
+            type: Array,
+            value: () => ['assigned_to', 'category', 'description', 'section', 'office', 'due_date', 'high_priority', 'tpm_activity']
+        },
         dialogTexts: {
             type: Object,
             value: () => ({
@@ -105,8 +109,21 @@ Polymer({
                 },
                 view: {
                     title: 'View Action Point'
+                },
+                copy: {
+                    title: 'Duplicate Action Point',
+                    button: 'Save'
                 }
             })
+        },
+        notTouched: {
+            type: Boolean,
+            value: false,
+            computed: '_checkNotTouched(popupType, editedItem.*)'
+        },
+        typesForInput: {
+            type: Array,
+            value: () => ['add', 'copy']
         }
     },
 
@@ -121,8 +138,7 @@ Polymer({
 
     listeners: {
         'dialog-confirmed': '_startRequest',
-        'ap-request-completed': '_requestCompleted',
-        'edit-action-point': '_requestAPOptions'
+        'ap-request-completed': '_requestCompleted'
     },
 
     ready: function() {
@@ -184,8 +200,7 @@ Polymer({
     },
 
     _requestAPOptions: function(event) {
-        let item = event && event.model && event.model.item,
-            index = this.actionPoints.indexOf(item);
+        let index = this._getIndex(event);
 
         if ((!index && index !== 0) || !~index) {
             throw 'Can not find data';
@@ -213,6 +228,16 @@ Polymer({
         this._openPopup({itemForEdit, popupType, permissionBase: 'edited_ap_options'});
     },
 
+    _openCopyDialog: function() {
+        let index = this._getIndex(event),
+            data = _.omit(this.actionPoints[index], ['id']);
+
+        this._openPopup({
+            popupType: 'copy',
+            itemForEdit: data
+        });
+    },
+
     _openPopup: function(data = {}) {
         let {itemForEdit, popupType = 'add', permissionBase = this.basePermissionPath} = data;
 
@@ -233,8 +258,29 @@ Polymer({
         this.dialogOpened = true;
     },
 
-    checkDialogType: function(type) {
-        return this.dialogOpened && type === this.popupType;
+    _getIndex: function(event) {
+        let item = event && event.model && event.model.item,
+            index = this.actionPoints && this.actionPoints.indexOf(item);
+
+        if ((!index && index !== 0) || index < 0) { throw Error('Can not find user data'); }
+
+        return index;
+    },
+
+    _checkNotTouched: function(popupType) {
+        if (popupType !== 'copy' || _.isEmpty(this.originalEditedObj)) { return false; }
+        return _.every(this.originalEditedObj, (value, key) => {
+            let isObject = _.isObject(value);
+            if (isObject) {
+                return !value.id || +value.id === +_.get(this, `editedItem.${key}.id`);
+            } else {
+                return value === this.editedItem[key];
+            }
+        });
+    },
+
+    checkDialogType: function(types) {
+        return this.dialogOpened && (types === this.popupType || ~types.indexOf(this.popupType));
     },
 
     canNotAddAP: function(basePath) {
@@ -251,7 +297,7 @@ Polymer({
     },
 
     _startRequest: function() {
-        if (!this.validate()) { return; }
+        if (!this.validate() || this.notTouched) { return; }
         this.requestInProcess = true;
 
         let apData = this.getActionsData();
@@ -282,10 +328,11 @@ Polymer({
 
     getActionsData: function() {
         if (!this.dialogOpened) { return null; }
-
+        if (this.popupType === 'copy') { this.originalEditedObj = {}; }
         if (this.editedItem.due_date === '') { this.editedItem.due_date = null; }
 
         let data = _.pickBy(this.editedItem, (value, fieldName) => {
+            if (!~this.modelFields.indexOf(fieldName)) { return false; }
             let isObject = _.isObject(value) && !_.isArray(value);
             if (isObject) {
                 return value.id !== _.get(this, `originalEditedObj.${fieldName}.id`);

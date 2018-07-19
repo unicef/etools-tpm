@@ -80,6 +80,10 @@ paper-dialog {
     background-color: var(--module-primary);
 }
 
+:host([no-title-margin]) {
+    .dialog-title { margin-bottom: 0 !important; }
+}
+
 .close-btn {
     position: absolute;
     right: -5px;

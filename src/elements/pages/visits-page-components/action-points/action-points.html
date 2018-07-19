@@ -75,12 +75,18 @@
                     dialog-title="[[dialogTitle]]"
                     confirm-btn-text="[[confirmBtnText]]"
                     hide-confirm-btn="[[hideConfirmBtn]]"
-                    request-in-process="{{requestInProcess}}">
+                    request-in-process="{{requestInProcess}}"
+                    no-title-margin$="[[notTouched]]">
+                <template is="dom-if" if="[[notTouched]]">
+                    <div class="copy-warning">
+                        It is required to change at least one of the fields below.
+                    </div>
+                </template>
 
                 <div class="row-h repeatable-item-container" without-line>
                     <div class="repeatable-item-content">
 
-                        <template is="dom-if" if="[[checkDialogType('add', popupType, dialogOpened)]]" restamp>
+                        <template is="dom-if" if="[[checkDialogType(typesForInput, popupType, dialogOpened)]]" restamp>
                             <div class="row-h group">
                                 <div class="input-container input-container-l">
                                     <!-- Activity Task -->
