@@ -6,7 +6,7 @@
   <template>
     <style include="shared-styles">
       app-toolbar {
-        background-color: #233944;
+        background-color: var(--header-bg-color, #233944);
         padding: 0 8px 0 0;
       }
 
@@ -53,6 +53,12 @@
         @apply(--layout-center);
       }
 
+      .envWarning {
+        color: var(--nonprod-text-warn-color);
+        font-weight: 700;
+        font-size: 18px;
+      }
+
       @media (min-width: 851px) {
         div[main-title] {
           margin-left: 32px;
@@ -62,8 +68,11 @@
 
     <app-toolbar sticky class="content-align">
       <div class="titlebar content-align">
-        <etools-app-selector hidden$="[[!user.is_staff]]" menu-options="[[menuOptions]]"></etools-app-selector>
+        <etools-app-selector hidden$="[[!user.is_staff]]"></etools-app-selector>
         <img src$="[[getAbsolutePath('images/etools_logo.svg')]]">
+        <template is="dom-if" if="[[isStaging]]">
+          <div class="envWarning"> - STAGING TESTING ENVIRONMENT</div>
+        </template>
       </div>
 
       <div class="content-align">
@@ -89,48 +98,15 @@
           user: {
             type: Object
           },
-          menuOptions: {
-            type: Array,
-            value: function () {
-              return [
-                {
-                  title: 'Dashboards',
-                  icon: 'app-selector-icons:dashIcon',
-                  url: 'dash'
-                },
-                {
-                  title: 'Partnership Management',
-                  icon: 'app-selector-icons:pmpIcon',
-                  url: 'pmp'
-                },
-                {
-                  title: 'Trip Management',
-                  icon: 'app-selector-icons:tripsIcon',
-                  url: 't2f'
-                },
-                {
-                  title: 'Third Party Monitoring',
-                  icon: 'app-icons:tpm',
-                  url: 'tpm'
-                },
-                {
-                  title: 'Auditor Portal',
-                  icon: 'app-icons:auditor',
-                  url: 'ap'
-                },
-                {
-                  title: 'Admin (Permission Required)',
-                  icon: 'app-selector-icons:adminIcon',
-                  url: 'admin'
-                }
-
-              ];
-            }
-          }
         },
 
         listeners: {
           'main_refresh': '_refresh_page'
+        },
+
+        ready: function() {
+          this._isStaging()
+          this._setBgColor()
         },
 
         openDrawer: function() {
@@ -140,6 +116,17 @@
         _refresh_page: function(event) {
           event.stopImmediatePropagation();
           this.$.refresh.refresh();
+        },
+
+        _setBgColor: function() {
+          // If not production environment, changing header color to red
+          if (!etoolsAppConfig.globals.isProductionServer()) {
+            this.updateStyles({'--header-bg-color': 'var(--nonprod-header-color)'});
+          }
+        },
+
+        _isStaging: function() {
+          this.set('isStaging', etoolsAppConfig.globals.isStagingServer())
         }
       });
     })();
