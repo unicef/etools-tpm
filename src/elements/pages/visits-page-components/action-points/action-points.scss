@@ -1,3 +1,23 @@
+:host {
+    div[slot="additional"] {
+        padding: 10px 0 9px 12px;
+        paper-button {
+            height: 38px;
+            font-weight: 500;
+            padding-right: 0;
+        }
+        iron-icon {
+            width: 20px;
+            color: var(--gray-mid);
+            margin-left: 5px;
+        }
+        a {
+            color: var(--gray-mid);
+            text-decoration: none;
+        }
+    }
+}
+
 etools-content-panel {
     --ecp-content: #{'{
          padding: 0;
@@ -26,3 +46,4 @@ etools-searchable-multiselection-menu {
     border: 1px solid rgba(0,0,0,.54);
     padding: 6px 13px;
 }
+

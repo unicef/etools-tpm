@@ -35,39 +35,62 @@ Polymer({
         columns: {
             type: Array,
             value: () => [{
-                    'size': 10,
-                    'label': 'Task Id',
-                    'labelPath': 'tpm_activities.id',
-                    'path': 'unique_id'
-                }, {
-                    'size': 40,
-                    'label': 'Implementing Partner',
-                    'labelPath': 'tpm_activities.partner',
-                    'path': 'partner.name'
-                }, {
-                    'size': 40,
-                    'label': 'PD/SSFA ToR',
-                    'labelPath': 'tpm_activities.intervention',
-                    'path': 'intervention.title'
-                }, {
-                    'size': 10,
-                    'name': 'date',
-                    'label': 'Date',
-                    'labelPath': 'tpm_activities.date',
-                    'path': 'date'
-                }]
-        },
-        details: {
-            type: Array,
-            value: () => [{}]
+                'size': 18,
+                'label': 'Reference Number #',
+                'name': 'reference_number',
+                'link': '*ap_link*',
+                'ordered': 'desc',
+                'path': 'reference_number',
+                'target': '_blank',
+                'class': 'with-icon'
+            }, {
+                'size': 7,
+                'label': 'Related Task',
+                'path': 'related_task',
+                'name': 'related_task'
+            }, {
+                'size': 25,
+                'label': 'Description',
+                'labelPath': 'description',
+                'name': 'description',
+                'hideTooltip': true
+            }, {
+                'size': 20,
+                'label': 'Assignee (Section / Office)',
+                'path': 'computed_field',
+                'html': true,
+                'class': 'no-order'
+            }, {
+                'size': 10,
+                'label': 'Status',
+                'labelPath': 'status',
+                'align': 'center',
+                'path': 'status',
+                'class': 'caps',
+                'name': 'ap_status'
+            }, {
+                'size': 10,
+                'label': 'Due Date',
+                'labelPath': 'due_date',
+                'path': 'due_date',
+                'name': 'date',
+                'align': 'center'
+            }, {
+                'size': 10,
+                'label': 'Priority',
+                'labelPath': 'high_priority',
+                'path': 'priority',
+                'align': 'center',
+                'name': 'high_priority'
+            }]
         },
         actionPoints: {
             type: Array,
             value: () => []
         },
-        noActionPoints: {
-            type: Boolean,
-            computed: 'checkAPInTasks(dataItems, dataItems.*)'
+        orderBy: {
+            type: String,
+            value: '-reference_number'
         },
         dialogTexts: {
             type: Object,
@@ -92,7 +115,8 @@ Polymer({
         '_errorHandler(errorObject)',
         'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
         'setPermissionPath(baseVisitPath)',
-        'updateTable(actionPoints.*)'
+        '_addComputedField(actionPoints.*, tpmActivities)',
+        '_orderChanged(orderBy, columns, actionPoints.*)'
     ],
 
     listeners: {
@@ -123,30 +147,55 @@ Polymer({
         return id ? `visit_${id}` : '';
     },
 
-    _showTask: function(activityTask) {
-        let id = activityTask && activityTask.id;
-        return id && this.actionPoints && _.some(this.actionPoints, (ap) => ap.tpm_activity === id);
+    _addComputedField: function() {
+        this.itemsToDisplay = this.actionPoints.map((item) => {
+            item.priority = item.high_priority && 'High' || ' ';
+            item.computed_field = `<b>${item.assigned_to.name}</b> <br>(${item.section.name} / ${item.office.name})`;
+
+            let relatedTask = _.findIndex(this.tpmActivities, (activity) => item.tpm_activity === activity.id);
+            if (~relatedTask) {
+                item.related_task = `000${relatedTask + 1}`.slice(-4);
+            }
+            return item;
+        });
     },
 
-    updateTable: function() {
-        this.$['activity-repeat'].render();
-    },
+    _orderChanged: function(newOrder, columns) {
+        if (!newOrder || !(columns instanceof Array)) { return false; }
 
-    checkAPInTasks: function(visitActivities) {
-        return visitActivities && !_.some(visitActivities, (activity) => !!_.get(activity, 'action_points.length'));
-    },
+        let direction = 'asc';
+        let name = newOrder;
 
-    _requestAPOptions: function(event, details) {
-        let itemForEdit = _.get(details, 'taskAP'),
-            apId = _.get(itemForEdit, 'actionPoint.id');
-
-        if (!apId) {
-            throw new Error('You need action point id to make a request');
+        if (name.startsWith('-')) {
+            direction = 'desc';
+            name = name.slice(1);
         }
+
+        columns.forEach((column, index) => {
+            if (column.name === name) {
+                this.set(`columns.${index}.ordered`, direction);
+            } else {
+                this.set(`columns.${index}.ordered`, false);
+            }
+        });
+
+        let sorted = _.sortBy(this.actionPoints, (item) => item[name]);
+        this.itemsToDisplay = direction === 'asc' ? sorted : sorted.reverse();
+    },
+
+    _requestAPOptions: function(event) {
+        let item = event && event.model && event.model.item,
+            index = this.actionPoints.indexOf(item);
+
+        if ((!index && index !== 0) || !~index) {
+            throw 'Can not find data';
+        }
+
+        let itemForEdit = _.get(this, `actionPoints.${index}`);
         this.fire('global-loading', {type: 'get-ap-options', active: true, message: 'Loading data...'});
 
         let url = this.getEndpoint('visitDetails', {id: this.visitId}).url;
-        this.apOptionUrl = `${url}action-points/${apId}/`;
+        this.apOptionUrl = `${url}action-points/${itemForEdit.id}/`;
         this._itemForEdit = itemForEdit;
     },
 
@@ -171,7 +220,7 @@ Polymer({
         this.editedApBase = permissionBase;
         if (itemForEdit) {
             this.popupType = popupType;
-            this.editedItem = _.cloneDeep(itemForEdit.actionPoint);
+            this.editedItem = _.cloneDeep(itemForEdit);
         } else {
             this.popupType = popupType;
             this.editedItem = _.cloneDeep(this.itemModel);
@@ -195,6 +244,10 @@ Polymer({
         if (readOnly === null) { readOnly = true; }
 
         return readOnly;
+    },
+
+    canBeEdited: function(status) {
+        return status !== 'completed';
     },
 
     _startRequest: function() {
@@ -250,35 +303,10 @@ Polymer({
     },
 
     _requestCompleted: function(event, detail) {
-        if (this.completeAPAfterRequest) {
-            this.completeAPAfterRequest = false;
-            this.originalEditedObj = _.clone(this.editedItem);
-            this.completeAP();
-            return;
-        }
-
         this.requestInProcess = false;
         if (detail && detail.success) {
             this.dialogOpened = false;
         }
-    },
-
-    completeAP: function() {
-        if (!this.validate()) { return; }
-        let data = this.getActionsData();
-
-        if (data) {
-            this.completeAPAfterRequest = true;
-            this._startRequest();
-            return;
-        }
-
-        this.requestInProcess = true;
-        this.requestData = {
-            apData: {id: this.editedItem.id},
-            complete: true,
-            method: 'POST'
-        };
-    },
+    }
 
 });
