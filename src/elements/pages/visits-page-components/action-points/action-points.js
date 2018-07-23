@@ -36,7 +36,7 @@ Polymer({
             type: Array,
             value: () => [{
                     'size': 10,
-                    'label': 'Task Id',
+                    'label': 'Task No.',
                     'labelPath': 'tpm_activities.id',
                     'path': 'unique_id'
                 }, {
