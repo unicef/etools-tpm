@@ -25,6 +25,16 @@
         color: #212121;
         font-size: 15px;
     }
+
+    .ap-description {
+        position: relative;
+        white-space: normal !important;
+        overflow: visible !important;
+        div {
+            max-height: 37px;
+            overflow: hidden;
+        }
+    }
 }
 
 etools-content-panel {

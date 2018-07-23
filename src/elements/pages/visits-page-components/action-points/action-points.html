@@ -3,7 +3,8 @@
 
 <!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, update-action-points, get-action-points,
             list-element, common-methods-behavior, dialog-element, date-behavior, activity-to-drd-value, ap-items,
-            static-data-behavior, common-methods-behavior, table-elements-behavior, textarea-max-rows-behavior] -->
+            static-data-behavior, common-methods-behavior, table-elements-behavior, textarea-max-rows-behavior,
+            get-partner-organisation-data] -->
 
 <dom-module id="action-points">
     <template>
@@ -11,6 +12,10 @@
         <!-- inject styles './action-points.scss'-->
 
         <get-action-points visit-id="[[visitId]]" action-points="{{actionPoints}}"></get-action-points>
+        <get-partner-organisation-data
+                partner="{{fullPartner}}"
+                partner-id="{{partnerForRequest}}">
+        </get-partner-organisation-data>
 
         <etools-ajax-sp
                 url="[[apOptionUrl]]"
@@ -54,6 +59,10 @@
                         headings="[[columns]]"
                         no-additional
                         no-animation>
+                    <div slot="custom" class="ap-description">
+                        <div>[[_truncate(item.description)]]</div>
+                        <paper-tooltip offset="0">[[item.description]]</paper-tooltip>
+                    </div>
                     <div slot="hover" class="edit-icon-slot">
                         <paper-icon-button icon="icons:content-copy" class="edit-icon" on-tap="_openCopyDialog"></paper-icon-button>
                         <paper-icon-button icon="icons:create" class="edit-icon" on-tap="_requestAPOptions" hidden$="[[!canBeEdited(item.status)]]"></paper-icon-button>
@@ -66,6 +75,7 @@
                         class="list-element"
                         data="[[emptyObj]]"
                         headings="[[columns]]"
+                        no-additional
                         no-animation>
                 </list-element>
             </template>
@@ -86,23 +96,98 @@
                 <div class="row-h repeatable-item-container" without-line>
                     <div class="repeatable-item-content">
 
-                        <template is="dom-if" if="[[checkDialogType(typesForInput, popupType, dialogOpened)]]" restamp>
+                        <div class="row-h group">
+                            <div class="input-container input-container-l">
+                                <!-- Activity Task -->
+                                <etools-searchable-multiselection-menu
+                                        class$="disabled-as-readonly validate-input [[_setRequired('assigned_to', basePermissionPath)]] fua-person"
+                                        selected="{{editedItem.tpm_activity}}"
+                                        label="[[getLabel('tpm_activities', visitBase)]]"
+                                        placeholder="[[getPlaceholderText('tpm_activities', visitBase)]]"
+                                        options="[[_getATOptions(tpmActivities)]]"
+                                        custom-object-options
+                                        option-label="name"
+                                        option-value="id"
+                                        update-selected
+                                        required
+                                        disabled$="{{requestInProcess}}"
+                                        readonly$="{{requestInProcess}}"
+                                        invalid="{{errors.tpm_activity}}"
+                                        error-message="{{errors.tpm_activity}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                            </div>
+                        </div>
+
+                        <template is="dom-if" if="[[editedItem.tpm_activity]]" restamp>
                             <div class="row-h group">
                                 <div class="input-container input-container-l">
-                                    <!-- Activity Task -->
+                                    <!-- CP Output -->
                                     <etools-searchable-multiselection-menu
-                                            class$="disabled-as-readonly validate-input [[_setRequired('assigned_to', basePermissionPath)]] fua-person"
-                                            selected="{{editedItem.tpm_activity}}"
-                                            label="[[getLabel('tpm_activities', visitBase)]]"
-                                            placeholder="[[getPlaceholderText('tpm_activities', visitBase)]]"
-                                            options="[[_getATOptions(tpmActivities)]]"
+                                            class$="disabled-as-readonly validate-input [[_setRequired('cp_output', editedApBase)]] fua-person"
+                                            value="{{editedItem.cp_output}}"
+                                            label="[[getLabel('cp_output', editedApBase)]]"
+                                            placeholder="[[getPlaceholderText('cp_output', editedApBase)]]"
+                                            options="[[cpOutputs]]"
                                             custom-object-options
                                             option-label="name"
                                             option-value="id"
                                             update-selected
-                                            required
-                                            disabled$="{{requestInProcess}}"
-                                            readonly$="{{requestInProcess}}"
+                                            required$="[[_setRequired('cp_output', editedApBase)]]"
+                                            disabled$="{{isReadOnly('cp_output', editedApBase, requestInProcess)}}"
+                                            readonly$="{{isReadOnly('cp_output', editedApBase, requestInProcess)}}"
+                                            invalid="{{errors.cp_output}}"
+                                            error-message="{{errors.cp_output}}"
+                                            on-focus="_resetFieldError"
+                                            on-tap="_resetFieldError"
+                                            no-title-attr>
+                                    </etools-searchable-multiselection-menu>
+                                </div>
+                            </div>
+
+                            <div class="row-h group">
+                                <div class="input-container input-container-ms">
+                                    <!-- Partner -->
+                                    <etools-searchable-multiselection-menu
+                                            class$="disabled-as-readonly validate-input [[_setRequired('partner', editedApBase)]] fua-person"
+                                            selected="{{selectedPartner}}"
+                                            label="[[getLabel('partner', editedApBase)]]"
+                                            placeholder="[[getPlaceholderText('partner', editedApBase)]]"
+                                            options="[[partners]]"
+                                            custom-object-options
+                                            option-label="name"
+                                            option-value="id"
+                                            update-selected
+                                            required$="[[_setRequired('partner', editedApBase)]]"
+                                            disabled$="{{isReadOnly('partner', editedApBase, requestInProcess)}}"
+                                            readonly$="{{isReadOnly('partner', editedApBase, requestInProcess)}}"
+                                            invalid="{{errors.partner}}"
+                                            error-message="{{errors.partner}}"
+                                            on-focus="_resetFieldError"
+                                            on-tap="_resetFieldError"
+                                            no-title-attr>
+                                    </etools-searchable-multiselection-menu>
+                                </div>
+
+                                <div class="input-container input-container-ms">
+                                    <!-- PD/SSFA -->
+                                    <etools-searchable-multiselection-menu
+                                            class$="disabled-as-readonly validate-input [[_setRequired('intervention', editedApBase)]] fua-person"
+                                            value="{{editedItem.intervention}}"
+                                            label="[[getLabel('intervention', editedApBase)]]"
+                                            placeholder="[[getPlaceholderText('intervention', editedApBase)]]"
+                                            options="[[fullPartner.interventions]]"
+                                            custom-object-options
+                                            option-label="title"
+                                            option-value="id"
+                                            update-selected
+                                            required$="[[_setRequired('intervention', editedApBase)]]"
+                                            disabled$="{{isReadOnly('intervention', editedApBase, requestInProcess)}}"
+                                            readonly$="{{isReadOnly('intervention', editedApBase, requestInProcess)}}"
+                                            invalid="{{errors.intervention}}"
+                                            error-message="{{errors.intervention}}"
                                             on-focus="_resetFieldError"
                                             on-tap="_resetFieldError"
                                             no-title-attr>
@@ -110,6 +195,31 @@
                                 </div>
                             </div>
                         </template>
+
+                        <div class="row-h group">
+                            <div class="input-container input-container-l">
+                                <!-- Location -->
+                                <etools-searchable-multiselection-menu
+                                        class$="disabled-as-readonly validate-input [[_setRequired('location', editedApBase)]] fua-person"
+                                        value="{{editedItem.location}}"
+                                        label="[[getLabel('location', editedApBase)]]"
+                                        placeholder="[[getPlaceholderText('location', editedApBase)]]"
+                                        options="[[locations]]"
+                                        custom-object-options
+                                        option-label="name"
+                                        option-value="id"
+                                        update-selected
+                                        required$="[[_setRequired('location', editedApBase)]]"
+                                        disabled$="{{isReadOnly('location', editedApBase, requestInProcess)}}"
+                                        readonly$="{{isReadOnly('location', editedApBase, requestInProcess)}}"
+                                        invalid="{{errors.location}}"
+                                        error-message="{{errors.location}}"
+                                        on-focus="_resetFieldError"
+                                        on-tap="_resetFieldError"
+                                        no-title-attr>
+                                </etools-searchable-multiselection-menu>
+                            </div>
+                        </div>
 
                         <div class="row-h group">
                             <div class="input-container input-container-l">

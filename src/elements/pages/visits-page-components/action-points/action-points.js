@@ -53,7 +53,10 @@ Polymer({
                 'label': 'Description',
                 'labelPath': 'description',
                 'name': 'description',
-                'hideTooltip': true
+                'property': 'description',
+                'custom': true,
+                'doNotHide': false,
+                'class': 'overflow-visible'
             }, {
                 'size': 20,
                 'label': 'Assignee (Section / Office)',
@@ -94,7 +97,8 @@ Polymer({
         },
         modelFields: {
             type: Array,
-            value: () => ['assigned_to', 'category', 'description', 'section', 'office', 'due_date', 'high_priority', 'tpm_activity']
+            value: () => ['assigned_to', 'category', 'description', 'section', 'office', 'due_date', 'high_priority',
+                'tpm_activity', 'location', 'cp_output', 'intervention']
         },
         dialogTexts: {
             type: Object,
@@ -133,7 +137,9 @@ Polymer({
         'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
         'setPermissionPath(baseVisitPath)',
         '_addComputedField(actionPoints.*, tpmActivities)',
-        '_orderChanged(orderBy, columns, actionPoints.*)'
+        '_orderChanged(orderBy, columns, actionPoints.*)',
+        '_activitySelected(editedItem.tpm_activity, dialogOpened)',
+        '_interventionsListChanged(fullPartner.interventions)'
     ],
 
     listeners: {
@@ -149,6 +155,9 @@ Polymer({
         });
         this.set('offices', this.getData('offices') || []);
         this.set('sections', this.getData('sections') || []);
+        this.set('cpOutputs', this.getData('cpOutputs') || []);
+        this.set('locations', this.getData('locations') || []);
+        this.set('partners', this.getData('partnerOrganisations') || []);
 
         if (!this.collectionExists('edited_ap_options')) {
             this._addToCollection('edited_ap_options', {});
@@ -166,7 +175,10 @@ Polymer({
     _addComputedField: function() {
         this.itemsToDisplay = this.actionPoints.map((item) => {
             item.priority = item.high_priority && 'High' || ' ';
-            item.computed_field = `<b>${item.assigned_to.name}</b> <br>(${item.section.name} / ${item.office.name})`;
+            let assignedTo = _.get(item, 'assigned_to.name', '--'),
+                section = _.get(item, 'section.name', '--'),
+                office = _.get(item, 'office.name', '--');
+            item.computed_field = `<b>${assignedTo}</b> <br>(${section} / ${office})`;
 
             let relatedTask = _.findIndex(this.tpmActivities, (activity) => item.tpm_activity === activity.id);
             if (~relatedTask) {
@@ -197,6 +209,45 @@ Polymer({
 
         let sorted = _.sortBy(this.actionPoints, (item) => item[name]);
         this.itemsToDisplay = direction === 'asc' ? sorted : sorted.reverse();
+    },
+
+    _activitySelected: function(activityId, dialogOpened) {
+        let activity = _.find(this.tpmActivities, (data) => data.id === activityId);
+        if (!activity || !dialogOpened) { return; }
+
+        this.set('editedItem.cp_output', null);
+        this.set('editedItem.intervention', null);
+
+        this.selectedPartner = activity.partner.id;
+        this.partnerForRequest = this.selectedPartner;
+
+        let cpOutputs = this.getData('cpOutputs'),
+            cpOutput = _.get(activity, 'cp_output.id'),
+            existsInList = cpOutput && _.find(cpOutputs, (output) => +output.id === +cpOutput);
+
+        if (cpOutput && !existsInList) {
+            cpOutputs.push(activity.cp_output);
+            this.cpOutputs = _.sortBy(cpOutputs, (output) => output.name);
+        } else {
+            this.cpOutputs = cpOutputs;
+        }
+
+        let originalOutput = _.get(this.originalEditedObj, 'cp_output.id');
+        let originalExistsInList = originalOutput && _.find(cpOutputs, (output) => +output.id === +originalOutput);
+
+        setTimeout(() => {
+            this.set('editedItem.cp_output', originalExistsInList || existsInList || null);
+        }, 100);
+
+    },
+
+    _interventionsListChanged: function(interventions) {
+        let originalIntervention = _.get(this.originalEditedObj, 'intervention.id'),
+            existsInList = originalIntervention && _.find(interventions, (intervention) => +intervention.id === +originalIntervention);
+        // this.set('editedItem.intervention', existsInList || null);
+        setTimeout(() => {
+            this.set('editedItem.intervention', existsInList || null);
+        }, 100);
     },
 
     _requestAPOptions: function(event) {
@@ -335,13 +386,14 @@ Polymer({
             if (!~this.modelFields.indexOf(fieldName)) { return false; }
             let isObject = _.isObject(value) && !_.isArray(value);
             if (isObject) {
-                return value.id !== _.get(this, `originalEditedObj.${fieldName}.id`);
+                let original = _.get(this, `originalEditedObj.${fieldName}.id`, 0);
+                return +value.id !== +original;
             } else {
                 return !_.isEqual(value, this.originalEditedObj[fieldName]);
             }
         });
 
-        _.each(['assigned_to', 'office', 'section'], (field) => {
+        _.each(['assigned_to', 'office', 'section', 'location', 'intervention', 'cp_output'], (field) => {
             if (data[field]) { data[field] = data[field].id; }
         });
         if (this.editedItem.id && !_.isEmpty(data)) { data.id = this.editedItem.id; }
@@ -354,6 +406,11 @@ Polymer({
         if (detail && detail.success) {
             this.dialogOpened = false;
         }
+    },
+
+    _truncate: function(text) {
+        if (!text) { return ''; }
+        return `${text}`.slice(0, 90) + (text.length > 90 ? '...' : '');
     }
 
 });
