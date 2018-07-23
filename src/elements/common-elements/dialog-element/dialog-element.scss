@@ -84,6 +84,10 @@ paper-dialog {
     .dialog-title { margin-bottom: 0 !important; }
 }
 
+:host([request-in-process]) {
+    .additional { left: 70px; }
+}
+
 .close-btn {
     position: absolute;
     right: -5px;
