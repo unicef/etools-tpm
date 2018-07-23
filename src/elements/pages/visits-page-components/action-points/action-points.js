@@ -36,7 +36,7 @@ Polymer({
             type: Array,
             value: () => [{
                     'size': 10,
-                    'label': 'Task Id',
+                    'label': 'Task No.',
                     'labelPath': 'tpm_activities.id',
                     'path': 'unique_id'
                 }, {
@@ -108,6 +108,7 @@ Polymer({
             return {id, name};
         });
         this.set('offices', this.getData('offices') || []);
+        this.set('sections', this.getData('sections') || []);
 
         if (!this.collectionExists('edited_ap_options')) {
             this._addToCollection('edited_ap_options', {});
@@ -240,7 +241,7 @@ Polymer({
             }
         });
 
-        _.each(['assigned_to', 'office'], (field) => {
+        _.each(['assigned_to', 'office', 'section'], (field) => {
             if (data[field]) { data[field] = data[field].id; }
         });
         if (this.editedItem.id && !_.isEmpty(data)) { data.id = this.editedItem.id; }
