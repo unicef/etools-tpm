@@ -14,7 +14,16 @@
     }
 }
 
-
+:host {
+    .additional {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        z-index: 100;
+        margin-top: 0 !important;
+        padding: 0 !important;
+    }
+}
 
 paper-dialog {
     background-color: #ffffff;
@@ -69,6 +78,14 @@ paper-dialog {
     margin-bottom: 10px !important;
     color: white;
     background-color: var(--module-primary);
+}
+
+:host([no-title-margin]) {
+    .dialog-title { margin-bottom: 0 !important; }
+}
+
+:host([request-in-process]) {
+    .additional { left: 70px; }
 }
 
 .close-btn {

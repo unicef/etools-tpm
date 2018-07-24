@@ -86,6 +86,13 @@
                 on-success="_locationsLoaded"
                 on-fail="_locationsError">
         </etools-ajax-sp>
+
+        <!-- CP Outputs -->
+        <etools-ajax-sp
+                url="[[cpOutputsUrl]]"
+                on-success="_cpOutputsLoaded"
+                on-fail="_cpOutputsLoaded">
+        </etools-ajax-sp>
     </template>
 
     <script>
@@ -125,6 +132,7 @@
                         this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
                         this.officesEndpoint = this.getEndpoint('offices').url;
+                        this.cpOutputsUrl = this.getEndpoint('cpOutputsV2').url;
                     }
 
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
@@ -304,6 +312,13 @@
                     this._setData('offices', detail);
                     dataLoaded.offices = true;
                     this._allDataLoaded();
+                },
+
+                _cpOutputsLoaded: function(data, detail) {
+                    if (!detail) {
+                        this._responseError('cpOutputs');
+                    }
+                    this._setData('cpOutputs', detail);
                 },
 
                 _locationsLoaded: function(event, details) {

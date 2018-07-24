@@ -35,39 +35,70 @@ Polymer({
         columns: {
             type: Array,
             value: () => [{
-                    'size': 10,
-                    'label': 'Task No.',
-                    'labelPath': 'tpm_activities.id',
-                    'path': 'unique_id'
-                }, {
-                    'size': 40,
-                    'label': 'Implementing Partner',
-                    'labelPath': 'tpm_activities.partner',
-                    'path': 'partner.name'
-                }, {
-                    'size': 40,
-                    'label': 'PD/SSFA ToR',
-                    'labelPath': 'tpm_activities.intervention',
-                    'path': 'intervention.title'
-                }, {
-                    'size': 10,
-                    'name': 'date',
-                    'label': 'Date',
-                    'labelPath': 'tpm_activities.date',
-                    'path': 'date'
-                }]
-        },
-        details: {
-            type: Array,
-            value: () => [{}]
+                'size': 18,
+                'label': 'Reference Number #',
+                'name': 'reference_number',
+                'link': '*ap_link*',
+                'ordered': 'desc',
+                'path': 'reference_number',
+                'target': '_blank',
+                'class': 'with-icon'
+            }, {
+                'size': 7,
+                'label': 'Related Task',
+                'path': 'related_task',
+                'name': 'related_task'
+            }, {
+                'size': 25,
+                'label': 'Description',
+                'labelPath': 'description',
+                'name': 'description',
+                'property': 'description',
+                'custom': true,
+                'doNotHide': false,
+                'class': 'overflow-visible'
+            }, {
+                'size': 20,
+                'label': 'Assignee (Section / Office)',
+                'path': 'computed_field',
+                'html': true,
+                'class': 'no-order'
+            }, {
+                'size': 10,
+                'label': 'Status',
+                'labelPath': 'status',
+                'align': 'center',
+                'path': 'status',
+                'class': 'caps',
+                'name': 'ap_status'
+            }, {
+                'size': 10,
+                'label': 'Due Date',
+                'labelPath': 'due_date',
+                'path': 'due_date',
+                'name': 'date',
+                'align': 'center'
+            }, {
+                'size': 10,
+                'label': 'Priority',
+                'labelPath': 'high_priority',
+                'path': 'priority',
+                'align': 'center',
+                'name': 'high_priority'
+            }]
         },
         actionPoints: {
             type: Array,
             value: () => []
         },
-        noActionPoints: {
-            type: Boolean,
-            computed: 'checkAPInTasks(dataItems, dataItems.*)'
+        orderBy: {
+            type: String,
+            value: '-reference_number'
+        },
+        modelFields: {
+            type: Array,
+            value: () => ['assigned_to', 'category', 'description', 'section', 'office', 'due_date', 'high_priority',
+                'tpm_activity', 'location', 'cp_output', 'intervention']
         },
         dialogTexts: {
             type: Object,
@@ -82,8 +113,21 @@ Polymer({
                 },
                 view: {
                     title: 'View Action Point'
+                },
+                copy: {
+                    title: 'Duplicate Action Point',
+                    button: 'Save'
                 }
             })
+        },
+        notTouched: {
+            type: Boolean,
+            value: false,
+            computed: '_checkNotTouched(popupType, editedItem.*)'
+        },
+        typesForInput: {
+            type: Array,
+            value: () => ['add', 'copy']
         }
     },
 
@@ -92,13 +136,15 @@ Polymer({
         '_errorHandler(errorObject)',
         'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
         'setPermissionPath(baseVisitPath)',
-        'updateTable(actionPoints.*)'
+        '_addComputedField(actionPoints.*, tpmActivities)',
+        '_orderChanged(orderBy, columns, actionPoints.*)',
+        '_activitySelected(editedItem.tpm_activity, dialogOpened)',
+        '_interventionsListChanged(fullPartner.interventions)'
     ],
 
     listeners: {
         'dialog-confirmed': '_startRequest',
-        'ap-request-completed': '_requestCompleted',
-        'edit-action-point': '_requestAPOptions'
+        'ap-request-completed': '_requestCompleted'
     },
 
     ready: function() {
@@ -109,6 +155,9 @@ Polymer({
         });
         this.set('offices', this.getData('offices') || []);
         this.set('sections', this.getData('sections') || []);
+        this.set('cpOutputs', this.getData('cpOutputs') || []);
+        this.set('locations', this.getData('locations') || []);
+        this.set('partners', this.getData('partnerOrganisations') || []);
 
         if (!this.collectionExists('edited_ap_options')) {
             this._addToCollection('edited_ap_options', {});
@@ -123,30 +172,96 @@ Polymer({
         return id ? `visit_${id}` : '';
     },
 
-    _showTask: function(activityTask) {
-        let id = activityTask && activityTask.id;
-        return id && this.actionPoints && _.some(this.actionPoints, (ap) => ap.tpm_activity === id);
+    _addComputedField: function() {
+        this.itemsToDisplay = this.actionPoints.map((item) => {
+            item.priority = item.high_priority && 'High' || ' ';
+            let assignedTo = _.get(item, 'assigned_to.name', '--'),
+                section = _.get(item, 'section.name', '--'),
+                office = _.get(item, 'office.name', '--');
+            item.computed_field = `<b>${assignedTo}</b> <br>(${section} / ${office})`;
+
+            let relatedTask = _.findIndex(this.tpmActivities, (activity) => item.tpm_activity === activity.id);
+            if (~relatedTask) {
+                item.related_task = `000${relatedTask + 1}`.slice(-4);
+            }
+            return item;
+        });
     },
 
-    updateTable: function() {
-        this.$['activity-repeat'].render();
-    },
+    _orderChanged: function(newOrder, columns) {
+        if (!newOrder || !(columns instanceof Array)) { return false; }
 
-    checkAPInTasks: function(visitActivities) {
-        return visitActivities && !_.some(visitActivities, (activity) => !!_.get(activity, 'action_points.length'));
-    },
+        let direction = 'asc';
+        let name = newOrder;
 
-    _requestAPOptions: function(event, details) {
-        let itemForEdit = _.get(details, 'taskAP'),
-            apId = _.get(itemForEdit, 'actionPoint.id');
-
-        if (!apId) {
-            throw new Error('You need action point id to make a request');
+        if (name.startsWith('-')) {
+            direction = 'desc';
+            name = name.slice(1);
         }
+
+        columns.forEach((column, index) => {
+            if (column.name === name) {
+                this.set(`columns.${index}.ordered`, direction);
+            } else {
+                this.set(`columns.${index}.ordered`, false);
+            }
+        });
+
+        let sorted = _.sortBy(this.actionPoints, (item) => item[name]);
+        this.itemsToDisplay = direction === 'asc' ? sorted : sorted.reverse();
+    },
+
+    _activitySelected: function(activityId, dialogOpened) {
+        let activity = _.find(this.tpmActivities, (data) => data.id === activityId);
+        if (!activity || !dialogOpened) { return; }
+
+        this.set('editedItem.cp_output', null);
+        this.set('editedItem.intervention', null);
+
+        this.selectedPartner = activity.partner.id;
+        this.partnerForRequest = this.selectedPartner;
+
+        let cpOutputs = this.getData('cpOutputs'),
+            cpOutput = _.get(activity, 'cp_output.id'),
+            existsInList = cpOutput && _.find(cpOutputs, (output) => +output.id === +cpOutput);
+
+        if (cpOutput && !existsInList) {
+            cpOutputs.push(activity.cp_output);
+            this.cpOutputs = _.sortBy(cpOutputs, (output) => output.name);
+        } else {
+            this.cpOutputs = cpOutputs;
+        }
+
+        let originalOutput = _.get(this.originalEditedObj, 'cp_output.id');
+        let originalExistsInList = originalOutput && _.find(cpOutputs, (output) => +output.id === +originalOutput);
+
+        setTimeout(() => {
+            this.set('editedItem.cp_output', originalExistsInList || existsInList || null);
+        }, 100);
+
+    },
+
+    _interventionsListChanged: function(interventions) {
+        let originalIntervention = _.get(this.originalEditedObj, 'intervention.id'),
+            existsInList = originalIntervention && _.find(interventions, (intervention) => +intervention.id === +originalIntervention);
+        // this.set('editedItem.intervention', existsInList || null);
+        setTimeout(() => {
+            this.set('editedItem.intervention', existsInList || null);
+        }, 100);
+    },
+
+    _requestAPOptions: function(event) {
+        let index = this._getIndex(event);
+
+        if ((!index && index !== 0) || !~index) {
+            throw 'Can not find data';
+        }
+
+        let itemForEdit = _.get(this, `actionPoints.${index}`);
         this.fire('global-loading', {type: 'get-ap-options', active: true, message: 'Loading data...'});
 
         let url = this.getEndpoint('visitDetails', {id: this.visitId}).url;
-        this.apOptionUrl = `${url}action-points/${apId}/`;
+        this.apOptionUrl = `${url}action-points/${itemForEdit.id}/`;
         this._itemForEdit = itemForEdit;
     },
 
@@ -164,6 +279,16 @@ Polymer({
         this._openPopup({itemForEdit, popupType, permissionBase: 'edited_ap_options'});
     },
 
+    _openCopyDialog: function() {
+        let index = this._getIndex(event),
+            data = _.omit(this.actionPoints[index], ['id']);
+
+        this._openPopup({
+            popupType: 'copy',
+            itemForEdit: data
+        });
+    },
+
     _openPopup: function(data = {}) {
         let {itemForEdit, popupType = 'add', permissionBase = this.basePermissionPath} = data;
 
@@ -171,7 +296,7 @@ Polymer({
         this.editedApBase = permissionBase;
         if (itemForEdit) {
             this.popupType = popupType;
-            this.editedItem = _.cloneDeep(itemForEdit.actionPoint);
+            this.editedItem = _.cloneDeep(itemForEdit);
         } else {
             this.popupType = popupType;
             this.editedItem = _.cloneDeep(this.itemModel);
@@ -184,8 +309,29 @@ Polymer({
         this.dialogOpened = true;
     },
 
-    checkDialogType: function(type) {
-        return this.dialogOpened && type === this.popupType;
+    _getIndex: function(event) {
+        let item = event && event.model && event.model.item,
+            index = this.actionPoints && this.actionPoints.indexOf(item);
+
+        if ((!index && index !== 0) || index < 0) { throw Error('Can not find user data'); }
+
+        return index;
+    },
+
+    _checkNotTouched: function(popupType) {
+        if (popupType !== 'copy' || _.isEmpty(this.originalEditedObj)) { return false; }
+        return _.every(this.originalEditedObj, (value, key) => {
+            let isObject = _.isObject(value);
+            if (isObject) {
+                return !value.id || +value.id === +_.get(this, `editedItem.${key}.id`);
+            } else {
+                return value === this.editedItem[key];
+            }
+        });
+    },
+
+    checkDialogType: function(types) {
+        return this.dialogOpened && (types === this.popupType || ~types.indexOf(this.popupType));
     },
 
     canNotAddAP: function(basePath) {
@@ -197,8 +343,12 @@ Polymer({
         return readOnly;
     },
 
+    canBeEdited: function(status) {
+        return status !== 'completed';
+    },
+
     _startRequest: function() {
-        if (!this.validate()) { return; }
+        if (!this.validate() || this.notTouched) { return; }
         this.requestInProcess = true;
 
         let apData = this.getActionsData();
@@ -229,19 +379,21 @@ Polymer({
 
     getActionsData: function() {
         if (!this.dialogOpened) { return null; }
-
+        if (this.popupType === 'copy') { this.originalEditedObj = {}; }
         if (this.editedItem.due_date === '') { this.editedItem.due_date = null; }
 
         let data = _.pickBy(this.editedItem, (value, fieldName) => {
+            if (!~this.modelFields.indexOf(fieldName)) { return false; }
             let isObject = _.isObject(value) && !_.isArray(value);
             if (isObject) {
-                return value.id !== _.get(this, `originalEditedObj.${fieldName}.id`);
+                let original = _.get(this, `originalEditedObj.${fieldName}.id`, 0);
+                return +value.id !== +original;
             } else {
                 return !_.isEqual(value, this.originalEditedObj[fieldName]);
             }
         });
 
-        _.each(['assigned_to', 'office', 'section'], (field) => {
+        _.each(['assigned_to', 'office', 'section', 'location', 'intervention', 'cp_output'], (field) => {
             if (data[field]) { data[field] = data[field].id; }
         });
         if (this.editedItem.id && !_.isEmpty(data)) { data.id = this.editedItem.id; }
@@ -250,35 +402,15 @@ Polymer({
     },
 
     _requestCompleted: function(event, detail) {
-        if (this.completeAPAfterRequest) {
-            this.completeAPAfterRequest = false;
-            this.originalEditedObj = _.clone(this.editedItem);
-            this.completeAP();
-            return;
-        }
-
         this.requestInProcess = false;
         if (detail && detail.success) {
             this.dialogOpened = false;
         }
     },
 
-    completeAP: function() {
-        if (!this.validate()) { return; }
-        let data = this.getActionsData();
-
-        if (data) {
-            this.completeAPAfterRequest = true;
-            this._startRequest();
-            return;
-        }
-
-        this.requestInProcess = true;
-        this.requestData = {
-            apData: {id: this.editedItem.id},
-            complete: true,
-            method: 'POST'
-        };
-    },
+    _truncate: function(text) {
+        if (!text) { return ''; }
+        return `${text}`.slice(0, 90) + (text.length > 90 ? '...' : '');
+    }
 
 });
