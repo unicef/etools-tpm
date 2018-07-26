@@ -2,7 +2,7 @@
             etools-datepicker, etools-searchable-multiselection-menu, paper-button, etools-ajax-sp] -->
 
 <!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, update-action-points, get-action-points,
-            list-element, common-methods-behavior, dialog-element, date-behavior, activity-to-drd-value, ap-items,
+            list-element, common-methods-behavior, dialog-element, date-behavior, activity-to-drd-value,
             static-data-behavior, common-methods-behavior, table-elements-behavior, textarea-max-rows-behavior,
             get-partner-organisation-data] -->
 
@@ -102,8 +102,8 @@
                                 <etools-searchable-multiselection-menu
                                         class$="disabled-as-readonly validate-input [[_setRequired('assigned_to', basePermissionPath)]] fua-person"
                                         selected="{{editedItem.tpm_activity}}"
-                                        label="[[getLabel('tpm_activities', visitBase)]]"
-                                        placeholder="[[getPlaceholderText('tpm_activities', visitBase, 'select')]]"
+                                        label="[[getLabel('tpm_activity', editedApBase)]]"
+                                        placeholder="[[getPlaceholderText('tpm_activity', editedApBase, 'select')]]"
                                         options="[[_getATOptions(tpmActivities)]]"
                                         custom-object-options
                                         option-label="name"

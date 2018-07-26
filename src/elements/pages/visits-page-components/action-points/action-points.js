@@ -60,6 +60,7 @@ Polymer({
             }, {
                 'size': 20,
                 'label': 'Assignee (Section / Office)',
+                'htmlLabel': 'Assignee<br/>(Section / Office)',
                 'path': 'computed_field',
                 'html': true,
                 'class': 'no-order'
@@ -105,7 +106,7 @@ Polymer({
             value: () => ({
                 add: {
                     title: 'Add Action Point',
-                    button: 'Add'
+                    button: 'Save'
                 },
                 edit: {
                     title: 'Edit Action Point',
