@@ -15,7 +15,8 @@
             is: 'get-partner-organisation-data',
 
             behaviors: [
-                etoolsAppConfig.globals
+                etoolsAppConfig.globals,
+                TPMBehaviors.StaticDataController
             ],
 
             properties: {
@@ -30,10 +31,16 @@
                 }
             },
 
-            _handleResponse: function (data, detail) {
+            _handleResponse: function (data) {
                 this.lastData = _.clone(data.detail);
                 this.partner = data.detail;
                 this.fire('partner-loaded', {success: true});
+
+                let partnerDataId = `partner_${this.partner.id}`,
+                        partner = this.getData(partnerDataId);
+                if (!partner) {
+                    this._setData(partnerDataId, this.partner);
+                }
             },
 
             _handleError: function () {
@@ -51,7 +58,14 @@
 
                 this.lastError = false;
                 this.lastNumber = partnerId;
-                this.url = this.getEndpoint('partnerOrganisationDetails', {id: partnerId}).url;
+
+                let partner = this.getData(`partner_${partnerId}`);
+                if (partner) {
+                    this._handleResponse({detail: partner});
+                } else {
+                    this.url = this.getEndpoint('partnerOrganisationDetails', {id: partnerId}).url;
+                }
+
                 this.partnerId = null;
             }
         });

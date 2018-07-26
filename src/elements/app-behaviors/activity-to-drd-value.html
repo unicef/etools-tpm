@@ -3,10 +3,20 @@
 
 <script>
     'use strict';
+    const activityTaskColumns =  [{
+        'path': 'unique_id'
+    }, {
+        'path': 'partner.name'
+    }, {
+        'path': 'intervention.title'
+    }, {
+        'name': 'date',
+        'path': 'date'
+    }];
 
     window.TPMBehaviors = window.TPMBehaviors || {};
     TPMBehaviors.ActivityToDrD = {
-        _getATOptions: function(dataItems, columns) {
+        _getATOptions: function(dataItems, columns = activityTaskColumns) {
             if (!Array.isArray(dataItems) || !Array.isArray(columns)) { return; }
             let options = [];
             let fields;
