@@ -1,15 +1,18 @@
-FROM mhart/alpine-node:7
+FROM node:8-alpine
 RUN apk update
 
+RUN apk add --update bash
+
 RUN apk add git
-RUN npm install --loglevel verbose -g bower polymer-cli gulp-cli
+RUN npm i -g npm@5.6.0
+RUN npm install -g --unsafe-perm bower polymer-cli gulp-cli
 
 
 WORKDIR /tmp
 ADD bower.json /tmp/
 ADD package.json /tmp/
 
-RUN npm install --loglevel verbose 
+RUN npm install
 RUN bower --allow-root install
 
 RUN mkdir /code/

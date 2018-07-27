@@ -1,6 +1,6 @@
 <!--import [polymer, iron-icon, paper-icon-button, paper-toast, etools-content-panel, paper-tooltip]-->
 <!--import [tab-inputs-styles, tab-layout-styles, module-styles, shared-styles, table-elements-behavior,
-            static-data-behavior, get-attachments, update-attachments]-->
+            static-data-behavior, get-attachments, update-attachments, error-handler-behavior]-->
 
 <dom-module id="file-attachments-tab">
     <template>
@@ -50,7 +50,7 @@
                            target="_blank">
                             [[item.filename]]
                         </a>
-                        <paper-tooltip offset="0">[[item.file_name]]</paper-tooltip>
+                        <paper-tooltip offset="0">[[item.filename]]</paper-tooltip>
                     </div>
 
                     <div slot="hover" class="edit-icon-slot" hidden$="[[isTabReadonly(basePermissionPath)]]">
@@ -107,10 +107,10 @@
                         </div>
                     </template>
 
-                    <template is="dom-if" if="[[addDialog]]">
+
                         <div class="row-h group">
                             <div class="input-container input-container-ms">
-                                <template is="dom-if" if="[[!editedItem.file_name]]">
+                                <template is="dom-if" if="[[!editedItem.filename]]">
                                     <!-- File Upload -->
                                     <paper-input-container
                                             class="validate-input"
@@ -140,15 +140,15 @@
                                     </paper-input-container>
                                 </template>
 
-                                <template is="dom-if" if="[[editedItem.file_name]]">
+                                <template is="dom-if" if="[[editedItem.filename]]">
                                     <paper-input
                                             class="disabled-as-readonly validate-input"
-                                            value="{{editedItem.file_name}}"
+                                            value="{{editedItem.filename}}"
                                             label="[[uploadLabel]]"
                                             required
                                             disabled$="[[requestInProcess]]"
                                             readonly
-                                            invalid="{{errors.file}}"
+                                            invalid="{{_checkInvalid(errors.file)}}"
                                             error-message="{{errors.file}}"
                                             on-tap="_openFileChooser">
                                         <iron-icon prefix icon="icons:attachment"></iron-icon>
@@ -156,7 +156,6 @@
                                 </template>
                             </div>
                         </div>
-                    </template>
                 </div>
             </div>
         </dialog-element>
