@@ -30,7 +30,7 @@
 
         <etools-ajax-sp
                 method="OPTIONS"
-                url="[[reportAtmOptionsUrl]]"
+                url="[[reportAtmUrl]]"
                 data-path-postfix="attachments"
                 data-request-name="reportAtm"
                 on-success="_handleDataOptionsResponse"
@@ -40,7 +40,7 @@
 
         <etools-ajax-sp
                 method="OPTIONS"
-                url="[[activitiesAtmOptionsUrl]]"
+                url="[[activitiesAtmUrl]]"
                 data-path-postfix="activities_attachments"
                 data-request-name="activitiesAtm"
                 on-success="_handleDataOptionsResponse"
@@ -50,7 +50,7 @@
 
         <etools-ajax-sp
                 method="OPTIONS"
-                url="[[activitiesRepAtmOptionsUrl]]"
+                url="[[activitiesReportAtmUrl]]"
                 data-path-postfix="activities_report_attachments"
                 data-request-name="activitiesReportAtm"
                 on-success="_handleDataOptionsResponse"
@@ -120,6 +120,7 @@
                 let collectionName = `${this.postfix}_${this.lastData.id}_${postfix}`;
                 this._updateCollection(collectionName, actions || {}, name);
                 this[requestName] = '';
+                this[`${requestName}Url`] = null;
 
                 this.optionRequests[requestName] = true;
                 this._finishOptions();
@@ -142,9 +143,9 @@
                 this.postRequest = null;
                 let apBaseUrl = this.getEndpoint('visitDetails', {id: id}).url;
                 this.apOptionsUrl = `${apBaseUrl}action-points/`;
-                this.reportAtmOptionsUrl = this.getEndpoint('reportAttachments', {id: id}).url;
-                this.activitiesAtmOptionsUrl = this.getEndpoint('activitiesAttachments', {id: id}).url;
-                this.activitiesRepAtmOptionsUrl = this.getEndpoint('activitiesReportAttachments', {id: id}).url;
+                this.reportAtmUrl = this.getEndpoint('reportAttachments', {id: id}).url;
+                this.activitiesAtmUrl = this.getEndpoint('activitiesAttachments', {id: id}).url;
+                this.activitiesReportAtmUrl = this.getEndpoint('activitiesReportAttachments', {id: id}).url;
             }
         });
     </script>
