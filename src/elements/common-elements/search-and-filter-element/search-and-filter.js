@@ -44,7 +44,8 @@
         searchKeyDown: function() {
             this.debounce('searchKeyDown', () => {
                 if (this.searchString.length !== 1) {
-                    this.updateQueries({search: this.searchString || undefined, page: '1'});
+                    let query = this.searchString || undefined;
+                    this.updateQueries({search: encodeURIComponent(query), page: '1'});
                 }
             }, 300);
         },
