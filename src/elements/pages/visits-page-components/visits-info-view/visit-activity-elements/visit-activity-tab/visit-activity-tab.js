@@ -88,8 +88,7 @@ Polymer({
             type: Array,
             value: [{
                 'size': 10,
-                'label': 'ID',
-                'labelPath': 'tpm_activities.id',
+                'label': 'Task No.',
                 'name': 'unique_id'
             },{
                 'size': 25,
