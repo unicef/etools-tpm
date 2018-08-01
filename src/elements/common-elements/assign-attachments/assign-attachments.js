@@ -29,23 +29,22 @@ Polymer({
             type: Array,
             value: [{
                 'size': 10,
-                'label': 'Activity Id!',
-                'labelPath': 'tpm_activities.id',
+                'label': 'Task No.',
                 'path': 'unique_id'
             }, {
                 'size': 40,
-                'label': 'Implementing Partner!',
+                'label': 'Implementing Partner',
                 'labelPath': 'tpm_activities.partner',
                 'path': 'partner.name'
             }, {
                 'size': 40,
-                'label': 'PD/SSFA ToR!',
+                'label': 'PD/SSFA ToR',
                 'labelPath': 'tpm_activities.intervention',
                 'path': 'intervention.title'
             }, {
                 'size': 10,
                 'name': 'date',
-                'label': 'Date!',
+                'label': 'Date',
                 'labelPath': 'tpm_activities.date',
                 'path': 'date'
             }]
