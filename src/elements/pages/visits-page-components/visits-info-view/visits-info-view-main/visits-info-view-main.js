@@ -58,8 +58,7 @@ Polymer({
             value: function() {
                 return [{
                     'size': 15,
-                    'label': 'Id #',
-                    'labelPath': 'tpm_activities.id',
+                    'label': 'Task No.',
                     'path': 'unique_id'
                 }, {
                     'size': 40,
