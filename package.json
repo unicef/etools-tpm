@@ -55,7 +55,8 @@
     "stream-combiner2": "^1.1.1",
     "through2": "^2.0.3",
     "web-component-tester": "6.1.2",
-    "yargs": "^5.0.0"
+    "yargs": "^5.0.0",
+    "wct-local": "2.1.0"
   },
   "scripts": {}
 }
