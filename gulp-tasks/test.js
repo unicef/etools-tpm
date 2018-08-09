@@ -45,21 +45,6 @@ module.exports = function testElements(done) {
             withErrors = true;
         });
 
-        tests.stdout.on('data', (data) => {
-            if (~data.indexOf('✖') || ~data.indexOf('Tests failed')) {
-                data = `\x1b[31m${data}\x1b[0m`;
-                withErrors = true;
-            } else if (~data.indexOf('ended with great success') || data.indexOf('404') === 0) {
-                return;
-            }
-            console.log(`${data}`);
-        });
-
-        tests.stderr.on('data', (data) => {
-            console.log(`\x1b[31m${data}\x1b[0m`);
-            withErrors = true;
-        });
-
         tests.on('close', () => {
             runTests(files);
         });
