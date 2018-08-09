@@ -1,3 +1,42 @@
+:host {
+    div[slot="additional"] {
+        padding: 10px 0 9px 12px;
+        paper-button {
+            height: 38px;
+            font-weight: 500;
+            padding-right: 0;
+        }
+        iron-icon {
+            width: 20px;
+            color: var(--gray-mid);
+            margin-left: 5px;
+        }
+        a {
+            color: var(--gray-mid);
+            text-decoration: none;
+        }
+    }
+
+    .copy-warning {
+        position: relative;
+        margin-bottom: 10px;
+        padding: 20px 24px;
+        background-color: #ededee;
+        color: #212121;
+        font-size: 15px;
+    }
+
+    .ap-description {
+        position: relative;
+        white-space: normal !important;
+        overflow: visible !important;
+        div {
+            max-height: 37px;
+            overflow: hidden;
+        }
+    }
+}
+
 etools-content-panel {
     --ecp-content: #{'{
          padding: 0;
@@ -26,3 +65,4 @@ etools-searchable-multiselection-menu {
     border: 1px solid rgba(0,0,0,.54);
     padding: 6px 13px;
 }
+
