@@ -219,7 +219,7 @@
             it('returns true and sets invalid state if editedItem.file_name already in use', function () {
                 myEl.multiple = true;
                 myEl.dataItems = _.cloneDeep(dataItems);
-                myEl.editedItem.file_name = myEl.dataItems[0].filename;
+                myEl.editedItem.filename = myEl.dataItems[0].filename;
 
                 assert.isUndefined(myEl.errors.file);
                 assert.isTrue(myEl._fileAlreadySelected());
@@ -271,9 +271,9 @@
         describe('method getFilesErrors(errors)', function () {
             let errors = [{file: 'Incorrect base64 format.'}, {}, {file: 'Incorrect base64 format.'}];
             let dataItems = [
-                {file_name: 'name', file_type: '1', display_name: 'FF', file: 'url'},
-                {file_name: 'name2', file_type: '1', display_name: 'FF', file: 'url2'},
-                {file_name: 'name3', file_type: '1', display_name: 'FF', file: 'url3'},
+                {filename: 'name', file_type: '1', display_name: 'FF', file: 'url'},
+                {filename: 'name2', file_type: '1', display_name: 'FF', file: 'url2'},
+                {filename: 'name3', file_type: '1', display_name: 'FF', file: 'url3'},
             ];
 
             it('returns empty array if errors or dataItems not arrays or has different length', function () {
