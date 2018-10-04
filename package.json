@@ -16,12 +16,13 @@
   "private": true,
   "devDependencies": {},
   "dependencies": {
-    "bower": "^1.8.2",
+    "@babel/preset-env": "^7.1.0",
     "babel-cli": "^6.26.0",
-    "babel-preset-es2017": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2015-without-strict": "0.0.4",
     "babel-preset-es2016": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "bower": "^1.8.2",
     "css-slam": "^1.1.0",
     "del": "^2.2.1",
     "express": "^4.15.4",
@@ -55,9 +56,9 @@
     "polytempl": "^1.0.3",
     "stream-combiner2": "^1.1.1",
     "through2": "^2.0.3",
+    "wct-local": "2.1.0",
     "web-component-tester": "6.1.2",
-    "yargs": "^5.0.0",
-    "wct-local": "2.1.0"
+    "yargs": "^5.0.0"
   },
   "scripts": {}
 }

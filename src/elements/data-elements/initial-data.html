@@ -72,11 +72,11 @@
         </etools-ajax-sp>
 
         <!--Offices-->
-        <etools-ajax-sp
+        <!-- <etools-ajax-sp
                 url="[[officesEndpoint]]"
                 on-success="_officesLoaded"
                 on-fail="_officesError">
-        </etools-ajax-sp>
+        </etools-ajax-sp> -->
 
         <!--Locations-->
         <etools-ajax-sp
@@ -115,9 +115,19 @@
                     'user-profile-loaded': 'loadStaticData'
                 },
 
-                attached: function() {
+                attached: function() {  
                     document.addEventListener('reload-tpm-partners', this._reloadTpmPartners.bind(this));
                     document.addEventListener('update-visit-filters', this._updateVisitFilters.bind(this));
+                },
+
+                _performFetch: async function () {
+                    try {
+                        const response = await fetch(this.getEndpoint('offices').url);
+                        const json = await response.json();
+                        this._officesLoaded(json);
+                    } catch(err){
+                        this._officesError(err)
+                    }
                 },
 
                 detached: function() {
@@ -131,8 +141,8 @@
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
                         this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
-                        this.officesEndpoint = this.getEndpoint('offices').url;
                         this.cpOutputsUrl = this.getEndpoint('cpOutputsV2').url;
+                        this._performFetch();
                     }
 
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
@@ -305,11 +315,8 @@
                     this._allDataLoaded();
                 },
 
-                _officesLoaded: function(data, detail) {
-                    if (!detail) {
-                        this._officesError();
-                    }
-                    this._setData('offices', detail);
+                _officesLoaded: function(data) {
+                    this._setData('offices', data);
                     dataLoaded.offices = true;
                     this._allDataLoaded();
                 },
