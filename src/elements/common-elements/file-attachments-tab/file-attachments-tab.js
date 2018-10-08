@@ -60,7 +60,8 @@
                 type: String,
                 value: 'Are you sure that you want to delete this attachment?'
             },
-            errorProperty: String
+            errorProperty: String,
+            pathPostfix: String,
         },
 
         listeners: {
@@ -70,7 +71,7 @@
         },
 
         observers: [
-            '_setBasePath(dataBasePath)',
+            '_setBasePath(dataBasePath, pathPostfix)',
             '_filesChange(dataItems.*, fileTypes.*)',
             '_updateHeadings(basePermissionPath)',
             '_resetDialog(dialogOpened)',
@@ -78,12 +79,12 @@
             'updateStyles(requestInProcess, editedItem, basePermissionPath)',
         ],
 
-        _setBasePath: function(dataBase) {
-            let base = dataBase ? `${dataBase}_attachments` : '';
+        _setBasePath: function(dataBase, pathPostfix) {
+            let base = dataBase && pathPostfix ? `${dataBase}_${pathPostfix}` : '';
             this.set('basePermissionPath', base);
             if (base) {
                 let title = this.getFieldAttribute(base, 'title');
-                this.set('tabTitle', title);
+                this.set('tabTitle', title);    
                 this.fileTypes = this.getChoices(`${base}.file_type`);
             }
         },
