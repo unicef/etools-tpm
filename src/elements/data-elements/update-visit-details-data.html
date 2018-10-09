@@ -27,17 +27,25 @@
                 on-fail="_handleDataOptionsResponse"
                 on-forbidden="_handleDataOptionsResponse">
         </etools-ajax-sp>
-
+        <etools-ajax-sp
+                    method="OPTIONS"
+                    url="[[attachmentsUrl]]"
+                    data-path-postfix="attachments"
+                    data-request-name="visitAtm"
+                    on-success="_handleDataOptionsResponse"
+                    on-fail="_handleDataOptionsResponse"
+                    on-forbidden="_handleDataOptionsResponse">
+        </etools-ajax-sp>
         <etools-ajax-sp
                 method="OPTIONS"
                 url="[[reportAtmUrl]]"
-                data-path-postfix="attachments"
+                data-path-postfix="report_attachments"
                 data-request-name="reportAtm"
                 on-success="_handleDataOptionsResponse"
                 on-fail="_handleDataOptionsResponse"
                 on-forbidden="_handleDataOptionsResponse">
         </etools-ajax-sp>
-
+    
         <etools-ajax-sp
                 method="OPTIONS"
                 url="[[activitiesAtmUrl]]"
@@ -145,6 +153,7 @@
                 this.apOptionsUrl = `${apBaseUrl}action-points/`;
                 this.reportAtmUrl = this.getEndpoint('reportAttachments', {id: id}).url;
                 this.activitiesAtmUrl = this.getEndpoint('activitiesAttachments', {id: id}).url;
+                this.attachmentsUrl = this.getEndpoint('attachments', {id: id}).url;
                 this.activitiesReportAtmUrl = this.getEndpoint('activitiesReportAttachments', {id: id}).url;
             }
         });

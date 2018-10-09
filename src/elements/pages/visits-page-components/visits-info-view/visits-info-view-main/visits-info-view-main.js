@@ -26,11 +26,11 @@ Polymer({
                 return [
                     {
                         'name': 'report',
-                        'path': 'tpm_activities.report_attachments'
+                        'path': 'attachments'
                     },
                     {
                         'name': 'action-points',
-                        'path': 'action_points'
+                        'path': 'ap'
                     }
                 ];
             }
