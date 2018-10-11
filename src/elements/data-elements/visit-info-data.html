@@ -29,7 +29,7 @@
         <etools-ajax-sp
                 method="OPTIONS"
                 url="[[reportAtmOptionsUrl]]"
-                data-path-postfix="attachments"
+                data-path-postfix="report_attachments"
                 data-request-name="reportAtm"
                 on-success="_handleDataOptionsResponse"
                 on-fail="_handleDataOptionsResponse"
@@ -51,6 +51,16 @@
                 url="[[activitiesRepAtmOptionsUrl]]"
                 data-path-postfix="activities_report_attachments"
                 data-request-name="activitiesReportAtm"
+                on-success="_handleDataOptionsResponse"
+                on-fail="_handleDataOptionsResponse"
+                on-forbidden="_handleDataOptionsResponse">
+        </etools-ajax-sp>
+
+        <etools-ajax-sp
+                method="OPTIONS"
+                url="[[attachmentOptionsUrl]]"
+                data-path-postfix="attachments"
+                data-request-name="visitAtm"
                 on-success="_handleDataOptionsResponse"
                 on-fail="_handleDataOptionsResponse"
                 on-forbidden="_handleDataOptionsResponse">
@@ -108,9 +118,9 @@
                     name = _.get(data, 'detail.name', ''),
                     postfix = _.get(data, 'srcElement.dataset.pathPostfix'),
                     requestName = _.get(data, 'srcElement.dataset.requestName');
-
+                 
                 this._addToCollection(`visit_${this.visitId}_${postfix}`, actions || {}, name);
-
+                
                 this.requestsCompleted[requestName] = true;
                 this._finishRequests(this.responseData);
             },
@@ -121,6 +131,7 @@
                         !this.requestsCompleted.options ||
                         !this.requestsCompleted.reportAtm ||
                         !this.requestsCompleted.activitiesAtm ||
+                        !this.requestsCompleted.visitAtm ||
                         !this.requestsCompleted.activitiesReportAtm) { return; }
 
                 if (data) {
@@ -159,6 +170,7 @@
                     this.requestsCompleted.options = true;
                     this.requestsCompleted.apOptions = true;
                     this.requestsCompleted.reportAtm = true;
+                    this.requestsCompleted.visitAtm = true;
                     this.requestsCompleted.activitiesAtm = true;
                     this.requestsCompleted.activitiesReportAtm = true;
                 } else {
@@ -166,6 +178,7 @@
                     this.reportAtmOptionsUrl = this.getEndpoint('reportAttachments', {id: id}).url;
                     this.activitiesAtmOptionsUrl = this.getEndpoint('activitiesAttachments', {id: id}).url;
                     this.activitiesRepAtmOptionsUrl = this.getEndpoint('activitiesReportAttachments', {id: id}).url;
+                    this.attachmentOptionsUrl = this.getEndpoint('attachments', {id: id}).url;
                     let apBaseUrl = this.getEndpoint('visitDetails', {id: id}).url;
                     this.apOptionsUrl = `${apBaseUrl}action-points/`;
                 }
