@@ -1,13 +1,15 @@
-<!--import [polymer, etools-content-panel, lodash, paper-icon-button, paper-input, iron-icons,
+<!--import [polymer, etools-content-panel, lodash, paper-icon-button, paper-input, paper-tooltip, iron-icons, iron-flex-layout,
             etools-searchable-multiselection-menu]-->
-<!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, list-element, file-upload, file-details,
-            dialog-element, date-behavior, static-data-behavior, common-methods-behavior, table-elements-behavior,
+<!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, list-element, file-upload, file-details-row,
+            dialog-element, date-behavior, static-data-behavior, common-methods-behavior, date-behavior, table-elements-behavior,
             activity-to-drd-value, update-attachments]-->
 
 <dom-module id="assign-attachments">
     <template>
         <!-- inject styles './assign-attachments.scss'-->
-        <style include="module-styles tab-layout-styles tab-inputs-styles"></style>
+        <style include="module-styles tab-layout-styles iron-flex tab-inputs-styles">
+           
+        </style>
 
         <get-attachments base-id="[[baseId]]" attachments="{{dataItems}}" endpoint-name="[[endpointName]]"></get-attachments>
         <update-attachments
@@ -19,7 +21,6 @@
                 errors="{{errors}}"></update-attachments>
 
         <etools-content-panel
-                show-expand-btn
                 list
                 class="content-section clearfix"
                 panel-title="[[tabTitle]]">
@@ -37,30 +38,62 @@
             <list-header
                     id="list-header"
                     no-ordered
-                    data="[[attachmentsColumns]]"
+                    no-additional
+                    data="[[attachmentsHeadings]]"
                     base-permission-path="[[dataBasePath]]">
             </list-header>
 
             <template is="dom-repeat" items="[[activities]]" filter="showActivity" id="activity-repeat">
-                <list-element
-                        class="list-element"
-                        data="[[item]]"
-                        headings="[[attachmentsColumns]]"
-                        details="[[details]]"
-                        has-collapse
-                        multiline
-                        no-animation>
-                    <div slot="detailSlot">
-                        <file-details
-                                base-permission-path="[[basePermissionPath]]"
-                                allow-delete="[[!isTabReadonly(basePermissionPath)]]"
-                                parent-id="[[item.id]]"
-                                files="[[dataItems]]"
-                                file-types="[[fileTypes]]"
-                                files-path="[[filesProperty]]">
-                        </file-details>
+                <div class="layout horizontal activity-wrapper">
+                    <div class="layout horizontal center-center related-task">
+                        [[getATLabel(item, columnsForTaskLabel)]]
                     </div>
-                </list-element>
+                    <div class="documents">
+                        <template is="dom-repeat"
+                                  items="[[dataItems]]"
+                                  as="attachment"
+                                  filter="{{_isAttachmentForTask(item)}}">
+                    
+                            <file-details-row data="[[attachment]]">
+                                <div class="layout horizontal center row-data"
+                                     slot="row-data">
+
+                                    <span class="w22">[[_getAttachmentType(attachment)]]</span>
+                                    <div class="w50">
+                                        <iron-icon icon="icons:attachment"
+                                                   class="download-icon">
+                                        </iron-icon>
+                                        <a href$="[[attachment.file]]" 
+                                           class="truncate" 
+                                           target="_blank">[[attachment.filename]]
+                                        </a>
+                                    </div>
+                                    <span class="w10">[[getDate(attachment)]]</span>
+                                    <span><a href="" class="delete-icon">
+                                    <iron-icon on-click=""
+                                    hidden$="[[isTabReadonly(basePermissionPath)]]"
+                                    icon="icons:cancel"></iron-icon>
+                                    <paper-tooltip offset="0">Remove</paper-tooltip></a></span>
+
+                                </div>
+                            </file-details-row>
+                    
+                    
+                        </template>
+                        
+                            <!-- <div slot="detailSlot">
+                                            <file-details
+                                                    base-permission-path="[[basePermissionPath]]"
+                                                    allow-delete="[[!isTabReadonly(basePermissionPath)]]"
+                                                    parent-id="[[item.id]]"
+                                                    files="[[dataItems]]"
+                                                    file-types="[[fileTypes]]"
+                                                    files-path="[[filesProperty]]">
+                                            </file-details>
+                                        </div> -->
+                    </div>
+                </div>
+                
             </template>
 
             <template is="dom-if" if="[[!dataItems.length]]">
@@ -89,7 +122,7 @@
                                     selected="{{editedItem.activity}}"
                                     label="[[getLabel('tpm_activities', dataBasePath)]]"
                                     placeholder="[[getPlaceholderText('tpm_activities', dataBasePath, 'dropdown')]]"
-                                    options="[[_getATOptions(activities, attachmentsColumns, activities.*)]]"
+                                    options="[[_getATOptions(activities, columnsForTaskLabel, activities.*)]]"
                                     custom-object-options
                                     option-label="name"
                                     option-value="id"

@@ -15,7 +15,7 @@
 
         <etools-ajax-sp
                 method="OPTIONS"
-                url="[[partnersOptionsUrl]]"
+                url="[[partnersOptionsUrl]]"a
                 on-success="_handlePartnersOptions"
                 on-fail="_handlePartnersOptions">
         </etools-ajax-sp>
@@ -182,7 +182,6 @@
                 _partnersLoaded: function(data, partners) {
                     let partnerId = partners && partners[0] && partners[0].id,
                         tpmUser = this.isTpmUser();
-
                     if (tpmUser && !partnerId) {
                         console.error('Can not get TPM Partner id!');
                     } else if(!partners) {

@@ -2,7 +2,7 @@
 
 (function() {
     Polymer({
-        is: 'file-details',
+        is: 'file-details-row',
 
         behaviors: [
             TPMBehaviors.DateBehavior,

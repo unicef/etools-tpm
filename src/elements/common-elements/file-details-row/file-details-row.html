@@ -1,0 +1,16 @@
+<!--import [polymer, paper-material, iron-flex-layout ]-->
+<!--import [module-styles, date-behavior, common-methods-behavior]-->
+
+<dom-module id="file-details-row">
+    <template>
+        <style include="module-styles iron-flex"></style>
+        <!-- inject styles './file-details.scss'-->
+
+        <paper-material elevation="0">
+                <slot name="row-data"></slot>
+        </paper-material>
+        
+    </template>
+
+    <!-- inject scripts './file-details-row.js'-->
+</dom-module>

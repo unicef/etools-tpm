@@ -8,7 +8,8 @@ Polymer({
         TPMBehaviors.StaticDataController,
         TPMBehaviors.TableElementsBehavior,
         TPMBehaviors.CommonMethodsBehavior,
-        TPMBehaviors.ActivityToDrD
+        TPMBehaviors.ActivityToDrD,
+        TPMBehaviors.DateBehavior
     ],
 
     properties: {
@@ -25,29 +26,69 @@ Polymer({
                 };
             }
         },
+        columnsForTaskLabel:{
+            type: Array,
+            value: [{
+                'label': 'Related Task',
+                'path': 'unique_id'
+            }, {
+                'label': 'Document Type',
+                'path': 'partner.name'
+            }, {
+                'label': 'Document',
+                'path': 'intervention.title'
+            }, {
+                'name': 'date',
+                'label': 'Date Uploaded',
+                'path': 'date'
+            }]
+        },
         attachmentsColumns: {
             type: Array,
             value: [{
-                'size': 10,
-                'label': 'Task No.',
-                'path': 'unique_id'
+                'size': 40,
+                'label': 'Document Type',
+                'path': 'file_type',
             }, {
                 'size': 40,
-                'label': 'Implementing Partner',
-                'labelPath': 'tpm_activities.partner',
-                'path': 'partner.name'
-            }, {
-                'size': 40,
-                'label': 'PD/SSFA ToR',
+                'label': 'Document',
                 'labelPath': 'tpm_activities.intervention',
                 'path': 'intervention.title'
             }, {
                 'size': 10,
                 'name': 'date',
-                'label': 'Date',
+                'label': 'Date Uploaded',
                 'labelPath': 'tpm_activities.date',
                 'path': 'date'
-            }]
+            },
+            {
+                'size': 10,
+                'label': 'Source',
+                'labelPath': 'tpm_activities.date',
+                'path': 'source'
+            },
+        ]
+        },
+        attachmentsHeadings: {
+            type: Array,
+            value: [{
+                'size': 20,
+                'label': 'Related Task',
+            }, {
+                'size': 20,
+                'label': 'Document Type',
+            }, {
+                'size': 40,
+                'label': 'Document',
+            }, {
+                'size': 10,
+                'label': 'Date Uploaded',
+            },
+            {
+                'size': 10,
+                'label': 'Source',
+            },
+        ]
         },
         activities: {
             type: Array,
@@ -234,5 +275,18 @@ Polymer({
             this.openDeleteDialog(e);
             this.editedItem._delete = true;
         }
-    }
+    },
+    _isAttachmentForTask: function(activity){
+        return function(attachment){
+           return  attachment.object_id === activity.id;
+        }
+    },
+
+    _getAttachmentType: function(attachment){
+        return this.fileTypes.find(fileType=> fileType.value === attachment.file_type).display_name;
+    },
+
+    getDate: function(item) {
+        return this.prettyDate(item && item.created) || '--';
+    },
 });
