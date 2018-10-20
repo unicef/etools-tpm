@@ -69,11 +69,13 @@
                                         </a>
                                     </div>
                                     <span class="w10">[[getDate(attachment)]]</span>
-                                    <span><a href="" class="delete-icon">
-                                    <iron-icon on-click=""
+                                    <a on-click=""
+                                        
+                                        class="delete-icon">
+                                    <iron-icon 
                                     hidden$="[[isTabReadonly(basePermissionPath)]]"
                                     icon="icons:cancel"></iron-icon>
-                                    <paper-tooltip offset="0">Remove</paper-tooltip></a></span>
+                                    <paper-tooltip offset="0">Remove</paper-tooltip></a>
 
                                 </div>
                             </file-details-row>

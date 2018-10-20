@@ -23,6 +23,10 @@ paper-material {
     box-sizing: border-box;
 }
 
+paper-material ::content> * {
+    width: 100%;
+}
+
 iron-icon {
     color: var(--dark-icon-color, rgba(0, 0, 0, 0.54));
 }
