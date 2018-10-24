@@ -21,14 +21,15 @@
             let options = [];
             let fields;
             let fieldValue;
-
             dataItems.forEach((item) => {
                 if (!item || !item.id) { return; }
                 const name = this.getATLabel(item, columns);
 
                 options.push({
                     id: item.id,
-                    name
+                    name,
+                    partner: item.partner,
+                    intervention: item.intervention
                 });
             });
 
