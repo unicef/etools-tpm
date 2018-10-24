@@ -55,7 +55,7 @@
                 behaviorObj.prettyDate(date);
 
                 assert.isTrue(formatSpy.called);
-                assert.isTrue(formatSpy.calledWith('D MMM YYYY'));
+                assert.isTrue(formatSpy.calledWith('DD MMM YYYY'));
 
                 var format = 'test format';
 
@@ -77,8 +77,10 @@
             });
 
             it('returns date object created from date string', function() {
-                var date = '2017-07-07';
-                assert.isTrue(_.isEqual(behaviorObj.prepareDate(date), new Date(date)));
+                var dateString = '2017-07-07';
+                var date = behaviorObj._convertDate(dateString);
+                var tzOffset = date.getTimezoneOffset() * 60000;
+                assert.isTrue(_.isEqual(behaviorObj.prepareDate(dateString), new Date(date.getTime() + tzOffset)));
             });
         });
 
