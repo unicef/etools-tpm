@@ -145,9 +145,9 @@
             let filterValue = this.get(`queryParams.${filter.query}`);
 
             if (filterValue !== undefined) {
-                filter.value = this._getFilterValue(filterValue, filter);
+                filter.selectedValues = this._getFilterValue(filterValue, filter);
             } else {
-                filter.value = undefined;
+                filter.selectedValues = undefined;
             }
         },
 
@@ -156,12 +156,17 @@
                 return;
             }
             
-            let splitValues = filterValue.split(',');
             let optionValue = filter.optionValue;
 
-            // return filter.selection.find((selectionItem) => {
-            //     return selectionItem[optionValue].toString() === filterValue;
-            // });
+            const exists = filter.selection.find((selectionItem) => selectionItem[optionValue].toString() === filterValue);
+            
+            if (!exists) {
+                return;
+            }
+
+            let splitValues = filterValue.split(',');
+
+            
             return filter.selection.filter(selectionItem => splitValues.includes(selectionItem[optionValue]));
         },
 
