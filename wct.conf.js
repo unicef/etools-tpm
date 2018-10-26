@@ -2,20 +2,23 @@ module.exports = {
   plugins: {
     local: {
       'skipSeleniumInstall': true,
-      'disabled': false,
-      'browsers': [
-        'chrome'
+      'disabled': true,
+    },
+    "headless": {
+      "browsers": [
+        "chrome"
       ],
-      'browsersOptions': {
-        'chrome': [
-          'start-maximized',
-          'headless',
-          'disable-gpu',
-          'no-sandbox'
+      "browsersOptions": {
+        "chrome": [
+          "window-size=1920,1080",
+          "headless",
+          "disable-gpu",
+          "no-sandbox"
         ]
       }
-    },
-    sauce: false,
+    }
   },
+  // sauce: false,
+},
   skipUpdateCheck: true
 };
