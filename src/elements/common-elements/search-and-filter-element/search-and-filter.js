@@ -18,7 +18,7 @@
             searchLabel: {
                 type: String
             },
-            searchString: {
+            searchString: { 
                 type: String
             },
             usedFilters: {
