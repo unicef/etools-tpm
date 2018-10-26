@@ -14,8 +14,8 @@ jobs:
             sudo sh -c "echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list" &&
             sudo apt-get update &&
             sudo apt-get remove binutils
-            sudo apt-get install firefox &&
-            firefox --version && apt-cache policy firefox
+            sudo apt-get install firefox=59.0.2+build1-0ubuntu1 &&
+            firefox --version
       - restore_cache:
           key: cache-{{ checksum "package.json" }}
       - run:
