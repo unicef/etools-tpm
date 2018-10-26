@@ -18,7 +18,4 @@ module.exports = {
       }
     }
   },
-  // sauce: false,
-},
-  skipUpdateCheck: true
 };
