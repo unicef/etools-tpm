@@ -20,7 +20,7 @@ jobs:
           key: cache-{{ checksum "package.json" }}
       - run:
           name: Install node modules
-          command: npm install
+          command: npm cache clean --force && npm install
       - save_cache:
           key: cache-{{ checksum "package.json" }}
           paths:
