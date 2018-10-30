@@ -62,7 +62,7 @@
                     'html': true,
                     'class': 'no-order',
                     'noOrder': true,
-                    'property': 'user.first_name'
+                    'property': 'user.full_name'
                 }]
             },
             listDetails: {
