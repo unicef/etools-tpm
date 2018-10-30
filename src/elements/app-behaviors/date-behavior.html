@@ -10,10 +10,7 @@
         //     let date = this._convertDate(dateString);
         //     return (!date) ? '' : this._utcDate(date, format);
         // },
-        prettyDate: function(dateString, format) {
-            if (!format) {
-                format = 'D MMM YYYY';
-            }
+        prettyDate: function(dateString, format = 'DD MMM YYYY') {
             if (typeof dateString === 'string' && dateString !== '') {
                 var date = new Date(dateString);
                 if (date.toString() !== 'Invalid Date') {
