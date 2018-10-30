@@ -196,10 +196,9 @@
             this.resetDialog();
         },
 
-        resetDialog: function(opened) {
+        resetDialog: function(opened, domRoot = this.root) {
             if (opened) { return; }
-            let elements = Polymer.dom(this.root).querySelectorAll('.validate-input');
-
+            let elements = Polymer.dom(domRoot).querySelectorAll('.validate-input');
             Array.prototype.forEach.call(elements, element => {
                 element.invalid = false;
                 element.value = '';

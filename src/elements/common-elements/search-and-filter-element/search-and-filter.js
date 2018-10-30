@@ -50,13 +50,16 @@
             }, 300);
         },
 
+        _isSelected: function(filter, _) {
+            const query = typeof filter === 'string' ? filter : filter.query;
+            return this.usedFilters.findIndex(usedFilter => usedFilter.query === query) !== -1;
+        },
+
         addFilter: function(e) {
             let query = (typeof e === 'string') ? e : e.model.item.query;
-            let alreadySelected = this.usedFilters.findIndex((filter) => {
-                return filter.query === query;
-            });
+            let isSelected = this._isSelected(query);
 
-            if (alreadySelected === -1) {
+            if (!isSelected) {
                 let newFilter = this.filters.find((filter) => {
                     return filter.query === query;
                 });
@@ -69,6 +72,8 @@
                     queryObject[query] = true;
                     this.updateQueries(queryObject);
                 }
+            } else {
+                this.removeFilter(e);
             }
         },
 
@@ -105,8 +110,6 @@
                     return;
                 }
 
-                let availableFilters = [];
-
                 this.filters.forEach((filter) => {
                     let usedFilter = this.usedFilters.find(used => used.query === filter.query);
 
@@ -114,16 +117,15 @@
                         this.addFilter(filter.query);
                     } else if (queryParams[filter.query] === undefined) {
                         this.removeFilter(filter.query);
-                        availableFilters.push(filter);
                     }
                 });
-                this.set('availableFilters', availableFilters);
 
                 if (queryParams.search) {
                     this.set('searchString', queryParams.search);
                 } else {
                     this.set('searchString', '');
                 }
+                this.set('availableFilters', _.clone(this.filters));
             }, 50);
         },
 
@@ -143,9 +145,9 @@
             let filterValue = this.get(`queryParams.${filter.query}`);
 
             if (filterValue !== undefined) {
-                filter.value = this._getFilterValue(filterValue, filter);
+                filter.selectedValues = this._getFilterValue(filterValue, filter);
             } else {
-                filter.value = undefined;
+                filter.selectedValues = undefined;
             }
         },
 
@@ -153,12 +155,19 @@
             if (!filter || !filter.selection || filterValue === undefined) {
                 return;
             }
-
+            
             let optionValue = filter.optionValue;
 
-            return filter.selection.find((selectionItem) => {
-                return selectionItem[optionValue].toString() === filterValue;
-            });
+            const exists = filter.selection.find((selectionItem) => selectionItem[optionValue].toString() === filterValue);
+            
+            if (!exists) {
+                return;
+            }
+
+            let splitValues = filterValue.split(',');
+
+            
+            return filter.selection.filter(selectionItem => splitValues.includes(selectionItem[optionValue]));
         },
 
         _getFilter: function(query) {
@@ -179,15 +188,18 @@
             }
 
             let query = e.currentTarget.id;
+            let queryObject = { page: '1' };
 
             if (detail.selectedValues && query) {
                 let filter = this._getFilter(query);
                 let optionValue = filter.optionValue || 'value';
-                let queryObject = {page: '1'};
-                queryObject[query] = detail.selectedValues[optionValue];
+                queryObject[query] = detail.selectedValues.
+                    map(val => val[optionValue]).
+                    join(',');
 
-                this.updateQueries(queryObject);
             }
-        }
+            this.updateQueries(queryObject);
+
+        },
     });
 })();

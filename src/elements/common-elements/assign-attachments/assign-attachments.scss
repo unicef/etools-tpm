@@ -1,5 +1,58 @@
+:host {
+    --paper-tooltip-opacity: 1;
+}
 etools-content-panel {
     --ecp-content: #{'{
          padding: 0;
     }'};
+}
+
+.activity-wrapper {
+    padding: 0 0 0 24px;
+    &:last-of-type .related-task {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+}
+ 
+.related-task {
+    flex: 1 0 21%;
+    font-size: 12px;
+    padding-right: 24px;
+    padding-left: 24px;
+    margin-left: -24px;
+    box-sizing: border-box;
+    border-right: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
+    border-bottom: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
+}
+
+.row-data {
+    & > * {
+        padding-right: 10px;
+    }
+    &:hover .delete-icon {
+        display: block;
+    }
+}
+
+a {
+    padding-left: 5px;
+    color: #40c4ff;
+    text-decoration: none;
+}
+
+.delete-icon {
+    position: absolute;
+    right: 10px;
+    display: none;
+    cursor: pointer;
+    & iron-icon {
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
+        --iron-icon-fill-color: var(--gray-50);
+    }
+}
+
+.documents {
+    flex: 1 0 80%;
 }
