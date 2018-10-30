@@ -212,7 +212,6 @@ Polymer({
         
         const nested = property.split('.');
         let styleAttribute = 'style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"';
-        // let propertyValues = this._getPropertyStringValues(array, property);
         let propertyValues = isValidArgs ? 
             array.map(value=> {
                 return nested.reduce((curr, next, i) => {
