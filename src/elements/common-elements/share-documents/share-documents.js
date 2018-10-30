@@ -172,7 +172,6 @@
               return 0;
             }
         });
-        debugger
         this.set('filteredList', sorted);
       },
 
