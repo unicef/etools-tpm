@@ -49,11 +49,20 @@
                     'class': 'no-order',
                     'noOrder': true,
                 }, {
-                    'size': 20,
+                    'size': 10,
                     'label': 'Status',
                     'labelPath': 'status',
                     'name': 'status',
                     'ordered': false
+                },{
+                    'size': 10,
+                    'label': 'TPM Focal Point',
+                    'name': 'ordered_list',
+                    'path': 'tpm_partner_focal_points',
+                    'html': true,
+                    'class': 'no-order',
+                    'noOrder': true,
+                    'property': 'user.first_name'
                 }]
             },
             listDetails: {
@@ -93,21 +102,21 @@
                 value: [
                     {
                         name: 'TPM Name',
-                        query: 'tpm_partner',
+                        query: 'tpm_partner__in',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
                     },
                     {
                         name: 'Implementing Partner',
-                        query: 'tpm_activities__partner',
+                        query: 'tpm_activities__partner__in',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
                     },
                     {
                         name: 'status',
-                        query: 'status',
+                        query: 'status__in',
                         hideSearch: true,
                         optionValue: 'value',
                         optionLabel: 'display_name',
@@ -115,14 +124,14 @@
                     },
                     {
                         name: 'Section',
-                        query: 'tpm_activities__section',
+                        query: 'tpm_activities__section__in',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
                     },
                     {
                         name: 'CP Output',
-                        query: 'tpm_activities__cp_output',
+                        query: 'tpm_activities__cp_output__in',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: []
@@ -200,11 +209,11 @@
 
         setFiltersSelections: function() {
             let queryAndKeyPairs = [
-                {query: 'tpm_partner', dataKey: 'tpmPartners'},
-                {query: 'tpm_activities__partner', dataKey: 'filterIP'},
-                {query: 'status', dataKey: 'statuses'},
-                {query: 'tpm_activities__section', dataKey: 'filterSections'},
-                {query: 'tpm_activities__cp_output', dataKey: 'filterCpOutputs'},
+                {query: 'tpm_partner__in', dataKey: 'tpmPartners'},
+                {query: 'tpm_activities__partner__in', dataKey: 'filterIP'},
+                {query: 'status__in', dataKey: 'statuses'},
+                {query: 'tpm_activities__section__in', dataKey: 'filterSections'},
+                {query: 'tpm_activities__cp_output__in', dataKey: 'filterCpOutputs'},
             ];
 
             queryAndKeyPairs.forEach((pair) => {
