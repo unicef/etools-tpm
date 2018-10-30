@@ -128,7 +128,7 @@ Polymer({
         });
     },
 
-    _getValue: function(item, data, bool) {
+    _getValue: function(item, _, bool) {
         let value;
 
         if (!item.path) {

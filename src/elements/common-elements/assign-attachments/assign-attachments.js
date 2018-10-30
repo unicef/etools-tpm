@@ -8,7 +8,10 @@ Polymer({
         TPMBehaviors.StaticDataController,
         TPMBehaviors.TableElementsBehavior,
         TPMBehaviors.CommonMethodsBehavior,
-        TPMBehaviors.ActivityToDrD
+        TPMBehaviors.ActivityToDrD,
+        TPMBehaviors.DateBehavior,
+        EtoolsAjaxRequestBehavior,
+        etoolsAppConfig.globals,
     ],
 
     properties: {
@@ -25,29 +28,65 @@ Polymer({
                 };
             }
         },
+        columnsForTaskLabel:{
+            type: Array,
+            value: [{
+                'label': 'Related Task',
+                'path': 'unique_id'
+            }, {
+                'label': 'Document Type',
+                'path': 'partner.name'
+            }, {
+                'label': 'Document',
+                'path': 'intervention.title'
+            }, {
+                'name': 'date',
+                'label': 'Date Uploaded',
+                'path': 'date'
+            }]
+        },
         attachmentsColumns: {
             type: Array,
             value: [{
-                'size': 10,
-                'label': 'Task No.',
-                'path': 'unique_id'
+                'size': 40,
+                'label': 'Document Type',
+                'path': 'file_type',
             }, {
                 'size': 40,
-                'label': 'Implementing Partner',
-                'labelPath': 'tpm_activities.partner',
-                'path': 'partner.name'
-            }, {
-                'size': 40,
-                'label': 'PD/SSFA ToR',
+                'label': 'Document',
                 'labelPath': 'tpm_activities.intervention',
                 'path': 'intervention.title'
             }, {
                 'size': 10,
                 'name': 'date',
-                'label': 'Date',
+                'label': 'Date Uploaded',
                 'labelPath': 'tpm_activities.date',
                 'path': 'date'
-            }]
+            },
+            {
+                'size': 10,
+                'label': 'Source',
+                'labelPath': 'tpm_activities.date',
+                'path': 'source'
+            },
+        ]
+        },
+        attachmentsHeadings: {
+            type: Array,
+            value: [{
+                'size': 22,
+                'label': 'Related Task',
+            }, {
+                'size': 18,
+                'label': 'Document Type',
+            }, {
+                'size': 40,
+                'label': 'Document',
+            }, {
+                'size': 10,
+                'label': 'Date Uploaded',
+            },
+        ]
         },
         activities: {
             type: Array,
@@ -85,6 +124,24 @@ Polymer({
             type: Array,
             value: () => []
         },
+        shareDialogOpened: {
+            type: Boolean,
+            value: false
+        },
+        shareParams: {
+            type: Object,
+        },
+        selectedAttachments: {
+            type: Array
+        },
+        confirmDisabled: {
+            type: Boolean,
+        },
+        requestOptions: {
+            value: {
+                csrf: true
+            }
+        }
     },
 
     listeners: {
@@ -97,6 +154,7 @@ Polymer({
     observers: [
         '_setBasePath(dataBasePath, pathPostfix)',
         '_resetDialog(dialogOpened)',
+        '_resetShareDialog(shareDialogOpened)',
         '_errorHandler(errorObject)',
         'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
         'updateTable(dataItems.*)',
@@ -107,6 +165,12 @@ Polymer({
         if (dialogOpened) { return; }
         this.set('errors.file', null);
         this.resetDialog(dialogOpened);
+    },
+
+    _resetShareDialog: function(opened){
+        if (opened) { return; }
+        this.resetDialog(opened, this.$.shareDocuments.shadowRoot);
+        this.$.shareDocuments.resetValues();
     },
 
     updateTable: function() {
@@ -145,6 +209,11 @@ Polymer({
     _openAddDialog: function() {
         this.editedItem = _.clone(this.itemModel);
         this.openAddDialog();
+    },
+
+    _openShareDialog: function() {
+        this.shareDialogOpened = true;
+        this.set('confirmDisabled', true);
     },
 
     _sendRequest: function() {
@@ -224,9 +293,10 @@ Polymer({
         });
     },
 
-    deleteAssignedFile: function(event, detail) {
+    deleteAssignedFile: function(event) {
+        let itemId = event.model.attachment.id;
         let item = this.dataItems.find((item) => {
-            return item.id === detail.id;
+            return item.id === itemId;
         });
         let e = {model: {item: item}};
 
@@ -234,5 +304,60 @@ Polymer({
             this.openDeleteDialog(e);
             this.editedItem._delete = true;
         }
+    },
+    _isAttachmentForTask: function(activity){
+        return function(attachment){
+           return  attachment.object_id === activity.id;
+        }
+    },
+
+    _getAttachmentType: function(attachment){
+        return this.fileTypes.find(fileType=> fileType.value === attachment.file_type).display_name;
+    },
+
+    getDate: function(item) {
+        return this.prettyDate(item && item.created) || '--';
+    },
+
+    _SendShareRequest: function(e) {
+        const { id, attachments } = this.shareParams;
+        const options = {
+            endpoint: this.getEndpoint('linkActivityAttachments', { id }),
+            csrf: true,
+            body:  { attachments } ,
+            method: 'POST'
+        }
+        this.set('requestInProcess', true);
+        this.sendRequest(options)
+            .then(resp=> {
+                this.fire('toast', {
+                    text: 'Documents shared successfully.'
+                });
+            })
+            .catch(this._handleShareError.bind(this))
+            .finally(() => {
+                this.set('requestInProcess', false);
+                this.set('shareDialogOpened', false);
+            })
+    },
+
+    _handleShareError: function(err){
+        let nonField = this.checkNonField(err);
+        let message;
+        if (nonField) {
+            message = `Nonfield error: ${nonField}`
+        } else {
+            message = err.response && err.response.detail ? `Error: ${err.response.detail}` 
+            : 'Error sharing documents.';
+        }
+        this.fire('toast', {
+            text: message
+        });
+    },
+
+    _getFilteredTasks: function(activities, columnsForTaskLabel){
+        // only pass tasks with an intervention to share modal
+        const atOptions = this._getATOptions(activities, columnsForTaskLabel);
+        return atOptions.filter(task => !!task.intervention);
     }
 });
