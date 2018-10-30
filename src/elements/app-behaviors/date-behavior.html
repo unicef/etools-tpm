@@ -6,10 +6,49 @@
         /**
          * Format date string to any format supported by momentjs
          */
-        prettyDate: function(dateString, format = 'DD MMM YYYY'){
-            let date = this._convertDate(dateString);
-            return (!date) ? '' : this._utcDate(date, format);
+        // prettyDate: function(dateString, format = 'DD MMM YYYY'){
+        //     let date = this._convertDate(dateString);
+        //     return (!date) ? '' : this._utcDate(date, format);
+        // },
+        prettyDate: function(dateString, format = 'DD MMM YYYY') {
+            if (typeof dateString === 'string' && dateString !== '') {
+                var date = new Date(dateString);
+                if (date.toString() !== 'Invalid Date') {
+                    // using moment.utc() ensures that the date will not be changed no matter timezone the user has set
+                    return moment.utc(date).format(format);
+                }
+            }
+            return '';
         },
+        /**
+         * Prepare date from string
+         */
+        prepareDate: function(dateString) {
+            if (typeof dateString === 'string' && dateString !== '') {
+                var date = new Date(dateString);
+                if (date.toString() === 'Invalid Date') {
+                    date = new Date();
+                }
+                return date;
+            } else {
+                return new Date();
+            }
+        },
+
+        prettyDatepickerDate: function(dateString, format) {
+            if (!format) {
+                format = 'D MMM YYYY';
+            }
+            if (typeof dateString === 'string' && dateString !== '') {
+                var date = new Date(dateString);
+                if (date.toString() !== 'Invalid Date') {
+                    // using moment.utc() ensures that the date will not be changed no matter timezone the user has set
+                    return moment.utc(date).format(format);
+                }
+            }
+            return '';
+        },
+
 
         prettyDateWithoutOffset: function(dateString, format){
             let date = this.prepareDate(dateString);
@@ -52,12 +91,16 @@
             return (date instanceof Date === false) ? false : (date.toString() !== 'Invalid Date');
         },
 
-        /*
-         * Prepare date from string
-         */
-        prepareDate(dateString) {
-            let date = this._convertDate(dateString);
-            return date ? this._getDateWithoutTimezoneOffset(date) : new Date();
+        displayInDatepicker(dateString) {
+            if (typeof dateString === 'string' && dateString !== '') {	            let date = this._convertDate(dateString);
+                var date = new Date(dateString);	            return date ? this._getDateWithoutTimezoneOffset(date) : new Date();
+                if (date.toString() === 'Invalid Date') {	
+                    date = new Date();	
+                }	
+                return date;	
+            } else {	
+                return new Date();	
+            }	
         },
 
 

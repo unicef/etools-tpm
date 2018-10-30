@@ -18,7 +18,7 @@
             searchLabel: {
                 type: String
             },
-            searchString: {
+            searchString: { 
                 type: String
             },
             usedFilters: {
@@ -58,7 +58,6 @@
         addFilter: function(e) {
             let query = (typeof e === 'string') ? e : e.model.item.query;
             let isSelected = this._isSelected(query);
-
             if (!isSelected) {
                 let newFilter = this.filters.find((filter) => {
                     return filter.query === query;
@@ -66,7 +65,6 @@
 
                 this._setFilterValue(newFilter);
                 this.push('usedFilters', newFilter);
-
                 if (this.queryParams[query] === undefined) {
                     let queryObject = {};
                     queryObject[query] = true;
@@ -86,7 +84,6 @@
 
             let queryObject = {};
             queryObject[query] = undefined;
-
             if (this.queryParams[query]) {
                 queryObject.page = '1';
             }
@@ -94,6 +91,7 @@
             if (indexToRemove !== -1) {
                 this.splice('usedFilters', indexToRemove, 1);
             }
+            
             this.updateQueries(queryObject);
         },
 
@@ -141,7 +139,6 @@
             if (!filter) {
                 return;
             }
-
             let filterValue = this.get(`queryParams.${filter.query}`);
 
             if (filterValue !== undefined) {
@@ -158,7 +155,7 @@
             
             let optionValue = filter.optionValue;
 
-            const exists = filter.selection.find((selectionItem) => selectionItem[optionValue].toString() === filterValue);
+            const exists = filter.selection.find((selectionItem) => filterValue.indexOf(selectionItem[optionValue].toString()) !== -1);
             
             if (!exists) {
                 return;
@@ -166,8 +163,12 @@
 
             let splitValues = filterValue.split(',');
 
-            
-            return filter.selection.filter(selectionItem => splitValues.includes(selectionItem[optionValue]));
+            let res = filter.selection.filter(selectionItem => {
+                let filVal = selectionItem[optionValue].toString();
+                let inc = splitValues.includes(filVal);
+                return inc;
+            });
+            return res;
         },
 
         _getFilter: function(query) {
@@ -189,14 +190,12 @@
 
             let query = e.currentTarget.id;
             let queryObject = { page: '1' };
-
             if (detail.selectedValues && query) {
                 let filter = this._getFilter(query);
                 let optionValue = filter.optionValue || 'value';
                 queryObject[query] = detail.selectedValues.
                     map(val => val[optionValue]).
                     join(',');
-
             }
             this.updateQueries(queryObject);
 
