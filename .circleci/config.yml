@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install firefox
+          name: Install browser
           command: |
             sudo dpkg --purge firefox-mozilla-build &&
             sudo sh -c "echo 'deb http://ftp.hr.debian.org/debian sid main' >> /etc/apt/sources.list" &&

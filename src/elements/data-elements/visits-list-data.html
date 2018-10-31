@@ -69,7 +69,7 @@
 
                 let endpoint = this.getEndpoint('visitsList');
                 endpoint.url += this.getQueriesString();
-
+                
                 if (this.requestQueries.reload) {
                     endpoint.url += `&reload=${new Date().getTime()}`;
                 }
