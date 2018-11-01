@@ -119,12 +119,12 @@
             let headings = [{
                 'size': '150px',
                 'name': 'date',
-                'label': 'Date Uploaded!',
+                'label': 'Date Uploaded',
                 'labelPath': `created`,
                 'path': 'created'
             }, {
                 'size': 65,
-                'label': 'File Attachment!',
+                'label': 'Document',
                 'labelPath': `filename`,
                 'property': 'filename',
                 'custom': true,
@@ -135,7 +135,7 @@
             if (showFileTypes) {
                 headings.splice(1, 0, {
                     'size': 35,
-                    'label': 'Document Type!',
+                    'label': 'Document Type',
                     'labelPath': `file_type`,
                     'path': 'display_name'
                 });
