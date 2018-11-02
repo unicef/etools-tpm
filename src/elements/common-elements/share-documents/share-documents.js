@@ -3,8 +3,10 @@
       behaviors: [
         TPMBehaviors.CommonMethodsBehavior,
         TPMBehaviors.TableElementsBehavior,
+        TPMBehaviors.StaticDataController,
         etoolsAppConfig.globals,
-        EtoolsAjaxRequestBehavior
+        EtoolsAjaxRequestBehavior,
+
       ],
 
       properties: {
@@ -70,7 +72,7 @@
           type: Array
         },
 
-        tempRows: {
+        originalList: {
           type: Array
         },
 
@@ -109,6 +111,14 @@
 
       attached: function () {
         this.set('requestOptions.endpoint', this.getEndpoint('pdAttachments'));
+        
+        const fileTypes = _.get(this.getData("staticDropdown"), "attachment_types")
+        .filter(val=>!_.isEmpty(val))
+        .map(
+          typeStr => ({ label: typeStr, value: typeStr })
+        );
+
+        this.set('fileTypes', fileTypes);
       },
 
       _taskSelected: function (selectedTask) {
@@ -122,13 +132,14 @@
 
         const options = Object.assign(this.requestOptions, {
           params: {
-            pd_ssfa_number: selectedTask.intervention.number
+            pd_ssfa: selectedTask.intervention.id,
+            source: 'Partnership Management Portal'
           }
         })
 
         this.sendRequest(options).then(
           resp => {
-            this.set('tempRows', resp);
+            this.set('originalList', resp);
             this.set('filteredList', resp);
             this.fire('global-loading', { type: 'share-documents' });
           }
@@ -178,11 +189,11 @@
       _filterByFileType: function(selectedFileType){
         if (!selectedFileType) {
           // resets list when doc-type filter is cleared
-          this.set('filteredList', this.tempRows); 
+          this.set('filteredList', this.originalList); 
           return; 
         }
         const { value } = selectedFileType;
-        const newFilteredList = this.tempRows.filter(row => row.file_type_id === value);
+        const newFilteredList = this.originalList.filter(row => row.file_type === value);
         this.set('filteredList', newFilteredList)
       },
 
@@ -195,5 +206,9 @@
       _handleDisabledConfirm: function(){
         this.set('confirmDisabled',!this.selectedAttachments.length);
       },
+
+      _getTruncatedPd: function (pdNumber) {
+        return `.../${_.last(pdNumber.split('/'))}`;
+      }
     
     })
