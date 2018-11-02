@@ -29,13 +29,14 @@
 
             _handleResponse: function (data) {
                 let user = data.detail;
-                let previousUserId = JSON.parse(localStorage.getItem('userId'));
+                
+                let previousUserId = localStorage.getItem('userId');
                 let countriesAvailable = _.get(user, 'profile.countries_available') || [];
 
                 countriesAvailable = _.sortBy(countriesAvailable, ['name']);
                 _.set(user, 'profile.countries_available', countriesAvailable);
 
-                if (!previousUserId || previousUserId !== user.id) {
+                if (!previousUserId || Number(previousUserId) !== user.id) {
                     this.resetOldUserData();
                 }
 

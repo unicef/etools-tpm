@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax-sp]-->
+<!--import [polymer, etools-ajax-sp, etools-ajax/etools-ajax-request-behavior]-->
 <!--import [static-data-behavior, user-controller, user-data]-->
 
 <dom-module id="initial-data">
@@ -15,7 +15,7 @@
 
         <etools-ajax-sp
                 method="OPTIONS"
-                url="[[partnersOptionsUrl]]"
+                url="[[partnersOptionsUrl]]"a
                 on-success="_handlePartnersOptions"
                 on-fail="_handlePartnersOptions">
         </etools-ajax-sp>
@@ -108,7 +108,8 @@
                     etoolsAppConfig.globals,
                     TPMBehaviors.UserController,
                     TPMBehaviors.StaticDataController,
-                    TPMBehaviors.PermissionController
+                    TPMBehaviors.PermissionController,
+                    EtoolsAjaxRequestBehavior
                 ],
 
                 listeners: {
@@ -138,7 +139,16 @@
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this.partnersUrl = this.getEndpoint('partnersList').url +  '&page_size=all';
                     this.locationsEndpoint = this.getEndpoint('locations');
+                    this._getStaticDropdownData();
                     this._allDataLoaded();
+                },
+
+                _getStaticDropdownData: function () {
+                    const reqOpts = {
+                        csrf: true,
+                        endpoint: this.getEndpoint('static')
+                    };
+                    this.sendRequest(reqOpts).then(resp=> this._setData('staticDropdown', resp));
                 },
 
                 _allDataLoaded: function() {
@@ -182,7 +192,6 @@
                 _partnersLoaded: function(data, partners) {
                     let partnerId = partners && partners[0] && partners[0].id,
                         tpmUser = this.isTpmUser();
-
                     if (tpmUser && !partnerId) {
                         console.error('Can not get TPM Partner id!');
                     } else if(!partners) {

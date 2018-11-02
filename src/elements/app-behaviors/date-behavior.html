@@ -6,10 +6,11 @@
         /**
          * Format date string to any format supported by momentjs
          */
-        prettyDate: function(dateString, format) {
-            if (!format) {
-                format = 'D MMM YYYY';
-            }
+        // prettyDate: function(dateString, format = 'DD MMM YYYY'){
+        //     let date = this._convertDate(dateString);
+        //     return (!date) ? '' : this._utcDate(date, format);
+        // },
+        prettyDate: function(dateString, format = 'DD MMM YYYY') {
             if (typeof dateString === 'string' && dateString !== '') {
                 var date = new Date(dateString);
                 if (date.toString() !== 'Invalid Date') {
@@ -19,7 +20,6 @@
             }
             return '';
         },
-
         /**
          * Prepare date from string
          */
@@ -35,11 +35,80 @@
             }
         },
 
+        prettyDatepickerDate: function(dateString, format) {
+            if (!format) {
+                format = 'D MMM YYYY';
+            }
+            if (typeof dateString === 'string' && dateString !== '') {
+                var date = new Date(dateString);
+                if (date.toString() !== 'Invalid Date') {
+                    // using moment.utc() ensures that the date will not be changed no matter timezone the user has set
+                    return moment.utc(date).format(format);
+                }
+            }
+            return '';
+        },
+
+
+        prettyDateWithoutOffset: function(dateString, format){
+            let date = this.prepareDate(dateString);
+            return (!date) ? '' : this._utcDate(date, format);
+        },
+
+        _utcDate: function(date, format){
+            return (!date) ? '' : moment.utc(date).format(format ? format : 'D MMM YYYY');
+        },
+
+        _convertDate: function(dateString, noZTimezoneOffset){
+            if (typeof dateString === 'string' && dateString !== '') {
+                dateString = (dateString.indexOf('T') === -1) ? (dateString + 'T00:00:00') : dateString;
+                /**
+                 * `Z` (zero time offset) will ensure `new Date` will create the date in UTC and then it will apply local timezone
+                 * and will have the same result in all timezones (for the UTC date).
+                 * Example:
+                 *  d = new Date('2018-04-25T00:00:00Z');
+                 *  d.toString() == "Wed Apr 25 2018 03:00:00 GMT+0300 (EEST)"
+                 *  d.toGMTString() == "Wed, 25 Apr 2018 00:00:00 GMT"
+                 * @type {string}
+                 */
+                dateString += (noZTimezoneOffset || dateString.indexOf('Z') >= 0) ? '' : 'Z';
+                let date = new Date(dateString);
+                let isValid = this.isValidDate(date);
+                if (!isValid) {
+                    console.warn('Date conversion unsuccessful: ' + dateString);
+                }
+                return isValid ? date : null;
+            }
+            return null;
+        },
+
+        _getDateWithoutTimezoneOffset: function (date) {
+            let userTimezoneOffset = date.getTimezoneOffset() * 60000;
+            return new Date(date.getTime() + userTimezoneOffset);
+        },
+
+        isValidDate: function (date) {
+            return (date instanceof Date === false) ? false : (date.toString() !== 'Invalid Date');
+        },
+
+        displayInDatepicker(dateString) {
+            if (typeof dateString === 'string' && dateString !== '') {	            let date = this._convertDate(dateString);
+                var date = new Date(dateString);	            return date ? this._getDateWithoutTimezoneOffset(date) : new Date();
+                if (date.toString() === 'Invalid Date') {	
+                    date = new Date();	
+                }	
+                return date;	
+            } else {	
+                return new Date();	
+            }	
+        },
+
+
         /**
          * Open input field assigned(as prefix or suffix) etools-datepicker on tap.
          * Make sure you also have the data-selector attribute set on the input field.
          */
-        openDatePicker: function(event) {
+        openDatePicker: function (event) {
             //do not close datepicker on mouse up
             this.datepickerModal = true;
             var id = Polymer.dom(event).localTarget.getAttribute('data-selector');
