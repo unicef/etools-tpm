@@ -73,15 +73,15 @@
         observers: [
             '_setBasePath(dataBasePath, pathPostfix)',
             '_filesChange(dataItems.*, fileTypes.*)',
-            '_updateHeadings(dataBasePath)',
+            '_updateHeadings(basePermissionPath)',
             '_resetDialog(dialogOpened)',
             '_errorHandler(errorObject)',
-            'updateStyles(requestInProcess, editedItem, dataBasePath)',
+            'updateStyles(requestInProcess, editedItem, basePermissionPath)',
         ],
 
         _setBasePath: function(dataBase, pathPostfix) {
             let base = dataBase && pathPostfix ? `${dataBase}_${pathPostfix}` : '';
-            this.set('dataBasePath', base);
+            this.set('basePermissionPath', base);
             if (base) {
                 let title = this.getFieldAttribute(base, 'title');
                 this.set('tabTitle', title);    
@@ -116,7 +116,7 @@
             return !this.isTabReadonly(basePath) && (this.multiple || filesLength === 0);
         },
 
-        _updateHeadings: function(dataBasePath) {
+        _updateHeadings: function(basePermissionPath) {
             let headings = [{
                 'size': '150px',
                 'name': 'date',
@@ -132,7 +132,7 @@
                 'doNotHide': false
             }];
 
-            let showFileTypes = this.showFileTypes(dataBasePath);
+            let showFileTypes = this.showFileTypes(basePermissionPath);
             if (showFileTypes) {
                 headings.splice(1, 0, {
                     'size': 35,
@@ -269,7 +269,7 @@
             let editedItem = this.editedItem;
             let valid = true;
 
-            let fileTypeRequired = this._setRequired('file_type', this.dataBasePath);
+            let fileTypeRequired = this._setRequired('file_type', this.basePermissionPath);
             if (fileTypeRequired && (!this.fileTypes || !this.fileTypes.length)) {
                 this.set('errors.file_type', 'File types are not defined');
                 valid = false;
