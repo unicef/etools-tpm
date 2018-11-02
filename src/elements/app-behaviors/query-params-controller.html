@@ -37,7 +37,6 @@
         updateQueries: function (newQueries, path, noNotify) {
             if (!_.isObject(newQueries)) { return false; }
             let keys = Object.keys(newQueries);
-            let paginationKeys = ['page', 'page_size', 'ordering'];
 
             if (!keys.length) { return false; }
 

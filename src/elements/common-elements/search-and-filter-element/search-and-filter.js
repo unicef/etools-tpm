@@ -116,7 +116,7 @@
                     } else if (queryParams[filter.query] === undefined) {
                         this.removeFilter(filter.query);
                     }
-                });
+            });
 
                 if (queryParams.search) {
                     this.set('searchString', queryParams.search);
@@ -163,12 +163,10 @@
 
             let splitValues = filterValue.split(',');
 
-            let res = filter.selection.filter(selectionItem => {
+            return filter.selection.filter(selectionItem => {
                 let filVal = selectionItem[optionValue].toString();
-                let inc = splitValues.includes(filVal);
-                return inc;
+                return splitValues.includes(filVal);
             });
-            return res;
         },
 
         _getFilter: function(query) {

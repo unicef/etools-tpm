@@ -319,7 +319,7 @@ Polymer({
         return this.prettyDate(item && item.created) || '--';
     },
 
-    _SendShareRequest: function(e) {
+    _SendShareRequest: function() {
         const { id, attachments } = this.shareParams;
         const options = {
             endpoint: this.getEndpoint('linkActivityAttachments', { id }),
@@ -329,7 +329,7 @@ Polymer({
         }
         this.set('requestInProcess', true);
         this.sendRequest(options)
-            .then(resp=> {
+            .then(()=> {
                 this.fire('toast', {
                     text: 'Documents shared successfully.'
                 });
