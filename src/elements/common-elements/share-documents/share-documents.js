@@ -132,8 +132,8 @@
 
         const options = Object.assign(this.requestOptions, {
           params: {
-            // pd_ssfa: selectedTask.intervention.id
-            pd_ssfa_number: selectedTask.intervention.number
+            pd_ssfa: selectedTask.intervention.id,
+            source: 'Partnership Management Portal'
           }
         })
 
