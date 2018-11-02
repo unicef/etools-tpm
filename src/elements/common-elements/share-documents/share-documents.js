@@ -11,7 +11,7 @@
 
       properties: {
         selectedTask: {
-          type: Object,
+          type: Object, 
           notfiy: true,
           observer: '_taskSelected'
         },
