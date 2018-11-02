@@ -3,7 +3,7 @@
   paper-checkbox,
   etools-searchable-multiselection-menu]-->
 
-<!-- import [tab-inputs-styles, table-elements-behavior, list-header,
+<!-- import [tab-inputs-styles, table-elements-behavior, list-header,static-data-behavior,
   simple-list-item, etools-file-styles, date-behavior, etools-app-config,
    module-styles, common-methods-behavior] -->
 
@@ -18,7 +18,7 @@
            without-line>
         <etools-searchable-multiselection-menu class="validate-input disabled-as-readonly required"
                                                value="{{selectedTask}}"
-                                               label="[[getLabel('tpm_activities', dataBasePath)]]"
+                                               label="Related Task for Documents"
                                                placeholder="Select"
                                                options="[[relatedTasks]]"
                                                custom-object-options
@@ -33,13 +33,6 @@
                                                no-title-attr>
         </etools-searchable-multiselection-menu>
       </div>
-      <template is="dom-if"
-                if="[[!selectedTask]]">
-        <div class="row-h repeatable-item-container"
-             without-line>
-          Select a related task to see documents.
-        </div>
-      </template>
 
       <template is="dom-if"
                 if="[[selectedTask]]">
@@ -57,9 +50,6 @@
                                                    label="[[getLabel('file_type', basePermissionPath)]]"
                                                    placeholder="Select"
                                                    options="[[fileTypes]]"
-                                                   custom-object-options
-                                                   option-label="display_name"
-                                                   option-value="value"
                                                    update-selected
                                                    empty-value
                                                    dynamic-align
@@ -81,7 +71,7 @@
                 <div class="row-data">
                   <paper-checkbox on-tap="_toggleChecked">
                   </paper-checkbox>
-                  <span class="pd">[[item.pd_ssfa_number]]
+                  <span class="pd">[[_getTruncatedPd(item.pd_ssfa_number)]]
                     <paper-tooltip>[[item.pd_ssfa_number]]</paper-tooltip>
                   </span>
                   <span class="doc-type">[[item.file_type]]</span>

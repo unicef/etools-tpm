@@ -30,17 +30,17 @@
 
         <div class="tab-selector">
             <paper-tabs attr-for-selected="name" noink="" bottom-item="" role="tablist" tabindex="0" selected="{{routeData.tab}}">
-                <paper-tab name="details"><span class="tab-content">Details</span></paper-tab>
+                <paper-tab name="details"><span class="tab-content">DETAILS</span></paper-tab>
 
+                <paper-tab name="attachments"><span class="tab-content">RELATED DOCUMENTS</span></paper-tab>
                 <template is="dom-if" if="[[_showTab(permissionBase, 'attachments')]]">
-                    <paper-tab name="report"><span class="tab-content">Report</span></paper-tab>
+                    <paper-tab name="report"><span class="tab-content">REPORT</span></paper-tab>
                 </template>
 
                 <template is="dom-if" if="[[_showTab(permissionBase, 'ap')]]">
-                    <paper-tab name="action-points"><span class="tab-content">Action Points</span></paper-tab>
+                    <paper-tab name="action-points"><span class="tab-content">ACTION POINTS</span></paper-tab>
                 </template>
 
-                <paper-tab name="attachments"><span class="tab-content">Related Documents</span></paper-tab>
             </paper-tabs>
         </div>
 
@@ -177,6 +177,16 @@
                     </template>
 
                     <div name="attachments">
+                        <file-attachments-tab
+                            data-base-path="[[permissionBase]]"
+                            path-postfix="attachments"
+                            error-object="{{errorObject}}"
+                            base-id="[[visit.id]]"
+                            endpoint-name="attachments"
+                            error-property="visit_attachments"
+                            tab-title="Related Documents For Overall Visit"
+                            multiple>
+                        </file-attachments-tab>
                         <assign-attachments
                                 data-base-path="[[permissionBase]]"
                                 path-postfix="activities_attachments"
@@ -187,15 +197,7 @@
                                 files-property="attachments"
                                 parrent-property="tpm_activities">
                         </assign-attachments>
-                        <file-attachments-tab
-                                    data-base-path="[[permissionBase]]"
-                                    path-postfix="attachments"
-                                    error-object="{{errorObject}}"
-                                    base-id="[[visit.id]]"
-                                    endpoint-name="attachments"
-                                    error-property="visit_attachments"
-                                    multiple>
-                        </file-attachments-tab>
+                       
                     </div>
                 </iron-pages>
             </div>
