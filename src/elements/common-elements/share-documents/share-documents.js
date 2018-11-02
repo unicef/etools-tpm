@@ -132,7 +132,8 @@
 
         const options = Object.assign(this.requestOptions, {
           params: {
-            pd_ssfa: selectedTask.intervention.id
+            // pd_ssfa: selectedTask.intervention.id
+            pd_ssfa_number: selectedTask.intervention.number
           }
         })
 
@@ -205,5 +206,9 @@
       _handleDisabledConfirm: function(){
         this.set('confirmDisabled',!this.selectedAttachments.length);
       },
+
+      _getTruncatedPd: function (pdNumber) {
+        return `.../${_.last(pdNumber.split('/'))}`;
+      }
     
     })

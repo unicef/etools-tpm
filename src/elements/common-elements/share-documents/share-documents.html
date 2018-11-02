@@ -18,7 +18,7 @@
            without-line>
         <etools-searchable-multiselection-menu class="validate-input disabled-as-readonly required"
                                                value="{{selectedTask}}"
-                                               label="[[getLabel('tpm_activities', dataBasePath)]]"
+                                               label="Related Task for Documents"
                                                placeholder="Select"
                                                options="[[relatedTasks]]"
                                                custom-object-options
@@ -33,13 +33,6 @@
                                                no-title-attr>
         </etools-searchable-multiselection-menu>
       </div>
-      <template is="dom-if"
-                if="[[!selectedTask]]">
-        <div class="row-h repeatable-item-container"
-             without-line>
-          Select a related task to see documents.
-        </div>
-      </template>
 
       <template is="dom-if"
                 if="[[selectedTask]]">
@@ -78,7 +71,7 @@
                 <div class="row-data">
                   <paper-checkbox on-tap="_toggleChecked">
                   </paper-checkbox>
-                  <span class="pd">[[item.pd_ssfa_number]]
+                  <span class="pd">[[_getTruncatedPd(item.pd_ssfa_number)]]
                     <paper-tooltip>[[item.pd_ssfa_number]]</paper-tooltip>
                   </span>
                   <span class="doc-type">[[item.file_type]]</span>
