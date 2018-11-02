@@ -138,6 +138,15 @@
                                 data-items="[[visit.tpm_activities]]"
                                 base-permission-path="[[permissionBase]]">
                         </visit-activity-tab>
+                        <file-attachments-tab
+                                    data-base-path="[[permissionBase]]"
+                                    path-postfix="attachments"
+                                    error-object="{{errorObject}}"
+                                    base-id="[[visit.id]]"
+                                    endpoint-name="attachments"
+                                    error-property="visit_attachments"
+                                    multiple>
+                        </file-attachments-tab>
                     </div>
 
                     <template is="dom-if" if="[[_showTab(permissionBase, 'attachments')]]" restamp>
@@ -147,6 +156,7 @@
                                     error-object="{{errorObject}}"
                                     base-id="[[visit.id]]"
                                     endpoint-name="reportAttachments"
+                                    path-postfix="report_attachments"
                                     error-property="report_attachments"
                                     multiple>
                             </file-attachments-tab>

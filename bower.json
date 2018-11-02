@@ -33,17 +33,21 @@
     "etools-checkable-input": "1.0.8",
     "etools-datepicker": "1.0.13",
     "moment": "^2.18.1",
-    "etools-app-selector": "1.0.11",
+    "etools-app-selector": "1.1.2",
     "lodash": "4.17.4",
     "paper-tooltip": "PolymerElements/paper-tooltip#^2.0.0",
     "etools-searchable-multiselection-menu": "2.2.3",
     "web-component-tester": "4.3.6",
     "iron-ajax": "1.4.4",
-    "webcomponentsjs": "^v0.7.24"
+    "webcomponentsjs": "^v0.7.24",
+    "etools-profile-dropdown": "2.0.5",
+    "paper-dialog": "2.1.1"
   },
   "devDependencies": {},
   "resolutions": {
     "lodash": "^4.17.4",
-    "webcomponentsjs": "^v0.7.24"
+    "webcomponentsjs": "^v0.7.24",
+    "etools-loading": "1.0.9",
+    "paper-dialog": "2.1.1"
   }
 }

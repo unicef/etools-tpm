@@ -1,134 +1,143 @@
-<!--import [polymer, app-layout/app-toolbar/app-toolbar, paper-icon-button, iron-flex-layout, etools-page-refresh]-->
+<!--import [polymer, app-layout/app-toolbar/app-toolbar, paper-icon-button, iron-flex-layout, etools-page-refresh, etools-profile-dropdown]-->
 
-<!--import [etools-app-config, etools-app-selector, countries-dropdown, user-dropdown, shared-styles, app-icons]-->
+<!--import [etools-app-config, etools-app-selector, countries-dropdown, shared-styles, app-icons]-->
 
 <dom-module id="app-main-header">
-  <template>
-    <style include="shared-styles">
-      app-toolbar {
-        background-color: var(--header-bg-color, #233944);
-        padding: 0 8px 0 0;
-      }
+    <template>
+        <style include="shared-styles">
+            app-toolbar {
+                background-color: var(--header-bg-color, #233944);
+                padding: 0 8px 0 0;
+            }
 
-      div[main-title] {
-        position: relative;
-        bottom: 1px;
-        margin-left: 24px;
-        min-height: 30px;
-        background: url('../../../images/etools_logo_icon.png') no-repeat center left;
-        background-size: auto 48px;
-        padding-left: 48px;
-        font-size: 30px;
-        color: var(--light-primary-text-color);
-      }
+            div[main-title] {
+                position: relative;
+                bottom: 1px;
+                margin-left: 24px;
+                min-height: 30px;
+                background: url('../../../images/etools_logo_icon.png') no-repeat center left;
+                background-size: auto 48px;
+                padding-left: 48px;
+                font-size: 30px;
+                color: var(--light-primary-text-color);
+            }
 
-      etools-page-refresh {
-        color: #BCC1C6;
-      }
+            etools-page-refresh {
+                color: #BCC1C6;
+            }
 
-      .right-side {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-      }
+            .right-side {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+            }
 
-      etools-page-refresh {
-        margin-left: 8px;
-      }
-      .titlebar {
-        flex: 1 ;
-        font-size: 28px;
-        font-weight: 300;
-        color: var(--light-primary-text-color);
-      }
-      .titlebar img{
-        height: auto;
-        width: auto;
-        max-width: 130px;
-        max-height: 36px;
-        margin: 0 8px 0 24px;
-      }
+            etools-page-refresh {
+                margin-left: 8px;
+            }
 
-      .content-align {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-      }
+            .titlebar {
+                flex: 1;
+                font-size: 28px;
+                font-weight: 300;
+                color: var(--light-primary-text-color);
+            }
 
-      .envWarning {
-        color: var(--nonprod-text-warn-color);
-        font-weight: 700;
-        font-size: 18px;
-      }
+            .titlebar img {
+                height: auto;
+                width: auto;
+                max-width: 130px;
+                max-height: 36px;
+                margin: 0 8px 0 24px;
+            }
 
-      @media (min-width: 851px) {
-        div[main-title] {
-          margin-left: 32px;
-        }
-      }
-    </style>
+            .content-align {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+            }
 
-    <app-toolbar sticky class="content-align">
-      <div class="titlebar content-align">
-        <etools-app-selector hidden$="[[!user.is_staff]]"></etools-app-selector>
-        <img src$="[[getAbsolutePath('images/etools_logo.svg')]]">
-        <template is="dom-if" if="[[isStaging]]">
-          <div class="envWarning"> - STAGING TESTING ENVIRONMENT</div>
-        </template>
-      </div>
+            .envWarning {
+                color: var(--nonprod-text-warn-color);
+                font-weight: 700;
+                font-size: 18px;
+            }
 
-      <div class="content-align">
-        <countries-dropdown countries="[[user.profile.countries_available]]" country-id="[[user.profile.country]]"></countries-dropdown>
+            @media (min-width: 851px) {
+                div[main-title] {
+                    margin-left: 32px;
+                }
+            }
+        </style>
 
-        <user-dropdown is-admin="[[user.is_superuser]]"></user-dropdown>
+        <app-toolbar sticky class="content-align">
+            <div class="titlebar content-align">
+                <etools-app-selector hidden$="[[!user.is_staff]]"></etools-app-selector>
+                <img src$="[[getAbsolutePath('images/etools_logo.svg')]]">
+                <template is="dom-if" if="[[isStaging]]">
+                    <div class="envWarning"> - STAGING TESTING ENVIRONMENT</div>
+                </template>
+            </div>
 
-        <etools-page-refresh id="refresh"></etools-page-refresh>
-      </div>
-    </app-toolbar>
-  </template>
+            <div class="content-align">
+                <countries-dropdown countries="[[user.profile.countries_available]]"
+                                    country-id="[[user.profile.country]]"></countries-dropdown>
 
-  <script>
-    (function() {
-      Polymer({
-        is: 'app-main-header',
+                <etools-profile-dropdown profile="[[user]]"></etools-profile-dropdown>
 
-        behaviors: [
-          etoolsAppConfig.globals
-        ],
+                <etools-page-refresh id="refresh"></etools-page-refresh>
+            </div>
+        </app-toolbar>
+    </template>
 
-        properties: {
-          user: {
-            type: Object
-          },
-        },
+    <script>
+        (function() {
+            Polymer({
+                is: 'app-main-header',
 
-        listeners: {
-          'main_refresh': '_refresh_page'
-        },
+                behaviors: [
+                    etoolsAppConfig.globals
+                ],
 
-        ready: function() {
-          this._isStaging()
-          this._setBgColor()
-        },
+                properties: {
+                    user: {
+                        type: Object
+                    },
+                },
 
-        openDrawer: function() {
-          this.fire('drawer');
-        },
+                listeners: {
+                    'main_refresh': '_refresh_page',
+                    'sign-out': '_logout'
+                },
 
-        _refresh_page: function(event) {
-          event.stopImmediatePropagation();
-          this.$.refresh.refresh();
-        },
+                ready: function() {
+                    this._isStaging();
+                    this._setBgColor();
+                },
 
-        _setBgColor: function() {
-          // If not production environment, changing header color to red
-          if (!etoolsAppConfig.globals.isProductionServer()) {
-            this.updateStyles({'--header-bg-color': 'var(--nonprod-header-color)'});
-          }
-        },
+                openDrawer: function() {
+                    this.fire('drawer');
+                },
 
-        _isStaging: function() {
-          this.set('isStaging', etoolsAppConfig.globals.isStagingServer())
-        }
-      });
-    })();
-  </script>
+                _refresh_page: function(event) {
+                    event.stopImmediatePropagation();
+                    this.$.refresh.refresh();
+                },
+
+                _setBgColor: function() {
+                    // If not production environment, changing header color to red
+                    if (!etoolsAppConfig.globals.isProductionServer()) {
+                        this.updateStyles({'--header-bg-color': 'var(--nonprod-header-color)'});
+                    }
+                },
+
+                _isStaging: function() {
+                    this.set('isStaging', etoolsAppConfig.globals.isStagingServer())
+                },
+
+                _logout: function() {
+                    this.resetOldUserData();
+                    window.location.href = `${window.location.origin}/saml2/logout/`;
+                }
+            });
+        })();
+    </script>
 </dom-module>
