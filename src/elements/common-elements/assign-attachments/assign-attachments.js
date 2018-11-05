@@ -141,6 +141,10 @@ Polymer({
             value: {
                 csrf: true
             }
+        },
+        fileTypeDropdownDisabled: {
+            type: Boolean,
+            value: false
         }
     },
 
@@ -160,6 +164,10 @@ Polymer({
         'updateTable(dataItems.*)',
         '_setDropdownOptions(dataItems, columns, dataItems.*)',
     ],
+
+    attached: function () {
+        this.partnerOrganizations = this.getData('partnerOrganizations');
+    },
 
     _resetDialog: function(dialogOpened) {
         if (dialogOpened) { return; }
@@ -214,6 +222,19 @@ Polymer({
     _openShareDialog: function() {
         this.shareDialogOpened = true;
         this.set('confirmDisabled', true);
+    },
+
+    _handleDropdownPermissions: function (e, detail) {
+        const partner = this.partnerOrganizations.find(partner=> partner.id === detail.selectedValues.partner.id);
+        
+        if (partner.partner_type === "Civil Society Organization"){
+            const otherType = this.fileTypes.find(fileType=> fileType.display_name === 'Other');
+            this.set('editedItem.file_type', otherType);
+            this.set('fileTypeDropdownDisabled', true)
+        } else {
+            this.set('editedItem.file_type', {});
+            this.set('fileTypeDropdownDisabled', false)
+        }
     },
 
     _sendRequest: function() {

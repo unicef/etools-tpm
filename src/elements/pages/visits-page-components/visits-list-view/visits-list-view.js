@@ -241,7 +241,7 @@
         openAddVisitPopup: function() {
             let partners = this.getData('tpmPartners') || [];
             partners = partners.sort((a, b) => a.name > b.name);
-            this.set('partnerOrganisations', partners);
+            this.set('partnerOrganizations', partners);
             this.dialogOpened = true;
         },
 
