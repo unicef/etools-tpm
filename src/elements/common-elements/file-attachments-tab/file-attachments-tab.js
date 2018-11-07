@@ -148,7 +148,6 @@
             }, {
                 'size': 65,
                 'label': 'Document',
-                'labelPath': `filename`,
                 'property': 'filename',
                 'custom': true,
                 'doNotHide': false
