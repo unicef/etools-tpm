@@ -65,6 +65,10 @@
             editedItem: {
                 type: Object,
                 value: {}
+            },
+            disableFiletype: {
+                type: Boolean,
+                value: false
             }
         },
 
@@ -79,6 +83,7 @@
             '_filesChange(dataItems.*, fileTypes.*)',
             '_updateHeadings(basePermissionPath)',
             '_resetDialog(dialogOpened)',
+            '_setDefaultFiletype(dialogOpened)',
             '_errorHandler(errorObject)',
             'updateStyles(requestInProcess, editedItem, basePermissionPath)',
         ],
@@ -93,8 +98,6 @@
                 if (!this.fileTypes) {
                     return;
                 }
-                // sets default disabled document type to Other 
-                this.editedItem.type = this.fileTypes.find(type=>type.display_name === 'Other');
             }
         },
 
@@ -107,6 +110,16 @@
                 this.originalEditedObj = null;
             }
             this.resetDialog(dialogOpened);
+        },
+
+        _setDefaultFiletype: function (dialogOpened) {
+            if (!dialogOpened || !this.disableFiletype) {
+                return;
+            }
+            
+             // sets default disabled document type to Other 
+             this.editedItem.type = this.fileTypes.find(type=>type.display_name === 'Other');
+             this.set('editedItem.type',this.fileTypes.find(type=>type.display_name === 'Other'));
         },
 
         _getFileType: function(fileType) {

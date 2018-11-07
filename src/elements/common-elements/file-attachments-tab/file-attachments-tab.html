@@ -94,8 +94,8 @@
                                         option-label="display_name"
                                         option-value="value"
                                         required$="[[_setRequired('file_type', basePermissionPath)]]"
-                                        disabled
-                                        readonly
+                                        disabled$="[[disableFiletype]]"
+                                        readonly$="[[disableFiletype]]"
                                         hide-search
                                         no-title-attr>
                                 </etools-searchable-multiselection-menu>
