@@ -226,7 +226,7 @@ Polymer({
 
     _handleDropdownPermissions: function (e, detail) {
         const partner = this.partnerOrganizations.find(partner=> partner.id === detail.selectedValues.partner.id);
-        
+        if (!partner) { return; }
         if (partner.partner_type === "Civil Society Organization"){
             const otherType = this.fileTypes.find(fileType=> fileType.display_name === 'Other');
             this.set('editedItem.file_type', otherType);
