@@ -205,8 +205,8 @@ Polymer({
         '_setCpValue(cpOutputs, editedItem.cp_output)',
     ],
 
-    ready: function() {
-        this.partners = this.getData('partnerOrganisations') || [];
+    attached: function() {
+        this.partners = this.getData('partnerOrganizations') || [];
         this.sections = this.getData('sections') || [];
         this.officesList = this.getData('offices');
         this.unicefUsersList = (this.getData('unicefUsers') || []).map((user) => {

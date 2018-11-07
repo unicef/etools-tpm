@@ -159,7 +159,7 @@ Polymer({
         this.set('sections', this.getData('sections') || []);
         this.set('cpOutputs', this.getData('cpOutputs') || []);
         this.set('locations', this.getData('locations') || []);
-        this.set('partners', this.getData('partnerOrganisations') || []);
+        this.set('partners', this.getData('partnerOrganizations') || []);
 
         if (!this.collectionExists('edited_ap_options')) {
             this._addToCollection('edited_ap_options', {});

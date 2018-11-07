@@ -33,7 +33,7 @@
             addDialogTexts: {
                 type: Object,
                 value: {
-                    title: 'Attach File',
+                    title: 'Attach File For Overall Visit',
                     confirmBtn: 'Attach'
                 }
             },
@@ -62,6 +62,10 @@
             },
             errorProperty: String,
             pathPostfix: String,
+            editedItem: {
+                type: Object,
+                value: {}
+            }
         },
 
         listeners: {
@@ -86,6 +90,11 @@
                 let title = this.getFieldAttribute(base, 'title');
                 this.set('tabTitle', title);    
                 this.fileTypes = this.getChoices(`${base}.file_type`);
+                if (!this.fileTypes) {
+                    return;
+                }
+                // sets default disabled document type to Other 
+                this.editedItem.type = this.fileTypes.find(type=>type.display_name === 'Other');
             }
         },
 
