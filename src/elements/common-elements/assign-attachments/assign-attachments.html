@@ -113,6 +113,10 @@
                 dialog-title="[[dialogTitle]]"
                 confirm-btn-text="[[confirmBtnText]]"
                 request-in-process="{{requestInProcess}}">
+                <div class="roh-h info-box">
+                    For CSOs, all partner and PD/SSFA related documents should
+                    be uploaded in PMP.
+                </div>
             <div class="row-h repeatable-item-container" without-line>
                 <div class="repeatable-item-content">
                     <div class="row-h group">
@@ -120,14 +124,14 @@
                             <!-- Activity Task -->
                             <etools-searchable-multiselection-menu
                                     class="validate-input disabled-as-readonly required"
-                                    selected="{{editedItem.activity}}"
+                                    value="[[editedItem.activity]]"
                                     label="[[getLabel('tpm_activities', dataBasePath)]]"
                                     placeholder="[[getPlaceholderText('tpm_activities', dataBasePath, 'dropdown')]]"
                                     options="[[_getATOptions(activities, columnsForTaskLabel, activities.*)]]"
                                     custom-object-options
                                     option-label="name"
                                     option-value="id"
-                                    update-selected
+                                    on-value-change="_handleDropdownPermissions"
                                     required
                                     disabled$="[[requestInProcess]]"
                                     readonly$="[[requestInProcess]]"
@@ -155,8 +159,8 @@
                                     option-value="value"
                                     update-selected
                                     required$="[[_setRequired('file_type', basePermissionPath)]]"
-                                    disabled$="[[_isReadOnly('file_type', basePermissionPath, requestInProcess)]]"
-                                    readonly$="[[_isReadOnly('file_type', basePermissionPath, requestInProcess)]]"
+                                    disabled$="[[fileTypeDropdownDisabled]]"
+                                    readonly$="[fileTypeDropdownDisabled]]"
                                     invalid="{{errors.file_type}}"
                                     error-message="{{errors.file_type}}"
                                     on-focus="_resetFieldError"

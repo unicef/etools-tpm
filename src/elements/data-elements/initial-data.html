@@ -129,7 +129,7 @@
                 loadStaticData: function () {
                     if (!this.isTpmUser()) {
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
-                        this.organisationsEndpoint = this.getEndpoint('partnerOrganisations');
+                        this.organisationsEndpoint = this.getEndpoint('partnerOrganizations');
                         this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
                         this.officesEndpoint = this.getEndpoint('offices').url;
@@ -214,8 +214,8 @@
                     if (!detail) {
                         this._organisationsError();
                     }
-                    let partnerOrganisations = _.sortBy(detail, ['name']);
-                    this._setData('partnerOrganisations', partnerOrganisations);
+                    let partnerOrganizations = _.sortBy(detail, ['name']);
+                    this._setData('partnerOrganizations', partnerOrganizations);
                     dataLoaded.organizations = true;
                     this._allDataLoaded();
                 },
