@@ -65,7 +65,7 @@
                     
                             <simple-list-item>
                                 <div class="row-data">
-                                    <span class="w22">[[_getAttachmentType(attachment)]]</span>
+                                    <span class="w20">[[_getAttachmentType(attachment)]]</span>
                                     <div class="w50">
                                         <iron-icon icon="icons:attachment"
                                                    class="download-icon">
@@ -75,7 +75,7 @@
                                            target="_blank">[[attachment.filename]]
                                         </a>
                                     </div>
-                                    <span class="w10">[[getDate(attachment)]]</span>
+                                    <span class="w18">[[getDate(attachment)]]</span>
                                     <a on-click="deleteAssignedFile"
                                         class="delete-icon">
                                         
@@ -88,8 +88,6 @@
 
                                 </div>
                             </simple-list-item>
-                    
-                    
                         </template>
                         
                     </div>
@@ -124,7 +122,7 @@
                             <!-- Activity Task -->
                             <etools-searchable-multiselection-menu
                                     class="validate-input disabled-as-readonly required"
-                                    value="[[editedItem.activity]]"
+                                    value="{{editedItem.activity}}"
                                     label="[[getLabel('tpm_activities', dataBasePath)]]"
                                     placeholder="[[getPlaceholderText('tpm_activities', dataBasePath, 'dropdown')]]"
                                     options="[[_getATOptions(activities, columnsForTaskLabel, activities.*)]]"

@@ -259,7 +259,7 @@ Polymer({
         let {fileData, file_type: fileType, activity} = this.editedItem,
             data = {
                 file: fileData.file,
-                object_id: activity
+                object_id: activity.id
             };
 
         if (fileType) {
