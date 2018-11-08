@@ -14,14 +14,13 @@
     "node": ">=6.0"
   },
   "private": true,
-  "devDependencies": {},
   "dependencies": {
-    "bower": "^1.8.2",
     "babel-cli": "^6.26.0",
-    "babel-preset-es2017": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2015-without-strict": "0.0.4",
     "babel-preset-es2016": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "bower": "^1.8.2",
     "css-slam": "^1.1.0",
     "del": "^2.2.1",
     "express": "^4.15.4",
