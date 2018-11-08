@@ -21,31 +21,37 @@
             let options = [];
             let fields;
             let fieldValue;
-
             dataItems.forEach((item) => {
                 if (!item || !item.id) { return; }
-                fields = [];
-
-                columns.forEach((column) => {
-                    fieldValue = _.get(item, column && column.path);
-
-                    if (typeof fieldValue === 'string' && fieldValue.length > 20) {
-                        fieldValue = this.truncateLongString(fieldValue);
-                    }
-                    if (column.name === 'date') {
-                        fieldValue = this.prettyDate(fieldValue);
-                    }
-
-                    fields.push(fieldValue || '--');
-                });
+                const name = this.getATLabel(item, columns);
 
                 options.push({
                     id: item.id,
-                    name: fields.join(' / '),
+                    name,
+                    partner: item.partner,
+                    intervention: item.intervention
                 });
             });
 
             return options;
+        },
+
+        getATLabel: function (activity, columns) {
+            let fieldValue;
+            return columns.reduce((acc, column) => {
+                fieldValue = _.get(activity, column && column.path);
+
+                if (typeof fieldValue === 'string' && fieldValue.length > 20) {
+                    fieldValue = this.truncateLongString(fieldValue);
+                }
+                if (column.name === 'date') {
+                    fieldValue = this.prettyDate(fieldValue);
+                }
+                
+                acc.push(fieldValue || '--');
+                return acc
+
+            }, []).join(' / ')
         },
 
         _setDropdownOptions: function(dataItems, columns) {

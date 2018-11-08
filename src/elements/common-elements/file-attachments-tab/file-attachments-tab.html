@@ -94,12 +94,8 @@
                                         option-label="display_name"
                                         option-value="value"
                                         required$="[[_setRequired('file_type', basePermissionPath)]]"
-                                        disabled$="[[requestInProcess]]"
-                                        readonly$="[[requestInProcess]]"
-                                        invalid="{{errors.file_type}}"
-                                        error-message="{{errors.file_type}}"
-                                        on-focus="_resetFieldError"
-                                        on-tap="_resetFieldError"
+                                        disabled$="[[disableFiletype]]"
+                                        readonly$="[[disableFiletype]]"
                                         hide-search
                                         no-title-attr>
                                 </etools-searchable-multiselection-menu>

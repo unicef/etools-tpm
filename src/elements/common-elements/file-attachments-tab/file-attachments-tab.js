@@ -33,7 +33,7 @@
             addDialogTexts: {
                 type: Object,
                 value: {
-                    title: 'Attach File',
+                    title: 'Attach File For Overall Visit',
                     confirmBtn: 'Attach'
                 }
             },
@@ -62,6 +62,14 @@
             },
             errorProperty: String,
             pathPostfix: String,
+            editedItem: {
+                type: Object,
+                value: {}
+            },
+            disableFiletype: {
+                type: Boolean,
+                value: false
+            }
         },
 
         listeners: {
@@ -75,6 +83,7 @@
             '_filesChange(dataItems.*, fileTypes.*)',
             '_updateHeadings(basePermissionPath)',
             '_resetDialog(dialogOpened)',
+            '_setDefaultFiletype(dialogOpened)',
             '_errorHandler(errorObject)',
             'updateStyles(requestInProcess, editedItem, basePermissionPath)',
         ],
@@ -86,6 +95,9 @@
                 let title = this.getFieldAttribute(base, 'title');
                 this.set('tabTitle', title);    
                 this.fileTypes = this.getChoices(`${base}.file_type`);
+                if (!this.fileTypes) {
+                    return;
+                }
             }
         },
 
@@ -98,6 +110,16 @@
                 this.originalEditedObj = null;
             }
             this.resetDialog(dialogOpened);
+        },
+
+        _setDefaultFiletype: function (dialogOpened) {
+            if (!dialogOpened || !this.disableFiletype) {
+                return;
+            }
+            
+             // sets default disabled document type to Other 
+             this.editedItem.type = this.fileTypes.find(type=>type.display_name === 'Other');
+             this.set('editedItem.type',this.fileTypes.find(type=>type.display_name === 'Other'));
         },
 
         _getFileType: function(fileType) {
@@ -120,13 +142,12 @@
             let headings = [{
                 'size': '150px',
                 'name': 'date',
-                'label': 'Date Uploaded!',
+                'label': 'Date Uploaded',
                 'labelPath': `created`,
                 'path': 'created'
             }, {
                 'size': 65,
-                'label': 'File Attachment!',
-                'labelPath': `filename`,
+                'label': 'Document',
                 'property': 'filename',
                 'custom': true,
                 'doNotHide': false
@@ -136,7 +157,7 @@
             if (showFileTypes) {
                 headings.splice(1, 0, {
                     'size': 35,
-                    'label': 'Document Type!',
+                    'label': 'Document Type',
                     'labelPath': `file_type`,
                     'path': 'display_name'
                 });
