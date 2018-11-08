@@ -25,7 +25,7 @@
     "css-slam": "^1.1.0",
     "del": "^2.2.1",
     "express": "^4.15.4",
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "gulpjs/gulp",
     "gulp-babel": "^6.1.2",
     "gulp-compile-html-tags": "^1.0.1",
     "gulp-csslint": "^1.0.0",
