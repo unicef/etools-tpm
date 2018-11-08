@@ -18,6 +18,7 @@
 
         selectedFiletype: {
           type: Object,
+          value: '',
           observer: '_filterByFileType'
         },
 
@@ -69,7 +70,7 @@
         },
 
         filteredList: {
-          type: Array
+          type: Array,
         },
 
         originalList: {
@@ -141,7 +142,9 @@
           resp => {
             this.set('originalList', resp);
             this.set('filteredList', resp);
+            console.log(this.filteredList)
             this.fire('global-loading', { type: 'share-documents' });
+            this.fire('content-resize');
           }
         ).catch(err => console.log(err))
       },
@@ -187,7 +190,8 @@
       },
 
       _filterByFileType: function(selectedFileType){
-        if (!selectedFileType) {
+        if (selectedFileType === '') { return; }
+        if (selectedFileType === null) {
           // resets list when doc-type filter is cleared
           this.set('filteredList', this.originalList); 
           return; 

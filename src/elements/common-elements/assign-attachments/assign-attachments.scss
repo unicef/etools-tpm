@@ -8,7 +8,6 @@ etools-content-panel {
 }
 
 .activity-wrapper {
-    padding: 0 0 0 24px;
     &:last-of-type .related-task {
         padding-top: 24px;
         padding-bottom: 24px;
@@ -16,11 +15,10 @@ etools-content-panel {
 }
  
 .related-task {
-    flex: 1 0 21%;
+    width: 22%;
     font-size: 12px;
     padding-right: 24px;
     padding-left: 24px;
-    margin-left: -24px;
     box-sizing: border-box;
     border-right: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
     border-bottom: 1px solid var(--dark-divider-color, rgba(0, 0, 0, 0.12));
@@ -29,6 +27,8 @@ etools-content-panel {
 .row-data {
     & > * {
         padding-right: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     &:hover .delete-icon {
         display: block;
@@ -54,7 +54,7 @@ a {
 }
 
 .documents {
-    flex: 1 0 80%;
+    width: 78%;
 }
 
 .info-box {
