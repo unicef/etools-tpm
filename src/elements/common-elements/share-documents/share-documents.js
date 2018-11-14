@@ -133,7 +133,7 @@
 
         const options = Object.assign(this.requestOptions, {
           params: {
-            pd_ssfa: selectedTask.intervention.id,
+            partner: selectedTask.partner.name,
             source: 'Partnership Management Portal'
           }
         })

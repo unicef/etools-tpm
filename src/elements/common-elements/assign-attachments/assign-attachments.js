@@ -86,6 +86,10 @@ Polymer({
                 'size': 10,
                 'label': 'Date Uploaded',
             },
+            {
+                'size': 10,
+                'label': 'Source',
+            },
         ]
         },
         activities: {
@@ -225,7 +229,7 @@ Polymer({
     },
 
     _handleDropdownPermissions: function (e, detail) {
-        const partner = this.partnerOrganizations.find(partner=> partner.id === detail.selectedValues.partner.id);
+        const partner = this.partnerOrganizations.find(partner=> partner.id === _.get(detail, 'selectedValues.partner.id'));
         if (!partner) { return; }
         if (partner.partner_type === "Civil Society Organization"){
             const otherType = this.fileTypes.find(fileType=> fileType.display_name === 'Other');
@@ -350,7 +354,8 @@ Polymer({
         }
         this.set('requestInProcess', true);
         this.sendRequest(options)
-            .then(()=> {
+            .then((res)=> {
+                debugger
                 this.fire('toast', {
                     text: 'Documents shared successfully.'
                 });
