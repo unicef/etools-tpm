@@ -123,9 +123,9 @@
                                         value="{{optionsModel.intervention}}"
                                         label="[[getLabel('tpm_activities.intervention', basePermissionPath)]]"
                                         placeholder="[[getPlaceholderText('tpm_activities.intervention', basePermissionPath)]]"
-                                        options="[[partner.interventions]]"
+                                        options="[[_getPdOptions(partner.interventions)]]"
                                         custom-object-options
-                                        option-label="title"
+                                        option-label="label"
                                         option-value="id"
                                         update-selected
                                         required

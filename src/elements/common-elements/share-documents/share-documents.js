@@ -142,7 +142,6 @@
           resp => {
             this.set('originalList', resp);
             this.set('filteredList', resp);
-            console.log(this.filteredList)
             this.fire('global-loading', { type: 'share-documents' });
             this.fire('content-resize');
           }
