@@ -283,7 +283,7 @@ Polymer({
                    target="_blank"
                    download="${file.name}"
                    href="${file.url}"
-                   style="color: #40c4ff; text-decoration: none; vertical-align: bottom;">
+                   style="color: #0099ff; text-decoration: none; vertical-align: bottom;">
                     ${file.name}
                 </a>
             </div>
