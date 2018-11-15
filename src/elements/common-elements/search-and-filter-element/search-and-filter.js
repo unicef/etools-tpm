@@ -5,7 +5,8 @@
         is: 'search-and-filter',
 
         behaviors: [
-            TPMBehaviors.QueryParamsController
+            TPMBehaviors.QueryParamsController,
+            TPMBehaviors.DateBehavior
         ],
 
         properties: {
@@ -149,16 +150,24 @@
         },
 
         _getFilterValue: function(filterValue, filter) {
-            if (!filter || !filter.selection || filterValue === undefined) {
+            if (!filter || filterValue === undefined) {
                 return;
             }
             
             let optionValue = filter.optionValue;
-
-            const exists = filter.selection.find((selectionItem) => filterValue.indexOf(selectionItem[optionValue].toString()) !== -1);
+            let exists;
+            if (filter.type === 'datepicker') {
+                exists = this.isValidDate(filterValue);
+            } else {
+                exists = filter.selection.find((selectionItem) => filterValue.indexOf(selectionItem[optionValue].toString()) !== -1);
+            }
             
             if (!exists) {
                 return;
+            }
+            
+            if (filter.type === 'datepicker') {
+                return filterValue
             }
 
             let splitValues = filterValue.split(',');
@@ -185,7 +194,6 @@
             if (!e || !e.currentTarget || !detail) {
                 return;
             }
-
             let query = e.currentTarget.id;
             let queryObject = { page: '1' };
             if (detail.selectedValues && query) {
@@ -194,9 +202,16 @@
                 queryObject[query] = detail.selectedValues.
                     map(val => val[optionValue]).
                     join(',');
+            } else if (detail.prettyDate && query) {
+                queryObject[query] = detail.prettyDate;
             }
             this.updateQueries(queryObject);
 
         },
+
+        filterTypeIs: function(type, filterType) {
+            return type === filterType;
+        }
+
     });
 })();

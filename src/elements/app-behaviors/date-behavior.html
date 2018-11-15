@@ -88,7 +88,7 @@
         },
 
         isValidDate: function (date) {
-            return (date instanceof Date === false) ? false : (date.toString() !== 'Invalid Date');
+            return !isNaN(moment(date).day());
         },
 
         displayInDatepicker(dateString) {
