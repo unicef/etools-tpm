@@ -355,7 +355,6 @@ Polymer({
         this.set('requestInProcess', true);
         this.sendRequest(options)
             .then((res)=> {
-                debugger
                 this.fire('toast', {
                     text: 'Documents shared successfully.'
                 });
