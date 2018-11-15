@@ -150,7 +150,7 @@
         },
 
         _getFilterValue: function(filterValue, filter) {
-            if (!filter || filterValue === undefined) {
+            if (!filter || _.isEmpty(filter) || filterValue === undefined) {
                 return;
             }
             
