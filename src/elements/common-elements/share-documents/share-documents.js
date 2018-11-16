@@ -133,7 +133,7 @@
 
         const options = Object.assign(this.requestOptions, {
           params: {
-            pd_ssfa: selectedTask.intervention.id,
+            partner: selectedTask.partner.name,
             source: 'Partnership Management Portal'
           }
         })
@@ -142,7 +142,6 @@
           resp => {
             this.set('originalList', resp);
             this.set('filteredList', resp);
-            console.log(this.filteredList)
             this.fire('global-loading', { type: 'share-documents' });
             this.fire('content-resize');
           }
