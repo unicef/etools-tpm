@@ -3,10 +3,15 @@
 <dom-module id="page-footer">
   <template>
     <style>
+      :host {
+        display: block;
+        padding: 18px 24px;
+        width: 100%;
+        min-height: 90px;
+      }
+
       #footer-content {
         @apply(--layout-horizontal);
-
-        padding: 5px 24px 15px;
       }
 
       #unicef-logo {
@@ -14,12 +19,11 @@
         @apply(--layout-inline);
 
         padding-right: 30px;
-        border-right: 1px solid var(--dark-divider-color);
       }
 
       #unicef-logo img {
-        height: 30px;
-        width: auto;
+        height: 28px;
+        width: 118px;
       }
 
       .footer-link {
@@ -32,6 +36,11 @@
         margin-left: 30px;
       }
 
+      @media print {
+        :host {
+          display: none;
+        }
+      }
     </style>
 
     <footer>
@@ -39,11 +48,6 @@
         <span id="unicef-logo">
           <img src="../../../images/UNICEF_logo.png" alt="UNICEF logo">
         </span>
-
-        <!-- TODO: modify span to a with proper href values after footer pages are ready -->
-        <a href="#" class="footer-link">Contact</a>
-        <a href="#" class="footer-link">Disclaimers</a>
-        <a href="#" class="footer-link">Privacy Policy</a>
       </div>
     </footer>
   </template>
