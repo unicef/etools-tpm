@@ -117,7 +117,9 @@
           typeStr => ({ label: typeStr, value: typeStr })
         );
 
-        this.set('fileTypes', fileTypes);
+        const uniques = _.uniqBy(fileTypes, 'label');
+
+        this.set('fileTypes', uniques);
       },
 
       _taskSelected: function (selectedTask) {
@@ -194,7 +196,7 @@
           return; 
         }
         const { value } = selectedFileType;
-        const newFilteredList = this.originalList.filter(row => row.file_type === value);
+        const newFilteredList = this.originalList.filter(row => row.file_type.toLowerCase() === value.toLowerCase());
         this.set('filteredList', newFilteredList)
       },
 
