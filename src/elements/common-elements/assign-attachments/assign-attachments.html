@@ -91,7 +91,28 @@
                                 </div>
                             </simple-list-item>
                         </template>
+                        <template is="dom-repeat"
+                                  items="[[linkedAttachments]]"
+                                  as="linkedAttachment"
+                                  filter="{{_isLinkedAttachmentForTask(item)}}">
+                            <simple-list-item>
+                                <div class="row-data">
+                                    <span class="w20">[[linkedAttachment.file_type]]</span>
+                                    <div class="w50">
+                                        <iron-icon icon="icons:attachment"
+                                                   class="download-icon">
+                                        </iron-icon>
+                                        <a href$="[[attachment.file]]"
+                                                               class="truncate"
+                                                               target="_blank">[[linkedAttachment.filename]]
+                                                            </a>
+                                    </div>
+                                    <span class="w18">[[linkedAttachment.created]]</span>
                         
+                                    <span>PMP</span>
+                                </div>
+                            </simple-list-item>
+                        </template>
                     </div>
                 </div>
                 

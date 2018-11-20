@@ -6,7 +6,6 @@
         TPMBehaviors.StaticDataController,
         etoolsAppConfig.globals,
         EtoolsAjaxRequestBehavior,
-
       ],
 
       properties: {
@@ -40,9 +39,8 @@
             {
               'size': 16,
               'label': 'PD/SSFA',
-              'noOrder': true,
               'name': 'pddsfa',
-              'class': 'no-order'
+              'ordered': 'asc'
             },
             {
               'size': 30,
@@ -211,6 +209,9 @@
       },
 
       _getTruncatedPd: function (pdNumber) {
+        if (!pdNumber) {
+          return '';
+        }
         return `.../${_.last(pdNumber.split('/'))}`;
       }
     
