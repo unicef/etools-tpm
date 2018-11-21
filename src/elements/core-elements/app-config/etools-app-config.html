@@ -116,6 +116,9 @@ App global configuration
             linkActivityAttachments: {
                 template: '/api/tpm/visits/activities/<%=id%>/links/'
             },
+            attachmentLinksForVisit: {
+                template: '/api/tpm/visits/<%=id%>/links'
+            },
             static: {
                 url: '/api/v2/dropdowns/static',
                 exp: 6 * 60 * 60 * 1000, // 6h

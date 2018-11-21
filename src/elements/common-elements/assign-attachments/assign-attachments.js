@@ -80,10 +80,11 @@ Polymer({
                 'size': 18,
                 'label': 'Document Type',
             }, {
-                'size': 40,
+                'size': "",
+                "class": "header-document",
                 'label': 'Document',
             }, {
-                'size': 10,
+                'size': 15,
                 'label': 'Date Uploaded',
             },
             {
@@ -149,6 +150,15 @@ Polymer({
         fileTypeDropdownDisabled: {
             type: Boolean,
             value: false
+        },
+        linkedAttachments: {
+            type: Array,
+            value: [],
+            notify: true
+        },
+        linkedAttachmentsInit: {
+            type: Boolean,
+            value: false
         }
     },
 
@@ -161,6 +171,7 @@ Polymer({
 
     observers: [
         '_setBasePath(dataBasePath, pathPostfix)',
+        '_baseIdChanged(baseId)',
         '_resetDialog(dialogOpened)',
         '_resetShareDialog(shareDialogOpened)',
         '_errorHandler(errorObject)',
@@ -171,6 +182,25 @@ Polymer({
 
     attached: function () {
         this.partnerOrganizations = this.getData('partnerOrganizations');
+    },
+
+    _baseIdChanged: function(id){
+        if (!isNaN(id) && !this.linkedAttachmentsInit){
+            this._getLinkedAttachments();
+            this.set('linkedAttachmentsInit', true);
+        }
+    },
+
+    _getLinkedAttachments: function () {
+        const options = {
+            endpoint: this.getEndpoint('attachmentLinksForVisit', { id: this.baseId }),
+            csrf: true,
+        }
+        this.set('requestInProcess', true);
+        this.sendRequest(options).then(response => {
+            this.set('linkedAttachments', response);
+            this.set('requestInProcess', false);
+        })
     },
 
     _resetDialog: function(dialogOpened) {
@@ -278,6 +308,7 @@ Polymer({
         if (detail.success) {
             this.dialogOpened = false;
         }
+        this._getLinkedAttachments();
     },
 
     _errorHandler: function(errorData) {
@@ -330,9 +361,17 @@ Polymer({
             this.editedItem._delete = true;
         }
     },
+
+   
     _isAttachmentForTask: function(activity){
         return function(attachment){
            return  attachment.object_id === activity.id;
+        }
+    },
+
+    _isLinkedAttachmentForTask: function(activity){
+        return function (attachment) {
+            return attachment.activity_id === activity.id;
         }
     },
 
@@ -363,6 +402,7 @@ Polymer({
             .finally(() => {
                 this.set('requestInProcess', false);
                 this.set('shareDialogOpened', false);
+                this._getLinkedAttachments(); // refresh the list
             })
     },
 
