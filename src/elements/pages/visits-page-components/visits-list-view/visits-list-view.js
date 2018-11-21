@@ -300,10 +300,7 @@
             },{
                 name: 'Visit Level',
                 url: this.getEndpoint('visitsList').url + 'export/'
-            },{
-                name: 'Action Points',
-                url: this.getEndpoint('visitsList').url + 'action-points/export/'
-            }];
+            },];
         }
     });
 })();
