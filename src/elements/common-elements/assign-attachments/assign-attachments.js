@@ -176,7 +176,7 @@ Polymer({
         '_resetShareDialog(shareDialogOpened)',
         '_errorHandler(errorObject)',
         'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
-        'updateTable(dataItems.*)',
+        'updateTable(dataItems.*, linkedAttachments.*)',
         '_setDropdownOptions(dataItems, columns, dataItems.*)',
     ],
 
@@ -235,7 +235,9 @@ Polymer({
 
     showActivity: function(activityTask) {
         let id = activityTask && activityTask.id;
-        return id && this.dataItems && _.some(this.dataItems, (attachment) => attachment.object_id === id);
+        const hasAttachments = id && this.dataItems && _.some(this.dataItems, (attachment) => attachment.object_id === id);
+        const hasLinkedAttachments = id && this.linkedAttachments && _.some(this.linkedAttachments, attachment=> attachment.activity_id=== id);
+        return hasAttachments || hasLinkedAttachments;
     },
 
     _isReadOnly: function(field, basePermissionPath, inProcess) {
@@ -369,6 +371,7 @@ Polymer({
         }
     },
 
+
     _isLinkedAttachmentForTask: function(activity){
         return function (attachment) {
             return attachment.activity_id === activity.id;
@@ -424,5 +427,21 @@ Polymer({
         // only pass tasks with an intervention to share modal
         const atOptions = this._getATOptions(activities, columnsForTaskLabel);
         return atOptions.filter(task => !!task.intervention);
+    },
+
+    _openDeleteLinkDialog: function (e) {
+        const { linkedAttachment } = e.model;
+        this.set('linkToDeleteId', linkedAttachment.id);
+        this.deleteLinkOpened = true; 
+    },
+
+    _removeLink: function ({detail}) {
+        this.deleteLinkOpened = false;
+        const id = detail.dialogName;
+        this.sendRequest({
+            method: 'DELETE',
+            endpoint: this.getEndpoint('linkAttachment', {id})
+        }).then(this._getLinkedAttachments.bind(this))
+        .catch(err=>console.log(err));
     }
 });
