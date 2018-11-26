@@ -109,7 +109,7 @@
       ],
 
       attached: function () {
-        this.set('requestOptions.endpoint', this.getEndpoint('pdAttachments'));
+        this.set('requestOptions.endpoint', this.getEndpoint('globalAttachments'));
         
         const fileTypes = _.get(this.getData("staticDropdown"), "attachment_types")
         .filter(val=>!_.isEmpty(val))
