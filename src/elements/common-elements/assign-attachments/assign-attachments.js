@@ -197,9 +197,18 @@ Polymer({
             csrf: true,
         }
         this.set('requestInProcess', true);
+        this.fire('global-loading', {
+            type: 'link-attachments',
+            active: true,
+            message: 'Loading documents...'
+        });
+
         this.sendRequest(options).then(response => {
             this.set('linkedAttachments', response);
             this.set('requestInProcess', false);
+            this.fire('global-loading', {
+                type: 'link-attachments',
+            });
         })
     },
 
@@ -438,10 +447,22 @@ Polymer({
     _removeLink: function ({detail}) {
         this.deleteLinkOpened = false;
         const id = detail.dialogName;
+
+        this.fire('global-loading', {
+            type: 'remove-link',
+            active: true,
+            message: 'Removing attachment...'
+        });
+
         this.sendRequest({
             method: 'DELETE',
             endpoint: this.getEndpoint('linkAttachment', {id})
-        }).then(this._getLinkedAttachments.bind(this))
+        }).then(() => {
+            this.fire('global-loading', {
+                type: 'remove-link'
+            });
+            this._getLinkedAttachments();
+        })
         .catch(err=>console.log(err));
     }
 });
