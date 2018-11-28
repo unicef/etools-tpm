@@ -147,7 +147,7 @@
                         type: 'datepicker'
                     },
                     {
-                        name: 'Starts Before',
+                        name: 'Ends Before',
                         query: 'tpm_activities__date__lt',
                         type: 'datepicker'
                     },

@@ -202,7 +202,7 @@
                 queryObject[query] = detail.selectedValues.
                     map(val => val[optionValue]).
                     join(',');
-            } else if (detail.prettyDate && query) {
+            } else if (detail.prettyDate!== null && detail.prettyDate!==undefined && query) {
                 queryObject[query] = detail.prettyDate;
             }
             this.updateQueries(queryObject);
