@@ -1,7 +1,7 @@
 <!--import [polymer, paper-input, paper-card, paper-item/paper-icon-item, etools-searchable-multiselection-menu, iron-icon, paper-menu-button,
-            paper-button, paper-menu, iron-flex-layout]-->
+            etools-datepicker, paper-button, paper-menu, iron-flex-layout]-->
 
-<!--import [shared-styles, module-styles, tab-inputs-styles, query-params-controller]-->
+<!--import [shared-styles, module-styles, tab-inputs-styles, query-params-controller, date-behavior]-->
 
 <dom-module id="search-and-filter">
         <template>
@@ -25,11 +25,13 @@
                     <!-- FILTERS -->
                     <template is="dom-repeat" items="[[usedFilters]]">
                         <div class="layout horizontal">
-                            <etools-searchable-multiselection-menu
+                            
+                            <template is="dom-if" if="[[filterTypeIs('esmm', item.type)]]">
+                                <etools-searchable-multiselection-menu
                                     id="[[item.query]]"
                                     class="filter-dropdown"
                                     value="[[item.selectedValues]]"
-                                    label="[[item.label]]"
+                                    label="[[item.name]]"
                                     placeholder$="&#8212;"
                                     options="[[item.selection]]"
                                     custom-object-options
@@ -38,8 +40,31 @@
                                     on-value-change="_changeFilterValue"
                                     hide-search="[[item.hideSearch]]"
                                     multi>
-                            </etools-searchable-multiselection-menu>
-    
+                                </etools-searchable-multiselection-menu>
+                            </template>
+
+                            <template is="dom-if" if="[[filterTypeIs('datepicker', item.type)]]">
+                                <paper-input
+                                    id="dateInput"
+                                    value="[[prettyDate(item.selectedValues)]]"
+                                    label="[[item.name]]"
+                                    placeholder="&#8212;"
+                                    data-selector$="[[item.query]]"
+                                    on-down="openDatePicker">
+                                <etools-datepicker
+                                    id="[[item.query]]"
+                                    prefix
+                                    format="YYYY-MM-DD"
+                                    date="[[prepareDate(item.selectedValues)]]"
+                                    pretty-date="{{item.selectedValues}}"
+                                    on-date-selected="_changeFilterValue"
+                                    on-clear-and-close="_changeFilterValue"
+                                    no-init
+                                    show-clear-btn>
+                                </etools-datepicker>
+                            </paper-input>
+                            </template> 
+
                         </div>
                     </template>
                 </div>

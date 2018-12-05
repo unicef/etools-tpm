@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax-sp, lodash]-->
+<!--import [polymer, etools-ajax-sp, etools-ajax/etools-ajax-request-behavior, lodash]-->
 <!--import [etools-app-config]-->
 
 <dom-module id="update-attachments">
@@ -64,7 +64,6 @@
                 } else if (!deleteRequest) {
                     this.push('attachments', detail);
                 }
-
                 this.fire('attachments-request-completed', {success: true});
             },
 

@@ -80,11 +80,16 @@ Polymer({
                 'size': 18,
                 'label': 'Document Type',
             }, {
-                'size': 40,
+                'size': "",
+                "class": "header-document",
                 'label': 'Document',
             }, {
-                'size': 10,
+                'size': 15,
                 'label': 'Date Uploaded',
+            },
+            {
+                'size': 10,
+                'label': 'Source',
             },
         ]
         },
@@ -145,6 +150,15 @@ Polymer({
         fileTypeDropdownDisabled: {
             type: Boolean,
             value: false
+        },
+        linkedAttachments: {
+            type: Array,
+            value: [],
+            notify: true
+        },
+        linkedAttachmentsInit: {
+            type: Boolean,
+            value: false
         }
     },
 
@@ -157,16 +171,36 @@ Polymer({
 
     observers: [
         '_setBasePath(dataBasePath, pathPostfix)',
+        '_baseIdChanged(baseId)',
         '_resetDialog(dialogOpened)',
         '_resetShareDialog(shareDialogOpened)',
         '_errorHandler(errorObject)',
         'updateStyles(basePermissionPath, requestInProcess, editedItem.*)',
-        'updateTable(dataItems.*)',
+        'updateTable(dataItems.*, linkedAttachments.*)',
         '_setDropdownOptions(dataItems, columns, dataItems.*)',
     ],
 
     attached: function () {
         this.partnerOrganizations = this.getData('partnerOrganizations');
+    },
+
+    _baseIdChanged: function(id){
+        if (!isNaN(id) && !this.linkedAttachmentsInit){
+            this._getLinkedAttachments();
+            this.set('linkedAttachmentsInit', true);
+        }
+    },
+
+    _getLinkedAttachments: function () {
+        const options = {
+            endpoint: this.getEndpoint('attachmentLinksForVisit', { id: this.baseId }),
+            csrf: true,
+        }
+        this.set('requestInProcess', true);
+        this.sendRequest(options).then(response => {
+            this.set('linkedAttachments', response);
+            this.set('requestInProcess', false);
+        })
     },
 
     _resetDialog: function(dialogOpened) {
@@ -201,7 +235,9 @@ Polymer({
 
     showActivity: function(activityTask) {
         let id = activityTask && activityTask.id;
-        return id && this.dataItems && _.some(this.dataItems, (attachment) => attachment.object_id === id);
+        const hasAttachments = id && this.dataItems && _.some(this.dataItems, (attachment) => attachment.object_id === id);
+        const hasLinkedAttachments = id && this.linkedAttachments && _.some(this.linkedAttachments, attachment=> attachment.activity_id=== id);
+        return hasAttachments || hasLinkedAttachments;
     },
 
     _isReadOnly: function(field, basePermissionPath, inProcess) {
@@ -225,7 +261,7 @@ Polymer({
     },
 
     _handleDropdownPermissions: function (e, detail) {
-        const partner = this.partnerOrganizations.find(partner=> partner.id === detail.selectedValues.partner.id);
+        const partner = this.partnerOrganizations.find(partner=> partner.id === _.get(detail, 'selectedValues.partner.id'));
         if (!partner) { return; }
         if (partner.partner_type === "Civil Society Organization"){
             const otherType = this.fileTypes.find(fileType=> fileType.display_name === 'Other');
@@ -274,6 +310,7 @@ Polymer({
         if (detail.success) {
             this.dialogOpened = false;
         }
+        this._getLinkedAttachments();
     },
 
     _errorHandler: function(errorData) {
@@ -326,9 +363,18 @@ Polymer({
             this.editedItem._delete = true;
         }
     },
+
+   
     _isAttachmentForTask: function(activity){
         return function(attachment){
            return  attachment.object_id === activity.id;
+        }
+    },
+
+
+    _isLinkedAttachmentForTask: function(activity){
+        return function (attachment) {
+            return attachment.activity_id === activity.id;
         }
     },
 
@@ -350,7 +396,7 @@ Polymer({
         }
         this.set('requestInProcess', true);
         this.sendRequest(options)
-            .then(()=> {
+            .then((res)=> {
                 this.fire('toast', {
                     text: 'Documents shared successfully.'
                 });
@@ -359,6 +405,7 @@ Polymer({
             .finally(() => {
                 this.set('requestInProcess', false);
                 this.set('shareDialogOpened', false);
+                this._getLinkedAttachments(); // refresh the list
             })
     },
 
@@ -380,5 +427,21 @@ Polymer({
         // only pass tasks with an intervention to share modal
         const atOptions = this._getATOptions(activities, columnsForTaskLabel);
         return atOptions.filter(task => !!task.intervention);
+    },
+
+    _openDeleteLinkDialog: function (e) {
+        const { linkedAttachment } = e.model;
+        this.set('linkToDeleteId', linkedAttachment.id);
+        this.deleteLinkOpened = true; 
+    },
+
+    _removeLink: function ({detail}) {
+        this.deleteLinkOpened = false;
+        const id = detail.dialogName;
+        this.sendRequest({
+            method: 'DELETE',
+            endpoint: this.getEndpoint('linkAttachment', {id})
+        }).then(this._getLinkedAttachments.bind(this))
+        .catch(err=>console.log(err));
     }
 });

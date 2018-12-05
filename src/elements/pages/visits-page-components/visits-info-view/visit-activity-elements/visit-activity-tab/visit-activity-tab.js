@@ -543,4 +543,18 @@ Polymer({
 
         return null;
     },
+
+    capitalize: function(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+
+    _getPdOptions: function(pds) {
+        return pds.map(pd=>{
+            const label = `${pd.number} | ${this.capitalize(pd.status)} | ${pd.title}`;
+            return {
+                id: pd.id,
+                label
+            }
+        })
+    }
 });

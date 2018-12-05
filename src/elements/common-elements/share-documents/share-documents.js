@@ -6,7 +6,6 @@
         TPMBehaviors.StaticDataController,
         etoolsAppConfig.globals,
         EtoolsAjaxRequestBehavior,
-
       ],
 
       properties: {
@@ -40,9 +39,8 @@
             {
               'size': 16,
               'label': 'PD/SSFA',
-              'noOrder': true,
               'name': 'pddsfa',
-              'class': 'no-order'
+              'ordered': 'asc'
             },
             {
               'size': 30,
@@ -111,7 +109,7 @@
       ],
 
       attached: function () {
-        this.set('requestOptions.endpoint', this.getEndpoint('pdAttachments'));
+        this.set('requestOptions.endpoint', this.getEndpoint('globalAttachments'));
         
         const fileTypes = _.get(this.getData("staticDropdown"), "attachment_types")
         .filter(val=>!_.isEmpty(val))
@@ -119,7 +117,9 @@
           typeStr => ({ label: typeStr, value: typeStr })
         );
 
-        this.set('fileTypes', fileTypes);
+        const uniques = _.uniqBy(fileTypes, 'label');
+
+        this.set('fileTypes', uniques);
       },
 
       _taskSelected: function (selectedTask) {
@@ -133,7 +133,7 @@
 
         const options = Object.assign(this.requestOptions, {
           params: {
-            pd_ssfa: selectedTask.intervention.id,
+            partner: selectedTask.partner.name,
             source: 'Partnership Management Portal'
           }
         })
@@ -142,7 +142,6 @@
           resp => {
             this.set('originalList', resp);
             this.set('filteredList', resp);
-            console.log(this.filteredList)
             this.fire('global-loading', { type: 'share-documents' });
             this.fire('content-resize');
           }
@@ -197,7 +196,7 @@
           return; 
         }
         const { value } = selectedFileType;
-        const newFilteredList = this.originalList.filter(row => row.file_type === value);
+        const newFilteredList = this.originalList.filter(row => row.file_type.toLowerCase() === value.toLowerCase());
         this.set('filteredList', newFilteredList)
       },
 
@@ -212,6 +211,9 @@
       },
 
       _getTruncatedPd: function (pdNumber) {
+        if (!pdNumber) {
+          return '';
+        }
         return `.../${_.last(pdNumber.split('/'))}`;
       }
     

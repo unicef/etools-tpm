@@ -2,7 +2,7 @@
             iron-icons, paper-button, paper-checkbox]-->
 <!--import [shared-styles, module-styles, main-page-styles, pages-header-element, visit-status,
             update-visit-details-data, action-points, permission-controller, textarea-max-rows-behavior,
-            tab-inputs-styles, visit-activity-tab, visit-details-tab, file-attachments-tab, assign-attachments,
+            tab-inputs-styles, visit-activity-tab, visit-details-tab, file-attachments-tab, assign-attachments, report-assign-attachments,
             static-data-behavior, common-methods-behavior, list-header, etools-app-config, list-element, router-behavior]-->
 
 
@@ -153,7 +153,7 @@
                                     multiple>
                             </file-attachments-tab>
 
-                            <assign-attachments
+                            <report-assign-attachments
                                     data-base-path="[[permissionBase]]"
                                     path-postfix="activities_report_attachments"
                                     base-id="[[visit.id]]"
@@ -162,7 +162,7 @@
                                     endpoint-name="activitiesReportAttachments"
                                     files-property="report_attachments"
                                     parrent-property="tpm_activities">
-                            </assign-attachments>
+                            </report-assign-attachments>
                         </div>
                     </template>
 

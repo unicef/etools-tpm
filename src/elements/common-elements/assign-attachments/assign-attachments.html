@@ -12,7 +12,9 @@
            
         </style>
 
-        <get-attachments base-id="[[baseId]]" attachments="{{dataItems}}" endpoint-name="[[endpointName]]"></get-attachments>
+        <get-attachments base-id="[[baseId]]"
+                         attachments="{{dataItems}}"
+                         endpoint-name="[[endpointName]]"></get-attachments>
         <update-attachments
                 base-id="[[baseId]]"
                 attachments="{{dataItems}}"
@@ -85,26 +87,67 @@
 
                                         <paper-tooltip offset="0">Remove</paper-tooltip>
                                     </a>
-
+                                    <span>TPM</span>
                                 </div>
                             </simple-list-item>
                         </template>
-                        
+                        <template is="dom-repeat"
+                                  items="[[linkedAttachments]]"
+                                  as="linkedAttachment"
+                                  filter="{{_isLinkedAttachmentForTask(item)}}">
+                            <simple-list-item>
+                                <div class="row-data">
+                                    <span class="w20">[[linkedAttachment.file_type]]</span>
+                                    <div class="w50">
+                                        <iron-icon icon="icons:attachment"
+                                                   class="download-icon">
+                                        </iron-icon>
+                                        <a href$="[[attachment.file]]"
+                                                               class="truncate"
+                                                               target="_blank">[[linkedAttachment.filename]]
+                                                            </a>
+                                    </div>
+                                    <span class="w18">[[linkedAttachment.created]]</span>
+                                    <a on-click="_openDeleteLinkDialog"
+                                        class="delete-icon">
+                                        <iron-icon 
+                                            hidden$="[[isTabReadonly(basePermissionPath)]]"
+                                            icon="icons:cancel"></iron-icon>
+
+                                        <paper-tooltip offset="0">Remove</paper-tooltip>
+                                    </a>
+                                    <span>PMP</span>
+                                </div>
+                            </simple-list-item>
+                        </template>
                     </div>
                 </div>
                 
             </template>
 
-            <template is="dom-if" if="[[!dataItems.length]]">
-                <list-element
-                        class="list-element"
-                        data="[[emptyObj]]"
-                        headings="[[attachmentsColumns]]"
-                        no-animation>
-                </list-element>
+            <template is="dom-if"
+                      if="[[!dataItems.length]]">
+                <template is="dom-if"
+                          if="[[!linkedAttachments.length]]">
+                    <list-element class="list-element"
+                                  data="[[emptyObj]]"
+                                  headings="[[attachmentsColumns]]"
+                                  no-animation>
+                    </list-element>
+                </template>
             </template>
         </etools-content-panel>
 
+        <dialog-element id="deleteLinks" 
+            opened="{{deleteLinkOpened}}"
+            dialog-name="[[linkToDeleteId]]"
+            dialog-title="Are you sure you want to delete?"
+            delete-dialog
+            on-delete-confirmed="_removeLink"
+            confirm-btn-text="Delete"
+            cancel-btn-text="Cancel"
+        >
+        </dialog-element>
         <dialog-element
                 opened="{{dialogOpened}}"
                 delete-dialog="[[deleteDialog]]"

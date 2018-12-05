@@ -1,0 +1,158 @@
+<!--import [polymer, etools-content-panel, lodash, paper-icon-button, paper-input, iron-icons,
+            etools-searchable-multiselection-menu]-->
+<!--import [module-styles, tab-layout-styles, tab-inputs-styles, list-header, list-element, file-upload, file-details,
+            dialog-element, date-behavior, static-data-behavior, common-methods-behavior, table-elements-behavior,
+            activity-to-drd-value, update-attachments]-->
+
+            <dom-module id="report-assign-attachments">
+              <template>
+                  <!-- inject styles './report-assign-attachments.scss'-->
+                  <style include="module-styles tab-layout-styles tab-inputs-styles"></style>
+          
+                  <get-attachments base-id="[[baseId]]" attachments="{{dataItems}}" endpoint-name="[[endpointName]]"></get-attachments>
+                  <update-attachments
+                          base-id="[[baseId]]"
+                          attachments="{{dataItems}}"
+                          request-data="{{requestData}}"
+                          endpoint-name="[[endpointName]]"
+                          request-in-process="{{requestInProcess}}"
+                          errors="{{errors}}"></update-attachments>
+          
+                  <etools-content-panel
+                          show-expand-btn
+                          list
+                          class="content-section clearfix"
+                          panel-title="[[tabTitle]]">
+                      <div slot="panel-btns">
+                          <div hidden$="[[isTabReadonly(basePermissionPath)]]">
+                              <paper-icon-button
+                                      class="panel-button"
+                                      on-tap="_openAddDialog"
+                                      icon="add-box">
+                              </paper-icon-button>
+                              <paper-tooltip offset="0">Add</paper-tooltip>
+                          </div>
+                      </div>
+          
+                      <list-header
+                              id="list-header"
+                              no-ordered
+                              data="[[attachmentsColumns]]"
+                              base-permission-path="[[dataBasePath]]">
+                      </list-header>
+          
+                      <template is="dom-repeat" items="[[activities]]" filter="showActivity" id="activity-repeat">
+                          <list-element
+                                  class="list-element"
+                                  data="[[item]]"
+                                  headings="[[attachmentsColumns]]"
+                                  details="[[details]]"
+                                  has-collapse
+                                  multiline
+                                  no-animation>
+                              <div slot="detailSlot">
+                                  <file-details
+                                          base-permission-path="[[basePermissionPath]]"
+                                          allow-delete="[[!isTabReadonly(basePermissionPath)]]"
+                                          parent-id="[[item.id]]"
+                                          files="[[dataItems]]"
+                                          file-types="[[fileTypes]]"
+                                          files-path="[[filesProperty]]">
+                                  </file-details>
+                              </div>
+                          </list-element>
+                      </template>
+          
+                      <template is="dom-if" if="[[!dataItems.length]]">
+                          <list-element
+                                  class="list-element"
+                                  data="[[emptyObj]]"
+                                  headings="[[attachmentsColumns]]"
+                                  no-animation>
+                          </list-element>
+                      </template>
+                  </etools-content-panel>
+          
+                  <dialog-element
+                          opened="{{dialogOpened}}"
+                          delete-dialog="[[deleteDialog]]"
+                          dialog-title="[[dialogTitle]]"
+                          confirm-btn-text="[[confirmBtnText]]"
+                          request-in-process="{{requestInProcess}}">
+                      <div class="row-h repeatable-item-container" without-line>
+                          <div class="repeatable-item-content">
+                              <div class="row-h group">
+                                  <div class="input-container input-container-l">
+                                      <!-- Activity Task -->
+                                      <etools-searchable-multiselection-menu
+                                              class="validate-input disabled-as-readonly required"
+                                              selected="{{editedItem.activity}}"
+                                              label="[[getLabel('tpm_activities', dataBasePath)]]"
+                                              placeholder="[[getPlaceholderText('tpm_activities', dataBasePath, 'dropdown')]]"
+                                              options="[[_getATOptions(activities, attachmentsColumns, activities.*)]]"
+                                              custom-object-options
+                                              option-label="name"
+                                              option-value="id"
+                                              update-selected
+                                              required
+                                              disabled$="[[requestInProcess]]"
+                                              readonly$="[[requestInProcess]]"
+                                              on-focus="_resetFieldError"
+                                              on-tap="_resetFieldError"
+                                              dynamic-align
+                                              hide-search
+                                              no-title-attr>
+                                      </etools-searchable-multiselection-menu>
+                                      <paper-tooltip offset="0">[[editedItem.activity.name]]</paper-tooltip>
+                                  </div>
+                              </div>
+          
+                              <div class="row-h group">
+                                  <div class="input-container input-container-ms">
+                                      <!-- File type-->
+                                      <etools-searchable-multiselection-menu
+                                              class$="validate-input disabled-as-readonly [[_setRequired('file_type', basePermissionPath)]]"
+                                              value="{{editedItem.file_type}}"
+                                              label="[[getLabel('file_type', basePermissionPath)]]"
+                                              placeholder="[[getPlaceholderText('file_type', basePermissionPath, 'true')]]"
+                                              options="[[fileTypes]]"
+                                              custom-object-options
+                                              option-label="display_name"
+                                              option-value="value"
+                                              update-selected
+                                              required$="[[_setRequired('file_type', basePermissionPath)]]"
+                                              disabled$="[[_isReadOnly('file_type', basePermissionPath, requestInProcess)]]"
+                                              readonly$="[[_isReadOnly('file_type', basePermissionPath, requestInProcess)]]"
+                                              invalid="{{errors.file_type}}"
+                                              error-message="{{errors.file_type}}"
+                                              on-focus="_resetFieldError"
+                                              on-tap="_resetFieldError"
+                                              dynamic-align
+                                              hide-search
+                                              no-title-attr>
+                                      </etools-searchable-multiselection-menu>
+                                  </div>
+                              </div>
+          
+                              <div class="row-h group">
+                                  <div class="input-container input-container-ms">
+                                      <file-upload
+                                              id="fileUpload"
+                                              class="validate-input"
+                                              upload-label="[[getLabel('file', attachmentsBase)]]"
+                                              files="[[dataItems]]"
+                                              parent-id="[[editedItem.activity]]"
+                                              required
+                                              disabled="[[requestInProcess]]"
+                                              errors="{{errors}}"
+                                              file-data="{{editedItem.fileData}}">
+                                      </file-upload>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </dialog-element>
+              </template>
+          
+              <!-- inject scripts './report-assign-attachments.js'-->
+          </dom-module>

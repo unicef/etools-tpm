@@ -110,11 +110,17 @@ App global configuration
             activitiesReportAttachments: {
                 template: '/api/tpm/visits/<%=id%>/activities/report-attachments/'
             },
-            pdAttachments: {
+            globalAttachments: {
                 template: '/api/v2/attachments/',
+            },
+            linkAttachment: {
+                template: '/api/v2/attachments/links/<%=id%>/' 
             },
             linkActivityAttachments: {
                 template: '/api/tpm/visits/activities/<%=id%>/links/'
+            },
+            attachmentLinksForVisit: {
+                template: '/api/tpm/visits/<%=id%>/links'
             },
             static: {
                 url: '/api/v2/dropdowns/static',

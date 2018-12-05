@@ -105,36 +105,51 @@
                         query: 'tpm_partner__in',
                         optionValue: 'id',
                         optionLabel: 'name',
-                        selection: []
+                        selection: [],
+                        type: 'esmm'
                     },
                     {
                         name: 'Implementing Partner',
                         query: 'tpm_activities__partner__in',
                         optionValue: 'id',
                         optionLabel: 'name',
-                        selection: []
+                        selection: [],
+                        type: 'esmm'
                     },
                     {
-                        name: 'status',
+                        name: 'Status',
                         query: 'status__in',
                         hideSearch: true,
                         optionValue: 'value',
                         optionLabel: 'display_name',
-                        selection: []
+                        selection: [],
+                        type: 'esmm'
                     },
                     {
                         name: 'Section',
                         query: 'tpm_activities__section__in',
                         optionValue: 'id',
                         optionLabel: 'name',
-                        selection: []
+                        selection: [],
+                        type: 'esmm'
                     },
                     {
                         name: 'CP Output',
                         query: 'tpm_activities__cp_output__in',
                         optionValue: 'id',
                         optionLabel: 'name',
-                        selection: []
+                        selection: [],
+                        type: 'esmm'
+                    },
+                    {
+                        name: 'Starts After',
+                        query: 'tpm_activities__date__gt',
+                        type: 'datepicker'
+                    },
+                    {
+                        name: 'Ends Before',
+                        query: 'tpm_activities__date__lt',
+                        type: 'datepicker'
                     },
                 ]
             },
@@ -285,10 +300,7 @@
             },{
                 name: 'Visit Level',
                 url: this.getEndpoint('visitsList').url + 'export/'
-            },{
-                name: 'Action Points',
-                url: this.getEndpoint('visitsList').url + 'action-points/export/'
-            }];
+            },];
         }
     });
 })();
