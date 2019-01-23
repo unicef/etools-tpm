@@ -34,6 +34,13 @@ Polymer({
                 return [];
             }
         },
+        allCpOutputs: {
+            type: Array,
+            value: function() {
+                return [];
+            }
+        },
+
         itemModel: {
             type: Object,
             value: function() {
@@ -245,10 +252,6 @@ Polymer({
         let fieldReadonly = this.isReadOnly(field, basePermissionPath);
         let partnerDefined = partner && (partner.id || partner.id === 0) || partner === 'true';
         let partnerRequiresIntervention = partner && this.specialPartnerTypes.indexOf(partner.partner_type) !== -1;
-        // remove check due to ch8335
-        // let interventionDefined = intervention && (intervention.id || intervention.id === 0) ||
-        //     intervention === 'true' || partnerRequiresIntervention;
-        // return fieldReadonly || !partnerDefined || !interventionDefined || someRequestInProcess;
         return fieldReadonly || !partnerDefined || someRequestInProcess;
     },
 
@@ -286,6 +289,12 @@ Polymer({
         }
     },
 
+    _handleShownCpOutputs: function() {
+        if (this.editedItem.partner && this.editedItem.partner.partner_type === 'Government'){
+            this.set('cpOutputs', this.allCpOutputs);
+        }
+    },
+
     _requestPartner: function(partnerId) {
         if (this.partnerRequestInProcess || this.lastPartnerId === partnerId) { return; }
         this.lastPartnerId = partnerId;
@@ -298,6 +307,7 @@ Polymer({
             this.set('optionsModel.cp_output', null);
             this.set('cpOutputs', []);
         }
+        this._handleShownCpOutputs();
 
         if (!partnerId && partnerId !== 0) { return; }
 
