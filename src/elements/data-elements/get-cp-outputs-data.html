@@ -1,4 +1,4 @@
-<!--import [polymer, etools-ajax-sp, lodash]-->
+<!--import [polymer, etools-ajax-sp, etools-ajax/etools-ajax-request-behavior, lodash]-->
 <!--import [etools-app-config]-->
 
 <dom-module id="get-cp-outputs-data">
@@ -15,7 +15,8 @@
             is: 'get-cp-outputs-data',
 
             behaviors: [
-                etoolsAppConfig.globals
+                etoolsAppConfig.globals,
+                EtoolsAjaxRequestBehavior
             ],
 
             properties: {
@@ -27,8 +28,16 @@
                 cpOutputs: {
                     type: Array,
                     notify: true
+                },
+                allCpOutputs: {
+                    type: Array,
+                    notify: true
                 }
             },
+
+            attached: function () {
+                this._getAllCpOutputs();
+            },  
 
             _handleResponse: function (data, detail) {
                 this.lastData = _.clone(data.detail);
@@ -43,7 +52,6 @@
 
             _cpIdsChanged: function(cpIds) {
                 if (!(cpIds instanceof Array) || !cpIds.length) { return; }
-
                 let stringOfIds = cpIds.join(',');
                 if (stringOfIds === this.lastIds) {
                     this.cpIds = null;
@@ -56,6 +64,17 @@
                 this.url = this.getEndpoint('cpOutputsV2').url + '?values=' + stringOfIds;
                 this.cpIds = null;
             },
+            
+            _getAllCpOutputs: function(){
+                const requestOptions = {
+                    endpoint: this.getEndpoint('cpOutputsV2')
+                };
+                this.sendRequest(requestOptions).then(
+                    response => {
+                        this.set('allCpOutputs', response)
+                    }
+                ).catch(err=> console.error(err));
+            }
         });
     </script>
 </dom-module>
