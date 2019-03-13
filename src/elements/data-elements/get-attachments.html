@@ -34,7 +34,7 @@
             },
 
             _handleResponse: function (data, detail) {
-                this.attachments = detail && detail.results || [];
+                this.attachments = detail.results || detail; // different attachment endpoints return different shape
                 this.url = null;
                 this.fire('attachments-loaded', {success: true});
             },
