@@ -424,9 +424,7 @@ Polymer({
     },
 
     _getFilteredTasks: function(activities, columnsForTaskLabel){
-        // only pass tasks with an intervention to share modal
-        const atOptions = this._getATOptions(activities, columnsForTaskLabel);
-        return atOptions.filter(task => !!task.intervention);
+       return this._getATOptions(activities, columnsForTaskLabel);
     },
 
     _openDeleteLinkDialog: function (e) {
