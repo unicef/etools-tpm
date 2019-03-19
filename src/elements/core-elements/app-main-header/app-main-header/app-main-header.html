@@ -72,8 +72,8 @@
             <div class="titlebar content-align">
                 <etools-app-selector hidden$="[[!user.is_staff]]"></etools-app-selector>
                 <img src$="[[getAbsolutePath('images/etools_logo.svg')]]">
-                <template is="dom-if" if="[[isStaging]]">
-                    <div class="envWarning"> - STAGING TESTING ENVIRONMENT</div>
+                <template is="dom-if" if="[[environment]]">
+                    <div class="envWarning"> - [[environment]] TESTING ENVIRONMENT</div>
                 </template>
             </div>
 
@@ -101,6 +101,10 @@
                     user: {
                         type: Object
                     },
+                    environment: {
+                        type: String,
+                        value: function() { return etoolsAppConfig.globals._checkEnvironment() }
+                    }
                 },
 
                 listeners: {
@@ -109,7 +113,6 @@
                 },
 
                 ready: function() {
-                    this._isStaging();
                     this._setBgColor();
                 },
 
@@ -124,13 +127,9 @@
 
                 _setBgColor: function() {
                     // If not production environment, changing header color to red
-                    if (!etoolsAppConfig.globals.isProductionServer()) {
+                    if (this.environment) {
                         this.updateStyles({'--header-bg-color': 'var(--nonprod-header-color)'});
                     }
-                },
-
-                _isStaging: function() {
-                    this.set('isStaging', etoolsAppConfig.globals.isStagingServer())
                 },
 
                 _logout: function() {
