@@ -102,13 +102,13 @@ App global configuration
                 template: '/api/tpm/partners/<%=id%>/attachments/'
             },
             reportAttachments: {
-                template: '/api/tpm/visits/<%=id%>/report-attachments/'
+                template: '/api/tpm/visits/<%=id%>/report-attachments?page_size=all/'
             },
             activitiesAttachments: {
-                template: '/api/tpm/visits/<%=id%>/activities/attachments/'
+                template: '/api/tpm/visits/<%=id%>/activities/attachments?page_size=all/'
             },
             activitiesReportAttachments: {
-                template: '/api/tpm/visits/<%=id%>/activities/report-attachments/'
+                template: '/api/tpm/visits/<%=id%>/activities/report-attachments?page_size=all/'
             },
             globalAttachments: {
                 template: '/api/v2/attachments/',
@@ -138,6 +138,9 @@ App global configuration
             epsPath: 'endpoints',
             stagingDomain: 'etools-staging.unicef.org',
             productionDomain: 'etools.unicef.org',
+            demoDomain: 'etools-demo.unicef.org',
+            devDomain: 'etools-dev.unicef.org',
+            localDomain: 'localhost',
 
             // dexie js
             appDexieDb: etoolsCustomDexieDb,
@@ -164,14 +167,21 @@ App global configuration
                 return this.basePath + path;
             },
 
-            isProductionServer: function() {
-                let location = window.location.href;
-                return location.indexOf(this.productionDomain) > -1;
-            },
-
-            isStagingServer: function() {
-                let location = window.location.href;
-                return location.indexOf(this.stagingDomain) > -1;
+            _checkEnvironment: function() {
+                var location = window.location.href;
+                if (location.indexOf(this.stagingDomain) > -1) {
+                    return 'STAGING'
+                }
+                if (location.indexOf(this.demoDomain) > -1) {
+                    return 'DEMO'
+                }
+                if (location.indexOf(this.devDomain) > -1) {
+                    return 'DEVELOPMENT'
+                } 
+                if (location.indexOf(this.localDomain) > -1) {
+                    return 'LOCAL'
+                }
+                return null
             }
         }
     };
