@@ -172,6 +172,7 @@ Polymer({
     observers: [
         '_setBasePath(dataBasePath, pathPostfix)',
         '_baseIdChanged(baseId)',
+        '_getPartnerOrganizations(dataBasePath)',
         '_resetDialog(dialogOpened)',
         '_resetShareDialog(shareDialogOpened)',
         '_errorHandler(errorObject)',
@@ -180,7 +181,7 @@ Polymer({
         '_setDropdownOptions(dataItems, columns, dataItems.*)',
     ],
 
-    attached: function () {
+    _getPartnerOrganizations: function () {
         this.partnerOrganizations = this.getData('partnerOrganizations');
     },
 
@@ -261,6 +262,9 @@ Polymer({
     },
 
     _handleDropdownPermissions: function (e, detail) {
+        if (!this.partnerOrganizations){
+            return;
+        }
         const partner = this.partnerOrganizations.find(partner=> partner.id === _.get(detail, 'selectedValues.partner.id'));
         if (!partner) { return; }
         if (partner.partner_type === "Civil Society Organization"){
