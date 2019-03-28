@@ -194,6 +194,7 @@
                         tpmUser = this.isTpmUser();
                     if (tpmUser && !partnerId) {
                         console.error('Can not get TPM Partner id!');
+                        this.fire('initial-data-loaded');
                     } else if(!partners) {
                         this._partnersError()
                     }
