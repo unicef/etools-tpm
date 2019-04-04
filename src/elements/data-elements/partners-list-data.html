@@ -94,6 +94,7 @@
             },
 
             _responseError: function(e, detail) {
+                this.fire('global-loading', {type: 'partners-list'});
                 let responseData = detail && detail.request && detail.request.detail &&
                     detail.request.detail.request && detail.request.detail.request.xhr;
                 let {status, response} = responseData || {};
@@ -105,7 +106,6 @@
                 }
 
                 this.updateQueries({reload: false});
-                this.fire('global-loading', {type: 'partners-list'});
                 this.fire('toast', {text: 'Page not found.'});
             },
         });

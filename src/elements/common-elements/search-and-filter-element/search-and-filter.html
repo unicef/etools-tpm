@@ -70,32 +70,38 @@
                 </div>
     
                 <!-- ADD FILTERS -->
-                <div id="add-filter-container">
-                    <paper-menu-button horizontal-align="right"
-                                       ignore-select
-                                       no-overlap>
-                        <paper-button class="dropdown-trigger">
-                            <iron-icon icon="filter-list"
-                                       class="filter-list-icon"></iron-icon>
-                    
-                            <span class="add-filter-text">ADD FILTER</span>
-                            
-                        </paper-button>
-                       
-                        <paper-listbox multi class="dropdown-content" selected="0">
-                            <template is="dom-repeat"
-                                      items="[[availableFilters]]">
-                                <paper-icon-item on-tap="addFilter">
-                                    <iron-icon icon="check"
-                                               item-icon
-                                               hidden$="[[!_isSelected(item, availableFilters)]]"></iron-icon>
-                                    [[item.name]]
-                                </paper-item>
-                            </template>
-                        </paper-listbox>
-                    </paper-menu-button>
+                <template is="dom-if"
+                          if="[[filters.length]]">
+                    <div id="add-filter-container">
+                        <paper-menu-button horizontal-align="right"
+                                           ignore-select
+                                           no-overlap>
+                            <paper-button class="dropdown-trigger">
+                                <iron-icon icon="filter-list"
+                                           class="filter-list-icon"></iron-icon>
                 
-                </div>
+                                <span class="add-filter-text">ADD FILTER</span>
+                
+                            </paper-button>
+                
+                            <paper-listbox multi
+                                           class="dropdown-content"
+                                           selected="0">
+                                <template is="dom-repeat"
+                                          items="[[availableFilters]]">
+                                    <paper-icon-item on-tap="addFilter">
+                                        <iron-icon icon="check"
+                                                   item-icon
+                                                   hidden$="[[!_isSelected(item, availableFilters)]]">
+                                        </iron-icon>
+                                        [[item.name]]
+                                        </paper-item>
+                                </template>
+                            </paper-listbox>
+                        </paper-menu-button>
+                
+                    </div>
+                </template>
             </paper-card>
         </template>
     
