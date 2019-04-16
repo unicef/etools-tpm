@@ -14,8 +14,9 @@ Polymer({
             value: false
         },
         data: Object,
-        exportParams: {
-            type: Object
+        queryParams: {
+            type: Object,
+            notify: true
         },
         loadCSV: {
             type: Boolean,
@@ -54,8 +55,11 @@ Polymer({
         }
     },
 
+
     behaviors: [
-        etoolsAppConfig.globals
+        etoolsAppConfig.globals,
+        TPMBehaviors.QueryParamsController
+
     ],
 
     attached: function() {
@@ -90,7 +94,9 @@ Polymer({
     exportData: function(e) {
         if (this.exportLinks < 1) { throw 'Can not find export link!'; }
         let url = (e && e.model && e.model.item) ? e.model.item.url : this.exportLinks[0].url;
-        window.open(url, '_blank');
+        const queryString = this.getQueryString(this.parseQueries());
+        const urlWithParams = url.concat(queryString);
+        window.open(urlWithParams, '_blank');
     },
 
     _isDropDown: function(exportLinks) {
