@@ -59,7 +59,6 @@
 
             let urlQueries = this.getQueryString(queries)
 
-            
             try {
                 window.history.replaceState({}, '', `${path}${urlQueries}`);
             } catch (err) {

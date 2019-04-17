@@ -211,6 +211,13 @@
 
         filterTypeIs: function(type, filterType) {
             return type === filterType;
+        },
+
+        _isMulti: function(item){
+            if (item.singleSelection){
+                return false;
+            }
+            return true;
         }
 
     });
