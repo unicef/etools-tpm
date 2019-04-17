@@ -198,7 +198,6 @@
 
         _visitFiltersUpdated: function() {
             let filtersElement = this.$.filters;
-            console.log('setting files');
             this.setFiltersSelections();
 
             if (filtersElement) {
@@ -239,7 +238,6 @@
         },
 
         setFiltersSelections: function() {
-            console.log('filter selections');
             let queryAndKeyPairs = this.filters
             .filter(
                 f => Boolean(f.dataKey)
