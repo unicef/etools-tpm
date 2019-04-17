@@ -59,7 +59,6 @@ Polymer({
     behaviors: [
         etoolsAppConfig.globals,
         TPMBehaviors.QueryParamsController
-
     ],
 
     attached: function() {
@@ -92,7 +91,7 @@ Polymer({
     },
 
     exportData: function(e) {
-        if (this.exportLinks < 1) { throw 'Can not find export link!'; }
+        if (this.exportLinks.length < 1) { throw 'Can not find export link!'; }
         let url = (e && e.model && e.model.item) ? e.model.item.url : this.exportLinks[0].url;
         const queryString = this.getQueryString(this.parseQueries());
         const urlWithParams = url.concat(queryString);
