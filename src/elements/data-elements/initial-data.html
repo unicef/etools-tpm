@@ -163,7 +163,6 @@
                 _filtersDataLoaded: function() {
                     if (dataLoaded.implemPartners && dataLoaded.filterSections && dataLoaded.filterCpOutputs && dataLoaded.offices) {
                         this._triggerGlobalEvent('visit-filters-updated');
-                        console.log('Filters loaded');
                         dataLoaded.filters = true;
                         dataLoaded.implemPartners = false;
                         dataLoaded.filterSections = false;
@@ -232,7 +231,6 @@
                         this._setData('implemPartners', detail);
                     }
                     
-                    console.log('FILTER IP LOADE', detail);
                     dataLoaded.implemPartners = true; 
                     this._filtersDataLoaded();
                 },
