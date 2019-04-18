@@ -89,8 +89,8 @@
                             required$="[[_setRequired('phone_number', basePermissionPath)]]"
                             disabled$="[[isReadOnly('phone_number', basePermissionPath)]]"
                             maxlength="{{getMaxLength('phone_number', basePermissionPath)}}"
-                            invalid="{{_checkInvalid(errors.user.profile.phone_number)}}"
-                            error-message="{{errors.user.profile.phone_number}}"
+                            invalid="{{_checkInvalid(errors.user.phone_number)}}"
+                            error-message="{{errors.user.phone_number}}"
                             on-focus="_resetFieldError"
                             on-tap="_resetFieldError">
                         <iron-icon
