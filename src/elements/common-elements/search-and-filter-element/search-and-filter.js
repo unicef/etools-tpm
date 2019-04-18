@@ -199,18 +199,38 @@
             if (detail.selectedValues && query) {
                 let filter = this._getFilter(query);
                 let optionValue = filter.optionValue || 'value';
-                queryObject[query] = detail.selectedValues.
+                
+                // conform data structure for single select menu
+                const selectedValues = getValuesAsArray(detail.selectedValues);
+
+                queryObject[query] = selectedValues.
                     map(val => val[optionValue]).
                     join(',');
             } else if (detail.prettyDate!== null && detail.prettyDate!==undefined && query) {
                 queryObject[query] = detail.prettyDate;
             }
+            
             this.updateQueries(queryObject);
+
+            function getValuesAsArray(values){
+                if (Array.isArray(values)) {
+                    return values;
+                }
+
+                return [values];
+            }
 
         },
 
         filterTypeIs: function(type, filterType) {
             return type === filterType;
+        },
+
+        _isMulti: function(item){
+            if (item.singleSelection){
+                return false;
+            }
+            return true;
         }
 
     });

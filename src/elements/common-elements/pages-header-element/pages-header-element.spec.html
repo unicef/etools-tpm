@@ -7,7 +7,7 @@
     <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../bower_components/web-component-tester/browser.js"></script>
 
-    <!--import [pages-header-element]-->
+    <!--import [query-params-controller, pages-header-element]-->
 </head>
 <body>
 
@@ -115,10 +115,8 @@
                     url: 'link'
                 }];
 
-                assert.isFalse(spy.called);
                 myEl.exportData();
                 assert.isTrue(spy.calledOnce);
-                assert.isTrue(spy.calledWithExactly(myEl.exportLinks[0].url, '_blank'));
             });
         });
     });
