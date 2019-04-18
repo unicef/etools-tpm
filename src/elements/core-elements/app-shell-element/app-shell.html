@@ -1,6 +1,6 @@
 <!--import [polymer, app-route/app-location, app-route, app-layout, paper-icon-button,
              paper-toast, paper-material, iron-selector, iron-pages, iron-collapse, iron-icons, iron-icons/social-icons,
-             etools-loading/etools-loading-behavior, iron-icons/maps-icons]-->
+             etools-loading/etools-loading-behavior, iron-icons/maps-icons, etools-piwik-analytics]-->
 
 <!--import [etools-app-config, side-bar-item, countries-dropdown, initial-data, user-controller,
             shared-styles, page-layout-styles, app-theme, permission-controller, multi-notification-list,
@@ -12,6 +12,8 @@
         <style include="page-layout-styles shared-styles"></style>
 
         <initial-data></initial-data>
+
+        <etools-piwik-analytics user="[[user]]" toast="[[_toast]]" page="[[page]]"></etools-piwik-analytics>
 
         <app-location route="{{route}}" query-params="{{queryParams}}"></app-location>
 

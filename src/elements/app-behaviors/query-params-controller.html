@@ -34,6 +34,14 @@
             return path.slice(1);
         },
 
+        getQueryString: function(query){
+            return '?'+ Object.keys(query).map((key) => {
+                let value = typeof query[key] ===  'boolean' ? '' : 
+                Boolean(query[key]) ? `=${query[key]}` : '';
+                return `${key}${value}`;
+            }).join('&');
+        },
+
         updateQueries: function (newQueries, path, noNotify) {
             if (!_.isObject(newQueries)) { return false; }
             let keys = Object.keys(newQueries);
@@ -49,14 +57,10 @@
                 else queries[key] = newQueries[key];
             });
 
-            let urlQueries = Object.keys(queries).map((key) => {
-                let value = typeof queries[key] ===  'boolean' ? '' : 
-                Boolean(queries[key]) ? `=${queries[key]}` : '';
-                return `${key}${value}`;
-            });
-            
+            let urlQueries = this.getQueryString(queries)
+
             try {
-                window.history.replaceState({}, '', `${path}?${urlQueries.join('&')}`);
+                window.history.replaceState({}, '', `${path}${urlQueries}`);
             } catch (err) {
                 console.warn(err);
             }
