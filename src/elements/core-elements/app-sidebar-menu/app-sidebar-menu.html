@@ -18,7 +18,7 @@
                     attr-for-selected="view"
                     selectable="side-bar-item"
                     role="navigation">
-                <template is="dom-if" if="{{user.id}}">
+                <template is="dom-if" if="{{user.user}}">
                     <side-bar-item
                             view="partners"
                             name="[[setPartnersText(user)]]"
