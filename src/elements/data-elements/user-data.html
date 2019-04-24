@@ -31,10 +31,10 @@
                 let user = data.detail;
                 
                 let previousUserId = localStorage.getItem('userId');
-                let countriesAvailable = _.get(user, 'profile.countries_available') || [];
+                let countriesAvailable = _.get(user, 'countries_available') || [];
 
                 countriesAvailable = _.sortBy(countriesAvailable, ['name']);
-                _.set(user, 'profile.countries_available', countriesAvailable);
+                _.set(user, 'countries_available', countriesAvailable);
 
                 if (!previousUserId || Number(previousUserId) !== user.user) {
                     this.resetOldUserData();

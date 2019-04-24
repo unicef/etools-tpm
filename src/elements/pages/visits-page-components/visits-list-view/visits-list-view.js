@@ -146,16 +146,17 @@
                         selection: [],
                         type: 'esmm'
                     },
-                    {
-                        name: 'Office',
-                        query: 'tpm_activities__offices',
-                        dataKey: 'offices',
-                        optionValue: 'id',
-                        optionLabel: 'name',
-                        selection: [],
-                        type: 'esmm',
-                        singleSelection: true
-                    },
+                    // Awaiting backend changes for this filter to be enabled
+                    // {
+                    //     name: 'Office',
+                    //     query: 'tpm_activities__offices',
+                    //     dataKey: 'offices',
+                    //     optionValue: 'id',
+                    //     optionLabel: 'name',
+                    //     selection: [],
+                    //     type: 'esmm',
+                    //     singleSelection: true
+                    // },
                     {
                         name: 'Starts After',
                         query: 'tpm_activities__date__gt',
