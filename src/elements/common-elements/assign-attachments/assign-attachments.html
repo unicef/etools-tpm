@@ -91,34 +91,36 @@
                                 </div>
                             </simple-list-item>
                         </template>
-                        <template is="dom-repeat"
-                                  items="[[linkedAttachments]]"
-                                  as="linkedAttachment"
-                                  filter="{{_isLinkedAttachmentForTask(item)}}">
-                            <simple-list-item>
-                                <div class="row-data">
-                                    <span class="w20">[[linkedAttachment.file_type]]</span>
-                                    <div class="w50">
-                                        <iron-icon icon="icons:attachment"
-                                                   class="download-icon">
-                                        </iron-icon>
-                                        <a href$="[[attachment.file]]"
-                                                               class="truncate"
-                                                               target="_blank">[[linkedAttachment.filename]]
-                                                            </a>
+                        <template is="dom-if" if="[[linkedAttachments.length]]">
+                            <template is="dom-repeat"
+                                      items="[[linkedAttachments]]"
+                                      as="linkedAttachment"
+                                      filter="{{_isLinkedAttachmentForTask(item)}}">
+                                <simple-list-item>
+                                    <div class="row-data">
+                                        <span class="w20">[[linkedAttachment.file_type]]</span>
+                                        <div class="w50">
+                                            <iron-icon icon="icons:attachment"
+                                                       class="download-icon">
+                                            </iron-icon>
+                                            <a href$="[[linkedAttachment.url]]"
+                                                                   class="truncate"
+                                                                   target="_blank">[[linkedAttachment.filename]]
+                                                                </a>
+                                        </div>
+                                        <span class="w18">[[linkedAttachment.created]]</span>
+                                        <a on-click="_openDeleteLinkDialog"
+                                            class="delete-icon">
+                                            <iron-icon 
+                                                hidden$="[[isTabReadonly(basePermissionPath)]]"
+                                                icon="icons:cancel"></iron-icon>
+    
+                                            <paper-tooltip offset="0">Remove</paper-tooltip>
+                                        </a>
+                                        <span>PMP</span>
                                     </div>
-                                    <span class="w18">[[linkedAttachment.created]]</span>
-                                    <a on-click="_openDeleteLinkDialog"
-                                        class="delete-icon">
-                                        <iron-icon 
-                                            hidden$="[[isTabReadonly(basePermissionPath)]]"
-                                            icon="icons:cancel"></iron-icon>
-
-                                        <paper-tooltip offset="0">Remove</paper-tooltip>
-                                    </a>
-                                    <span>PMP</span>
-                                </div>
-                            </simple-list-item>
+                                </simple-list-item>
+                            </template>
                         </template>
                     </div>
                 </div>
