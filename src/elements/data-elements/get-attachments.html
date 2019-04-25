@@ -45,7 +45,7 @@
 
             _baseIdChanged: function(baseId) {
                 if (!baseId) { return; }
-                this.url = this.getEndpoint(this.endpointName, {id: baseId}).url;
+                this.url = this.getEndpoint(this.endpointName, {id: baseId}).url+'?page_size=all';
             }
         });
     </script>
