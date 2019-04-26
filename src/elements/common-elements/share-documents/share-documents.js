@@ -111,7 +111,7 @@
       attached: function () {
         this.set('requestOptions.endpoint', this.getEndpoint('globalAttachments'));
         
-        const fileTypes = _.get(this.getData("staticDropdown"), "attachment_types")
+        const fileTypes = _.get(this.getData("staticDropdown"), "attachment_types_active")
         .filter(val=>!_.isEmpty(val))
         .map(
           typeStr => ({ label: typeStr, value: typeStr })

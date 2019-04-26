@@ -142,7 +142,7 @@
                         query: 'tpm_activities__cp_output__in',
                         dataKey: 'filterCpOutputs',
                         optionValue: 'id',
-                        optionLabel: 'name',
+                        optionLabel: 'result_name',
                         selection: [],
                         type: 'esmm'
                     },
