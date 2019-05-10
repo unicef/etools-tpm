@@ -24,7 +24,7 @@
     
                     <!-- FILTERS -->
                     <template is="dom-repeat" items="[[usedFilters]]">
-                        <div class="layout horizontal">
+                        <div class="layout horizontal flex">
                             
                             <template is="dom-if" if="[[filterTypeIs('esmm', item.type)]]">
                                 <etools-searchable-multiselection-menu
@@ -39,7 +39,7 @@
                                     option-value="[[item.optionValue]]"
                                     on-value-change="_changeFilterValue"
                                     hide-search="[[item.hideSearch]]"
-                                    multi>
+                                    multi="[[_isMulti(item)]]">
                                 </etools-searchable-multiselection-menu>
                             </template>
 

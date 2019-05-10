@@ -49,8 +49,8 @@ Polymer({
                     {
                         'size': 20,
                         'label': 'Position',
-                        'labelPath': 'user.profile.job_title',
-                        'name': 'user.profile.job_title'
+                        'labelPath': 'user.job_title',
+                        'name': 'user.job_title'
                     }, {
                         'size': 20,
                         'label': 'First Name',
@@ -64,8 +64,8 @@ Polymer({
                     }, {
                         'size': 20,
                         'label': 'Phone Number',
-                        'labelPath': 'user.profile.phone_number',
-                        'name': 'user.profile.phone_number'
+                        'labelPath': 'user.phone_number',
+                        'name': 'user.phone_number'
                     }, {
                         'size': 20,
                         'label': 'E-mail Address',

@@ -103,6 +103,7 @@
                     {
                         name: 'TPM Name',
                         query: 'tpm_partner__in',
+                        dataKey: 'tpmPartners',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: [],
@@ -111,6 +112,7 @@
                     {
                         name: 'Implementing Partner',
                         query: 'tpm_activities__partner__in',
+                        dataKey: 'implemPartners',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: [],
@@ -119,6 +121,7 @@
                     {
                         name: 'Status',
                         query: 'status__in',
+                        dataKey: 'statuses',
                         hideSearch: true,
                         optionValue: 'value',
                         optionLabel: 'display_name',
@@ -128,6 +131,7 @@
                     {
                         name: 'Section',
                         query: 'tpm_activities__section__in',
+                        dataKey: 'filterSections',
                         optionValue: 'id',
                         optionLabel: 'name',
                         selection: [],
@@ -136,11 +140,23 @@
                     {
                         name: 'CP Output',
                         query: 'tpm_activities__cp_output__in',
+                        dataKey: 'filterCpOutputs',
                         optionValue: 'id',
-                        optionLabel: 'name',
+                        optionLabel: 'result_name',
                         selection: [],
                         type: 'esmm'
                     },
+                    // Awaiting backend changes for this filter to be enabled
+                    // {
+                    //     name: 'Office',
+                    //     query: 'tpm_activities__offices',
+                    //     dataKey: 'offices',
+                    //     optionValue: 'id',
+                    //     optionLabel: 'name',
+                    //     selection: [],
+                    //     type: 'esmm',
+                    //     singleSelection: true
+                    // },
                     {
                         name: 'Starts After',
                         query: 'tpm_activities__date__gt',
@@ -223,20 +239,21 @@
         },
 
         setFiltersSelections: function() {
-            let queryAndKeyPairs = [
-                {query: 'tpm_partner__in', dataKey: 'tpmPartners'},
-                {query: 'tpm_activities__partner__in', dataKey: 'filterIP'},
-                {query: 'status__in', dataKey: 'statuses'},
-                {query: 'tpm_activities__section__in', dataKey: 'filterSections'},
-                {query: 'tpm_activities__cp_output__in', dataKey: 'filterCpOutputs'},
-            ];
+            let queryAndKeyPairs = this.filters
+            .filter(
+                f => Boolean(f.dataKey)
+            ).map(
+                ({query, dataKey}) => ({
+                    query, dataKey
+                })
+            );
 
             queryAndKeyPairs.forEach((pair) => {
                 let filterIndex = this._getFilterIndex(pair.query);
                 let data = this.getData(pair.dataKey) || [];
                 this.setFilterSelection(filterIndex, data);
             });
-        },
+        }, 
 
         setFilterSelection: function(filterIndex, data) {
             if (filterIndex !== undefined && filterIndex !== -1) {

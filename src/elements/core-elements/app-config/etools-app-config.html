@@ -26,7 +26,7 @@ App global configuration
                 template: '/api/tpm/visits/<%=id%>/'
             },
             userProfile: {
-                url: '/users/api/profile/'
+                url: '/api/v3/users/profile/'
             },
             partnersList: {
                 url: '/api/tpm/partners/?hidden=false'
@@ -48,7 +48,7 @@ App global configuration
                 exp: 2 * 60 * 60 * 1000, // 2h
                 cachingKey: 'partners'
             },
-            filterIP: {
+            implemPartners: {
                 url: '/api/tpm/visits/activities/implementing-partners/'
             },
             filterSections: {
@@ -72,7 +72,7 @@ App global configuration
                 cachingKey: 'locations',
             },
             changeCountry: {
-                url: '/users/api/changecountry/'
+                url: '/api/v3/users/changecountry/'
             },
             syncVendorData: {
                 template: '/api/tpm/partners/sync/<%=id%>/'
@@ -102,13 +102,13 @@ App global configuration
                 template: '/api/tpm/partners/<%=id%>/attachments/'
             },
             reportAttachments: {
-                template: '/api/tpm/visits/<%=id%>/report-attachments/?page_size=all'
+                template: '/api/tpm/visits/<%=id%>/report-attachments/'
             },
             activitiesAttachments: {
-                template: '/api/tpm/visits/<%=id%>/activities/attachments/?page_size=all'
+                template: '/api/tpm/visits/<%=id%>/activities/attachments/'
             },
             activitiesReportAttachments: {
-                template: '/api/tpm/visits/<%=id%>/activities/report-attachments/?page_size=all'
+                template: '/api/tpm/visits/<%=id%>/activities/report-attachments/'
             },
             globalAttachments: {
                 template: '/api/v2/attachments/',
