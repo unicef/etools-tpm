@@ -214,7 +214,8 @@
                     if (!detail) {
                         this._organisationsError();
                     }
-                    let partnerOrganizations = _.sortBy(detail, ['name']);
+                    let partnerOrganizations = _.sortBy(detail, ['name']).filter(({name})=>name.length);
+					console.log("TCL: partnerOrganizations", partnerOrganizations)
                     this._setData('partnerOrganizations', partnerOrganizations);
                     dataLoaded.organizations = true;
                     this._allDataLoaded();
