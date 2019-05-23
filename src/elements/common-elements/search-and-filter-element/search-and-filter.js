@@ -66,11 +66,14 @@
 
                 this._setFilterValue(newFilter);
                 this.push('usedFilters', newFilter);
-                if (this.queryParams[query] === undefined) {
-                    let queryObject = {};
-                    queryObject[query] = true;
-                    this.updateQueries(queryObject);
-                }
+                
+                // removing unneccessary api call 
+
+                // if (this.queryParams[query] === undefined) {
+                //     let queryObject = {};
+                //     queryObject[query] = true;
+                //     this.updateQueries(queryObject);
+                // }
             } else {
                 this.removeFilter(e);
             }
