@@ -73,7 +73,7 @@ Polymer({
     },
 
     queueToast: function(e, detail) {
-        let notificationList = Polymer.dom(this.root).querySelector('multi-notification-list');
+        let notificationList = this.querySelector('multi-notification-list');
         if (!notificationList) { return; }
 
         if (detail && detail.reset) {

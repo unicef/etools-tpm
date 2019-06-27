@@ -31,7 +31,7 @@
 
             beforeEach(function () {
                 spy = sinon.spy(myEl, 'setMaxHeight');
-                paperTextareas = Polymer.dom(myEl.root).querySelectorAll('paper-textarea');
+                paperTextareas = myEl.querySelectorAll('paper-textarea');
             });
 
             it('calls setMaxHeight() method for each paper-textarea element', function () {
@@ -42,9 +42,9 @@
             });
 
             it('calls setMaxHeight() method once for one paper-textarea element', function () {
-                Polymer.dom(myEl.root).removeChild(paperTextareas[1]);
-                Polymer.dom(myEl.root).removeChild(paperTextareas[2]);
-                paperTextareas = Polymer.dom(myEl.root).querySelectorAll('paper-textarea');
+                myEl.removeChild(paperTextareas[1]);
+                myEl.removeChild(paperTextareas[2]);
+                paperTextareas = myEl.querySelectorAll('paper-textarea');
 
                 assert.isFalse(spy.called);
                 assert.equal(paperTextareas.length, 1);
@@ -55,9 +55,9 @@
 
             it('not calls setMaxHeight() method if no paper-textarea elements exists', function () {
                 paperTextareas.forEach(function (textarea) {
-                    Polymer.dom(myEl.root).removeChild(textarea);
+                    myEl.removeChild(textarea);
                 });
-                paperTextareas = Polymer.dom(myEl.root).querySelectorAll('paper-textarea');
+                paperTextareas = myEl.querySelectorAll('paper-textarea');
 
                 assert.isFalse(spy.called);
                 assert.equal(paperTextareas.length, 0);
@@ -70,7 +70,7 @@
             let paperTextarea;
 
             beforeEach(function () {
-                paperTextarea = Polymer.dom(myEl.root).querySelector('paper-textarea');
+                paperTextarea = myEl.querySelector('paper-textarea');
             });
 
             it('returns false if argument is undefined', function () {
@@ -95,8 +95,8 @@
             });
 
             it('sets textarea-autogrow max-height if max-rows is defined', function (done) {
-                let paperInput = Polymer.dom(paperTextarea.root).querySelector('paper-input-container');
-                let textareaAutogrow = Polymer.dom(paperInput).querySelector('.paper-input-input');
+                let paperInput = paperTextarea.querySelector('paper-input-container');
+                let textareaAutogrow = paperInput.querySelector('.paper-input-input');
                 let lineHeight = 20;
                 let maxRows = 4;
 

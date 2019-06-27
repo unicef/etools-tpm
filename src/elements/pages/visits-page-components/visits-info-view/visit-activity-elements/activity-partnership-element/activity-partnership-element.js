@@ -50,7 +50,7 @@ Polymer({
             };
         }
 
-        let sectors = Polymer.dom(this.root).querySelectorAll('activity-sector-element'),
+        let sectors = this.querySelectorAll('activity-sector-element'),
             data = [];
 
         _.each(sectors, (sector) => {

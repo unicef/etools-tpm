@@ -114,7 +114,7 @@ Polymer({
     },
 
     _listDataChanged: function() {
-        let rows = Polymer.dom(this.root).querySelectorAll('.list-element');
+        let rows = this.querySelectorAll('.list-element');
 
         if (rows && rows.length) {
             this.noAnimation = true;

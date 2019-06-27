@@ -446,7 +446,7 @@ Polymer({
         }
 
         if (this.editedItem && this.editedItem._delete) { return true; }
-        let elements = Polymer.dom(this.root).querySelectorAll('.validate-input');
+        let elements = this.querySelectorAll('.validate-input');
         let valid = true;
 
         Array.prototype.forEach.call(elements, (element) => {
@@ -458,7 +458,7 @@ Polymer({
         });
 
         // validate PD/SSFA
-        let interventionInput = Polymer.dom(this.root).querySelector('#interventionInput');
+        let interventionInput = this.querySelector('#interventionInput');
         let partner = this.get('editedItem.partner');
         let partnerRequiresIntervention = partner && this.specialPartnerTypes.indexOf(partner.partner_type) === -1;
         if (interventionInput && interventionInput.required && partnerRequiresIntervention && !interventionInput.validate()) {

@@ -94,13 +94,13 @@
         displayInDatepicker(dateString) {
             if (typeof dateString === 'string' && dateString !== '') {	            let date = this._convertDate(dateString);
                 var date = new Date(dateString);	            return date ? this._getDateWithoutTimezoneOffset(date) : new Date();
-                if (date.toString() === 'Invalid Date') {	
-                    date = new Date();	
-                }	
-                return date;	
-            } else {	
-                return new Date();	
-            }	
+                if (date.toString() === 'Invalid Date') {
+                    date = new Date();
+                }
+                return date;
+            } else {
+                return new Date();
+            }
         },
 
 
@@ -114,7 +114,7 @@
             var id = Polymer.dom(event).localTarget.getAttribute('data-selector');
             if (id) {
                 var datepickerId = '#' + id;
-                var datePicker = Polymer.dom(this.root).querySelector(datepickerId);
+                var datePicker = this.querySelector(datepickerId);
                 if (datePicker) {
                     datePicker.open = true;
                 }

@@ -367,7 +367,7 @@ Polymer({
     },
 
     validate: function() {
-        let elements = Polymer.dom(this.root).querySelectorAll('.validate-input'),
+        let elements = this.querySelectorAll('.validate-input'),
             valid = true;
 
         Array.prototype.forEach.call(elements, (element) => {

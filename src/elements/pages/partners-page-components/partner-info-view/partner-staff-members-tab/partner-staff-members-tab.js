@@ -174,7 +174,7 @@ Polymer({
     },
 
     validate: function() {
-        let elements = Polymer.dom(this.root).querySelectorAll('.validate-input:not(.email)'),
+        let elements = this.querySelectorAll('.validate-input:not(.email)'),
             valid = true,
             emailValid = this.$.emailInput.disabled || this.$.emailInput.validate();
 

@@ -454,7 +454,7 @@
                 return false;
             }
 
-            let dropdowns = Polymer.dom(this.root).querySelectorAll('etools-searchable-multiselection-menu');
+            let dropdowns = this.querySelectorAll('etools-searchable-multiselection-menu');
             let dropdownsLength = dropdowns.length;
             let isValid = true;
 

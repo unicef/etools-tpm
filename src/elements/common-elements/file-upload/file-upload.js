@@ -90,7 +90,7 @@
         },
 
         _openFileChooser: function() {
-            let elem = Polymer.dom(this.root).querySelector('#fileInput');
+            let elem = this.querySelector('#fileInput');
 
             if (elem && document.createEvent) {
                 let evt = document.createEvent('MouseEvents');

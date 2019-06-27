@@ -62,7 +62,7 @@
                 this.url = this.getEndpoint('partnerDetails', {id: this.vendor.id}).url;
                 this.postData = _.cloneDeep(this.updateData);
             },
-            
+
             _handleResponse: function(event, detail) {
                 let partnerId = detail && detail.id;
                 this._setLastData(detail, `partner_${partnerId}`);

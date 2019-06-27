@@ -765,7 +765,7 @@
                 myEl.files = files;
 
                 flush(function () {
-                    var fileAreas = Polymer.dom(myEl.root).querySelectorAll('.file-area');
+                    var fileAreas = myEl.querySelectorAll('.file-area');
                     assert.equal(fileAreas.length, 1);
                     done();
                 });
@@ -776,7 +776,7 @@
                 myEl.files = files;
 
                 flush(function () {
-                    var fileAreas = Polymer.dom(myEl.root).querySelectorAll('.file-area');
+                    var fileAreas = myEl.querySelectorAll('.file-area');
                     assert.equal(fileAreas.length, 2);
                     done();
                 });
@@ -793,14 +793,14 @@
 
                 flush(function () {
                     var deleteBtn = myEl.$$('.delete-button');
-                    var fileAreas = Polymer.dom(myEl.root).querySelectorAll('.file-area');
+                    var fileAreas = myEl.querySelectorAll('.file-area');
 
                     assert.equal(myEl.files.length, 1);
                     assert.equal(fileAreas.length, 1);
 
                     deleteBtn.addEventListener('click', function (event) {
                         flush(function () {
-                            fileAreas = Polymer.dom(myEl.root).querySelectorAll('.file-area');
+                            fileAreas = myEl.querySelectorAll('.file-area');
 
                             assert.isDefined(event);
                             assert.equal(myEl.files.length, 0);

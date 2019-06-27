@@ -41,7 +41,7 @@
         resetValidationErrors: function() {
             this.set('errors', {});
 
-            let elements = Polymer.dom(this.root).querySelectorAll('.validate-input');
+            let elements = this.querySelectorAll('.validate-input');
             _.each(elements, element => {
                 element.errorMessage = '';
                 element.invalid = false;

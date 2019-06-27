@@ -93,7 +93,7 @@
             this.set('basePermissionPath', base);
             if (base) {
                 let title = this.getFieldAttribute(base, 'title');
-                this.set('tabTitle', title);    
+                this.set('tabTitle', title);
                 this.fileTypes = this.getChoices(`${base}.file_type`);
                 if (!this.fileTypes) {
                     return;
@@ -116,8 +116,8 @@
             if (!dialogOpened || !this.disableFiletype) {
                 return;
             }
-            
-             // sets default disabled document type to Other 
+
+             // sets default disabled document type to Other
              this.editedItem.type = this.fileTypes.find(type=>type.display_name === 'Other');
              this.set('editedItem.type',this.fileTypes.find(type=>type.display_name === 'Other'));
         },
@@ -167,7 +167,7 @@
         },
 
         _openFileChooser: function() {
-            let elem = Polymer.dom(this.root).querySelector('#fileInput');
+            let elem = this.querySelector('#fileInput');
             if (elem && document.createEvent) {
                 let evt = document.createEvent('MouseEvents');
                 evt.initEvent('click', true, false);
@@ -286,7 +286,7 @@
         },
 
         validate: function() {
-            let dropdown = Polymer.dom(this.root).querySelector('#fileType');
+            let dropdown = this.querySelector('#fileType');
             let editedItem = this.editedItem;
             let valid = true;
 

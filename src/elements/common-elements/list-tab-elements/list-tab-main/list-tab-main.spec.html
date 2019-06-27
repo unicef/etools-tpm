@@ -168,7 +168,7 @@
                 myEl.hasCollapse = true;
 
                 flush(function () {
-                    let rows = Polymer.dom(myEl.root).querySelectorAll('.list-element');
+                    let rows = myEl.querySelectorAll('.list-element');
                     let spy = sinon.stub(rows[1], '_toggleRowDetails');
                     spy.returns(undefined);
                     rows[1].detailsOpened = true;

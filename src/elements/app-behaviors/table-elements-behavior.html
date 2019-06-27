@@ -90,7 +90,7 @@
 
         validate: function() {
             if (this.editedItem && this.editedItem._delete) { return true; }
-            let elements = Polymer.dom(this.root).querySelectorAll('.validate-input'),
+            let elements = this.querySelectorAll('.validate-input'),
                     valid = true;
 
             Array.prototype.forEach.call(elements, (element) => {
@@ -196,9 +196,10 @@
             this.resetDialog();
         },
 
-        resetDialog: function(opened, domRoot = this.root) {
+        resetDialog: function(opened, el) {
             if (opened) { return; }
-            let elements = Polymer.dom(domRoot).querySelectorAll('.validate-input');
+            const elem = !el ? this : el;
+            let elements = elem.querySelectorAll('.validate-input');
             Array.prototype.forEach.call(elements, element => {
                 element.invalid = false;
                 element.value = '';

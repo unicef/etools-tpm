@@ -30,7 +30,7 @@
         _getTitleValue: function(value) { return value || ''; },
 
         validate: function() {
-            let elements = Polymer.dom(this.root).querySelectorAll('paper-input:not(.email)'),
+            let elements = this.querySelectorAll('paper-input:not(.email)'),
                 valid = true,
                 emailValid = this.$.emailInput.disabled || this.$.emailInput.validate();
 

@@ -28,8 +28,8 @@
         });
 
         it('change tabs', function () {
-            var attachmentsTab = Polymer.dom(myEl.root).querySelector('.attachments-tab'),
-                    detailsTab = Polymer.dom(myEl.root).querySelector('.details-tab');
+            var attachmentsTab = myEl.querySelector('.attachments-tab'),
+                    detailsTab = myEl.querySelector('.details-tab');
 
             attachmentsTab.click();
             assert.equal(myEl.routeData.tab, 'attachments');

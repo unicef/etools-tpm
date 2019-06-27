@@ -167,7 +167,7 @@ Polymer({
         if (this.actionAllowed(`visit_${this.visit.id}`, 'save') && !this.validateVisit()) { return; }
 
         let visitActivity = this.$.visitActivity;
-        let actionPoints = Polymer.dom(this.root).querySelector('#actionPoints');
+        let actionPoints = this.querySelector('#actionPoints');
 
         let data = this.getVisitData();
 
@@ -271,7 +271,7 @@ Polymer({
     },
 
     _getApproveData: function() {
-        let programmaticCheckboxes = Polymer.dom(this.root).querySelectorAll('paper-checkbox.programmatic-visit[checked]');
+        let programmaticCheckboxes = this.querySelectorAll('paper-checkbox.programmatic-visit[checked]');
         let programmaticVisits = programmaticCheckboxes.map(checkbox => +checkbox.getAttribute('activity-id'));
 
         let data = {mark_as_programmatic_visit: programmaticVisits};
@@ -289,7 +289,7 @@ Polymer({
 
     resetApprovalDialog: function(opened) {
         if (opened) { return; }
-        let checkboxes = Polymer.dom(this.root).querySelectorAll('paper-checkbox.programmatic-visit[checked]');
+        let checkboxes = this.querySelectorAll('paper-checkbox.programmatic-visit[checked]');
         _.each(checkboxes, checkbox => checkbox.checked = false);
         this.sendToUnicef = false;
         this.sendToTpm = false;

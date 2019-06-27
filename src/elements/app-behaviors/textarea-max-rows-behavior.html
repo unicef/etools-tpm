@@ -7,7 +7,7 @@
     TPMBehaviors.TextareaMaxRowsBehavior = {
         attached: function() {
             Polymer.dom.flush();
-            let paperTextareas = Polymer.dom(this.root).querySelectorAll('paper-textarea') || [];
+            let paperTextareas = this.querySelectorAll('paper-textarea') || [];
 
             paperTextareas.forEach((paperTextarea) => {
                 this.setMaxHeight(paperTextarea);
@@ -17,8 +17,8 @@
         setMaxHeight: function(paperTextarea) {
             if (!paperTextarea) { return false; }
 
-            let paperInputContainer = Polymer.dom(paperTextarea.root).querySelector('paper-input-container');
-            let textareaAutogrow = Polymer.dom(paperInputContainer).querySelector('.paper-input-input');
+            let paperInputContainer = paperTextarea.querySelector('paper-input-container');
+            let textareaAutogrow = paperInputContainer.querySelector('.paper-input-input');
 
             if (!textareaAutogrow) { return false; }
 
