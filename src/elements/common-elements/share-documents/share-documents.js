@@ -10,7 +10,7 @@
 
       properties: {
         selectedTask: {
-          type: Object, 
+          type: Object,
           notfiy: true,
           observer: '_taskSelected'
         },
@@ -105,12 +105,12 @@
       },
 
       observers: [
-        '_handleDisabledConfirm(selectedAttachments.splices)'
+        '_handleDisabledConfirm(selectedAttachments.length)'
       ],
 
       attached: function () {
         this.set('requestOptions.endpoint', this.getEndpoint('globalAttachments'));
-        
+
         const fileTypes = _.get(this.getData("staticDropdown"), "attachment_types_active")
         .filter(val=>!_.isEmpty(val))
         .map(
@@ -136,7 +136,7 @@
             partner: selectedTask.partner.name,
             source: 'Partnership Management Portal'
           }
-        })
+        });
 
         this.sendRequest(options).then(
           resp => {
@@ -145,12 +145,12 @@
             this.fire('global-loading', { type: 'share-documents' });
             this.fire('content-resize');
           }
-        ).catch(err => console.log(err))
+        ).catch(err => console.log(err));
       },
 
       _toggleChecked: function (e) {
         const {id} = e.model.item;
-        const isChecked = e.target.checked
+        const isChecked = e.target.checked;
         if (isChecked) {
           this.push('selectedAttachments', {attachment: id});
         } else {
@@ -192,8 +192,8 @@
         if (selectedFileType === '') { return; }
         if (selectedFileType === null) {
           // resets list when doc-type filter is cleared
-          this.set('filteredList', this.originalList); 
-          return; 
+          this.set('filteredList', this.originalList);
+          return;
         }
         const { value } = selectedFileType;
         const newFilteredList = this.originalList.filter(row => row.file_type.toLowerCase() === value.toLowerCase());
@@ -206,8 +206,11 @@
         this.set('shareParams', {});
       },
 
-      _handleDisabledConfirm: function(){
-        this.set('confirmDisabled',!this.selectedAttachments.length);
+      _handleDisabledConfirm: function(length) {
+        if (typeof length !== 'number') {
+          return;
+        }
+        this.set('confirmDisabled', length === 0);
       },
 
       _getTruncatedPd: function (pdNumber) {
@@ -216,5 +219,5 @@
         }
         return `.../${_.last(pdNumber.split('/'))}`;
       }
-    
-    })
+
+    });

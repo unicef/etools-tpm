@@ -1,7 +1,7 @@
 <!--import [polymer, etools-content-panel, lodash, etools-ajax/etools-ajax-request-behavior, paper-icon-button, paper-input, paper-tooltip, iron-icons, iron-flex-layout,
             etools-searchable-multiselection-menu]-->
 <!--import [module-styles, tab-layout-styles, tab-inputs-styles, etools-file-styles, list-header, list-element, file-upload, simple-list-item,
-            dialog-element, etools-app-config, date-behavior, 
+            dialog-element, etools-app-config, date-behavior,
              static-data-behavior, common-methods-behavior, date-behavior, table-elements-behavior,
             activity-to-drd-value, update-attachments, share-documents]-->
 
@@ -9,7 +9,7 @@
     <template>
         <!-- inject styles './assign-attachments.scss'-->
         <style include="module-styles tab-layout-styles iron-flex tab-inputs-styles etools-file-styles">
-           
+
         </style>
 
         <get-attachments base-id="[[baseId]]"
@@ -64,7 +64,7 @@
                                   items="[[dataItems]]"
                                   as="attachment"
                                   filter="{{_isAttachmentForTask(item)}}">
-                    
+
                             <simple-list-item>
                                 <div class="row-data">
                                     <span class="w20">[[_getAttachmentType(attachment)]]</span>
@@ -72,16 +72,16 @@
                                         <iron-icon icon="icons:attachment"
                                                    class="download-icon">
                                         </iron-icon>
-                                        <a href$="[[attachment.file]]" 
-                                           class="truncate" 
+                                        <a href$="[[attachment.file]]"
+                                           class="truncate"
                                            target="_blank">[[attachment.filename]]
                                         </a>
                                     </div>
                                     <span class="w18">[[getDate(attachment)]]</span>
                                     <a on-click="deleteAssignedFile"
                                         class="delete-icon">
-                                        
-                                        <iron-icon 
+
+                                        <iron-icon
                                             hidden$="[[isTabReadonly(basePermissionPath)]]"
                                             icon="icons:cancel"></iron-icon>
 
@@ -111,10 +111,10 @@
                                         <span class="w18">[[linkedAttachment.created]]</span>
                                         <a on-click="_openDeleteLinkDialog"
                                             class="delete-icon">
-                                            <iron-icon 
+                                            <iron-icon
                                                 hidden$="[[isTabReadonly(basePermissionPath)]]"
                                                 icon="icons:cancel"></iron-icon>
-    
+
                                             <paper-tooltip offset="0">Remove</paper-tooltip>
                                         </a>
                                         <span>PMP</span>
@@ -124,7 +124,7 @@
                         </template>
                     </div>
                 </div>
-                
+
             </template>
 
             <template is="dom-if"
@@ -140,7 +140,7 @@
             </template>
         </etools-content-panel>
 
-        <dialog-element id="deleteLinks" 
+        <dialog-element id="deleteLinks"
             opened="{{deleteLinkOpened}}"
             dialog-name="[[linkToDeleteId]]"
             dialog-title="Are you sure you want to delete?"
@@ -241,7 +241,7 @@
                         on-dialog-confirmed="_SendShareRequest"
                         confirm-disabled="{{confirmDisabled}}"
                         request-in-process="{{requestInProcess}}">
-            <share-documents 
+            <share-documents
                 id="shareDocuments"
                 data-base-path="[[dataBasePath]]"
                 base-permission-path="[[basePermissionPath]]"
