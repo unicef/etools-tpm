@@ -397,27 +397,29 @@ Polymer({
             csrf: true,
             body:  { attachments } ,
             method: 'POST'
-        }
+        };
         this.set('requestInProcess', true);
         this.sendRequest(options)
             .then((res)=> {
                 this.fire('toast', {
                     text: 'Documents shared successfully.'
                 });
+                this.shareReqFinished();
             })
-            .catch(this._handleShareError.bind(this))
-            .finally(() => {
-                this.set('requestInProcess', false);
-                this.set('shareDialogOpened', false);
-                this._getLinkedAttachments(); // refresh the list
-            })
+            .catch(this._handleShareError.bind(this));
+    },
+
+    shareReqFinished: function() {
+        this.set('requestInProcess', false);
+        this.set('shareDialogOpened', false);
+        this._getLinkedAttachments(); // refresh the list
     },
 
     _handleShareError: function(err){
         let nonField = this.checkNonField(err);
         let message;
         if (nonField) {
-            message = `Nonfield error: ${nonField}`
+            message = `Nonfield error: ${nonField}`;
         } else {
             message = err.response && err.response.detail ? `Error: ${err.response.detail}`
             : 'Error sharing documents.';
@@ -425,6 +427,7 @@ Polymer({
         this.fire('toast', {
             text: message
         });
+        this.shareReqFinished();
     },
 
     _getFilteredTasks: function(activities, columnsForTaskLabel){
