@@ -368,7 +368,7 @@ Polymer({
         }
     },
 
-   
+
     _isAttachmentForTask: function(activity){
         return function(attachment){
            return  attachment.object_id === activity.id;
@@ -419,7 +419,7 @@ Polymer({
         if (nonField) {
             message = `Nonfield error: ${nonField}`
         } else {
-            message = err.response && err.response.detail ? `Error: ${err.response.detail}` 
+            message = err.response && err.response.detail ? `Error: ${err.response.detail}`
             : 'Error sharing documents.';
         }
         this.fire('toast', {
@@ -434,7 +434,7 @@ Polymer({
     _openDeleteLinkDialog: function (e) {
         const { linkedAttachment } = e.model;
         this.set('linkToDeleteId', linkedAttachment.id);
-        this.deleteLinkOpened = true; 
+        this.deleteLinkOpened = true;
     },
 
     _removeLink: function ({detail}) {
