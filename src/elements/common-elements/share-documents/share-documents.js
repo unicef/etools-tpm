@@ -150,7 +150,8 @@
 
       _toggleChecked: function (e) {
         const {id} = e.model.item;
-        const isChecked = e.target.checked;
+        const target = Polymer.dom(e).localTarget;
+        const isChecked = target.checked;
         if (isChecked) {
           this.push('selectedAttachments', {attachment: id});
         } else {
