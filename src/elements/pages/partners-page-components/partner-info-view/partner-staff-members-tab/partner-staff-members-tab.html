@@ -174,7 +174,7 @@
                         <!-- Position -->
                         <paper-input
                                 class$="validate-input {{_setRequired('user.profile.job_title', basePermissionPath)}}"
-                                value="{{editedItem.user.job_title}}"
+                                value="{{editedItem.user.profile.job_title}}"
                                 label="[[getLabel('user.profile.job_title', basePermissionPath)]]"
                                 placeholder="[[getPlaceholderText('user.profile.job_title', basePermissionPath)]]"
                                 required="{{_setRequired('user.profile.job_title', basePermissionPath)}}"
@@ -194,7 +194,7 @@
                             <!-- Phone number -->
                             <paper-input
                                     class$="validate-input {{_setRequired('user.profile.phone_number', basePermissionPath)}}"
-                                    value="{{editedItem.user.phone_number}}"
+                                    value="{{editedItem.user.profile.phone_number}}"
                                     allowed-pattern="[\d\s-]"
                                     label="[[getLabel('user.profile.phone_number', basePermissionPath)]]"
                                     placeholder="[[getPlaceholderText('user.profile.phone_number', basePermissionPath)]]"
