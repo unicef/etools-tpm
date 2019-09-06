@@ -66,13 +66,6 @@
 
                 this._setFilterValue(newFilter);
                 this.push('usedFilters', newFilter);
-
-                //removing unneccessary api call 
-                //if (this.queryParams[query] === undefined) {
-                //    let queryObject = {};
-                //    queryObject[query] = true;
-                //    this.updateQueries(queryObject);
-                //}
             } else {
                 this.removeFilter(e);
             }
@@ -215,7 +208,7 @@
                 queryObject[query] = selectedValues.
                     map(val => val[optionValue]).
                     join(',');
-            } else if (detail.prettyDate !== null && detail.prettyDate!==undefined && query) {
+            } else if (detail.prettyDate !== null && detail.prettyDate !== undefined && query) {
                 queryObject[query] = detail.prettyDate;
             }
 
@@ -227,7 +220,7 @@
         },
 
         _isMulti: function(item) {
-            if (item.singleSelection){
+            if (item.singleSelection) {
                 return false;
             }
             return true;
