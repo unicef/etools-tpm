@@ -10,7 +10,9 @@ Polymer({
         TPMBehaviors.CommonMethodsBehavior,
         TPMBehaviors.ActivityToDrD,
         TPMBehaviors.DateBehavior,
+        /*jshint ignore:start*/
         EtoolsAjaxRequestBehavior,
+        /*jshint ignore:end*/
         etoolsAppConfig.globals,
     ],
 
@@ -28,7 +30,7 @@ Polymer({
                 };
             }
         },
-        columnsForTaskLabel:{
+        columnsForTaskLabel: {
             type: Array,
             value: [{
                 'label': 'Related Task',
@@ -80,8 +82,8 @@ Polymer({
                 'size': 18,
                 'label': 'Document Type',
             }, {
-                'size': "",
-                "class": "header-document",
+                'size': '',
+                'class': 'header-document',
                 'label': 'Document',
             }, {
                 'size': 15,
@@ -181,27 +183,27 @@ Polymer({
         '_setDropdownOptions(dataItems, columns, dataItems.*)',
     ],
 
-    _getPartnerOrganizations: function () {
+    _getPartnerOrganizations: function() {
         this.partnerOrganizations = this.getData('partnerOrganizations');
     },
 
-    _baseIdChanged: function(id){
-        if (!isNaN(id) && !this.linkedAttachmentsInit){
+    _baseIdChanged: function(id) {
+        if (!isNaN(id) && !this.linkedAttachmentsInit) {
             this._getLinkedAttachments();
             this.set('linkedAttachmentsInit', true);
         }
     },
 
-    _getLinkedAttachments: function () {
+    _getLinkedAttachments: function() {
         const options = {
-            endpoint: this.getEndpoint('attachmentLinksForVisit', { id: this.baseId }),
+            endpoint: this.getEndpoint('attachmentLinksForVisit', {id: this.baseId}),
             csrf: true,
-        }
+        };
         this.set('requestInProcess', true);
         this.sendRequest(options).then(response => {
             this.set('linkedAttachments', response);
             this.set('requestInProcess', false);
-        })
+        });
     },
 
     _resetDialog: function(dialogOpened) {
@@ -210,7 +212,7 @@ Polymer({
         this.resetDialog(dialogOpened);
     },
 
-    _resetShareDialog: function(opened){
+    _resetShareDialog: function(opened) {
         if (opened) { return; }
         this.resetDialog(opened, this.$.shareDocuments.shadowRoot);
         this.$.shareDocuments.resetValues();
@@ -237,7 +239,7 @@ Polymer({
     showActivity: function(activityTask) {
         let id = activityTask && activityTask.id;
         const hasAttachments = id && this.dataItems && _.some(this.dataItems, (attachment) => attachment.object_id === id);
-        const hasLinkedAttachments = id && this.linkedAttachments && _.some(this.linkedAttachments, attachment=> attachment.activity_id=== id);
+        const hasLinkedAttachments = id && this.linkedAttachments && _.some(this.linkedAttachments, attachment => attachment.activity_id === id);
         return hasAttachments || hasLinkedAttachments;
     },
 
@@ -261,19 +263,19 @@ Polymer({
         this.set('confirmDisabled', true);
     },
 
-    _handleDropdownPermissions: function (e, detail) {
-        if (!this.partnerOrganizations){
+    _handleDropdownPermissions: function(e, detail) {
+        if (!this.partnerOrganizations) {
             return;
         }
         const partner = this.partnerOrganizations.find(partner=> partner.id === _.get(detail, 'selectedValues.partner.id'));
         if (!partner) { return; }
-        if (partner.partner_type === "Civil Society Organization"){
+        if (partner.partner_type === 'Civil Society Organization') {
             const otherType = this.fileTypes.find(fileType=> fileType.display_name === 'Other');
             this.set('editedItem.file_type', otherType);
-            this.set('fileTypeDropdownDisabled', true)
+            this.set('fileTypeDropdownDisabled', true);
         } else {
             this.set('editedItem.file_type', {});
-            this.set('fileTypeDropdownDisabled', false)
+            this.set('fileTypeDropdownDisabled', false);
         }
     },
 
@@ -368,22 +370,16 @@ Polymer({
         }
     },
 
-
-    _isAttachmentForTask: function(activity){
-        return function(attachment){
-           return  attachment.object_id === activity.id;
-        }
+    _isAttachmentForTask: function(activity) {
+        return attachment => attachment.object_id === activity.id;
     },
 
-
-    _isLinkedAttachmentForTask: function(activity){
-        return function (attachment) {
-            return attachment.activity_id === activity.id;
-        }
+    _isLinkedAttachmentForTask: function(activity) {
+        return attachment => attachment.activity_id === activity.id;
     },
 
-    _getAttachmentType: function(attachment){
-        return this.fileTypes.find(fileType=> fileType.value === attachment.file_type).display_name;
+    _getAttachmentType: function(attachment) {
+        return this.fileTypes.find(fileType => fileType.value === attachment.file_type).display_name;
     },
 
     getDate: function(item) {
@@ -391,16 +387,16 @@ Polymer({
     },
 
     _SendShareRequest: function() {
-        const { id, attachments } = this.shareParams;
+        const {id, attachments} = this.shareParams;
         const options = {
-            endpoint: this.getEndpoint('linkActivityAttachments', { id }),
+            endpoint: this.getEndpoint('linkActivityAttachments', {id}),
             csrf: true,
-            body:  { attachments } ,
+            body:  {attachments} ,
             method: 'POST'
         };
         this.set('requestInProcess', true);
         this.sendRequest(options)
-            .then((res)=> {
+            .then(() => {
                 this.fire('toast', {
                     text: 'Documents shared successfully.'
                 });
@@ -415,7 +411,7 @@ Polymer({
         this._getLinkedAttachments(); // refresh the list
     },
 
-    _handleShareError: function(err){
+    _handleShareError: function(err) {
         let nonField = this.checkNonField(err);
         let message;
         if (nonField) {
@@ -430,17 +426,17 @@ Polymer({
         this.shareReqFinished();
     },
 
-    _getFilteredTasks: function(activities, columnsForTaskLabel){
-       return this._getATOptions(activities, columnsForTaskLabel);
+    _getFilteredTasks: function(activities, columnsForTaskLabel) {
+        return this._getATOptions(activities, columnsForTaskLabel);
     },
 
-    _openDeleteLinkDialog: function (e) {
-        const { linkedAttachment } = e.model;
+    _openDeleteLinkDialog: function(e) {
+        const {linkedAttachment} = e.model;
         this.set('linkToDeleteId', linkedAttachment.id);
         this.deleteLinkOpened = true;
     },
 
-    _removeLink: function ({detail}) {
+    _removeLink: function({detail}) {
         this.deleteLinkOpened = false;
         const id = detail.dialogName;
         this.sendRequest({

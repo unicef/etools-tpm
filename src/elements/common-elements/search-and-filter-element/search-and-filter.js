@@ -19,7 +19,7 @@
             searchLabel: {
                 type: String
             },
-            searchString: { 
+            searchString: {
                 type: String
             },
             usedFilters: {
@@ -51,7 +51,7 @@
             }, 300);
         },
 
-        _isSelected: function(filter, _) {
+        _isSelected: function(filter) {
             const query = typeof filter === 'string' ? filter : filter.query;
             return this.usedFilters.findIndex(usedFilter => usedFilter.query === query) !== -1;
         },
@@ -66,14 +66,6 @@
 
                 this._setFilterValue(newFilter);
                 this.push('usedFilters', newFilter);
-                
-                // removing unneccessary api call 
-
-                // if (this.queryParams[query] === undefined) {
-                //     let queryObject = {};
-                //     queryObject[query] = true;
-                //     this.updateQueries(queryObject);
-                // }
             } else {
                 this.removeFilter(e);
             }
@@ -95,7 +87,7 @@
             if (indexToRemove !== -1) {
                 this.splice('usedFilters', indexToRemove, 1);
             }
-            
+
             this.updateQueries(queryObject);
         },
 
@@ -120,7 +112,7 @@
                     } else if (queryParams[filter.query] === undefined) {
                         this.removeFilter(filter.query);
                     }
-            });
+                });
 
                 if (queryParams.search) {
                     this.set('searchString', queryParams.search);
@@ -156,7 +148,7 @@
             if (!filter || _.isEmpty(filter) || filterValue === undefined) {
                 return;
             }
-            
+
             let optionValue = filter.optionValue;
             let exists;
             if (filter.type === 'datepicker') {
@@ -164,13 +156,13 @@
             } else {
                 exists = filter.selection.find((selectionItem) => filterValue.indexOf(selectionItem[optionValue].toString()) !== -1);
             }
-            
+
             if (!exists) {
                 return;
             }
-            
+
             if (filter.type === 'datepicker') {
-                return filterValue
+                return filterValue;
             }
 
             let splitValues = filterValue.split(',');
@@ -197,40 +189,38 @@
             if (!e || !e.currentTarget || !detail) {
                 return;
             }
-            let query = e.currentTarget.id;
-            let queryObject = { page: '1' };
-            if (detail.selectedValues && query) {
-                let filter = this._getFilter(query);
-                let optionValue = filter.optionValue || 'value';
-                
-                // conform data structure for single select menu
-                const selectedValues = getValuesAsArray(detail.selectedValues);
-
-                queryObject[query] = selectedValues.
-                    map(val => val[optionValue]).
-                    join(',');
-            } else if (detail.prettyDate!== null && detail.prettyDate!==undefined && query) {
-                queryObject[query] = detail.prettyDate;
-            }
-            
-            this.updateQueries(queryObject);
-
-            function getValuesAsArray(values){
+            function getValuesAsArray(values) {
                 if (Array.isArray(values)) {
                     return values;
                 }
 
                 return [values];
             }
+            let query = e.currentTarget.id;
+            let queryObject = {page: '1'};
+            if (detail.selectedValues && query) {
+                let filter = this._getFilter(query);
+                let optionValue = filter.optionValue || 'value';
 
+                // conform data structure for single select menu
+                const selectedValues = getValuesAsArray(detail.selectedValues);
+
+                queryObject[query] = selectedValues.
+                    map(val => val[optionValue]).
+                    join(',');
+            } else if (detail.prettyDate !== null && detail.prettyDate !== undefined && query) {
+                queryObject[query] = detail.prettyDate;
+            }
+
+            this.updateQueries(queryObject);
         },
 
         filterTypeIs: function(type, filterType) {
             return type === filterType;
         },
 
-        _isMulti: function(item){
-            if (item.singleSelection){
+        _isMulti: function(item) {
+            if (item.singleSelection) {
                 return false;
             }
             return true;
