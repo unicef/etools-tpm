@@ -251,7 +251,7 @@ Polymer({
     _isReadOnly: function(field, partner, intervention, someRequestInProcess, basePermissionPath) {
         let fieldReadonly = this.isReadOnly(field, basePermissionPath);
         let partnerDefined = partner && (partner.id || partner.id === 0) || partner === 'true';
-        let partnerRequiresIntervention = partner && this.specialPartnerTypes.indexOf(partner.partner_type) !== -1;
+        // let partnerRequiresIntervention = partner && this.specialPartnerTypes.indexOf(partner.partner_type) !== -1;
         return fieldReadonly || !partnerDefined || someRequestInProcess;
     },
 
@@ -290,7 +290,7 @@ Polymer({
     },
 
     _handleShownCpOutputs: function() {
-        if (this.editedItem.partner && this.editedItem.partner.partner_type === 'Government'){
+        if (this.editedItem.partner && this.editedItem.partner.partner_type === 'Government') {
             this.set('cpOutputs', this.allCpOutputs);
         }
     },
@@ -556,17 +556,17 @@ Polymer({
         return null;
     },
 
-    capitalize: function(string){
+    capitalize: function(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     },
 
     _getPdOptions: function(pds) {
-        return pds.map(pd=>{
+        return pds.map(pd => {
             const label = `${pd.number} | ${this.capitalize(pd.status)} | ${pd.title}`;
             return {
                 id: pd.id,
                 label
-            }
-        })
+            };
+        });
     }
 });

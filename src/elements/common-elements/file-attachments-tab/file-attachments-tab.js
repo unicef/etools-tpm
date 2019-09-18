@@ -112,14 +112,14 @@
             this.resetDialog(dialogOpened);
         },
 
-        _setDefaultFiletype: function (dialogOpened) {
+        _setDefaultFiletype: function(dialogOpened) {
             if (!dialogOpened || !this.disableFiletype) {
                 return;
             }
 
-             // sets default disabled document type to Other
-             this.editedItem.type = this.fileTypes.find(type=>type.display_name === 'Other');
-             this.set('editedItem.type',this.fileTypes.find(type=>type.display_name === 'Other'));
+            // sets default disabled document type to Other
+            this.editedItem.type = this.fileTypes.find(type => type.display_name === 'Other');
+            this.set('editedItem.type', this.fileTypes.find(type => type.display_name === 'Other'));
         },
 
         _getFileType: function(fileType) {

@@ -252,7 +252,7 @@
                 let data = this.getData(pair.dataKey) || [];
                 this.setFilterSelection(filterIndex, data);
             });
-        }, 
+        },
 
         setFilterSelection: function(filterIndex, data) {
             if (filterIndex !== undefined && filterIndex !== -1) {
