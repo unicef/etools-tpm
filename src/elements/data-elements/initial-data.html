@@ -132,9 +132,9 @@
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganizations');
                         this.sectionsEndpoint = this.getEndpoint('sectionsCovered').url;
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
-                        this.officesEndpoint = this.getEndpoint('offices').url;
                         this.cpOutputsUrl = this.getEndpoint('cpOutputsV2').url;
                     }
+                    this.officesEndpoint = this.getEndpoint('offices').url;
 
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
                     this.partnersUrl = this.getEndpoint('partnersList').url +  '&page_size=all';
@@ -182,7 +182,7 @@
 
                 _updateVisitFilters: function() {
                     let time = new Date().getTime();
-
+                    
                     this.implemPartnersUrl = this.getEndpoint('implemPartners').url + `?reload=${time}`;
                     this.filterSectionsUrl = this.getEndpoint('filterSections').url + `?reload=${time}`;
                     this.filterCpOutputsUrl = this.getEndpoint('filterCpOutputs').url + `?reload=${time}`;
@@ -221,10 +221,10 @@
                 },
 
                 _implemPartnersLoaded: function (data, detail) {
-                    if (!detail) {
+                    if (!detail) {  
                         this._implemPartnersError();
                     }
-
+                    
                     if (dataLoaded.implemPartners) {
                         this._updateData('implemPartners', detail);
                     } else {
