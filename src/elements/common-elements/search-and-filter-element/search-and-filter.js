@@ -109,7 +109,7 @@
 
                     if (!usedFilter && queryParams[filter.query] !== undefined) {
                         this.addFilter(filter.query);
-                    } else if (queryParams[filter.query] === undefined) {
+                    } else if (!usedFilter && queryParams[filter.query] === undefined) {
                         this.removeFilter(filter.query);
                     }
                 });
@@ -136,9 +136,9 @@
                 return;
             }
             let filterValue = this.get(`queryParams.${filter.query}`);
-
             if (filterValue !== undefined) {
-                filter.selectedValues = this._getFilterValue(filterValue, filter);
+                const val = this._getFilterValue(filterValue, filter);
+                filter.selectedValues = val
             } else {
                 filter.selectedValues = undefined;
             }
@@ -204,6 +204,7 @@
 
                 // conform data structure for single select menu
                 const selectedValues = getValuesAsArray(detail.selectedValues);
+                console.log("TCL: selectedValues", selectedValues)
 
                 queryObject[query] = selectedValues.
                     map(val => val[optionValue]).
