@@ -204,7 +204,6 @@
 
                 // conform data structure for single select menu
                 const selectedValues = getValuesAsArray(detail.selectedValues);
-                console.log("TCL: selectedValues", selectedValues)
 
                 queryObject[query] = selectedValues.
                     map(val => val[optionValue]).
