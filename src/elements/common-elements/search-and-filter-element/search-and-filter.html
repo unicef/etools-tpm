@@ -39,7 +39,7 @@
                                     option-value="[[item.optionValue]]"
                                     on-value-change="_changeFilterValue"
                                     hide-search="[[item.hideSearch]]"
-                                    multi="[[_isMulti(item)]]">
+                                    multi="[[!item.singleSelection]]">
                                 </etools-searchable-multiselection-menu>
                             </template>
 
