@@ -209,17 +209,17 @@ Polymer({
 
     _arrayAsColumn: function(array, property) {
         let isValidArgs = Array.isArray(array) && property && (typeof property === 'string');
-        
+
         const nested = property.split('.');
         let styleAttribute = 'style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"';
-        let propertyValues = isValidArgs ? 
+        let propertyValues = isValidArgs ?
             array.map(value=> {
-                return nested.reduce((curr, next, i) => {
-                    return curr[next]
-                }, value)
+                return nested.reduce((curr, next) => {
+                    return curr[next];
+                }, value);
             }) :
             [];
-       
+
         let html = propertyValues.map((value) => {
             return `<div ${styleAttribute}>${value}</div>`;
         });
