@@ -286,7 +286,7 @@
         },
 
         validate: function() {
-            let dropdown = this.querySelector('#fileType');
+            let dropdown = this.shadowRoot.querySelector('#fileType');
             let editedItem = this.editedItem;
             let valid = true;
 
