@@ -207,7 +207,9 @@
         },
 
         _sendRequest: function() {
-            if (!this.dialogOpened || !this.validate()) { return; }
+            if (!this.deleteDialog) {
+              if (!this.dialogOpened || !this.validate()) { return; }
+            }
 
             this.requestInProcess = true;
             let attachmentsData, method;
@@ -286,7 +288,7 @@
         },
 
         validate: function() {
-            let dropdown = this.shadowRoot.querySelector('#fileType');
+            let dropdown = this.querySelector('#fileType');
             let editedItem = this.editedItem;
             let valid = true;
 
