@@ -6,97 +6,86 @@
         <user-data user="{{user}}"></user-data>
 
         <!--tpm partners-->
-        <etools-ajax-sp
-                id="tpmPartners"
-                url="[[partnersUrl]]"
-                on-success="_partnersLoaded"
-                on-fail="_partnersError">
+        <etools-ajax-sp id="tpmPartners"
+                        url="[[partnersUrl]]"
+                        on-success="_partnersLoaded"
+                        on-fail="_partnersError">
         </etools-ajax-sp>
 
-        <etools-ajax-sp
-                method="OPTIONS"
-                url="[[partnersOptionsUrl]]"a
-                on-success="_handlePartnersOptions"
-                on-fail="_handlePartnersOptions">
+        <etools-ajax-sp method="OPTIONS"
+                        url="[[partnersOptionsUrl]]"
+                        a
+                        on-success="_handlePartnersOptions"
+                        on-fail="_handlePartnersOptions">
         </etools-ajax-sp>
 
-        <etools-ajax-sp
-                method="OPTIONS"
-                url="[[visitsOptionsUrl]]"
-                on-success="_handleVisitsOptions"
-                on-fail="_handleVisitsOptions">
+        <etools-ajax-sp method="OPTIONS"
+                        url="[[visitsOptionsUrl]]"
+                        on-success="_handleVisitsOptions"
+                        on-fail="_handleVisitsOptions">
         </etools-ajax-sp>
 
         <!--partner organisations-->
-        <etools-ajax-sp
-                endpoint="[[organisationsEndpoint]]"
-                caching-storage="custom"
-                dexie-db-collection="partners"
-                on-success="_organisationsLoaded"
-                on-fail="_organisationsError">
+        <etools-ajax-sp endpoint="[[organisationsEndpoint]]"
+                        caching-storage="custom"
+                        dexie-db-collection="partners"
+                        on-success="_organisationsLoaded"
+                        on-fail="_organisationsError">
         </etools-ajax-sp>
 
         <!-- filter TP-->
-        <etools-ajax-sp
-                url="[[implemPartnersUrl]]"
-                on-success="_implemPartnersLoaded"
-                on-fail="_implemPartnersError">
+        <etools-ajax-sp url="[[implemPartnersUrl]]"
+                        on-success="_implemPartnersLoaded"
+                        on-fail="_implemPartnersError">
         </etools-ajax-sp>
 
         <!-- filter Sections-->
-        <etools-ajax-sp
-                url="[[filterSectionsUrl]]"
-                on-success="_filterSectionsLoaded"
-                on-fail="_filterSectionsError">
+        <etools-ajax-sp url="[[filterSectionsUrl]]"
+                        on-success="_filterSectionsLoaded"
+                        on-fail="_filterSectionsError">
         </etools-ajax-sp>
 
         <!-- filter CP Outputs-->
-        <etools-ajax-sp
-                url="[[filterCpOutputsUrl]]"
-                on-success="_filterOutputsLoaded"
-                on-fail="_filterOutputsError">
+        <etools-ajax-sp url="[[filterCpOutputsUrl]]"
+                        on-success="_filterOutputsLoaded"
+                        on-fail="_filterOutputsError">
         </etools-ajax-sp>
 
         <!--Sections Covered-->
-        <etools-ajax-sp
-                url="[[sectionsEndpoint]]"
-                on-success="_sectionsLoaded"
-                on-fail="_sectionsError">
+        <etools-ajax-sp url="[[sectionsEndpoint]]"
+                        on-success="_sectionsLoaded"
+                        on-fail="_sectionsError">
         </etools-ajax-sp>
 
         <!--Unicef Users-->
-        <etools-ajax-sp
-                url="[[unicefUsersEndpoint]]"
-                on-success="_unicefUsersLoaded"
-                on-fail="_unicefUsersError">
+        <etools-ajax-sp url="[[unicefUsersEndpoint]]"
+                        on-success="_unicefUsersLoaded"
+                        on-fail="_unicefUsersError">
         </etools-ajax-sp>
 
         <!--Offices-->
-        <etools-ajax-sp
-                url="[[officesEndpoint]]"
-                on-success="_officesLoaded"
-                on-fail="_officesError">
+        <etools-ajax-sp url="[[officesEndpoint]]"
+                        on-success="_officesLoaded"
+                        on-fail="_officesError">
         </etools-ajax-sp>
 
         <!--Locations-->
-        <etools-ajax-sp
-                endpoint="[[locationsEndpoint]]"
-                caching-storage="custom"
-                dexie-db-collection="locations"
-                on-success="_locationsLoaded"
-                on-fail="_locationsError">
+        <etools-ajax-sp endpoint="[[locationsEndpoint]]"
+                        caching-storage="custom"
+                        dexie-db-collection="locations"
+                        on-success="_locationsLoaded"
+                        on-fail="_locationsError">
         </etools-ajax-sp>
 
         <!-- CP Outputs -->
-        <etools-ajax-sp
-                url="[[cpOutputsUrl]]"
-                on-success="_cpOutputsLoaded"
-                on-fail="_cpOutputsLoaded">
+        <etools-ajax-sp url="[[cpOutputsUrl]]"
+                        on-success="_cpOutputsLoaded"
+                        on-fail="_cpOutputsLoaded">
         </etools-ajax-sp>
     </template>
 
     <script>
-        (function() {
+        (function () {
             'use strict';
 
             let dataLoaded = {};
@@ -116,17 +105,18 @@
                     'user-profile-loaded': 'loadStaticData'
                 },
 
-                attached: function() {
+                attached: function () {
                     document.addEventListener('reload-tpm-partners', this._reloadTpmPartners.bind(this));
                     document.addEventListener('update-visit-filters', this._updateVisitFilters.bind(this));
                 },
 
-                detached: function() {
+                detached: function () {
                     document.removeEventListener('reload-tpm-partners', this._reloadTpmPartners);
                     document.removeEventListener('update-visit-filters', this._updateVisitFilters);
                 },
 
                 loadStaticData: function () {
+                    const TPM_STATIC_PREFIX = '&externals_module=tpm'
                     if (!this.isTpmUser()) {
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganizations');
@@ -134,10 +124,10 @@
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
                         this.cpOutputsUrl = this.getEndpoint('cpOutputsV2').url;
                     }
-                    this.officesEndpoint = this.getEndpoint('offices').url;
+                    this.officesEndpoint = this.getEndpoint('offices').url + TPM_STATIC_PREFIX;
 
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
-                    this.partnersUrl = this.getEndpoint('partnersList').url +  '&page_size=all';
+                    this.partnersUrl = this.getEndpoint('partnersList').url + '&page_size=all' + TPM_STATIC_PREFIX;
                     this.locationsEndpoint = this.getEndpoint('locations');
                     this._getStaticDropdownData();
                     this._allDataLoaded();
@@ -148,19 +138,19 @@
                         csrf: true,
                         endpoint: this.getEndpoint('static')
                     };
-                    this.sendRequest(reqOpts).then(resp=> this._setData('staticDropdown', resp));
+                    this.sendRequest(reqOpts).then(resp => this._setData('staticDropdown', resp));
                 },
 
-                _allDataLoaded: function() {
+                _allDataLoaded: function () {
                     let tpmUser = this.isTpmUser();
                     if (dataLoaded.visitsOptions && dataLoaded.partners &&
                         (tpmUser || (dataLoaded.partnersOptions && dataLoaded.organizations &&
-                        dataLoaded.sections && dataLoaded.unicefUsers && dataLoaded.offices))) {
+                            dataLoaded.sections && dataLoaded.unicefUsers && dataLoaded.offices))) {
                         this.fire('initial-data-loaded');
                     }
                 },
 
-                _filtersDataLoaded: function() {
+                _filtersDataLoaded: function () {
                     if (dataLoaded.implemPartners && dataLoaded.filterSections && dataLoaded.filterCpOutputs && dataLoaded.offices) {
                         this._triggerGlobalEvent('visit-filters-updated');
                         dataLoaded.filters = true;
@@ -170,31 +160,31 @@
                     }
                 },
 
-                _triggerGlobalEvent: function(eventName, data) {
-                    let detail = {detail: data};
+                _triggerGlobalEvent: function (eventName, data) {
+                    let detail = { detail: data };
                     let event = new CustomEvent(eventName, detail);
                     document.dispatchEvent(event);
                 },
 
-                _reloadTpmPartners: function() {
+                _reloadTpmPartners: function () {
                     this.partnersUrl = this.getEndpoint('partnersList').url + `?reload=${new Date().getTime()}`;
                 },
 
-                _updateVisitFilters: function() {
+                _updateVisitFilters: function () {
                     let time = new Date().getTime();
-                    
-                    this.implemPartnersUrl = this.getEndpoint('implemPartners').url + `?reload=${time}`;
-                    this.filterSectionsUrl = this.getEndpoint('filterSections').url + `?reload=${time}`;
+
+                    this.implemPartnersUrl = this.getEndpoint('implemPartners').url + `?reload=${time}${TPM_STATIC_PREFIX}`;
+                    this.filterSectionsUrl = this.getEndpoint('filterSections').url + `?reload=${time}${TPM_STATIC_PREFIX}`;
                     this.filterCpOutputsUrl = this.getEndpoint('filterCpOutputs').url + `?reload=${time}`;
                 },
 
-                _partnersLoaded: function(data, partners) {
+                _partnersLoaded: function (data, partners) {
                     let partnerId = partners && partners[0] && partners[0].id,
                         tpmUser = this.isTpmUser();
                     if (tpmUser && !partnerId) {
                         console.error('Can not get TPM Partner id!');
                         this.fire('initial-data-loaded');
-                    } else if(!partners) {
+                    } else if (!partners) {
                         this._partnersError()
                     }
 
@@ -210,28 +200,28 @@
                     this._allDataLoaded();
                 },
 
-                _organisationsLoaded: function(data, detail) {
+                _organisationsLoaded: function (data, detail) {
                     if (!detail) {
                         this._organisationsError();
                     }
-                    let partnerOrganizations = _.sortBy(detail, ['name']).filter(({name})=>name.length);
+                    let partnerOrganizations = _.sortBy(detail, ['name']).filter(({ name }) => name.length);
                     this._setData('partnerOrganizations', partnerOrganizations);
                     dataLoaded.organizations = true;
                     this._allDataLoaded();
                 },
 
                 _implemPartnersLoaded: function (data, detail) {
-                    if (!detail) {  
+                    if (!detail) {
                         this._implemPartnersError();
                     }
-                    
+
                     if (dataLoaded.implemPartners) {
                         this._updateData('implemPartners', detail);
                     } else {
                         this._setData('implemPartners', detail);
                     }
-                    
-                    dataLoaded.implemPartners = true; 
+
+                    dataLoaded.implemPartners = true;
                     this._filtersDataLoaded();
                 },
 
@@ -249,7 +239,7 @@
                     this._filtersDataLoaded();
                 },
 
-                _filterOutputsLoaded: function(data, detail) {
+                _filterOutputsLoaded: function (data, detail) {
                     if (!detail) {
                         this._filterOutputsError();
                     }
@@ -263,7 +253,7 @@
                     this._filtersDataLoaded();
                 },
 
-                _handleVisitsOptions: function(data, detail) {
+                _handleVisitsOptions: function (data, detail) {
                     let actions = detail && detail.actions;
                     if (!this.isValidCollection(actions)) {
                         this._responseError('visit options');
@@ -280,7 +270,7 @@
                     this._allDataLoaded();
                 },
 
-                _handlePartnersOptions: function(data, detail) {
+                _handlePartnersOptions: function (data, detail) {
                     let actions = detail && detail.actions;
                     if (!this.isValidCollection(actions)) {
                         this._responseError('partners options');
@@ -293,11 +283,11 @@
                     this._allDataLoaded();
                 },
 
-                _partnersError: function() {
+                _partnersError: function () {
                     this._responseError('TPM partners');
                 },
 
-                _sectionsLoaded: function(data, detail) {
+                _sectionsLoaded: function (data, detail) {
                     if (!detail) {
                         this._sectionsError();
                     }
@@ -306,7 +296,7 @@
                     this._allDataLoaded();
                 },
 
-                _unicefUsersLoaded: function(data, detail) {
+                _unicefUsersLoaded: function (data, detail) {
                     if (!detail) {
                         this._unicefUsersError();
                     }
@@ -315,7 +305,7 @@
                     this._allDataLoaded();
                 },
 
-                _officesLoaded: function(data, detail) {
+                _officesLoaded: function (data, detail) {
                     if (!detail) {
                         this._officesError();
                     }
@@ -325,14 +315,14 @@
                     this._filtersDataLoaded();
                 },
 
-                _cpOutputsLoaded: function(data, detail) {
+                _cpOutputsLoaded: function (data, detail) {
                     if (!detail) {
                         this._responseError('cpOutputs');
                     }
                     this._setData('cpOutputs', detail);
                 },
 
-                _locationsLoaded: function(event, details) {
+                _locationsLoaded: function (event, details) {
                     if (!details || details.error) {
                         this._locationsError();
                     } else {
@@ -344,39 +334,39 @@
                     }
                 },
 
-                _organisationsError: function() {
+                _organisationsError: function () {
                     this._responseError('partner organisations');
                 },
 
-                _implemPartnersError: function() {
+                _implemPartnersError: function () {
                     this._responseError('Implementing Partners');
                 },
 
-                _filterSectionsError: function() {
+                _filterSectionsError: function () {
                     this._responseError('Sections');
                 },
 
-                _filterOutputsError: function() {
+                _filterOutputsError: function () {
                     this._responseError('CP Outputs');
                 },
 
-                _sectionsError: function() {
+                _sectionsError: function () {
                     this._responseError('sections');
                 },
 
-                _unicefUsersError: function() {
+                _unicefUsersError: function () {
                     this._responseError('unicefUsers');
                 },
 
-                _officesError: function() {
+                _officesError: function () {
                     this._responseError('offices');
                 },
 
-                _locationsError: function() {
+                _locationsError: function () {
                     this._responseError('locations');
                 },
 
-                _responseError: function(request) {
+                _responseError: function (request) {
                     console.error(`Can not load initial data${request ? ': ' + request : ''}`);
                     this.fire('initial-data-loaded');
                 }
