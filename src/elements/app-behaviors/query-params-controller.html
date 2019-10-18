@@ -35,7 +35,8 @@
         },
 
         getQueryString: function(query){
-            return '?externals_module=tpm&'+ Object.keys(query).map((key) => {
+            query['externals_module'] = 'tpm';
+            return '?'+ Object.keys(query).map((key) => {
                 let value = typeof query[key] ===  'boolean' ? '' : 
                 Boolean(query[key]) ? `=${query[key]}` : '';
                 return `${key}${value}`;
