@@ -87,7 +87,7 @@
     <script>
         (function () {
             'use strict';
-
+            const TPM_STATIC_QUERY = 'externals_module=tpm'
             let dataLoaded = {};
 
             Polymer({
@@ -116,7 +116,6 @@
                 },
 
                 loadStaticData: function () {
-                    const TPM_STATIC_PREFIX = '&externals_module=tpm'
                     if (!this.isTpmUser()) {
                         this.partnersOptionsUrl = this.getEndpoint('partnersList').url;
                         this.organisationsEndpoint = this.getEndpoint('partnerOrganizations');
@@ -124,10 +123,10 @@
                         this.unicefUsersEndpoint = this.getEndpoint('unicefUsers').url;
                         this.cpOutputsUrl = this.getEndpoint('cpOutputsV2').url;
                     }
-                    this.officesEndpoint = this.getEndpoint('offices').url + TPM_STATIC_PREFIX;
+                    this.officesEndpoint = this.getEndpoint('offices').url + `?${TPM_STATIC_QUERY}`;
 
                     this.visitsOptionsUrl = this.getEndpoint('visitsList').url;
-                    this.partnersUrl = this.getEndpoint('partnersList').url + '&page_size=all' + TPM_STATIC_PREFIX;
+                    this.partnersUrl = this.getEndpoint('partnersList').url + '&page_size=all' + `&${TPM_STATIC_QUERY}`;
                     this.locationsEndpoint = this.getEndpoint('locations');
                     this._getStaticDropdownData();
                     this._allDataLoaded();
@@ -173,8 +172,8 @@
                 _updateVisitFilters: function () {
                     let time = new Date().getTime();
 
-                    this.implemPartnersUrl = this.getEndpoint('implemPartners').url + `?reload=${time}${TPM_STATIC_PREFIX}`;
-                    this.filterSectionsUrl = this.getEndpoint('filterSections').url + `?reload=${time}${TPM_STATIC_PREFIX}`;
+                    this.implemPartnersUrl = this.getEndpoint('implemPartners').url + `?reload=${time}&${TPM_STATIC_QUERY}`;
+                    this.filterSectionsUrl = this.getEndpoint('filterSections').url + `?reload=${time}&${TPM_STATIC_QUERY}`;
                     this.filterCpOutputsUrl = this.getEndpoint('filterCpOutputs').url + `?reload=${time}`;
                 },
 
