@@ -91,17 +91,6 @@
                 behaviorObj.getPath.restore();
             });
 
-            it('updates queries, calls replaceState method and returns true', function() {
-                sinon.stub(behaviorObj, 'parseQueries').returns({test: 'test', test2: true});
-                sinon.spy(window.history, 'replaceState');
-
-                assert.isTrue(behaviorObj.updateQueries({test2: false, test3: true}, 'test-path/'));
-
-                assert.isTrue(window.history.replaceState.calledWith({}, '', 'test-path/?test=test&test3'));
-
-                window.history.replaceState.restore();
-                behaviorObj.parseQueries.restore();
-            });
 
             it('calls window.dispatchEvent method if third argument is not provided', function() {
                 sinon.spy(window, 'dispatchEvent');
