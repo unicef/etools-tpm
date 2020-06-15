@@ -262,21 +262,14 @@
             }
         },
 
-      _showAddButton: function() {
-        const environmentFlags = this.getEndpoint("environmentFlags").url;
-        console.log(environmentFlags);
-        this.sendRequest(environmentFlags).then(
-          envFlags => {
-            console.log('response', envFlags);
-            if (envFlags && envFlags.active_flags && envFlags.active_flags.includes('fm_disabled')) {
-              return this.actionAllowed('new_visit', 'create');
-            } else {
-              return;
-            }
+        _showAddButton: function() {
+          const envFlags = this.getData('envFlags')
+          if (envFlags && envFlags.active_flags && envFlags.active_flags.includes('fm_disabled')) {
+            return;
+          } else {
+            return this.actionAllowed('new_visit', 'create');
           }
-        ).catch(err => console.error('error', err));
-
-      },
+        },
 
         _setExportLink: function() {
             return this.getEndpoint('visitsList').url + '?format=csv&page_size=all';
