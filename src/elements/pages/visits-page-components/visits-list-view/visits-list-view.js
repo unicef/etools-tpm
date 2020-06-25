@@ -10,8 +10,7 @@
             TPMBehaviors.StaticDataController,
             TPMBehaviors.CommonMethodsBehavior,
             TPMBehaviors.LastCreatedController,
-            TPMBehaviors.UserController,
-            EtoolsAjaxRequestBehavior
+            TPMBehaviors.UserController
         ],
 
         properties: {
