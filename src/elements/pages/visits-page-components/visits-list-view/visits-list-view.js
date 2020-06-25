@@ -10,7 +10,7 @@
             TPMBehaviors.StaticDataController,
             TPMBehaviors.CommonMethodsBehavior,
             TPMBehaviors.LastCreatedController,
-            TPMBehaviors.UserController,
+            TPMBehaviors.UserController
         ],
 
         properties: {
@@ -262,14 +262,19 @@
         },
 
         _showAddButton: function() {
+          const envFlags = this.getData('envFlags')
+          if (envFlags && envFlags.active_flags && envFlags.active_flags.includes('fm_disabled')) {
+            return;
+          } else {
             return this.actionAllowed('new_visit', 'create');
+          }
         },
 
         _setExportLink: function() {
             return this.getEndpoint('visitsList').url + '?format=csv&page_size=all';
         },
 
-        openAddVisitPopup: function() {
+      openAddVisitPopup: function() {
             let partners = this.getData('tpmPartners') || [];
             partners = partners.sort((a, b) => a.name > b.name);
             this.set('partnerOrganizations', partners);
