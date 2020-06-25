@@ -130,6 +130,8 @@
                     this.locationsEndpoint = this.getEndpoint('locations');
                     this._getStaticDropdownData();
                     this._allDataLoaded();
+                    this._getEnvFlags();
+
                 },
 
                 _getStaticDropdownData: function () {
@@ -368,7 +370,15 @@
                 _responseError: function (request) {
                     console.error(`Can not load initial data${request ? ': ' + request : ''}`);
                     this.fire('initial-data-loaded');
-                }
+                },
+
+                _getEnvFlags: function() {
+                const envFlags = {
+                  csrf: true,
+                  endpoint: this.getEndpoint('environmentFlags')
+                };
+                this.sendRequest(envFlags).then(resp => this._setData('envFlags', resp));
+              }
             });
         })();
     </script>
