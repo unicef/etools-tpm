@@ -114,7 +114,7 @@ App global configuration
                 template: '/api/v2/attachments/',
             },
             linkAttachment: {
-                template: '/api/v2/attachments/links/<%=id%>/' 
+                template: '/api/v2/attachments/links/<%=id%>/'
             },
             linkActivityAttachments: {
                 template: '/api/tpm/visits/activities/<%=id%>/links/'
@@ -127,6 +127,9 @@ App global configuration
                 exp: 6 * 60 * 60 * 1000, // 6h
                 cachingKey: 'static'
             },
+            environmentFlags: {
+                url: '/api/v2/environment/flags/'
+            }
         },
 
         globals: {
@@ -177,7 +180,7 @@ App global configuration
                 }
                 if (location.indexOf(this.devDomain) > -1) {
                     return 'DEVELOPMENT'
-                } 
+                }
                 if (location.indexOf(this.localDomain) > -1) {
                     return 'LOCAL'
                 }
