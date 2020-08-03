@@ -263,10 +263,7 @@
 
        _showAddButton: function () {
 	  const envFlags = this.getData('envFlags');
-	  if (
-		envFlags &&
-		envFlags.active_flags &&
-		(envFlags.active_flags.includes('fm_disabled') || envFlags.active_flags.includes('prp_server_on'))) {
+	  if (envFlags && envFlags.active_flags && !envFlags.active_flags.includes('fm_disabled')) {
 		return;
 	  } else {
 		return this.actionAllowed('new_visit', 'create');
