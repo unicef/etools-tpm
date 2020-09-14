@@ -261,14 +261,14 @@
             }
         },
 
-        _showAddButton: function() {
-          const envFlags = this.getData('envFlags')
-          if (envFlags && envFlags.active_flags && envFlags.active_flags.includes('fm_disabled')) {
-            return;
-          } else {
-            return this.actionAllowed('new_visit', 'create');
-          }
-        },
+       _showAddButton: function () {
+	  const envFlags = this.getData('envFlags');
+	  if (envFlags && envFlags.active_flags && !envFlags.active_flags.includes('fm_disabled')) {
+		return;
+	  } else {
+		return this.actionAllowed('new_visit', 'create');
+	  }
+	},
 
         _setExportLink: function() {
             return this.getEndpoint('visitsList').url + '?format=csv&page_size=all';
