@@ -263,7 +263,7 @@
 
        _showAddButton: function () {
 	  const envFlags = this.getData('envFlags');
-	  if (envFlags && envFlags.active_flags && !envFlags.active_flags.includes('fm_disabled')) {
+	  if (envFlags && envFlags.active_flags && !envFlags.active_flags.includes('tpm_enabled')) {
 		return;
 	  } else {
 		return this.actionAllowed('new_visit', 'create');
