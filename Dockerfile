@@ -1,10 +1,10 @@
-FROM node:8-alpine
+FROM node:12.18.3-alpine
 RUN apk update
 
 RUN apk add --update bash
 
 RUN apk add git
-RUN npm i -g npm@5.6.0
+RUN npm i -g npm
 RUN npm install -g --unsafe-perm bower polymer-cli gulp-cli
 
 
