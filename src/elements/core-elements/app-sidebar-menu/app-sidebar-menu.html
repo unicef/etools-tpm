@@ -2,76 +2,91 @@
 <!--import [module-styles]-->
 
 <dom-module id="app-sidebar-menu">
-    <template>
-        <style include="module-styles"></style>
-        <!-- inject styles './app-sidebar-menu.scss'-->
+  <template>
+    <style include="module-styles"></style>
+    <!-- inject styles './app-sidebar-menu.scss'-->
 
-        <app-toolbar class="menu-header">
-            <img src$="[[getAbsolutePath('images/tpmicon.svg')]]" on-tap="_toggleDrawer">
-            <div main-title>Third Party<br>MONITORING</div>
-            <paper-icon-button id="close-drawer" on-tap="_toggleDrawer" icon="icons:chevron-left" drawer-toggle></paper-icon-button>
-        </app-toolbar>
+    <app-toolbar class="menu-header">
+      <img
+        src$="[[getAbsolutePath('images/tpmicon.svg')]]"
+        on-tap="_toggleDrawer"
+      />
+      <div main-title>Third Party<br />MONITORING</div>
+      <paper-icon-button
+        id="close-drawer"
+        on-tap="_toggleDrawer"
+        icon="icons:chevron-left"
+        drawer-toggle
+      ></paper-icon-button>
+    </app-toolbar>
 
-        <div class="nav-menu">
-            <iron-selector
-                    selected="[[page]]"
-                    attr-for-selected="view"
-                    selectable="side-bar-item"
-                    role="navigation">
-                <template is="dom-if" if="{{user.user}}">
-                    <side-bar-item
-                            view="partners"
-                            name="[[setPartnersText(user)]]"
-                            icon="social:{{setPartnersIcon(user)}}"
-                            side-bar-link="{{setPartnersLink(user)}}">
-                    </side-bar-item>
-                </template>
+    <div class="nav-menu">
+      <iron-selector
+        selected="[[page]]"
+        attr-for-selected="view"
+        selectable="side-bar-item"
+        role="navigation"
+      >
+        <template is="dom-if" if="{{user.user}}">
+          <side-bar-item
+            view="partners"
+            name="[[setPartnersText(user)]]"
+            icon="social:{{setPartnersIcon(user)}}"
+            side-bar-link="{{setPartnersLink(user)}}"
+          >
+          </side-bar-item>
+        </template>
 
-                <side-bar-item
-                        view="visits"
-                        name="List of Visits"
-                        icon="maps:transfer-within-a-station"
-                        side-bar-link="visits/list?reload=true">
-                </side-bar-item>
-            </iron-selector>
+        <side-bar-item
+          view="visits"
+          name="List of Visits"
+          icon="maps:transfer-within-a-station"
+          side-bar-link="visits/list?reload=true"
+        >
+        </side-bar-item>
+      </iron-selector>
 
-            <div class="divider"></div>
+      <div class="divider"></div>
 
-            <div class="secondary-header">eTools Community Channels</div>
+      <div class="secondary-header">eTools Community Channels</div>
 
-            <side-bar-item
-                    class="lighter-item"
-                    name="Implementation Intelligence"
-                    icon="tpm-icons:power-bi"
-                    external
-                    side-bar-link="https://app.powerbi.com/groups/me/apps/2c83563f-d6fc-4ade-9c10-bbca57ed1ece/reports/5e60ab16-cce5-4c21-8620-de0c4c6415de/ReportSectionfe8562e6ef8c4eddcb52?chromeless=1">
-            </side-bar-item>
+      <side-bar-item
+        class="lighter-item"
+        name="Implementation Intelligence"
+        icon="tpm-icons:power-bi"
+        external
+        side-bar-link="https://app.powerbi.com/groups/me/apps/2c83563f-d6fc-4ade-9c10-bbca57ed1ece/reports/9726e9e7-c72f-4153-9fd2-7b418a1e426c/ReportSection?ctid=77410195-14e1-4fb8-904b-ab1892023667"
+      >
+      </side-bar-item>
 
-            <side-bar-item
-                    class="lighter-item"
-                    name="Knowledge Base"
-                    icon="maps:local-library"
-                    external
-                    side-bar-link="http://etools.zendesk.com">
-            </side-bar-item>
+      <side-bar-item
+        class="lighter-item"
+        name="Knowledge Base"
+        icon="maps:local-library"
+        external
+        side-bar-link="http://etools.zendesk.com"
+      >
+      </side-bar-item>
 
-            <side-bar-item
-                    class="lighter-item"
-                    name="Discussion"
-                    icon="icons:question-answer"
-                    external
-                    side-bar-link="https://www.yammer.com/unicef.org/#/threads/inGroup?type=in_group&feedId=5782560">
-            </side-bar-item>
+      <side-bar-item
+        class="lighter-item"
+        name="Discussion"
+        icon="icons:question-answer"
+        external
+        side-bar-link="https://www.yammer.com/unicef.org/#/threads/inGroup?type=in_group&feedId=5782560"
+      >
+      </side-bar-item>
 
-            <side-bar-item
-                    class="lighter-item"
-                    name="Information"
-                    icon="icons:info"
-                    external
-                    side-bar-link="/landing/">
-            </side-bar-item>
-        </div>
-    </template>
+      <side-bar-item
+        class="lighter-item"
+        name="Information"
+        icon="icons:info"
+        external
+        side-bar-link="/landing/"
+      >
+      </side-bar-item>
+    </div>
+  </template>
 
-    <!-- inject scripts './app-sidebar-menu.js'-->
+  <!-- inject scripts './app-sidebar-menu.js'-->
 </dom-module>
