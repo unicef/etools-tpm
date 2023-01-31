@@ -34,11 +34,13 @@
         <etools-content-panel panel-title="[[tabTitle]]">
             <div slot="panel-btns">
                 <div class="add-button-container" hidden$="[[!_canBeChanged(basePermissionPath)]]">
-                    <paper-icon-button
-                            class="panel-button"
-                            on-tap="openAddDialog"
-                            icon="add-box">
-                    </paper-icon-button>
+                     <a
+                      class="white"
+                      href="[[_getAMPLink(partnerId)]]"
+                      target="_blank"
+                    >
+                      <iron-icon icon="icons:open-in-new"></iron-icon>
+                    </a>
                     <paper-tooltip offset="0">Add</paper-tooltip>
                 </div>
 
@@ -74,9 +76,6 @@
                             no-additional
                             headings="[[columns]]"
                             no-animation>
-                        <div slot="hover" class="edit-icon-slot" hidden$="[[!_canBeChanged(basePermissionPath)]]">
-                            <paper-icon-button icon="icons:create" class="edit-icon" on-tap="openEditDialog"></paper-icon-button>
-                        </div>
                     </list-element>
                 </template>
 

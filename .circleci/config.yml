@@ -80,3 +80,4 @@ workflows:
                 - master
                 - staging
                 - develop
+                - amp

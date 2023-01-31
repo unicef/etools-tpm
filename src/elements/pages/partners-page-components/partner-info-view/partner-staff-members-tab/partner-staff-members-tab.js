@@ -253,6 +253,10 @@ Polymer({
         return staffLength || 0;
     },
 
+    _getAMPLink: function(organisationId) {
+      return `/amp/users/list?organization_type=tpm&organization_id=${organisationId}`;
+    },
+
     _addStaffFromDialog: function() {
         if (this.requestInProcess) { return; }
 
