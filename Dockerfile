@@ -1,10 +1,9 @@
 FROM node:12.22.7-alpine3.12
 RUN apk update
-
 RUN apk add --update bash
 
 RUN apk add git
-RUN npm i -g npm
+RUN npm config set unsafe-perm true
 RUN npm install -g --unsafe-perm bower polymer-cli gulp-cli
 
 
