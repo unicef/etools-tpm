@@ -20,7 +20,6 @@ jobs:
           key: cache1-{{ checksum "package.json" }}
       - run:
           name: Install node modules
-          no_output_timeout: 30m
           command: npm install
       - save_cache:
           key: cache-{{ checksum "package.json" }}
@@ -30,7 +29,6 @@ jobs:
           key: cache-{{ checksum "bower.json" }}
       - run:
           name: Install bower components
-          no_output_timeout: 30m
           command: ./node_modules/.bin/bower install --allow-root --config.interactive=false
       - save_cache:
           key: cache-{{ checksum "bower.json" }}
@@ -58,6 +56,7 @@ jobs:
             sed -i "0,/bDate/s//$BUILDDATE/" bower.json
       - run:
           name: Building the image
+          no_output_timeout: 30m
           command: |
             TAG=${CIRCLE_BRANCH}
             docker build -t unicef/etools-tpm:$TAG .
