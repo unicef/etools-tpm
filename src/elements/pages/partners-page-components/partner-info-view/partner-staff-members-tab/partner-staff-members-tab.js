@@ -19,6 +19,9 @@ Polymer({
         partnerId: {
             type: String
         },
+        organizationId: {
+          type: String
+        },
         dataItems: {
             type: Array,
             value: function() {

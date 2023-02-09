@@ -1,0 +1,40 @@
+<!--import [polymer, etools-app-config, paper-menu-button, paper-button, paper-menu, paper-item, etools-ajax-sp, etools-page-refresh/etools-refresh-behavior]-->
+
+<dom-module id="organizations-dropdown">
+  <template>
+    <!-- inject styles './../header-styles.scss'-->
+
+    <etools-ajax-sp
+            method="POST"
+            url="{{url}}"
+            body="{{organizationData}}"
+            on-success="_handleResponse"
+            on-forbidden="_handleError"
+            on-fail="_handleError">
+    </etools-ajax-sp>
+
+    <paper-menu-button
+            id="dropdown"
+            vertical-align="top"
+            vertical-offset="56"
+            horizontal-align="right">
+      <paper-button class="dropdown-trigger" slot="dropdown-trigger" on-tap="_toggleOpened">
+        <span class="dropdown-text">[[organization.name]]</span>
+
+        <iron-icon class="arrow-down" icon="icons:arrow-drop-down"></iron-icon>
+        <iron-icon class="arrow-up" icon="icons:arrow-drop-up"></iron-icon>
+      </paper-button>
+
+      <paper-menu class="dropdown-content" slot="dropdown-content" selected="[[organizationIndex]]"
+                  on-iron-select="_organizationSelected">
+        <template id="repeat" is="dom-repeat" items="[[organizations]]">
+          <paper-item on-tap="_changeOrganization">
+            [[item.name]]
+          </paper-item>
+        </template>
+      </paper-menu>
+    </paper-menu-button>
+  </template>
+
+  <!-- inject scripts './organizations-dropdown.js'-->
+</dom-module>
