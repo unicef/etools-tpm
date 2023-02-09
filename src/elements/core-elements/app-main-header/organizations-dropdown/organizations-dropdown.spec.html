@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <!--import [organizations-dropdown, lodash]-->
+</head>
+<body>
+
+<test-fixture id="organizations-dropdown-fixture">
+    <template>
+        <organizations-dropdown></organizations-dropdown>
+    </template>
+</test-fixture>
+
+<script>
+    describe('<organizations-dropdown>', function () {
+        let myEl;
+
+        beforeEach(function () {
+            myEl = fixture('organizations-dropdown-fixture');
+        });
+
+        describe('method _setOrganizationIndex(organizations, organizationId)', function () {
+            it('ont sets organizationIndex property if organizations is not array', function () {
+                assert.isUndefined(myEl.organizationIndex);
+                myEl._setOrganizationIndex({}, 1);
+                assert.isUndefined(myEl.organizationIndex);
+            });
+
+            it('sets organizationIndex property', function () {
+                let organizations = [
+                    {id: 1, name: "OrganizationA", business_area_code: "0"},
+                    {id: 2, name: "OrganizationB", business_area_code: "0"},
+                ];
+
+                assert.isUndefined(myEl.organizationIndex);
+                myEl._setOrganizationIndex(organizations, 2);
+                assert.equal(myEl.organizationIndex, 1);
+            });
+        });
+
+        describe('method _toggleOpened()', function () {
+            it('toggles organizations dropdown opened state', function () {
+                assert.isFalse(myEl.opened);
+                myEl.$.dropdown.opened = true;
+                myEl._toggleOpened();
+                assert.isTrue(myEl.opened);
+            });
+        });
+
+        describe('method _organizationSelected(e)', function () {
+            it('calls itemForElement() method of #repeat element', function () {
+                let e = {detail: {item: {id: 1, name: "OrganizationA", business_area_code: "0"}}};
+            });
+        });
+
+        describe('method _changeOrganization(event)', function () {
+            let event = {model: {item: {id: 1}}};
+
+            it('throws when event.model.item.id is not a number', function () {
+                let error = 'Can not find organization id!';
+
+                event.model.item.id = {};
+                assert.throws(function() {myEl._changeOrganization(event); }, error);
+
+                event.model.item.id = '1';
+                assert.throws(function() {myEl._changeOrganization(event); }, error);
+
+                event.model.item.id = null;
+                assert.throws(function() {myEl._changeOrganization(event); }, error);
+
+                event.model.item.id = [];
+                assert.throws(function() {myEl._changeOrganization(event); }, error);
+
+                event.model.item.id = NaN;
+                assert.throws(function() {myEl._changeOrganization(event); }, error);
+
+                event.model.item.id = true;
+                assert.throws(function() {myEl._changeOrganization(event); }, error);
+            });
+
+            it('fires "global-loading" event', function () {
+                let spy = sinon.spy(myEl, 'fire');
+                event.model.item.id = 1;
+
+                assert.isFalse(spy.called);
+                myEl._changeOrganization(event);
+                assert.isTrue(spy.calledOnce);
+                assert.isTrue(spy.calledWithExactly('global-loading', {type: 'change-organization', active: true, message: 'Please wait while organization is changing...'}));
+            });
+
+            it('sets organizationData and url properties', function () {
+                let url = 'url';
+                sinon.stub(myEl, 'getEndpoint').withArgs('changeOrganization').returns({url: url});
+                event.model.item.id = 1;
+
+                assert.isUndefined(myEl.organizationData);
+                assert.isUndefined(myEl.url);
+
+                myEl._changeOrganization(event);
+
+                assert.deepEqual(myEl.organizationData, {organization: 1});
+                assert.equal(myEl.url, url);
+            });
+        });
+
+        describe('method _handleError()', function () {
+            it('sets organizationData and url properties to null', function () {
+                assert.isUndefined(myEl.organizationData);
+                assert.isUndefined(myEl.url);
+
+                myEl._handleError();
+
+                assert.isNull(myEl.organizationData);
+                assert.isNull(myEl.url);
+            });
+
+            it('fires "global-loading" and "toast" events', function () {
+                let spy = sinon.spy(myEl, 'fire');
+
+                assert.isFalse(spy.called);
+                myEl._handleError();
+                assert.isTrue(spy.calledTwice);
+                assert.isTrue(spy.calledWith('global-loading', {type: 'change-organization'}));
+                assert.isTrue(spy.calledWith('toast', {text: 'Can not change organization. Please, try again later'}));
+            });
+        });
+
+        describe('method _handleResponse()', function () {
+            it('sets refreshInProgress to true and calls clearDexieDbs', function () {
+                myEl.clearDexieDbs = sinon.spy();
+                myEl.refreshInProgress = false;
+
+                assert.isFalse(myEl.clearDexieDbs.called);
+                assert.isFalse(myEl.refreshInProgress);
+
+                myEl._handleResponse();
+                assert.isTrue(myEl.clearDexieDbs.calledOnce);
+                assert.isTrue(myEl.refreshInProgress);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
