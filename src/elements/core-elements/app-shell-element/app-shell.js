@@ -125,6 +125,7 @@ Polymer({
             this.user = this.getUserData();
             this.page = this.routeData.page || this._configPath();
         }
+      this.fire('global-loading', {type: 'initialisation'});
     },
 
     _handleGlobalLoading: function(event) {

@@ -5,7 +5,8 @@ Polymer({
 
     behaviors: [
         TPMBehaviors.TableElementsBehavior,
-        TPMBehaviors.CommonMethodsBehavior
+        TPMBehaviors.CommonMethodsBehavior,
+        TPMBehaviors.UserController
     ],
 
     properties: {
@@ -257,7 +258,12 @@ Polymer({
     },
 
     _getAMPLink: function(organisationId) {
-      return `/amp/users/list?organization_type=tpm&organization_id=${organisationId}`;
+      const user = this.getUserData();
+      let url = `/amp/users/`;
+      if (user && user.is_unicef_user) {
+        url += `list?organization_type=tpm&organization_id=${organisationId}`;
+      }
+      return url;
     },
 
     _addStaffFromDialog: function() {

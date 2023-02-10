@@ -19,7 +19,8 @@
 
             _setGroups: function(user) {
                 if (!user.groups.length) {
-                  return '';
+                  _groups = [];
+                  return;
                    // @dci throw 'Can not find user group!';
                 }
                 _groups = user.groups.map((group) => {
@@ -45,7 +46,7 @@
             },
 
             isTpmUser: function() {
-                if (!_groups) { throw 'User data is missing or incorrect'; }
+                if (!_groups) { _groups = []; } //throw 'User data is missing or incorrect';
                 return !!~_groups.indexOf('Third Party Monitor');
             }
         };
