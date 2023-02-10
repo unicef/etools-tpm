@@ -18,7 +18,10 @@
             },
 
             _setGroups: function(user) {
-                if (!user.groups.length) { throw 'Can not find user group!'; }
+                if (!user.groups.length) {
+                  return '';
+                   // @dci throw 'Can not find user group!';
+                }
                 _groups = user.groups.map((group) => {
                     return group.name;
                 });
