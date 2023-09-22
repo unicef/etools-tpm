@@ -11,5 +11,6 @@
       getLink: function() {
         return window.location.origin + '/fm/partners';
       }
+
     });
 })();
