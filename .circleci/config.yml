@@ -56,6 +56,7 @@ jobs:
             sed -i "0,/bDate/s//$BUILDDATE/" bower.json
       - run:
           name: Building the image
+          no_output_timeout: 30m
           command: |
             TAG=${CIRCLE_BRANCH}
             docker build -t unicef/etools-tpm:$TAG .
