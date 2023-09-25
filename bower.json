@@ -8,7 +8,7 @@
     "app-route": "git://github.com/PolymerElements/app-route#0.9.3",
     "iron-flex-layout": "git://github.com/PolymerElements/iron-flex-layout#^1.0.0",
     "iron-icon": "git://github.com/PolymerElements/iron-icon#1.0.13",
-    "iron-iconset-svg": "git://github.com/PolymerElements/iron-iconset-svg#^1.0.0",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",
     "iron-pages": "git://github.com/PolymerElements/iron-pages#^1.0.0",
     "iron-selector": "git://github.com/PolymerElements/iron-selector#^1.0.0",
     "paper-icon-button": "git://github.com/PolymerElements/paper-icon-button#~1.1.0",
