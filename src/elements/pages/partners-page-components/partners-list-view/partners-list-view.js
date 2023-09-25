@@ -91,6 +91,10 @@
             this.$.emailInput.validate = this._validateEmailAddress.bind(this, this.$.emailInput);
         },
 
+      getLink: function() {
+        return window.location.origin + '/fm/partners';
+      },
+
         validate: function() {
             let vendorNumberValid = this.$.vendorNumber.validate();
             let phoneInputValid = this.$.phoneInput.validate();

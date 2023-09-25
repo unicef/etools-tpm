@@ -44,13 +44,11 @@
                 without-pagination="[[withoutPagination]]">
         </partners-list-data>
 
-        <pages-header-element
-                export-links="[[_setExportLinks()]]"
-                query-params="{{queryParams}}"
-                show-add-button="{{_showAddButton()}}"
-                btn-text="Add New Vendor"
-                page-title="Third Party Monitors">
-        </pages-header-element>
+        <div class="header-wrapper">
+            <div class="side-heading horizontal layout center">
+                <span class="flex title">This functionality has been moved to </span><a href$="[[getLink()]]" class="link">FIELD MONITORING</a>
+            </div>
+        </div>
 
         <search-and-filter
                 id="filters"
