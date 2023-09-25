@@ -2,7 +2,7 @@
   "name": "tpm",
   "authors": ["The eTools team"],
   "private": true,
-  "license": "http://github.com/unicef-polymer/etools-frontend-template/blob/master/LICENSE.md",
+  "license": "https://github.com/unicef-polymer/etools-frontend-template/blob/master/LICENSE.md",
   "dependencies": {
     "app-layout": "http://github.com/PolymerElements/app-layout#0.10.7",
     "app-route": "http://github.com/PolymerElements/app-route#0.9.3",
