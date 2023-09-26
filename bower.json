@@ -23,7 +23,7 @@
     "paper-toast": "PolymerElements/paper-toast#1.3.1",
     "paper-tabs": "PolymerElements/paper-tabs#1.8.0",
     "paper-listbox": "PolymerElements/paper-listbox#1.1.3",
-    "etools-loading": "^1.0.9",
+    "etools-loading": "^2.0.0",
     "etools-page-refresh": "^1.1.2",
     "etools-content-panel": "^1.0.6",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#1.3.0",
