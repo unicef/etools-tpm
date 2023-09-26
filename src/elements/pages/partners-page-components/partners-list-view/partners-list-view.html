@@ -5,17 +5,175 @@
 
 <dom-module id="partners-list-view">
     <template>
-        <style include="page-layout-styles tab-inputs-styles shared-styles module-styles iron-flex">
+        <style include="page-layout-styles tab-inputs-styles shared-styles module-styles">
             :host {
-               box-shadow: 1px -3px 9px 0 #000000;
+                position: relative;
+                display: block;
+            }
+
+            pages-header-element { box-shadow: 1px -3px 9px 0 #000000; }
+
+            .po-loading {
+                position: absolute;
+                top: 25px;
+                left: auto;
+                background-color: #fff;
+            }
+
+            .po-loading:not([active]) {
+                display: none !important;
             }
         </style>
 
-        <div class="header-wrapper">
-            <div class="side-heading horizontal layout center">
-                <span class="flex title">This functionality has been moved to </span><a href$="[[getLink()]]" class="link">FIELD MONITORING</a>
+        <app-location path="{{path}}"></app-location>
+
+        <get-vendor-data vendor="{{data}}" original-data="{{originalData}}" vendor-number="{{vendorNumber}}"></get-vendor-data>
+
+        <update-vendor-data
+                vendor="{{data}}"
+                update-data="{{updateData}}"
+                vendor-updating="{{vendorUpdating}}"
+                errors="{{errors}}">
+        </update-vendor-data>
+
+        <partners-list-data
+                id="listData"
+                partners-list="{{partnersList}}"
+                list-length="{{listLength}}"
+                request-queries="[[requestQueries]]"
+                without-pagination="[[withoutPagination]]">
+        </partners-list-data>
+
+        <pages-header-element
+                export-links="[[_setExportLinks()]]"
+                query-params="{{queryParams}}"
+                show-add-button="{{_showAddButton()}}"
+                btn-text="Add New Vendor"
+                page-title="Third Party Monitors">
+        </pages-header-element>
+
+        <search-and-filter
+                id="filters"
+                search-label="Search Vendor # or TPM"
+                query-params="{{queryParams}}"
+                search-params="[[searchParams]]">
+        </search-and-filter>
+
+        <list-tab-main
+                header-title="results to show"
+                data="[[partnersList]]"
+                list-length="[[listLength]]"
+                headings="[[listHeadings]]"
+                base-permission-path="[[basePermissionPath]]"
+                query-params="{{queryParams}}"
+                no-additional>
+        </list-tab-main>
+
+        <dialog-element opened="{{newVendorOpened}}" dialog-title="Add New Vendor" confirm-btn-text="Add" request-in-process="[[requestInProcess]]">
+            <div class="row-h repeatable-item-container" without-line>
+                <div class="repeatable-item-content">
+                    <div class="row-h group">
+                        <div class="input-container input-container-ms">
+                            <!-- Vendor Number -->
+                            <paper-input
+                                    id="vendorNumber"
+                                    class$="disabled-as-readonly [[_setRequired('vendor_number', basePermissionPath)]]"
+                                    field="vendor_number"
+                                    value="{{data.vendor_number}}"
+                                    allowed-pattern="[\d]"
+                                    label="[[getLabel('vendor_number', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('vendor_number', basePermissionPath)]]"
+                                    required$="[[_setRequired('vendor_number', basePermissionPath)]]"
+                                    disabled$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
+                                    readonly$="[[_disableVendorNumberInput(requestInProcess, vendorRequestInProcess)]]"
+                                    maxlength="30"
+                                    invalid$="{{_checkInvalid(errors.vendor_number)}}"
+                                    error-message="{{errors.vendor_number}}"
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError"
+                                    on-keyup="vendorNumberKeyEvent"
+                                    on-blur="_requestVendor">
+                            </paper-input>
+                            <etools-loading active="{{vendorRequestInProcess}}" no-overlay loading-text="" class="po-loading"></etools-loading>
+                        </div>
+
+                        <div class="input-container input-container-ms">
+                            <!-- TPM Partner -->
+                            <paper-input
+                                    class$="without-border [[_setReadonlyFieldClass(data)]]"
+                                    value="[[data.name]]"
+                                    label="[[getLabel('name', basePermissionPath)]]"
+                                    placeholder="[[getReadonlyPlaceholder(data)]]"
+                                    disabled
+                                    readonly>
+                            </paper-input>
+                            <paper-tooltip offset="0">[[data.name]]</paper-tooltip>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-l">
+                            <!-- Partner Address -->
+                            <paper-input
+                                    class$="without-border [[_setReadonlyFieldClass(data)]]"
+                                    value="[[getPartnerAddress(data)]]"
+                                    label="[[getLabel('street_address', basePermissionPath)]]"
+                                    placeholder="[[getReadonlyPlaceholder(data)]]"
+                                    disabled
+                                    readonly>
+                            </paper-input>
+                            <paper-tooltip offset="0">[[getPartnerAddress(data)]]</paper-tooltip>
+                        </div>
+                    </div>
+
+                    <div class="row-h group">
+                        <div class="input-container input-container-ms">
+                            <!-- Phone Number -->
+                            <paper-input
+                                    id="phoneInput"
+                                    class$="disabled-as-readonly [[_setRequired('phone_number', basePermissionPath)]]"
+                                    field="phone_number"
+                                    value="{{data.phone_number}}"
+                                    allowed-pattern="[\d\s-]"
+                                    label="[[getLabel('phone_number', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('phone_number', basePermissionPath)]]"
+                                    required$="[[_setRequired('phone_number', basePermissionPath, requestInProcess)]]"
+                                    disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
+                                    readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
+                                    maxlength="20"
+                                    invalid$="{{errors.phone_number}}"
+                                    error-message="{{errors.phone_number}}"
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError">
+                                <iron-icon prefix icon="communication:phone"></iron-icon>
+                            </paper-input>
+                        </div>
+
+                        <div class="input-container input-container-ms">
+                            <!-- E-mail address -->
+                            <paper-input
+                                    id="emailInput"
+                                    class$="disabled-as-readonly [[_setRequired('email', basePermissionPath)]]"
+                                    field="email"
+                                    value="{{data.email}}"
+                                    label$="[[getLabel('email', basePermissionPath)]]"
+                                    placeholder="[[getPlaceholderText('email', basePermissionPath)]]"
+                                    required$="[[_setRequired('email', basePermissionPath, requestInProcess)]]"
+                                    disabled$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
+                                    readonly$="[[_showPhoneAndEmail(vendorNumber, basePermissionPath, requestInProcess, vendorRequestInProcess)]]"
+                                    invalid$="{{errors.email}}"
+                                    error-message="{{errors.email}}"
+                                    on-focus="_resetFieldError"
+                                    on-tap="_resetFieldError">
+                                <iron-icon prefix icon="communication:email"></iron-icon>
+                            </paper-input>
+                            <paper-tooltip offset="0">[[data.email]]</paper-tooltip>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </dialog-element>
     </template>
+
     <!-- inject scripts './partners-list-view.js'-->
 </dom-module>
