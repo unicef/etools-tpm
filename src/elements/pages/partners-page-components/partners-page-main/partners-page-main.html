@@ -10,16 +10,33 @@
                 position: relative;
                 display: block;
             }
+            .title {
+              font-size: 24px;
+              margin: 0 auto;
+            }
+            .center {
+              text-align: center;
+            }
+            .link {
+              color: #0099ff;
+            }
         </style>
 
-        <app-route
+        <!-- <app-route
                 route="{{route}}"
                 pattern="/:view"
                 data="{{routeData}}"
                 tail="{{subroute}}">
-        </app-route>
+        </app-route> -->
 
-        <partner-details-data
+         <div id="pageContent">
+            <paper-material elevation="1" class="center">
+               <span class="flex title">This functionality has been moved to </span>
+               <a class="title link" target="_blank" href$="[[getLink()]]">FIELD MONITORING</a>
+            </paper-material>
+        </div>
+
+        <!-- <partner-details-data
                 partner-details="{{partnerDetails}}"
                 partner-id="{{partnerId}}"
                 view="{{view}}">
@@ -43,7 +60,7 @@
                         route="{{subroute}}"
                         partner="{{partnerDetails}}">
                 </partner-info-view-main>
-        </iron-pages>
+        </iron-pages> -->
     </template>
 
     <!-- inject scripts './partners-page-main.js'-->
