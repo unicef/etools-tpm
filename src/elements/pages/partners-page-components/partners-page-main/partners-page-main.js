@@ -66,6 +66,10 @@ Polymer({
         this.lastView = view;
     },
 
+    getLink: function getLink() {
+      return window.location.origin + '/fm/partners';
+    },
+
     resetLastView: function() {
         if (this.lastView) { this.lastView = null; }
     },
